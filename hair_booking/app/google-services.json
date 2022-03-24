@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "868463371432",
+    "project_id": "hairbooking-aa852",
+    "storage_bucket": "hairbooking-aa852.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868463371432:android:d8bc9b8b02c98119d88e9d",
+        "android_client_info": {
+          "package_name": "com.example.hair_booking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "868463371432-gpt3cl85sedjn393hcmb0j8r56bmsps1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYhvz6xa5489BTbvVqTuaQzTewoPCUTBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "868463371432-gpt3cl85sedjn393hcmb0j8r56bmsps1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
