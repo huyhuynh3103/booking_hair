@@ -11,7 +11,7 @@ object Database {
     fun getInstance(): FirebaseFirestore {
         if(instance != null)
             return instance as FirebaseFirestore
-        
+
         // If the firestore hasn't init yet => init
         instance = Firebase.firestore
         return instance as FirebaseFirestore
