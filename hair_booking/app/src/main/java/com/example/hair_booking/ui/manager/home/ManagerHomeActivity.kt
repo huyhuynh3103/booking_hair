@@ -1,12 +1,11 @@
-package com.example.hair_booking.ui.authentication
+package com.example.hair_booking.ui.manager.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.hair_booking.R
 
-class LogInActivity : AppCompatActivity() {
+class ManagerHomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_log_in)
+        setContentView(R.layout.activity_manager_home)
     }
 }
