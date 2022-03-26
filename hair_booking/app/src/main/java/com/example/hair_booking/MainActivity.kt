@@ -2,8 +2,8 @@ package com.example.hair_booking
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.example.hair_booking.firebase.Database
+import com.example.hair_booking.services.db.dbServices
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        dbServices.getNormalUserServices()?.foo()
     }
 
 }
