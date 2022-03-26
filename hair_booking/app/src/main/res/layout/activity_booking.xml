@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.normal_user.booking.BookingActivity">
+
+    <TextView
+        android:id="@+id/chooseSalonLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/choose_salon_label"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/chooseSalonTextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/chooseSalonLabel"
+        app:layout_constraintTop_toBottomOf="@+id/chooseSalonLabel">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/chooseSalonEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_baseline_location_on_24"
+            android:drawableRight="@drawable/ic_baseline_arrow_right_24"
+            android:drawablePadding="10dp"
+            android:hint="@string/choose_salon_edit_text_hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/chooseServiceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/choose_service_label"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/chooseSalonTextInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/chooseSalonTextInputLayout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/chooseServiceTextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/chooseSalonTextInputLayout"
+        app:layout_constraintStart_toStartOf="@+id/chooseServiceLabel"
+        app:layout_constraintTop_toBottomOf="@+id/chooseServiceLabel">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/chooseServiceEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_baseline_view_list_24"
+            android:drawableRight="@drawable/ic_baseline_arrow_right_24"
+            android:drawablePadding="10dp"
+            android:hint="@string/choose_service_edit_text_hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/chooseStylistLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/choose_stylist_label"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/chooseServiceTextInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/chooseServiceTextInputLayout" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/stylistRecycleView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="@+id/chooseServiceTextInputLayout"
+        app:layout_constraintStart_toStartOf="@+id/chooseStylistLabel"
+        app:layout_constraintTop_toBottomOf="@+id/chooseStylistLabel" />
+
+    <TextView
+        android:id="@+id/chooseDateTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/choose_datetime_label"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/stylistRecycleView"
+        app:layout_constraintTop_toBottomOf="@+id/stylistRecycleView" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/chooseDateTextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/stylistRecycleView"
+        app:layout_constraintStart_toStartOf="@+id/chooseDateTimeLabel"
+        app:layout_constraintTop_toBottomOf="@+id/chooseDateTimeLabel">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/chooseDateEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+            android:drawablePadding="10dp"
+            android:hint="@string/choose_date_edit_text_hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/chooseTimeTextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/chooseDateTextInputLayout"
+        app:layout_constraintStart_toStartOf="@+id/chooseDateTextInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/chooseDateTextInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/chooseTimeEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_baseline_access_time_24"
+            android:drawablePadding="10dp"
+            android:hint="@string/choose_time_edit_text_hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/confirm_booking_btn"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:backgroundTint="#C8C8C7"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/chooseTimeTextInputLayout"
+        app:layout_constraintStart_toStartOf="@+id/chooseTimeTextInputLayout" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

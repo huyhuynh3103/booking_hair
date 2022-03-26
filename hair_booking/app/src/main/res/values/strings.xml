@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">hair_booking</string>
+
+
+    // Booking screen
+    <string name="right_arrow">&#9654;</string>
+    <string name="choose_salon_label">Chọn salon</string>
+    <string name="choose_salon_edit_text_hint">Xem tất cả salon</string>
+    <string name="choose_service_label">Chọn dịch vụ</string>
+    <string name="choose_service_edit_text_hint">Xem tất cả dịch vụ hiện có</string>
+    <string name="choose_stylist_label">Chọn stylist</string>
+
+    <string name="choose_datetime_label">Chọn ngày/giờ</string>
+    <string name="choose_date_edit_text_hint">Chọn ngày cắt tóc</string>
+    <string name="choose_time_edit_text_hint">Chọn giờ cắt tóc</string>
+    <string name="confirm_booking_btn">Hoàn tất</string>
 </resources>

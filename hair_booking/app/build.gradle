@@ -61,4 +61,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
 
     //-----------END FIREBASE DEPENDENCIES------------
+
+    // DATE TIME PICKER DEPENDENCY
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
 }
