@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">hair_booking</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_wish_list">Wish List</string>
+    <string name="nav_membership">Membership</string>
+    <string name="nav_account">Account</string>
+    <string name="nav_my_profile">My Profile</string>
+    <string name="nav_change_password">Change Password</string>
+    <string name="nav_sign_out">Sign Out</string>
 </resources>
