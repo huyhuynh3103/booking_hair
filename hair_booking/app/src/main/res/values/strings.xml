@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">hair_booking</string>
+<!--    Navigation Drawer -->
     <string name="nav_home">Home</string>
     <string name="nav_wish_list">Wish List</string>
     <string name="nav_membership">Membership</string>
@@ -7,4 +8,9 @@
     <string name="nav_my_profile">My Profile</string>
     <string name="nav_change_password">Change Password</string>
     <string name="nav_sign_out">Sign Out</string>
+
+    <string name="navigation_drawer_open">Navigation Drawer Open</string>
+    <string name="navigation_drawer_close">Navigation Drawer Close</string>
+
+
 </resources>
