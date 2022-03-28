@@ -19,42 +19,49 @@ class ChooseSalonViewModel: ViewModel() {
                 "testname",
                 "avatar",
                 "asdklq",
+                "Tasdq",
                 "Tasdq"
             ),
             Salon(
                 "testname",
                 "avatar",
                 "asdklq",
+                "Tasdq",
+                "aaaaaaaa"
+            ),
+            Salon(
+                "testname",
+                "avatar",
+                "asdklq",
+                "Tasdq",
                 "Tasdq"
             ),
             Salon(
                 "testname",
                 "avatar",
                 "asdklq",
+                "Tasdq",
                 "Tasdq"
             ),
             Salon(
                 "testname",
                 "avatar",
                 "asdklq",
+                "Tasdq",
                 "Tasdq"
             ),
             Salon(
                 "testname",
                 "avatar",
                 "asdklq",
+                "Tasdq",
                 "Tasdq"
             ),
             Salon(
                 "testname",
                 "avatar",
                 "asdklq",
-                "Tasdq"
-            ),
-            Salon(
-                "testname",
-                "avatar",
-                "asdklq",
+                "Tasdq",
                 "Tasdq"
             )
         )

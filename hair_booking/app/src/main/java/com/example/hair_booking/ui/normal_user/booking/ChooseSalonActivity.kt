@@ -1,5 +1,7 @@
 package com.example.hair_booking.ui.normal_user.booking
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -18,6 +20,7 @@ class ChooseSalonActivity : AppCompatActivity() {
     // "by viewModels()" is the auto initialization of viewmodel made by the library
     private val viewModel: ChooseSalonViewModel by viewModels()
 
+    private lateinit var salonListAdapter: SalonListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,8 +34,8 @@ class ChooseSalonActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         // Create adapter for salon list recyclerview
-
-        binding.salonListRecyclerView.adapter = SalonListAdapter()
+        salonListAdapter = SalonListAdapter()
+        binding.salonListRecyclerView.adapter = salonListAdapter
 
         // Assign linear layout for salon list recyclerview
         binding.salonListRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -43,6 +46,22 @@ class ChooseSalonActivity : AppCompatActivity() {
 
         // Enable back button
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        // Set onclick event on item in salon list
+        setOnSalonItemClickedEvent()
+
+    }
+
+    private fun setOnSalonItemClickedEvent() {
+        salonListAdapter.onItemClick = {position: Int ->
+            val replyIntent = Intent()
+            val salonLocation: String = viewModel.salonList.value?.get(position)?.address ?: ""
+
+            // send chosen salon location back to previous activity
+            replyIntent.putExtra("salonLocation", salonLocation)
+            setResult(Activity.RESULT_OK, replyIntent)
+            finish()
+        }
     }
 
     // Back to main screen when click back button

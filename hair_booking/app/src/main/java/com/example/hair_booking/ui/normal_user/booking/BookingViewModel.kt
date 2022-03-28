@@ -28,5 +28,15 @@ class BookingViewModel: ViewModel() {
     private val _note = MutableLiveData<String>()
     val note: LiveData<String> = _note
 
+    // Set salon edit text onclicked to be observable
+    private val _salonEditTextClicked = MutableLiveData<Boolean>()
+    val salonEditTextClicked: LiveData<Boolean> = _salonEditTextClicked
+    fun onSalonEditTextClicked() {
+        _salonEditTextClicked.value = true
+    }
+
+    fun setSalonLocation(salonLocation: String) {
+        _salonLocation.value = salonLocation
+    }
 
 }

@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.databinding.BookingSalonItemBinding
-import com.example.hair_booking.databinding.BookingStylistItemBinding
 import com.example.hair_booking.model.Salon
 import com.example.hair_booking.model.Stylist
 
@@ -21,12 +20,12 @@ class SalonListAdapter: RecyclerView.Adapter<SalonListAdapter.ViewHolder>() {
     inner class ViewHolder(var bookingSalonItemBinding: BookingSalonItemBinding): RecyclerView.ViewHolder(bookingSalonItemBinding.root) {
 
         init {
+            // Set on item click listener
+            bookingSalonItemBinding.root.setOnClickListener {
+                // When item clicked, invoke onItemClick function with clicked item position as parameter
+                onItemClick?.invoke(adapterPosition)
+            }
             bookingSalonItemBinding.executePendingBindings()
-//            // Set on item click listener
-//            listItemView.setOnClickListener {
-//                // When item clicked, invoke onItemClick function with clicked item as parameter
-//                onItemClick?.invoke(adapterPosition)
-//            }
         }
     }
 
