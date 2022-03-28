@@ -27,4 +27,7 @@
     // Choose salon screen
     <string name="choose_salon_screen_title">Chọn salon</string>
 
+    // Choose service screen
+    <string name="choose_service_screen_title">Chọn dịch vụ</string>
+    <string name="price_unit">VND</string>
 </resources>
