@@ -23,5 +23,8 @@
     // Choose stylist screen
     <string name="choose_stylist_screen_title">Chọn stylist</string>
 
-    <string name="confirm_stylist_btn">Xác nhận</string>
+
+    // Choose salon screen
+    <string name="choose_salon_screen_title">Chọn salon</string>
+
 </resources>

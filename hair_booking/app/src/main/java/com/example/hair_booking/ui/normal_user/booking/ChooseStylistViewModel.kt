@@ -19,49 +19,43 @@ class ChooseStylistViewModel : ViewModel() {
                 "testname",
                 "avatar",
                 "asdklq",
-                "Tasdq"
+                "Tasdq",
+                "null"
             ),
             Stylist(
                 "testname",
                 "avatar",
                 "asdklq",
-                "Tasdq"
+                "Tasdq",
+                "null"
             ),
             Stylist(
                 "testname",
                 "avatar",
                 "asdklq",
-                "Tasdq"
+                "Tasdq",
+                "null"
             ),
             Stylist(
                 "testname",
                 "avatar",
                 "asdklq",
-                "Tasdq"
+                "Tasdq",
+                "null"
             ),
             Stylist(
                 "testname",
                 "avatar",
                 "asdklq",
-                "Tasdq"
+                "Tasdq",
+                "null"
             ),
             Stylist(
                 "testname",
                 "avatar",
                 "asdklq",
-                "Tasdq"
-            ),
-            Stylist(
-                "testname",
-                "avatar",
-                "asdklq",
-                "Tasdq"
-            ),
-            Stylist(
-                "testname",
-                "avatar",
-                "asdklq",
-                "Tasdq"
+                "Tasdq",
+                "null"
             )
         )
     }

@@ -12,9 +12,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hair_booking">
-        <activity android:name=".ui.normal_user.booking.ChooseStylistActivity"
+        <activity android:name=".ui.normal_user.booking.ChooseSalonActivity"
             android:exported="true"
-            android:label="@string/booking_screen_title">
+            android:label="@string/choose_salon_screen_title">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.normal_user.booking.ChooseStylistActivity"
+            android:exported="true"
+            android:label="@string/choose_stylist_screen_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
