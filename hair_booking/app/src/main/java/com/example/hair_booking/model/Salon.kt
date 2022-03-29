@@ -5,20 +5,32 @@ package com.example.hair_booking.model
 // it means the secondary constructor must include the id
 // and the id is a required parameter for all models
 // => you can freely define secondary constructor with as many parameters as you want
-data class Salon(private val id: String) {
-    private var name: String? = null
-    private var avatar: String? = null
-    private var description: String? = null
-    private var rate: Long? = null
-    private var openHour: String? = null
-    private var closeHour: String? = null
+data class Salon(private val _id: String) {
+    private var _name: String? = null
+    private var _avatar: String? = null
+    private var _description: String? = null
+    private var _rate: Long? = null
+    private var _openHour: String? = null
+    private var _closeHour: String? = null
 
 
     // "*" data type is used to deal with map in map in firestore
-    private var address: HashMap<String, String>? = null
-    private var appointments: ArrayList<HashMap<String, *>>?  = null
-    private var stylists: ArrayList<HashMap<String, *>>? = null
+    private var _address: HashMap<String, String>? = null
+    private var _appointments: ArrayList<HashMap<String, *>>?  = null
+    private var _stylists: ArrayList<HashMap<String, *>>? = null
 
+
+    // GETTERS
+    val id: String = _id
+    val name: String? = _name
+    val avatar: String? = _avatar
+    val description: String? = _description
+    val rate: Long? = _rate
+    val openHour: String? = _openHour
+    val closeHour: String? = _closeHour
+    val address: HashMap<String, String>? = _address
+    val appointments: ArrayList<HashMap<String, *>>?  = _appointments
+    val stylists: ArrayList<HashMap<String, *>>? = _stylists
 
 
     // Full parameter constructor
@@ -34,15 +46,15 @@ data class Salon(private val id: String) {
         appointments: ArrayList<HashMap<String, *>>,
         stylists: ArrayList<HashMap<String, *>>
     ): this(id) {
-        this.name = name
-        this.avatar = avatar
-        this.description = description
-        this.rate = rate
-        this.openHour = openHour
-        this.closeHour = closeHour
-        this.address = address
-        this.appointments = appointments
-        this.stylists = stylists
+        this._name = name
+        this._avatar = avatar
+        this._description = description
+        this._rate = rate
+        this._openHour = openHour
+        this._closeHour = closeHour
+        this._address = address
+        this._appointments = appointments
+        this._stylists = stylists
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
