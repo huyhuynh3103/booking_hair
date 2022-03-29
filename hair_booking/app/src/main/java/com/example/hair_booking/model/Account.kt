@@ -7,7 +7,7 @@ import com.google.firebase.firestore.DocumentReference
 // it means the secondary constructor must include the id
 // and the id is a required parameter for all models
 // => you can freely define secondary constructor with as many parameters as you want
-data class Account(private val id: String) {
+data class Account(private val _id: String) {
     private var _username: String? = null
     private var _password: String? = null
     private var _role: String? = null
@@ -19,6 +19,7 @@ data class Account(private val id: String) {
 
 
     // GETTERS
+    val id: String = _id
     val username: String? = _username
     val password: String? = _password
     val role: String? = _role

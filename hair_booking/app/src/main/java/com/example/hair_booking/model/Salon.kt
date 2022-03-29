@@ -5,7 +5,7 @@ package com.example.hair_booking.model
 // it means the secondary constructor must include the id
 // and the id is a required parameter for all models
 // => you can freely define secondary constructor with as many parameters as you want
-data class Salon(private val id: String) {
+data class Salon(private val _id: String) {
     private var _name: String? = null
     private var _avatar: String? = null
     private var _description: String? = null
@@ -21,6 +21,7 @@ data class Salon(private val id: String) {
 
 
     // GETTERS
+    val id: String = _id
     val name: String? = _name
     val avatar: String? = _avatar
     val description: String? = _description
