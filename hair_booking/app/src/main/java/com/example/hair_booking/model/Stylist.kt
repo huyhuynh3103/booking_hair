@@ -8,10 +8,16 @@ import com.google.firebase.firestore.DocumentReference
 // and the id is a required parameter for all models
 // => you can freely define secondary constructor with as many parameters as you want
 data class Stylist(private val id: String) {
-    private var fullName: String? = null
-    private var avatar: String? = null
-    private var description: String? = null
-    private var workPlace: DocumentReference? = null
+    private var _fullName: String? = null
+    private var _avatar: String? = null
+    private var _description: String? = null
+    private var _workPlace: DocumentReference? = null
+
+    // GETTERS
+    val fullName: String? = _fullName
+    val avatar: String? = _avatar
+    val description: String? = _description
+    val workPlace: DocumentReference? = _workPlace
 
     // Full parameter constructor
     constructor(
@@ -21,10 +27,10 @@ data class Stylist(private val id: String) {
         description: String,
         workPlace: DocumentReference
     ): this(id) {
-        this.fullName = fullName
-        this.avatar = avatar
-        this.description = description
-        this.workPlace = workPlace
+        this._fullName = fullName
+        this._avatar = avatar
+        this._description = description
+        this._workPlace = workPlace
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW

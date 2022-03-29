@@ -8,30 +8,38 @@ import com.google.firebase.firestore.DocumentReference
 // and the id is a required parameter for all models
 // => you can freely define secondary constructor with as many parameters as you want
 data class Account(private val id: String) {
-    private var username: String? = null
-    private var password: String? = null
-    private var role: String? = null
-    private var banned: Boolean? = null
+    private var _username: String? = null
+    private var _password: String? = null
+    private var _role: String? = null
+    private var _banned: Boolean? = null
 
     // This is the attribute for manager only
     // With normal user, this attribute will be null
-    private var hairSalon: DocumentReference? = null
+    private var _hairSalon: DocumentReference? = null
+
+
+    // GETTERS
+    val username: String? = _username
+    val password: String? = _password
+    val role: String? = _role
+    val banned: Boolean? = _banned
+    val hairSalon: DocumentReference? = _hairSalon
 
     // Full parameter constructor for normal user
     constructor(id: String, username: String, password: String, role: String, banned: Boolean) : this(id) {
-        this.username = username
-        this.password = password
-        this.role = role
-        this.banned = banned
+        this._username = username
+        this._password = password
+        this._role = role
+        this._banned = banned
     }
 
     // Full parameter constructor for manager
     constructor(id: String, username: String, password: String, role: String, banned: Boolean, hairSalon: DocumentReference) : this(id) {
-        this.username = username
-        this.password = password
-        this.role = role
-        this.banned = banned
-        this.hairSalon = hairSalon
+        this._username = username
+        this._password = password
+        this._role = role
+        this._banned = banned
+        this._hairSalon = hairSalon
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
