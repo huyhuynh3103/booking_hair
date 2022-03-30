@@ -58,11 +58,4 @@ data class Salon(private val _id: String) {
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
-    // Full parameter constructor
-    constructor(
-        id: String,
-        name: String
-    ): this(id) {
-        this._name = name
-    }
 }
