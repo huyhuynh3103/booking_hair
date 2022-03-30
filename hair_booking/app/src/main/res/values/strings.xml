@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">hair_booking</string>
-<!--    Navigation Drawer -->
+    <!--    Navigation Drawer -->
     <string name="nav_home">Home</string>
     <string name="nav_wish_list">Wish List</string>
     <string name="nav_membership">Membership</string>
@@ -11,6 +11,10 @@
 
     <string name="navigation_drawer_open">Navigation Drawer Open</string>
     <string name="navigation_drawer_close">Navigation Drawer Close</string>
+    <string name="history_menu_item">History</string>
+    <string name="schedule_nav_user">Schedule</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
