@@ -18,7 +18,6 @@
         <activity android:name=".ui.normal_user.booking.BookingActivity" />
         <activity android:name=".ui.normal_user.home.NormalUserHomeActivity" />
         <activity android:name=".ui.manager.home.ManagerHomeActivity" />
-        <activity android:name=".ui.manager.home.HomeActivity" />
         <activity android:name=".ui.authentication.LogInActivity" />
         <activity
             android:name=".MainActivity"

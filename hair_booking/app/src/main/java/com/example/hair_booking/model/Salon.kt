@@ -21,16 +21,16 @@ data class Salon(private val _id: String) {
 
 
     // GETTERS
-    val id: String = _id
-    val name: String? = _name
-    val avatar: String? = _avatar
-    val description: String? = _description
-    val rate: Long? = _rate
-    val openHour: String? = _openHour
-    val closeHour: String? = _closeHour
-    val address: HashMap<String, String>? = _address
-    val appointments: ArrayList<HashMap<String, *>>?  = _appointments
-    val stylists: ArrayList<HashMap<String, *>>? = _stylists
+    val id: String get() = _id
+    val name: String? get() = _name
+    val avatar: String? get() = _avatar
+    val description: String? get() = _description
+    val rate: Long? get() = _rate
+    val openHour: String? get() = _openHour
+    val closeHour: String? get() = _closeHour
+    val address: HashMap<String, String>? get() = _address
+    val appointments: ArrayList<HashMap<String, *>>?  get() = _appointments
+    val stylists: ArrayList<HashMap<String, *>>? get() = _stylists
 
 
     // Full parameter constructor
@@ -58,4 +58,22 @@ data class Salon(private val _id: String) {
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
+    constructor(
+        id: String,
+        name: String,
+        avatar: String,
+        description: String,
+        rate: Long,
+        openHour: String,
+        closeHour: String,
+        address: HashMap<String, String>
+    ): this(id) {
+        this._name = name
+        this._avatar = avatar
+        this._description = description
+        this._rate = rate
+        this._openHour = openHour
+        this._closeHour = closeHour
+        this._address = address
+    }
 }

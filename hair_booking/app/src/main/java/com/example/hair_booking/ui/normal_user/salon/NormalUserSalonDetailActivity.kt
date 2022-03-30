@@ -2,11 +2,14 @@ package com.example.hair_booking.ui.normal_user.salon
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityNormalUserSalonDetailBinding
+import com.example.hair_booking.model.Salon
 
 class NormalUserSalonDetailActivity : AppCompatActivity() {
 
@@ -17,6 +20,8 @@ class NormalUserSalonDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_normal_user_salon_detail)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         // enable back button
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

@@ -3,8 +3,10 @@ package com.example.hair_booking.ui.normal_user.salon
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.hair_booking.model.Salon
 
 class NormalUserSalonDetailViewModel: ViewModel() {
+    /*
     private val _name = MutableLiveData<String>()
     val name: LiveData<String> = _name
 
@@ -20,9 +22,15 @@ class NormalUserSalonDetailViewModel: ViewModel() {
     private val _closeHour = MutableLiveData<String>()
     val closeHour: LiveData<String> = _closeHour
 
-    private val _rate = MutableLiveData<String>()
-    val rate: LiveData<String> = _rate
+    private val _rate = MutableLiveData<Long>()
+    val rate: LiveData<Long> = _rate
 
     private val _address = MutableLiveData<HashMap<String, String>>()
     val address: LiveData<HashMap<String, String>> = _address
+    */
+
+    private val _salon: MutableLiveData<Salon> = MutableLiveData(
+        Salon("1", "MySalon", "AvatarString", "Describe something", 4, "08:00", "16:00", hashMapOf("1" to "39 Cao Lỗ, phường 4, quận 8"))
+    )
+    public val salon: LiveData<Salon> = _salon
 }

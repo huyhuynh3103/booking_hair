@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.google.gms.google-services'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -26,7 +27,7 @@ android {
         }
     }
     buildFeatures {
-        viewBinding true
+        dataBinding true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -70,6 +71,7 @@ dependencies {
 
     // VIEW MODEL LIFE CYCLE DEPENDENCY
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
     // ACTIVITY DEPENDENCY
     def activity_version = "1.4.0"
