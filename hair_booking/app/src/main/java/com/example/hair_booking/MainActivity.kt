@@ -2,6 +2,7 @@ package com.example.hair_booking
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.example.hair_booking.firebase.Database
 import com.example.hair_booking.model.Salon
 import com.example.hair_booking.services.db.dbServices
@@ -52,6 +53,9 @@ class MainActivity : AppCompatActivity() {
 //                    val test3 = salon
 //                }
 //            }
+
+//        val salon: Salon = Salon("123", "asd")
+//        Log.d("xk", salon.id + "" + salon.name)
     }
 
 }

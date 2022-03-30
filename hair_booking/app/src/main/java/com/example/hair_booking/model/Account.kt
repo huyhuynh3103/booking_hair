@@ -19,12 +19,12 @@ data class Account(private val _id: String) {
 
 
     // GETTERS
-    val id: String = _id
-    val username: String? = _username
-    val password: String? = _password
-    val role: String? = _role
-    val banned: Boolean? = _banned
-    val hairSalon: DocumentReference? = _hairSalon
+    val id: String get() = _id
+    val username: String? get() = _username
+    val password: String? get() = _password
+    val role: String? get() = _role
+    val banned: Boolean? get() = _banned
+    val hairSalon: DocumentReference? get() = _hairSalon
 
     // Full parameter constructor for normal user
     constructor(id: String, username: String, password: String, role: String, banned: Boolean) : this(id) {

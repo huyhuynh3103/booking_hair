@@ -14,11 +14,11 @@ data class Stylist(private val _id: String) {
     private var _workPlace: DocumentReference? = null
 
     // GETTERS
-    val id: String = _id
-    val fullName: String? = _fullName
-    val avatar: String? = _avatar
-    val description: String? = _description
-    val workPlace: DocumentReference? = _workPlace
+    val id: String get() = _id
+    val fullName: String? get() = _fullName
+    val avatar: String? get() = _avatar
+    val description: String? get() = _description
+    val workPlace: DocumentReference? get() = _workPlace
 
     // Full parameter constructor
     constructor(

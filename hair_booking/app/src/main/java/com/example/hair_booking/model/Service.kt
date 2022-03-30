@@ -12,10 +12,10 @@ data class Service(private val _id: String) {
 
 
     // GETTERS
-    val id: String = _id
-    val title: String? = _title
-    val price: Long? = _price
-    val description: String? = _description
+    val id: String get() = _id
+    val title: String? get() = _title
+    val price: Long? get() = _price
+    val description: String? get() = _description
 
     // Full parameter constructor
     constructor(

@@ -15,11 +15,11 @@ data class NormalUser(private val _id: String) {
 
 
     // GETTERS
-    val id: String = _id
-    val fullName: String? = _fullName
-    val discountPoint: Long? = _discountPoint
-    val appointments: ArrayList<DocumentReference>?  = _appointments
-    val wishList: ArrayList<DocumentReference>? = _wishList
+    val id: String get() = _id
+    val fullName: String? get() = _fullName
+    val discountPoint: Long? get() = _discountPoint
+    val appointments: ArrayList<DocumentReference>? get() = _appointments
+    val wishList: ArrayList<DocumentReference>? get() = _wishList
 
     // Full parameter constructor
     constructor(
