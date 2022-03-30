@@ -14,12 +14,12 @@ data class Discount(private val _id: String) {
 
 
     // GETTERS
-    val id: String = _id
-    val title: String? = _title
-    val requiredPoint: Long? = _requiredPoint
-    val description: String? = _description
-    val dateApplied: String? = _dateApplied
-    val dateExpired: String? = _dateExpired
+    val id: String get() = _id
+    val title: String? get() = _title
+    val requiredPoint: Long? get() = _requiredPoint
+    val description: String? get() = _description
+    val dateApplied: String? get() = _dateApplied
+    val dateExpired: String? get() = _dateExpired
 
     // Full parameter constructor
     constructor(id: String,

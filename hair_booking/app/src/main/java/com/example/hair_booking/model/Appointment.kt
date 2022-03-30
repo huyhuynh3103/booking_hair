@@ -28,24 +28,24 @@ data class Appointment(private val _id: String) {
 
 
     // GETTERS
-    val id: String = _id
-    val userId: DocumentReference? = _userId
-    val userFullName: String? = _userFullName
-    val userPhoneNumber: String? = _userPhoneNumber
+    val id: String get() = _id
+    val userId: DocumentReference? get() = _userId
+    val userFullName: String? get() = _userFullName
+    val userPhoneNumber: String? get() = _userPhoneNumber
 
     // "*" data type is used to deal with map in map in firestore
-    val hairSalon: HashMap<String, *>?  = _hairSalon
+    val hairSalon: HashMap<String, *>?  get() = _hairSalon
 
-    val service: HashMap<String, *>? = _service
-    val stylist: HashMap<String, *>? = _stylist
+    val service: HashMap<String, *>? get() = _service
+    val stylist: HashMap<String, *>? get() = _stylist
 
-    val bookingDate: String? = _bookingDate
-    val bookingTime: String? = _bookingTime
-    val createdAt: String? = _createdAt
-    val discountApplied: HashMap<String, *>? = _discountApplied
+    val bookingDate: String? get() = _bookingDate
+    val bookingTime: String? get() = _bookingTime
+    val createdAt: String? get() = _createdAt
+    val discountApplied: HashMap<String, *>? get() = _discountApplied
 
-    val note: String? = _note
-    val status: String? = _status
+    val note: String? get() = _note
+    val status: String? get() = _status
 
 
     // Full parameter constructor
