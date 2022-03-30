@@ -7,32 +7,31 @@ import com.google.firebase.firestore.DocumentReference
 // it means the secondary constructor must include the id
 // and the id is a required parameter for all models
 // => you can freely define secondary constructor with as many parameters as you want
-data class NormalUser(private val _id: String) {
+data class Stylist(private val _id: String) {
     private var _fullName: String? = null
-    private var _discountPoint: Long? = null
-    private var _appointments: ArrayList<DocumentReference>?  = null
-    private var _wishList: ArrayList<DocumentReference>? = null
-
+    private var _avatar: String? = null
+    private var _description: String? = null
+    private var _workPlace: DocumentReference? = null
 
     // GETTERS
     val id: String get() = _id
     val fullName: String? get() = _fullName
-    val discountPoint: Long? get() = _discountPoint
-    val appointments: ArrayList<DocumentReference>? get() = _appointments
-    val wishList: ArrayList<DocumentReference>? get() = _wishList
+    val avatar: String? get() = _avatar
+    val description: String? get() = _description
+    val workPlace: DocumentReference? get() = _workPlace
 
     // Full parameter constructor
     constructor(
         id: String,
         fullName: String,
-        discountPoint: Long,
-        appointments: ArrayList<DocumentReference>,
-        wishList: ArrayList<DocumentReference>
+        avatar: String,
+        description: String,
+        workPlace: DocumentReference
     ): this(id) {
         this._fullName = fullName
-        this._discountPoint = discountPoint
-        this._appointments = appointments
-        this._wishList = wishList
+        this._avatar = avatar
+        this._description = description
+        this._workPlace = workPlace
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
