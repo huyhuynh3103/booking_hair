@@ -14,6 +14,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         dbServices.getNormalUserServices()?.foo()
+
+//        dbServices.getSalonServices()?.getSalonList()
     }
 
 }

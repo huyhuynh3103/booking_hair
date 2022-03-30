@@ -13,20 +13,24 @@ class StylistListAdapter: RecyclerView.Adapter<StylistListAdapter.ViewHolder>() 
 
     var onItemClick: ((position: Int) -> Unit)? = null
 
-    private lateinit var stylistList: ArrayList<Stylist>
+    private var stylistList: ArrayList<Stylist> = ArrayList()
     fun setData(stylistList: ArrayList<Stylist>) {
         this.stylistList = stylistList
+
+        // The UI will be loaded before the database return the stylist list
+        // => need notify data set changed to tell the UI that the data is ready
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(var bookingStylistItemBinding: BookingStylistItemBinding): RecyclerView.ViewHolder(bookingStylistItemBinding.root) {
 
         init {
+            // Set on item click listener
+            bookingStylistItemBinding.root.setOnClickListener {
+                // When item clicked, invoke onItemClick function with clicked item as parameter
+                onItemClick?.invoke(adapterPosition)
+            }
             bookingStylistItemBinding.executePendingBindings()
-//            // Set on item click listener
-//            listItemView.setOnClickListener {
-//                // When item clicked, invoke onItemClick function with clicked item as parameter
-//                onItemClick?.invoke(adapterPosition)
-//            }
         }
     }
 

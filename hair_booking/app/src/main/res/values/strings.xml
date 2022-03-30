@@ -20,6 +20,9 @@
     <string name="note_label">Ghi chú cho salon</string>
     <string name="note_edit_text_hint">VD: Ngoáy tai kỹ, gội nước mát,...</string>
 
+    <string name="discount_label">Chọn khuyến mãi (nếu có)</string>
+    <string name="discount_edit_text_hint">Xem các khuyến mãi hiện có</string>
+
     // Choose stylist screen
     <string name="choose_stylist_screen_title">Chọn stylist</string>
 
@@ -30,4 +33,10 @@
     // Choose service screen
     <string name="choose_service_screen_title">Chọn dịch vụ</string>
     <string name="price_unit">VND</string>
+
+    // Choose discount screen
+    <string name="choose_discount_screen_title">Chọn khuyến mãi</string>
+
+    // Warning title
+    <string name="warning_title">Cảnh báo</string>
 </resources>

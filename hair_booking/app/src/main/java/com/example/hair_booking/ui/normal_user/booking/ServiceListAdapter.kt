@@ -11,20 +11,24 @@ class ServiceListAdapter: RecyclerView.Adapter<ServiceListAdapter.ViewHolder>() 
 
     var onItemClick: ((position: Int) -> Unit)? = null
 
-    private lateinit var serviceList: ArrayList<Service>
+    private var serviceList: ArrayList<Service> = ArrayList()
     fun setData(serviceList: ArrayList<Service>) {
         this.serviceList = serviceList
+
+        // The UI will be loaded before the database return the service list
+        // => need notify data set changed to tell the UI that the data is ready
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(var bookingServiceItemBinding: BookingServiceItemBinding): RecyclerView.ViewHolder(bookingServiceItemBinding.root) {
 
         init {
+            // Set on item click listener
+            bookingServiceItemBinding.root.setOnClickListener {
+                // When item clicked, invoke onItemClick function with clicked item position as parameter
+                onItemClick?.invoke(adapterPosition)
+            }
             bookingServiceItemBinding.executePendingBindings()
-//            // Set on item click listener
-//            listItemView.setOnClickListener {
-//                // When item clicked, invoke onItemClick function with clicked item as parameter
-//                onItemClick?.invoke(adapterPosition)
-//            }
         }
     }
 

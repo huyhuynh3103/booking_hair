@@ -12,9 +12,13 @@ class SalonListAdapter: RecyclerView.Adapter<SalonListAdapter.ViewHolder>() {
 
     var onItemClick: ((position: Int) -> Unit)? = null
 
-    private lateinit var salonList: ArrayList<Salon>
+    private var salonList: ArrayList<Salon> = ArrayList()
     fun setData(salonList: ArrayList<Salon>) {
         this.salonList = salonList
+
+        // The UI will be loaded before the database return the salon list
+        // => need notify data set changed to tell the UI that the data is ready
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(var bookingSalonItemBinding: BookingSalonItemBinding): RecyclerView.ViewHolder(bookingSalonItemBinding.root) {

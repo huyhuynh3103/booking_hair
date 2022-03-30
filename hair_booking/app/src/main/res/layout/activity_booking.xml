@@ -99,7 +99,8 @@
                         android:drawablePadding="10dp"
                         android:focusable="false"
                         android:clickable="true"
-                        android:text=""
+                        android:onClick="@{() -> viewModel.onServiceEditTextClicked()}"
+                        android:text="@{viewModel.service}"
                         android:hint="@string/choose_service_edit_text_hint" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -150,6 +151,8 @@
                         android:drawablePadding="10dp"
                         android:focusable="false"
                         android:clickable="true"
+                        android:text="@{viewModel.stylist}"
+                        android:onClick="@{() -> viewModel.onStylistEditTextClicked()}"
                         android:hint="@string/choose_stylist_edit_text_hint"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -183,7 +186,8 @@
                         android:drawablePadding="10dp"
                         android:focusable="false"
                         android:clickable="true"
-                        android:text=""
+                        android:text="@{viewModel.bookingDate}"
+                        android:onClick="@{() -> viewModel.onDateEditTextClicked()}"
                         android:hint="@string/choose_date_edit_text_hint" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -205,7 +209,8 @@
                         android:drawablePadding="10dp"
                         android:focusable="false"
                         android:clickable="true"
-                        android:text=""
+                        android:text="@{viewModel.bookingTime}"
+                        android:onClick="@{() -> viewModel.onTimeEditTextClicked()}"
                         android:hint="@string/choose_time_edit_text_hint" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -228,8 +233,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="21dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/chooseTimeTextInputLayout"
                     app:layout_constraintStart_toStartOf="@+id/noteLabel"
                     app:layout_constraintTop_toBottomOf="@+id/noteLabel">
@@ -239,6 +242,40 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/note_edit_text_hint" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/discountLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="@string/discount_label"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/noteTextInputLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/noteTextInputLayout" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/discountTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="21dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/noteTextInputLayout"
+                    app:layout_constraintStart_toStartOf="@+id/discountLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/discountLabel">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/discount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_local_offer_24"
+                        android:drawableRight="@drawable/ic_baseline_arrow_right_24"
+                        android:drawablePadding="10dp"
+                        android:hint="@string/discount_edit_text_hint" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -266,6 +303,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:backgroundTint="#C8C8C7"
+                android:onClick="@{() -> viewModel.onConfirmBtnClicked()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
