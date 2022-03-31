@@ -15,5 +15,6 @@ object dbServices {
     fun getNormalUserServices(): DbNormalUserServices? {
         return normalUserServices
     }
-
+    // GETTER
+    val hairSalonServices = DbHairSalonServices(dbInstance)
 }

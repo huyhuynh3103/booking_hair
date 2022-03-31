@@ -57,5 +57,16 @@ data class Salon(private val _id: String) {
         this._stylists = stylists
     }
 
+
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
+    // get for recycle view
+    constructor(
+        id:String,
+        name: String,
+        address: HashMap<String, String>
+    ):this(id){
+        this._address = address
+        this._name = name
+    }
+
 }
