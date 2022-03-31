@@ -49,7 +49,7 @@ class NormalUserSalonDetailActivity : AppCompatActivity() {
         }
 
         binding.bWishlist.setOnClickListener() {
-            // add id to user's whislist
+            // add id to user's wishlist
         }
     }
 }
