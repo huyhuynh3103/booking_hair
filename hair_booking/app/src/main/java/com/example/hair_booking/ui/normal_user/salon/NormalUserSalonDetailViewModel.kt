@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.hair_booking.model.Salon
+import com.example.hair_booking.services.db.dbServices
 
 class NormalUserSalonDetailViewModel: ViewModel() {
     /*
@@ -30,7 +31,13 @@ class NormalUserSalonDetailViewModel: ViewModel() {
     */
 
     private val _salon: MutableLiveData<Salon> = MutableLiveData(
-        Salon("1", "MySalon", "AvatarString", "Describe something", 4, "08:00", "16:00", hashMapOf("1" to "39 Cao Lỗ, phường 4, quận 8"))
+//        Salon("1", "MySalon", "AvatarString", "Describe something", 4, "08:00", "16:00", hashMapOf("1" to "39 Cao Lỗ, phường 4, quận 8"))
     )
-    public val salon: LiveData<Salon> = _salon
+    val salon: LiveData<Salon> = _salon
+
+    fun getSalonDetail(id: String){
+        dbServices.getSalonServices()?.getSalonDetail(id)?.observeForever {
+            _salon.value = it
+        }
+    }
 }

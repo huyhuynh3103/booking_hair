@@ -1,5 +1,6 @@
 package com.example.hair_booking.ui.normal_user.salon
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityNormalUserSalonDetailBinding
 import com.example.hair_booking.model.Salon
+import com.example.hair_booking.ui.normal_user.booking.BookingActivity
 
 class NormalUserSalonDetailActivity : AppCompatActivity() {
 
@@ -23,6 +25,9 @@ class NormalUserSalonDetailActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        getSelectedSalonDetail()
+        setOnClickListenerForButton()
+
         // enable back button
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
@@ -31,5 +36,20 @@ class NormalUserSalonDetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         finish()
         return true
+    }
+
+    private fun getSelectedSalonDetail() {
+        binding.viewModel?.getSalonDetail("TDRAGrT1YVYKm0kRsVax")
+    }
+
+    private fun setOnClickListenerForButton() {
+        binding.bBooking.setOnClickListener() {
+            val intent = Intent(this, BookingActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.bWishlist.setOnClickListener() {
+            // add id to user's whislist
+        }
     }
 }

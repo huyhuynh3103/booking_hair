@@ -58,6 +58,8 @@ data class Salon(private val _id: String) {
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
+
+    // constructor for salon detail screen
     constructor(
         id: String,
         name: String,
@@ -74,6 +76,19 @@ data class Salon(private val _id: String) {
         this._rate = rate
         this._openHour = openHour
         this._closeHour = closeHour
+        this._address = address
+    }
+
+    constructor(
+        id: String,
+        name: String,
+        avatar: String,
+        description: String,
+        address: HashMap<String, String>
+    ): this(id) {
+        this._name = name
+        this._avatar = avatar
+        this._description = description
         this._address = address
     }
 }
