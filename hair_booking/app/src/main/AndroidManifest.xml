@@ -53,6 +53,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.manager.stylist.ManagerStylistDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.normal_user.salon.NormalUserSalonDetailActivity"
+            android:exported="false" />
+        <activity android:name=".ui.normal_user.booking.BookingActivity" />
         <activity android:name=".ui.normal_user.home.NormalUserHomeActivity" />
         <activity android:name=".ui.manager.home.ManagerHomeActivity" />
         <activity android:name=".ui.authentication.LogInActivity" />
