@@ -39,4 +39,21 @@
 
     // Warning title
     <string name="warning_title">Cảnh báo</string>
+    <!--    Navigation Drawer -->
+    <string name="nav_home">Home</string>
+    <string name="nav_wish_list">Wish List</string>
+    <string name="nav_membership">Membership</string>
+    <string name="nav_account">Account</string>
+    <string name="nav_my_profile">My Profile</string>
+    <string name="nav_change_password">Change Password</string>
+    <string name="nav_sign_out">Sign Out</string>
+
+    <string name="navigation_drawer_open">Navigation Drawer Open</string>
+    <string name="navigation_drawer_close">Navigation Drawer Close</string>
+    <string name="history_menu_item">History</string>
+    <string name="schedule_nav_user">Schedule</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

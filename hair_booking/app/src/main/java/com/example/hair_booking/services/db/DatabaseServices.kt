@@ -34,4 +34,6 @@ object dbServices {
         return serviceServices
     }
 
+    // GETTER
+    val hairSalonServices = DbHairSalonServices(dbInstance)
 }

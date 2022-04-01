@@ -11,7 +11,7 @@ import com.example.hair_booking.ui.normal_user.booking.DiscountListAdapter
 import com.example.hair_booking.ui.normal_user.booking.SalonListAdapter
 import com.example.hair_booking.ui.normal_user.booking.ServiceListAdapter
 import com.example.hair_booking.ui.normal_user.booking.StylistListAdapter
-
+import com.example.hair_booking.ui.normal_user.home.SalonAdapter
 @BindingAdapter("data")
 fun bindBookingStylistListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Stylist>?) {
     val adapter = recyclerView.adapter as StylistListAdapter?
@@ -41,5 +41,26 @@ fun bindBookingDiscountListRecyclerView(recyclerView: RecyclerView, data: ArrayL
     val adapter = recyclerView.adapter as DiscountListAdapter
     if (data != null) {
         adapter?.setData(data)
+    }
+}
+
+
+@BindingAdapter("data")
+fun bindSalonListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>?) {
+    val adapter = recyclerView.adapter as SalonAdapter
+    if (data != null) {
+
+
+        data.forEach { salon ->
+            Log.d("huy-test-bind",salon.name.toString())
+            Log.d("huy-test-bind",salon.avatar.toString())
+            Log.d("huy-test-bind",salon.rate.toString())
+        }
+
+        adapter.setData(data)
+    }
+    else
+    {
+        Log.d("huy-test-bind","data in binding null")
     }
 }
