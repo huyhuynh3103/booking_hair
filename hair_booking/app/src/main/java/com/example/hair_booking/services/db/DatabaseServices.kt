@@ -7,11 +7,13 @@ object dbServices {
     private var dbInstance: FirebaseFirestore? = null
     private var normalUserServices: DbNormalUserServices? = null
     private var salonServices: DbSalonServices? = null
+    private var stylistServices: DbStylistServices? = null
 
     init {
         dbInstance = Database.getInstance()
         normalUserServices = DbNormalUserServices(dbInstance)
         salonServices = DbSalonServices(dbInstance)
+        stylistServices = DbStylistServices(dbInstance)
     }
 
     fun getNormalUserServices(): DbNormalUserServices? {
@@ -20,6 +22,10 @@ object dbServices {
 
     fun getSalonServices(): DbSalonServices? {
         return salonServices
+    }
+
+    fun getStylistServices(): DbStylistServices? {
+        return stylistServices
     }
 
 }
