@@ -1,68 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-
-    <ImageView
-        android:id="@+id/salonItemImg"
+<layout>
+    <data>
+        <variable
+            name="salon"
+            type="com.example.hair_booking.model.Salon" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:paddingStart="30dp"
-        android:paddingEnd="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:layout_height="wrap_content">
 
-    <RatingBar
-        android:id="@+id/ratingSalonItemBar"
-        style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:isIndicator="false"
-        android:stepSize="0.1"
-        app:layout_constraintEnd_toEndOf="@+id/salonItemImg"
-        app:layout_constraintTop_toBottomOf="@+id/salonItemImg"
-        tools:ignore="SpeakableTextPresentCheck" />
+        <ImageView
+            android:id="@+id/salonItemImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@{salon.avatar}"
+            tools:srcCompat="@tools:sample/avatars" />
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="@+id/salonItemImg"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/salonItemImg"
-        app:layout_constraintTop_toBottomOf="@+id/ratingSalonItemBar" />
+        <RatingBar
+            android:id="@+id/ratingSalonItemBar"
+            style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:isIndicator="false"
+            android:stepSize="0.1"
+            app:layout_constraintEnd_toEndOf="@+id/salonItemImg"
+            app:layout_constraintTop_toBottomOf="@+id/salonItemImg"
+            android:rating="@{salon.rate}"
+            tools:ignore="SpeakableTextPresentCheck" />
 
-    <TextView
-        android:id="@+id/nameSalonItemTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Chi nhánh Phố Hàng Vọng"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/salonItemImg"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="@+id/salonItemImg"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/salonItemImg"
+            app:layout_constraintTop_toBottomOf="@+id/ratingSalonItemBar" />
 
-    <TextView
-        android:id="@+id/addressSalonItemTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="222/3, Phường 2 Phố Hàng Vọng, Đống Đa, Hà Nội "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/salonItemImg"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/salonItemImg"
-        app:layout_constraintTop_toBottomOf="@+id/nameSalonItemTV" />
+        <TextView
+            android:id="@+id/nameSalonItemTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{salon.name}"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/salonItemImg"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/addressSalonItemTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="222/3, Phường 2 Phố Hàng Vọng, Đống Đa, Hà Nội "
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/salonItemImg"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/salonItemImg"
+            app:layout_constraintTop_toBottomOf="@+id/nameSalonItemTV" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

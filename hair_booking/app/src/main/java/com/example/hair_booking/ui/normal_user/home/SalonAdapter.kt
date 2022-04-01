@@ -1,44 +1,50 @@
 package com.example.hair_booking.ui.normal_user.home
 
-import android.graphics.drawable.Drawable
+import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.hair_booking.R
+import com.example.hair_booking.databinding.SalonItemUserBinding
 import com.example.hair_booking.model.Salon
 
-class SalonAdapter(private var data:ArrayList<Salon>):RecyclerView.Adapter<SalonAdapter.ViewHolder>() {
+class SalonAdapter:RecyclerView.Adapter<SalonAdapter.ViewHolder>() {
+    private var data:ArrayList<Salon> = arrayListOf()
     var onItemClick: ((Salon) -> Unit)? = null
-    inner class ViewHolder(salonItemView: View):RecyclerView.ViewHolder(salonItemView){
-        val salonImg = salonItemView.findViewById<ImageView>(R.id.salonItemImg)
-        val salonName = salonItemView.findViewById<TextView>(R.id.nameSalonItemTV)
-        val salonAddress = salonItemView.findViewById<TextView>(R.id.addressSalonItemTV)
-        val salonRatingBar = salonItemView.findViewById<RatingBar>(R.id.ratingSalonItemBar)
-
+    inner class ViewHolder(var salonItemUserBinding: SalonItemUserBinding):RecyclerView.ViewHolder(salonItemUserBinding.root){
         init {
-            salonItemView.setOnClickListener{
+            salonItemUserBinding.root.setOnClickListener{
                 onItemClick?.invoke(data[adapterPosition])
             }
+            salonItemUserBinding.executePendingBindings()
         }
 
     }
-    fun addData(list:List<Salon>){
-        data.addAll(list)
+    @SuppressLint("NotifyDataSetChanged")
+    fun setData(list:ArrayList<Salon>){
+        Log.d("huy-test-set","setData function invoke")
+        list.forEach { salon ->
+            Log.d("huy-test-set",salon.name.toString())
+            Log.d("huy-test-set",salon.avatar.toString())
+            Log.d("huy-test-set",salon.rate.toString())
+        }
+        data = list
+
+        notifyDataSetChanged()
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SalonAdapter.ViewHolder {
         val context = parent.context
         val inflater =LayoutInflater.from(context)
-        val salonItemView = inflater.inflate(R.layout.salon_item_user,parent,false)
-        return ViewHolder(salonItemView)
+
+        val salonItemUserBinding: SalonItemUserBinding = SalonItemUserBinding.inflate(inflater,parent,false)
+
+        return ViewHolder(salonItemUserBinding)
     }
 
     override fun onBindViewHolder(holder: SalonAdapter.ViewHolder, position: Int) {
-        holder.salonImg.setImageDrawable(Drawable.createFromPath(data[position].avatar))
-        holder.salonName.text = data[position].name
+        val salon = data[position]
+        holder.salonItemUserBinding.salon = salon
+
         data[position].address?.let { addressMap ->
             val streetName = addressMap["streetName"]
             val streetNumber = addressMap["streetNumber"]
@@ -46,10 +52,7 @@ class SalonAdapter(private var data:ArrayList<Salon>):RecyclerView.Adapter<Salon
             val district = addressMap["district"]
             val city = addressMap["city"]
             val addr = "$streetNumber, $streetName, phường $ward, $district, $city"
-            holder.salonAddress.setText(addr)
-        }
-        data[position].rate?.let { rateNumber ->
-            holder.salonRatingBar.rating = rateNumber.toFloat()
+            holder.salonItemUserBinding.addressSalonItemTV.setText(addr)
         }
     }
 

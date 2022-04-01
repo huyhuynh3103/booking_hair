@@ -1,6 +1,7 @@
 package com.example.hair_booking.services.db
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
 import com.example.hair_booking.model.Salon
 import com.google.firebase.firestore.FirebaseFirestore
@@ -14,12 +15,15 @@ class DbHairSalonServices(private var dbInstance: FirebaseFirestore?):DatabaseAb
         TODO("Not yet implemented")
     }
 
-    override suspend fun findAll(): ArrayList<Salon> {
+    override fun findAll(): MutableLiveData<ArrayList<Salon>> {
+        Log.d("huy-test-service","Function find all data from Firebase invoke")
         val data:ArrayList<Salon> = arrayListOf()
+        val result = MutableLiveData<ArrayList<Salon>>()
         dbInstance!!.collection(Constant.collection.hairSalons)
             .get()
             .addOnSuccessListener { result ->
                 for(document in result){
+                    Log.d("huy-test-service","Function find all data from Firebase success")
                     val dataInDoc = document.data
                     val salon = Salon(document.id,
                         dataInDoc["name"] as String,
@@ -35,19 +39,21 @@ class DbHairSalonServices(private var dbInstance: FirebaseFirestore?):DatabaseAb
                     data.add(salon)
                 }
                 for (item in data) {
-                    Log.d("huy-test",item.name.toString())
+                    Log.d("huy-test-service",item.name.toString())
                 }
+
             }
             .addOnCompleteListener {
-                Log.d("huy-test","Complete")
+                Log.d("huy-test-service","Function find all data from Firebase complete")
             }
             .addOnCanceledListener {
-                Log.d("huy-test","Cancel")
+                Log.d("huy-test-service","Cancel")
             }
             .addOnFailureListener{ er ->
-                Log.d("huy-test",er.toString())
+                Log.d("huy-test-service",er.toString())
             }
-        return data
+        result.value = data
+        return result
     }
 
     override suspend fun findById(data: Any): Any {

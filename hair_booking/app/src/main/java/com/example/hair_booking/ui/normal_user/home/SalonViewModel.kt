@@ -1,11 +1,13 @@
 package com.example.hair_booking.ui.normal_user.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hair_booking.model.Salon
 import com.example.hair_booking.services.db.dbServices
+import com.google.rpc.context.AttributeContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -18,9 +20,16 @@ class SalonViewModel: ViewModel() {
         fetchSalon()
     }
     private fun fetchSalon(){
-        viewModelScope.launch(Dispatchers.Main) {
-            val data = async(Dispatchers.IO){dbServices.hairSalonServices.findAll()}
-            _hairSalon.value = data.await()
+        Log.d("huy-test-fetch","fetchSalon function in init ViewModel invoke")
+        dbServices.hairSalonServices.findAll().observeForever{
+            salons ->
+            Log.d("huy-test-fetch","fetchSalon function observe")
+            salons.forEach { salon ->
+                Log.d("huy-test-fetch",salon.name.toString())
+                Log.d("huy-test-fetch",salon.avatar.toString())
+                Log.d("huy-test-fetch",salon.rate.toString())
+            }
+            _hairSalon.value = salons
         }
     }
 }

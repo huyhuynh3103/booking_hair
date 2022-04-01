@@ -1,6 +1,5 @@
 package com.example.hair_booking.ui.normal_user.home
 
-import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -23,13 +22,12 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
     private lateinit var salonAdapter: SalonAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_normal_user_home)
         binding.viewModel = salonViewModel
         binding.lifecycleOwner = this
 
         setupUI()
-        setupObserver()
+        //setupObserver()
 
     }
     @Override
@@ -56,16 +54,15 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
         mDrawerLayout?.closeDrawer(GravityCompat.START)
         return true
     }
-    @SuppressLint("NotifyDataSetChanged")
+
     private fun setupObserver(){
-        salonViewModel.hairSalon.observe(this,{
-            salonAdapter.addData(it)
-            salonAdapter.notifyDataSetChanged()
-        })
+        salonViewModel.hairSalon.observeForever{
+            salonAdapter.setData(it)
+        }
     }
     private fun setupUI(){
         binding.salonListRecycleView.layoutManager = GridLayoutManager(this,2)
-        salonAdapter = SalonAdapter(arrayListOf())
+        salonAdapter = SalonAdapter()
         binding.salonListRecycleView.adapter = salonAdapter
 
         binding.salonListRecycleView.addItemDecoration(
