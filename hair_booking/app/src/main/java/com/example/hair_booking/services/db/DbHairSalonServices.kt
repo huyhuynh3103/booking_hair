@@ -17,39 +17,36 @@ class DbHairSalonServices(private var dbInstance: FirebaseFirestore?):DatabaseAb
 
 
     override fun findAll(): MutableLiveData<ArrayList<Salon>> {
-        val data:ArrayList<Salon> = arrayListOf()
+        val data:ArrayList<Salon> = ArrayList()
         val res = MutableLiveData<ArrayList<Salon>>()
-        dbInstance!!.collection(Constant.collection.hairSalons)
-            .get()
-            .addOnSuccessListener { result ->
-                for(document in result){
-                    val dataInDoc = document.data
-                    val salon = Salon(document.id,
-                        dataInDoc["name"] as String,
-                        dataInDoc["salonAvatar"] as String,
-                        dataInDoc["description"] as String,
-                        dataInDoc["rate"] as Long,
-                        dataInDoc["openHour"] as String,
-                        dataInDoc["closeHour"] as String,
-                        dataInDoc["address"] as HashMap<String, String>,
-                        dataInDoc["appointments"] as ArrayList<HashMap<String, *>>,
-                        dataInDoc["stylists"] as ArrayList<HashMap<String, *>>
-                    )
-                    data.add(salon)
+        if(dbInstance!=null){
+            dbInstance!!.collection(Constant.collection.hairSalons)
+                .get()
+                .addOnSuccessListener { result ->
+                    for(document in result){
+                        val dataInDoc = document.data
+                        val salon = Salon(document.id,
+                            dataInDoc["name"] as String,
+                            dataInDoc["salonAvatar"] as String,
+                            dataInDoc["description"] as String,
+                            dataInDoc["rate"] as Long,
+                            dataInDoc["openHour"] as String,
+                            dataInDoc["closeHour"] as String,
+                            dataInDoc["address"] as HashMap<String, String>,
+                            dataInDoc["appointments"] as ArrayList<HashMap<String, *>>,
+                            dataInDoc["stylists"] as ArrayList<HashMap<String, *>>
+                        )
+                        data.add(salon)
+                    }
+                    for (item in data) {
+                        Log.d("huy-test-service",item.avatar.toString())
+                    }
+                    res.value = data
                 }
-                for (item in data) {
-                    Log.d("huy-test-service",item.avatar.toString())
+                .addOnFailureListener{ er ->
+                    Log.d("huy-test-service",er.toString())
                 }
-                res.value = data
-            }
-            .addOnCompleteListener {
-            }
-            .addOnCanceledListener {
-                Log.d("huy-test-service","Cancel")
-            }
-            .addOnFailureListener{ er ->
-                Log.d("huy-test-service",er.toString())
-            }
+        }
 
         return res
     }

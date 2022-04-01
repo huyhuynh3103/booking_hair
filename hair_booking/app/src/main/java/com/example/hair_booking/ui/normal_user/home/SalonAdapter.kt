@@ -1,6 +1,7 @@
 package com.example.hair_booking.ui.normal_user.home
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
@@ -52,8 +53,18 @@ class SalonAdapter:RecyclerView.Adapter<SalonAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: SalonAdapter.ViewHolder, position: Int) {
         val salon = data[position]
         holder.salonItemUserBinding.salon = salon
-
-        holder.salonItemUserBinding.salonItemImg.setImageDrawable(Drawable.createFromPath(salon.avatar.toString()))
+        // get context
+        val context = holder.salonItemUserBinding.salonItemImg.context
+        //remove extension part of avatar
+        var avatar = salon.avatar.toString()
+        val haveExtension = avatar.contains(".")
+        if(haveExtension){
+            val indexDot = avatar.indexOf(".")
+            avatar = avatar.filterIndexed { index, c -> index < indexDot   }
+        }
+        // get id of drawable
+        val id = context.resources.getIdentifier(avatar,"drawable",context.packageName)
+        holder.salonItemUserBinding.salonItemImg.setImageResource(id)
         Log.d("huy-test-avatar",salon.avatar.toString())
         data[position].address?.let { addressMap ->
             val streetName = addressMap["streetName"]
