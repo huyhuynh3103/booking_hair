@@ -1,11 +1,14 @@
 package com.example.hair_booking
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import com.example.hair_booking.firebase.Database
 import com.example.hair_booking.model.Salon
 import com.example.hair_booking.services.db.dbServices
+import com.example.hair_booking.ui.normal_user.profile.NormalUserProfileActivity
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
@@ -15,6 +18,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val btnTest : Button = findViewById(R.id.btn_test)
+        btnTest.setOnClickListener() {
+            val intent = Intent(this, NormalUserProfileActivity::class.java)
+            startActivity(intent)
+        }
         dbServices.getNormalUserServices()?.foo()
 
 //        firebaseInstance.collection("stylists")

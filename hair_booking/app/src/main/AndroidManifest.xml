@@ -12,9 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hair_booking">
-        <activity android:name=".ui.normal_user.home.NormalUserHomeActivity"></activity>
+        <activity
+            android:name=".ui.manager.profile.ManagerProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.normal_user.profile.NormalUserProfileActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".ui.normal_user.home.NormalUserHomeActivity" />
         <activity android:name=".ui.manager.home.ManagerHomeActivity" />
-        <activity android:name=".ui.manager.home.HomeActivity" />
         <activity android:name=".ui.authentication.LogInActivity" />
         <activity
             android:name=".MainActivity"
