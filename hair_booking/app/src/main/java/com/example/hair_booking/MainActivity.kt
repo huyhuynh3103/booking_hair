@@ -17,6 +17,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
 
+        val btnTest : Button = findViewById(R.id.btn_test)
+        btnTest.setOnClickListener() {
+            val intent = Intent(this, NormalUserProfileActivity::class.java)
+            startActivity(intent)
+        }
         dbServices.getNormalUserServices()?.foo()
 
         val intent = Intent(this, ManagerStylistDetailActivity::class.java)
