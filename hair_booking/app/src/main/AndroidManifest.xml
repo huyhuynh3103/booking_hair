@@ -59,7 +59,6 @@
         <activity
             android:name=".ui.normal_user.salon.NormalUserSalonDetailActivity"
             android:exported="false" />
-        <activity android:name=".ui.normal_user.booking.BookingActivity" />
         <activity
             android:name=".ui.manager.profile.ManagerProfileActivity"
             android:exported="false" />
@@ -67,9 +66,6 @@
             android:name=".ui.normal_user.profile.NormalUserProfileActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".ui.normal_user.home.NormalUserHomeActivity" />
-        <activity android:name=".ui.manager.home.ManagerHomeActivity" />
-        <activity android:name=".ui.authentication.LogInActivity" />
         <activity
             android:name=".ui.normal_user.home.NormalUserHomeActivity"
             android:exported="true"
