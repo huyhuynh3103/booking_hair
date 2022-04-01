@@ -1,3 +1,42 @@
 <resources>
     <string name="app_name">hair_booking</string>
+
+
+    // Booking screen
+    <string name="booking_screen_title">Đặt lịch cắt tóc</string>
+
+    <string name="right_arrow">&#9654;</string>
+    <string name="choose_salon_label">Chọn salon</string>
+    <string name="choose_salon_edit_text_hint">Xem tất cả salon</string>
+    <string name="choose_service_label">Chọn dịch vụ</string>
+    <string name="choose_service_edit_text_hint">Xem tất cả dịch vụ hiện có</string>
+    <string name="choose_stylist_label">Chọn stylist</string>
+    <string name="choose_stylist_edit_text_hint">Xem các stylist hiện có</string>
+
+    <string name="choose_datetime_label">Chọn ngày/giờ</string>
+    <string name="choose_date_edit_text_hint">Chọn ngày cắt tóc</string>
+    <string name="choose_time_edit_text_hint">Chọn giờ cắt tóc</string>
+    <string name="confirm_booking_btn">Hoàn tất</string>
+    <string name="note_label">Ghi chú cho salon</string>
+    <string name="note_edit_text_hint">VD: Ngoáy tai kỹ, gội nước mát,...</string>
+
+    <string name="discount_label">Chọn khuyến mãi (nếu có)</string>
+    <string name="discount_edit_text_hint">Xem các khuyến mãi hiện có</string>
+
+    // Choose stylist screen
+    <string name="choose_stylist_screen_title">Chọn stylist</string>
+
+
+    // Choose salon screen
+    <string name="choose_salon_screen_title">Chọn salon</string>
+
+    // Choose service screen
+    <string name="choose_service_screen_title">Chọn dịch vụ</string>
+    <string name="price_unit">VND</string>
+
+    // Choose discount screen
+    <string name="choose_discount_screen_title">Chọn khuyến mãi</string>
+
+    // Warning title
+    <string name="warning_title">Cảnh báo</string>
 </resources>

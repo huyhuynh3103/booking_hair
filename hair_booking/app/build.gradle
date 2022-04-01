@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.google.gms.google-services'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -32,6 +33,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    buildFeatures {
+        dataBinding true
+    }
 }
 
 dependencies {
@@ -44,6 +49,9 @@ dependencies {
     testImplementation 'junit:junit:'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    // Library support viewmodel's initialization
+    implementation 'androidx.fragment:fragment-ktx:1.4.1'
 
     // RECYCLE VIEW DEPENDENCY
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
@@ -61,4 +69,15 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
 
     //-----------END FIREBASE DEPENDENCIES------------
+
+    // DATE TIME PICKER DEPENDENCY
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
+
+    // VIEW MODEL LIFE CYCLE DEPENDENCY
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+
+    // ASYNC AWAIT LIBRARY
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.2.1"
+
 }

@@ -35,4 +35,14 @@ data class Stylist(private val _id: String) {
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
+    constructor(
+        id: String,
+        fullName: String,
+        avatar: String,
+        description: String
+    ): this(id) {
+        this._fullName = fullName
+        this._avatar = avatar
+        this._description = description
+    }
 }

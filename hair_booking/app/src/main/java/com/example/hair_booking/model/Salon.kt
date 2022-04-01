@@ -57,5 +57,25 @@ data class Salon(private val _id: String) {
         this._stylists = stylists
     }
 
+    // Concatenate parts of address into 1 string
+    fun addressToString(): String {
+        if(_address != null) {
+            return _address!!["streetNumber"] + " " + _address!!["streetName"] + ", " + _address!!["ward"] + ", " + _address!!["district"] + ", " + _address!!["city"]
+        }
+        return ""
+    }
+
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
+    constructor(
+        id: String,
+        name: String,
+        avatar: String,
+        description: String,
+        address: HashMap<String, String>
+    ): this(id) {
+        this._name = name
+        this._avatar = avatar
+        this._description = description
+        this._address = address
+    }
 }
