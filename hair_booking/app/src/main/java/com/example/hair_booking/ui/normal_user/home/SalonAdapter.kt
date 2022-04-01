@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hair_booking.Constant
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.SalonItemUserBinding
 import com.example.hair_booking.model.Salon
@@ -56,16 +57,26 @@ class SalonAdapter:RecyclerView.Adapter<SalonAdapter.ViewHolder>() {
         // get context
         val context = holder.salonItemUserBinding.salonItemImg.context
         //remove extension part of avatar
-        var avatar = salon.avatar.toString()
-        val haveExtension = avatar.contains(".")
-        if(haveExtension){
-            val indexDot = avatar.indexOf(".")
-            avatar = avatar.filterIndexed { index, c -> index < indexDot   }
+        var avatar = salon.avatar
+        if(avatar!=null){
+            val haveExtension = avatar.contains(".")
+            if(haveExtension){
+                val indexDot = avatar.indexOf(".")
+                avatar = avatar.filterIndexed { index, c -> index < indexDot   }
+            }
         }
+        else{
+            avatar = Constant.notFoundImg
+        }
+
         // get id of drawable
-        val id = context.resources.getIdentifier(avatar,"drawable",context.packageName)
+        var id = context.resources.getIdentifier(avatar,"drawable",context.packageName)
+        Log.d("huy-test-avatar-id",id.toString())
+        if(id==0){
+            id = context.resources.getIdentifier(Constant.notFoundImg,"drawable",context.packageName)
+        }
         holder.salonItemUserBinding.salonItemImg.setImageResource(id)
-        Log.d("huy-test-avatar",salon.avatar.toString())
+
         data[position].address?.let { addressMap ->
             val streetName = addressMap["streetName"]
             val streetNumber = addressMap["streetNumber"]

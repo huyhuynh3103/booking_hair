@@ -11,4 +11,5 @@ object Constant {
         const val services:String = "services"
         const val stylists:String = "stylists"
     }
+    const val notFoundImg = "notfoundimg"
 }

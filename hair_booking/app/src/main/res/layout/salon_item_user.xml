@@ -19,9 +19,7 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
             app:srcCompat="@drawable/img_2" />
 
         <RatingBar
@@ -51,8 +49,9 @@
             android:id="@+id/nameSalonItemTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:paddingStart="16dp"
+            android:layout_marginEnd="16dp"
             android:text="@{salon.name}"
             android:textSize="16sp"
             tools:text="Chi Nhánh Phố Hàng Vọng" />
@@ -61,9 +60,10 @@
             android:id="@+id/addressSalonItemTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:paddingStart="16dp"
             android:text="222/3, Phường 2 Phố Hàng Vọng, Đống Đa, Hà Nội " />
 
     </LinearLayout>
