@@ -39,4 +39,12 @@
 
     // Warning title
     <string name="warning_title">Cảnh báo</string>
+
+
+
+    // Manager appointment list screen
+    <string name="search_bar_hint">Nhập mã lịch đặt...</string>
+
+    <string name="customer_name_label">Khách hàng</string>
+    <string name="stylist_name_label">Stylist</string>
 </resources>

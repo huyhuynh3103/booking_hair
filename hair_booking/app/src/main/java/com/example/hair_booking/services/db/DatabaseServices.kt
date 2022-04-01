@@ -9,6 +9,7 @@ object dbServices {
     private var salonServices: DbSalonServices? = null
     private var stylistServices: DbStylistServices? = null
     private var serviceServices: DbServiceServices? = null
+    private var appointmentServices: DbAppointmentServices? = null
 
     init {
         dbInstance = Database.getInstance()
@@ -16,6 +17,7 @@ object dbServices {
         salonServices = DbSalonServices(dbInstance)
         stylistServices = DbStylistServices(dbInstance)
         serviceServices = DbServiceServices(dbInstance)
+        appointmentServices = DbAppointmentServices(dbInstance)
     }
 
     fun getNormalUserServices(): DbNormalUserServices? {
@@ -32,6 +34,10 @@ object dbServices {
 
     fun getServiceServices(): DbServiceServices? {
         return serviceServices
+    }
+
+    fun getAppointmentServices(): DbAppointmentServices? {
+        return appointmentServices
     }
 
 }

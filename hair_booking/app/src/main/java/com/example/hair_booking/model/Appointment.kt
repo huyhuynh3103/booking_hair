@@ -8,6 +8,7 @@ import com.google.firebase.firestore.DocumentReference
 // and the id is a required parameter for all models
 // => you can freely define secondary constructor with as many parameters as you want
 data class Appointment(private val _id: String) {
+    private var _appointmentSubId: String? = null // this id is for manager to check for the appointment when customer arrives at the salon
     private var _userId: DocumentReference? = null
     private var _userFullName: String? = null
     private var _userPhoneNumber: String? = null
@@ -29,6 +30,7 @@ data class Appointment(private val _id: String) {
 
     // GETTERS
     val id: String get() = _id
+    val appointmentSubId: String? get() = _appointmentSubId
     val userId: DocumentReference? get() = _userId
     val userFullName: String? get() = _userFullName
     val userPhoneNumber: String? get() = _userPhoneNumber
@@ -77,4 +79,27 @@ data class Appointment(private val _id: String) {
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
+    constructor(id: String,
+                appointmentSubId: String,
+                userFullName: String,
+                stylist: HashMap<String, *>,
+                bookingDate: String,
+                bookingTime: String,
+                createdAt: String,
+                status: String
+    ): this(id) {
+        this._appointmentSubId = appointmentSubId
+        this._userFullName = userFullName
+        this._stylist = stylist
+        this._bookingDate = bookingDate
+        this._bookingTime = bookingTime
+        this._createdAt = createdAt
+        this._status = status
+    }
+
+    fun getStylistFullName(): String {
+        if(stylist != null)
+            return stylist!!["fullName"].toString()
+        return ""
+    }
 }
