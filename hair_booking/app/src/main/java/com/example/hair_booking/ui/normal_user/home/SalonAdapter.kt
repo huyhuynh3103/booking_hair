@@ -1,10 +1,12 @@
 package com.example.hair_booking.ui.normal_user.home
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hair_booking.R
 import com.example.hair_booking.databinding.SalonItemUserBinding
 import com.example.hair_booking.model.Salon
 
@@ -22,15 +24,21 @@ class SalonAdapter:RecyclerView.Adapter<SalonAdapter.ViewHolder>() {
     }
     @SuppressLint("NotifyDataSetChanged")
     fun setData(list:ArrayList<Salon>){
-        Log.d("huy-test-set","setData function invoke")
-        list.forEach { salon ->
-            Log.d("huy-test-set",salon.name.toString())
-            Log.d("huy-test-set",salon.avatar.toString())
-            Log.d("huy-test-set",salon.rate.toString())
+        if (list.isEmpty()){
+            Log.d("huy-test-set","setData list is empty")
         }
-        data = list
+        else{
+            Log.d("huy-test-set","setData function invoke")
+            list.forEach { salon ->
+                Log.d("huy-test-set",salon.name.toString())
+                Log.d("huy-test-set",salon.avatar.toString())
+                Log.d("huy-test-set",salon.rate.toString())
+            }
+            data = list
 
-        notifyDataSetChanged()
+            notifyDataSetChanged()
+            }
+
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SalonAdapter.ViewHolder {
         val context = parent.context
@@ -45,6 +53,8 @@ class SalonAdapter:RecyclerView.Adapter<SalonAdapter.ViewHolder>() {
         val salon = data[position]
         holder.salonItemUserBinding.salon = salon
 
+        holder.salonItemUserBinding.salonItemImg.setImageDrawable(Drawable.createFromPath(salon.avatar.toString()))
+        Log.d("huy-test-avatar",salon.avatar.toString())
         data[position].address?.let { addressMap ->
             val streetName = addressMap["streetName"]
             val streetNumber = addressMap["streetNumber"]

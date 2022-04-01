@@ -8,9 +8,10 @@ import com.example.hair_booking.ui.normal_user.home.SalonAdapter
 
 @BindingAdapter("data")
 fun bindSalonListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>?) {
-    Log.d("huy-test-bind","Binding func invoke")
     val adapter = recyclerView.adapter as SalonAdapter
     if (data != null) {
+
+
         data.forEach { salon ->
             Log.d("huy-test-bind",salon.name.toString())
             Log.d("huy-test-bind",salon.avatar.toString())
@@ -19,7 +20,8 @@ fun bindSalonListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>
 
         adapter.setData(data)
     }
-    else{
-        Log.d("huy-test-bind","data null")
+    else
+    {
+        Log.d("huy-test-bind","data in binding null")
     }
 }

@@ -20,10 +20,8 @@ class SalonViewModel: ViewModel() {
         fetchSalon()
     }
     private fun fetchSalon(){
-        Log.d("huy-test-fetch","fetchSalon function in init ViewModel invoke")
         dbServices.hairSalonServices.findAll().observeForever{
             salons ->
-            Log.d("huy-test-fetch","fetchSalon function observe")
             salons.forEach { salon ->
                 Log.d("huy-test-fetch",salon.name.toString())
                 Log.d("huy-test-fetch",salon.avatar.toString())

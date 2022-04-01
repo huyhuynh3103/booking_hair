@@ -7,23 +7,22 @@ import com.example.hair_booking.model.Salon
 import com.google.firebase.firestore.FirebaseFirestore
 
 class DbHairSalonServices(private var dbInstance: FirebaseFirestore?):DatabaseAbstract() {
-    override suspend fun find(query:Any): Any {
+    override fun find(data: Any): Any {
         TODO("Not yet implemented")
     }
 
-    override suspend fun save(data: Any): Any {
+    override fun save(data: Any): Any {
         TODO("Not yet implemented")
     }
+
 
     override fun findAll(): MutableLiveData<ArrayList<Salon>> {
-        Log.d("huy-test-service","Function find all data from Firebase invoke")
         val data:ArrayList<Salon> = arrayListOf()
-        val result = MutableLiveData<ArrayList<Salon>>()
+        val res = MutableLiveData<ArrayList<Salon>>()
         dbInstance!!.collection(Constant.collection.hairSalons)
             .get()
             .addOnSuccessListener { result ->
                 for(document in result){
-                    Log.d("huy-test-service","Function find all data from Firebase success")
                     val dataInDoc = document.data
                     val salon = Salon(document.id,
                         dataInDoc["name"] as String,
@@ -39,12 +38,11 @@ class DbHairSalonServices(private var dbInstance: FirebaseFirestore?):DatabaseAb
                     data.add(salon)
                 }
                 for (item in data) {
-                    Log.d("huy-test-service",item.name.toString())
+                    Log.d("huy-test-service",item.avatar.toString())
                 }
-
+                res.value = data
             }
             .addOnCompleteListener {
-                Log.d("huy-test-service","Function find all data from Firebase complete")
             }
             .addOnCanceledListener {
                 Log.d("huy-test-service","Cancel")
@@ -52,19 +50,20 @@ class DbHairSalonServices(private var dbInstance: FirebaseFirestore?):DatabaseAb
             .addOnFailureListener{ er ->
                 Log.d("huy-test-service",er.toString())
             }
-        result.value = data
-        return result
+
+        return res
     }
 
-    override suspend fun findById(data: Any): Any {
+    override fun findById(data: Any): Any {
         TODO("Not yet implemented")
     }
 
-    override suspend fun updateOne(id: String, updateDoc: Any): Any {
+    override fun updateOne(id: String, updateDoc: Any): Any {
         TODO("Not yet implemented")
     }
 
-    override suspend fun delete(data: Any): Any {
+    override fun delete(data: Any): Any {
         TODO("Not yet implemented")
     }
+
 }
