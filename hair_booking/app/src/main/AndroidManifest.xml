@@ -12,47 +12,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hair_booking">
-        <activity android:name=".ui.normal_user.booking.ChooseDiscountActivity"></activity>
+
+        <activity android:name=".ui.normal_user.booking.ChooseDiscountActivity"
+            android:exported="false"/>
         <activity
             android:name=".ui.normal_user.booking.ChooseServiceActivity"
-            android:exported="true"
-            android:label="@string/choose_service_screen_title">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false"
+            android:label="@string/choose_service_screen_title"/>
         <activity
             android:name=".ui.normal_user.booking.ChooseSalonActivity"
-            android:exported="true"
-            android:label="@string/choose_salon_screen_title">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false"
+            android:label="@string/choose_salon_screen_title"/>
         <activity
             android:name=".ui.normal_user.booking.ChooseStylistActivity"
-            android:exported="true"
-            android:label="@string/choose_stylist_screen_title">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false"
+            android:label="@string/choose_stylist_screen_title"/>
         <activity
             android:name=".ui.normal_user.booking.BookingActivity"
-            android:exported="true"
-            android:label="@string/booking_screen_title">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false"
+            android:label="@string/booking_screen_title"/>
         <activity
             android:name=".ui.manager.stylist.ManagerStylistDetailActivity"
             android:exported="false" />
@@ -64,24 +42,25 @@
             android:exported="false" />
         <activity
             android:name=".ui.normal_user.profile.NormalUserProfileActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:exported="false"/>
         <activity
             android:name=".ui.normal_user.home.NormalUserHomeActivity"
-            android:exported="true"
-            android:label="Home">
+            android:exported="false"
+            android:label="Home"/>
+        <activity
+            android:name=".ui.manager.home.ManagerHomeActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ui.authentication.LogInActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.manager.home.ManagerHomeActivity" />
-        <activity android:name=".ui.authentication.LogInActivity" />
-        <activity
-            android:name=".MainActivity">
-
-        </activity>
     </application>
-
 </manifest>
