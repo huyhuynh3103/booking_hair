@@ -1,5 +1,6 @@
 package com.example.hair_booking.ui.normal_user.home
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -12,6 +13,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityNormalUserHomeBinding
+import com.example.hair_booking.ui.normal_user.booking.BookingActivity
+import com.example.hair_booking.ui.normal_user.profile.NormalUserProfileActivity
+import com.example.hair_booking.ui.normal_user.salon.NormalUserSalonDetailActivity
 import com.google.android.material.navigation.NavigationView
 
 class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
@@ -28,6 +32,11 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
 
         setupUI()
         //setupObserver()
+        salonAdapter.onItemClick = { salon ->
+            val intent = Intent(this,NormalUserSalonDetailActivity::class.java)
+            intent.putExtra("id",salon.id)
+            startActivity(intent)
+        }
 
     }
     @Override
@@ -37,6 +46,9 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
             R.id.nav_home->{
 
             }
+            R.id.nav_schedule->{
+                startActivity(Intent(this,BookingActivity::class.java))
+            }
             R.id.nav_wish_list->{
 
             }
@@ -44,7 +56,7 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
 
             }
             R.id.nav_my_profile->{
-
+                startActivity(Intent(this,NormalUserProfileActivity::class.java))
             }
             R.id.nav_change_password->{
 

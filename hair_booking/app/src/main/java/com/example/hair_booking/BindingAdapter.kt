@@ -20,7 +20,7 @@ fun bindBookingStylistListRecyclerView(recyclerView: RecyclerView, data: ArrayLi
     }
 }
 
-@BindingAdapter("data")
+@BindingAdapter("bookingSalonData")
 fun bindBookingSalonListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>?) {
     val adapter = recyclerView.adapter as SalonListAdapter
     if (data != null) {

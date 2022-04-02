@@ -16,7 +16,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/salonListRecyclerView"
-            data="@{viewModel.salonList}"
+            bookingSalonData="@{viewModel.salonList}"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"

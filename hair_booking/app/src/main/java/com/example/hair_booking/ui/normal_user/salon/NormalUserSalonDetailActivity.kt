@@ -39,7 +39,9 @@ class NormalUserSalonDetailActivity : AppCompatActivity() {
     }
 
     private fun getSelectedSalonDetail() {
-        binding.viewModel?.getSalonDetail("TDRAGrT1YVYKm0kRsVax")
+        val intent = intent
+        val id = intent.getStringExtra("id")
+        binding.viewModel?.getSalonDetail(id!!)
     }
 
     private fun setOnClickListenerForButton() {
