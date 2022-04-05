@@ -1,4 +1,4 @@
-package com.example.hair_booking.ui.normal_user.booking
+package com.example.hair_booking.ui.normal_user.booking.choose_salon
 
 import android.app.Activity
 import android.content.Intent
@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityChooseSalonBinding
-import com.example.hair_booking.databinding.ActivityChooseStylistBinding
 
 class ChooseSalonActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChooseSalonBinding

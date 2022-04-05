@@ -1,4 +1,4 @@
-package com.example.hair_booking.ui.normal_user.booking
+package com.example.hair_booking.ui.normal_user.booking.choose_stylist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

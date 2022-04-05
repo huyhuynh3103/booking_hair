@@ -1,9 +1,7 @@
-package com.example.hair_booking.ui.normal_user.booking
+package com.example.hair_booking.ui.normal_user.booking.choose_stylist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.Nullable
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.databinding.BookingStylistItemBinding
 import com.example.hair_booking.model.Stylist
@@ -36,7 +34,7 @@ class StylistListAdapter: RecyclerView.Adapter<StylistListAdapter.ViewHolder>() 
 
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StylistListAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
 

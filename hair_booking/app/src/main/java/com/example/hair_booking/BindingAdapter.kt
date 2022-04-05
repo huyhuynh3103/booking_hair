@@ -5,10 +5,10 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.model.*
 import com.example.hair_booking.ui.manager.appointment.AppointmentListAdapter
-import com.example.hair_booking.ui.normal_user.booking.DiscountListAdapter
-import com.example.hair_booking.ui.normal_user.booking.SalonListAdapter
-import com.example.hair_booking.ui.normal_user.booking.ServiceListAdapter
-import com.example.hair_booking.ui.normal_user.booking.StylistListAdapter
+import com.example.hair_booking.ui.normal_user.booking.choose_discount.DiscountListAdapter
+import com.example.hair_booking.ui.normal_user.booking.choose_salon.SalonListAdapter
+import com.example.hair_booking.ui.normal_user.booking.choose_service.ServiceListAdapter
+import com.example.hair_booking.ui.normal_user.booking.choose_stylist.StylistListAdapter
 import com.example.hair_booking.ui.normal_user.home.SalonAdapter
 @BindingAdapter("data")
 fun bindBookingStylistListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Stylist>?) {

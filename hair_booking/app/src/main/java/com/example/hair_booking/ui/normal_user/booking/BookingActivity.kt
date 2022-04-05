@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityBookingBinding
+import com.example.hair_booking.ui.normal_user.booking.choose_discount.ChooseDiscountActivity
+import com.example.hair_booking.ui.normal_user.booking.choose_salon.ChooseSalonActivity
+import com.example.hair_booking.ui.normal_user.booking.choose_service.ChooseServiceActivity
+import com.example.hair_booking.ui.normal_user.booking.choose_stylist.ChooseStylistActivity
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import java.util.*

@@ -1,4 +1,4 @@
-package com.example.hair_booking.ui.normal_user.booking
+package com.example.hair_booking.ui.normal_user.booking.choose_stylist
 
 import android.app.Activity
 import android.content.Intent
@@ -21,7 +21,7 @@ class ChooseStylistActivity : AppCompatActivity() {
 
     private var chosenSalonId: MutableLiveData<String> = MutableLiveData()
     // "by viewModels()" is the auto initialization of viewmodel made by the library
-    private val viewModel: ChooseStylistViewModel by viewModels{ChooseStylistViewModelFactory(chosenSalonId)}
+    private val viewModel: ChooseStylistViewModel by viewModels{ ChooseStylistViewModelFactory(chosenSalonId) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
