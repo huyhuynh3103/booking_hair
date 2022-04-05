@@ -40,4 +40,6 @@ object dbServices {
         return appointmentServices
     }
 
+    // GETTER
+    val hairSalonServices = DbHairSalonServices(dbInstance)
 }

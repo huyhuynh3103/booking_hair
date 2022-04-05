@@ -37,4 +37,37 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) {
         }
         return result
     }
+
+    fun getSalonDetail(id: String): MutableLiveData<Salon> {
+        var result = MutableLiveData<Salon>()
+
+        if(dbInstance != null) {
+            dbInstance!!.collection("hairSalons")
+                .get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        if (document.id == id) {
+                            // Mapping firestore object to kotlin model
+                            var salon: Salon = Salon(
+                                document.id,
+                                document.data["name"] as String,
+                                document.data["salonAvatar"] as String,
+                                document.data["description"] as String,
+                                document.data["rate"] as Long,
+                                document.data["openHour"] as String,
+                                document.data["closeHour"] as String,
+                                document.data["address"] as HashMap<String, String>
+                            )
+
+                            result.value = salon
+                        }
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("SalonServicesLog", "Get salon detail fail with ", exception)
+                }
+        }
+
+        return result
+    }
 }

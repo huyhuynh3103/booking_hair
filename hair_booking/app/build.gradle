@@ -26,6 +26,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        dataBinding true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -46,16 +49,17 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.databinding:databinding-runtime:7.1.2'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
     testImplementation 'junit:junit:'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     // Library support viewmodel's initialization
     implementation 'androidx.fragment:fragment-ktx:1.4.1'
-
     // RECYCLE VIEW DEPENDENCY
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-
 
     //-----------START FIREBASE DEPENDENCIES------------
     // Import the Firebase BoM
@@ -80,4 +84,7 @@ dependencies {
     // ASYNC AWAIT LIBRARY
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.2.1"
 
+    // ACTIVITY DEPENDENCY
+    def activity_version = "1.4.0"
+    implementation "androidx.activity:activity-ktx:$activity_version"
 }
