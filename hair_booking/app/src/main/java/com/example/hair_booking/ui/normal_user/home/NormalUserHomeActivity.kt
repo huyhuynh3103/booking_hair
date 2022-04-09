@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -84,9 +85,10 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
             )
         )
         // config toolbar
-        setSupportActionBar(binding.toolbar)
+        val toolbar:Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
-        val toggle = ActionBarDrawerToggle(this,binding.drawerLayout,binding.toolbar,
+        val toggle = ActionBarDrawerToggle(this,binding.drawerLayout,toolbar,
             R.string.navigation_drawer_open,R.string.navigation_drawer_close)
 
         binding.drawerLayout.addDrawerListener(toggle)
