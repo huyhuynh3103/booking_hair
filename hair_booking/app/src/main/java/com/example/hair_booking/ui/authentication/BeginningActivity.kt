@@ -7,11 +7,10 @@ import androidx.databinding.DataBindingUtil
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityBeginingBinding
 
-class begining : AppCompatActivity() {
+class BeginningActivity : AppCompatActivity() {
     lateinit var binding : ActivityBeginingBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_begining)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_begining)
         binding.getStartedBtn.setOnClickListener {
             val intent = Intent(this,LogInActivity::class.java)

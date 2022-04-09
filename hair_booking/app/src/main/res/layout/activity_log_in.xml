@@ -1,104 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:context=".ui.authentication.LogInActivity">
-
-    <ImageView
-        android:id="@+id/loginImgView"
-        android:layout_width="300dp"
-        android:layout_height="220dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="24dp"
-        app:srcCompat="@drawable/login_img" />
-
-    <TextView
-        android:id="@+id/loginTitle"
-        android:layout_width="wrap_content"
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:text="Login"
-        android:textSize="34sp"
-        android:textStyle="bold" />
+        android:orientation="vertical"
+        tools:context=".ui.authentication.LogInActivity">
 
-    <TextView
-        android:id="@+id/usrLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="sans-serif-light"
-        android:text="Username"
-        android:textAlignment="viewStart"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/loginImgView"
+            android:layout_width="300dp"
+            android:layout_height="220dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            app:srcCompat="@drawable/login_img" />
 
-    <EditText
-        android:id="@+id/usernameTV"
-        android:layout_width="331dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/rounded_edit_text"
-        android:hint="@string/some_one_somewhere_com"
-        android:inputType="textShortMessage|textEmailAddress"
-        android:padding="10dp"
-        android:shadowColor="#1F000000"
-        android:shadowDx="0"
-        android:shadowDy="2"
-        android:shadowRadius="2" />
+        <TextView
+            android:id="@+id/loginTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:text="Login"
+            android:textSize="34sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/pwdLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="sans-serif-light"
-        android:labelFor="@id/passwordTV"
-        android:text="Password"
-        android:textAlignment="viewStart"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/usrLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-light"
+            android:text="Username"
+            android:textAlignment="viewStart"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/passwordTV"
-        android:layout_width="331dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/rounded_edit_text"
-        android:inputType="textPassword"
-        android:padding="10dp"
-        android:shadowColor="#1F000000"
-        android:shadowDx="0"
-        android:shadowDy="2"
-        android:shadowRadius="2" />
+        <EditText
+            android:id="@+id/usernameTV"
+            android:layout_width="331dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_edit_text"
+            android:hint="@string/some_one_somewhere_com"
+            android:inputType="textShortMessage|textEmailAddress"
+            android:padding="10dp"
+            android:shadowColor="@color/shadow_edit_text"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="2" />
 
-    <TextView
-        android:id="@+id/signUpButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="320dp"
-        android:layout_marginTop="8dp"
-        android:clickable="true"
-        android:gravity="center"
-        android:minHeight="48dp"
-        android:text="Sign Up"
-        android:textColor="#EC0E0E"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/pwdLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-light"
+            android:labelFor="@id/passwordTV"
+            android:text="Password"
+            android:textAlignment="viewStart"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="253dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_button"
-        android:gravity="center"
-        android:text="Login" />
+        <EditText
+            android:id="@+id/passwordTV"
+            android:layout_width="331dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_edit_text"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:shadowColor="#1F000000"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="2" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/moveToSignUpButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="320dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:text="Sign Up"
+            android:textColor="#EC0E0E"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="253dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_button"
+            android:gravity="center"
+            android:text="Login"
+            app:backgroundTint="@color/theme_primary" />
+
+    </LinearLayout>
+</layout>

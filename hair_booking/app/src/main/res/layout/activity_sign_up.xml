@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".ui.authentication.SignUpActivity">
+
+            <ImageView
+                android:id="@+id/signupPrev"
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/signup_img" />
+
+            <TextView
+                android:id="@+id/signUpTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="16dp"
+                android:text="Sign Up"
+                android:textSize="34sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/usrSignUpLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif-light"
+                android:labelFor="@id/usrSignUpET"
+                android:text="Username"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/usrSignUpET"
+                android:layout_width="331dp"
+                android:layout_height="51dp"
+                android:layout_marginStart="44dp"
+                android:background="@drawable/rounded_edit_text"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:padding="10dp"
+                android:shadowColor="@color/shadow_edit_text"
+                android:shadowDx="0"
+                android:shadowDy="2"
+                android:shadowRadius="2" />
+
+            <TextView
+                android:id="@+id/fullNameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif-light"
+                android:labelFor="@id/nameSignUpET"
+                android:text="Full name"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/nameSignUpET"
+                android:layout_width="331dp"
+                android:layout_height="51dp"
+                android:layout_marginStart="44dp"
+                android:background="@drawable/rounded_edit_text"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:padding="10dp"
+                android:shadowColor="@color/shadow_edit_text"
+                android:shadowDx="0"
+                android:shadowDy="2"
+                android:shadowRadius="2" />
+
+            <TextView
+                android:id="@+id/genderLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Gender"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/maleRadioBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Male" />
+
+                <RadioButton
+                    android:id="@+id/femaleRadioBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="44dp"
+                    android:text="Female" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/phoneNumberTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif-light"
+                android:labelFor="@id/phoneNumberET"
+                android:text="Phone Number"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/phoneNumberET"
+                android:layout_width="331dp"
+                android:layout_height="51dp"
+                android:layout_marginStart="44dp"
+                android:background="@drawable/rounded_edit_text"
+                android:ems="10"
+                android:inputType="number"
+                android:padding="10dp"
+                android:shadowColor="@color/shadow_edit_text"
+                android:shadowDx="0"
+                android:shadowDy="2"
+                android:shadowRadius="2" />
+
+            <TextView
+                android:id="@+id/pwdLabelSignUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif-light"
+                android:labelFor="@id/passwordSignUpET"
+                android:text="Password"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/passwordSignUpET"
+                android:layout_width="331dp"
+                android:layout_height="51dp"
+                android:layout_marginStart="44dp"
+                android:background="@drawable/rounded_edit_text"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:shadowColor="@color/shadow_edit_text"
+                android:shadowDx="0"
+                android:shadowDy="2"
+                android:shadowRadius="2" />
+
+            <TextView
+                android:id="@+id/pwdWarning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="4dp"
+                android:text="Contains at least 8 characters" />
+
+            <TextView
+                android:id="@+id/confirmPwdSignUpET"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif-light"
+                android:labelFor="@id/confirmPasswordET"
+                android:text="Confirm Password"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/confirmPasswordET"
+                android:layout_width="331dp"
+                android:layout_height="51dp"
+                android:layout_marginStart="44dp"
+                android:background="@drawable/rounded_edit_text"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:shadowColor="@color/shadow_edit_text"
+                android:shadowDx="0"
+                android:shadowDy="2"
+                android:shadowRadius="2" />
+
+            <TextView
+                android:id="@+id/confirmPwdWarning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="4dp"
+                android:text="Not valid" />
+
+            <Button
+                android:id="@+id/signUpBtn"
+                android:layout_width="253dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/rounded_button"
+                android:text="Sign Up"
+                app:backgroundTint="@color/theme_primary" />
+        </LinearLayout>
+    </ScrollView>
+
+</layout>
