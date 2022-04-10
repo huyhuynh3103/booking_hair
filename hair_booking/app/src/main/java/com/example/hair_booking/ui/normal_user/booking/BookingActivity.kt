@@ -54,7 +54,14 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         // Enable back button
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        observeOnClickEvent()
 
+
+
+
+    }
+
+    private fun observeOnClickEvent() {
         // Observe salon edit text onclick event to perform navigation to choose salon screen
         viewModel.salonEditTextClicked.observe(this, androidx.lifecycle.Observer {
             moveToChooseSalonScreen()
@@ -104,9 +111,6 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
             else
                 viewModel.saveBookingSchedule()
         })
-
-
-
     }
 
     private fun moveToChooseSalonScreen() {
