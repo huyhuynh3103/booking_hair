@@ -3,19 +3,29 @@ package com.example.hair_booking.ui.normal_user.booking
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.Spinner
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.viewModelScope
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityBookingBinding
+import com.example.hair_booking.model.Shift
+import com.example.hair_booking.services.booking.BookingServices
+import com.example.hair_booking.services.db.dbServices
 import com.example.hair_booking.ui.normal_user.booking.choose_discount.ChooseDiscountActivity
 import com.example.hair_booking.ui.normal_user.booking.choose_salon.ChooseSalonActivity
 import com.example.hair_booking.ui.normal_user.booking.choose_service.ChooseServiceActivity
 import com.example.hair_booking.ui.normal_user.booking.choose_stylist.ChooseStylistActivity
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
+import kotlinx.coroutines.runBlocking
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
@@ -94,6 +104,9 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
             else
                 viewModel.saveBookingSchedule()
         })
+
+
+
     }
 
     private fun moveToChooseSalonScreen() {
@@ -143,6 +156,10 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                 // Call viewmodel to set chosen service
                 if(serviceId.isNotEmpty() && serviceName.isNotEmpty())
                     binding.viewModel!!.setChosenService(serviceId, serviceName)
+
+                // Show date picker
+                binding.datePickerWrapper.visibility = View.VISIBLE
+
             }
 
             REQUEST_CODE_CHOOSE_STYLIST -> {
@@ -193,6 +210,12 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         // Concatenate to a full date string
         val dateInStringFormat = "$daySelected/$monthSelected/$year"
         binding.viewModel!!.setChosenDate(dateInStringFormat)
+
+        // Show time picker and stylist picker
+        binding.timePickerWrapper.visibility = View.VISIBLE
+
+        // Setup list of shifts for user to choose after choosing date
+        viewModel.setupShiftPickerSpinner(this, binding.shiftPickerSpinner, binding.timePickerSpinner)
     }
 
     private fun displayTimePickerDialog() {
@@ -222,7 +245,6 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         val timeInStringFormat: String = "" + hourOfDay + "h" + minute
         binding.viewModel!!.setChosenTime(timeInStringFormat)
     }
-
 
 
     // Back to previous screen when click back button
@@ -255,6 +277,15 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         builder.show()
     }
 
+    private fun displayServiceChosenRequiredWarning() {
+        // Show warning dialog
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Cảnh báo")
+        builder.setMessage("Làm ơn chọn dịch vụ bạn muốn đặt!!!")
 
-
+        builder.setPositiveButton("Ok") { dialog, which ->
+            // Do nothing
+        }
+        builder.show()
+    }
 }

@@ -70,4 +70,8 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) {
 
         return result
     }
+
+//    private fun generateAvailableHoursForBooking(): ArrayList<String> {
+//
+//    }
 }

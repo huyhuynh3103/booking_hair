@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.model.Service
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 
 class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
 
@@ -34,5 +35,54 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
                 }
         }
         return result
+    }
+
+    suspend fun getServiceDuration(serviceId: String): Int {
+//        runBlocking {
+//            var serviceDuration: Int = 0
+//            val getServiceDurationAsync = async {
+//                if (dbInstance != null) {
+//                    dbInstance!!.collection("services")
+//                        .document(shiftId)
+//                        .get()
+//                        .addOnSuccessListener { document ->
+//                             serviceDuration = (document["duration"] as Long).toInt()
+//                        }
+//                        .addOnFailureListener { exception ->
+//                            Log.d("xk", "get failed with ", exception)
+//                        }
+//                }
+//            }
+//            launch (Dispatchers.Default) {
+//                getServiceDurationAsync.await()
+//            }
+//
+//        }
+
+//        var serviceDuration: Int = 0
+//        if (dbInstance != null) {
+//            dbInstance!!.collection("services")
+//                .document(serviceId)
+//                .get()
+//                .addOnSuccessListener { document ->
+//                    serviceDuration = (document["duration"] as Long).toInt()
+//                }
+//                .addOnFailureListener { exception ->
+//                    Log.d("xk", "get failed with ", exception)
+//                }
+//        }
+//        return serviceDuration
+        Log.d("xk", "inside service")
+        var serviceDuration: Int = 0
+        if (dbInstance != null) {
+            val docSnap = dbInstance!!.collection("services")
+                .document(serviceId)
+                .get()
+                .await()
+
+            serviceDuration = (docSnap["duration"] as Long).toInt()
+        }
+        Log.d("xk", "asd" + serviceDuration)
+        return serviceDuration
     }
 }

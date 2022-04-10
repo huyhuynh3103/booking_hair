@@ -24,7 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.normal_user.booking.choose_discount.ChooseDiscountActivity"></activity>
         <activity
             android:name=".ui.normal_user.booking.choose_service.ChooseServiceActivity"
             android:exported="false"
@@ -44,6 +43,11 @@
             android:name=".ui.normal_user.booking.BookingActivity"
             android:exported="false"
             android:label="@string/booking_screen_title">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.manager.stylist.ManagerStylistDetailActivity"
@@ -76,8 +80,12 @@
         <activity android:name=".ui.manager.home.ManagerHomeActivity" />
         <activity android:name=".ui.authentication.LogInActivity" />
         <activity
-            android:name=".MainActivity">
+            android:name=".MainActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

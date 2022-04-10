@@ -1,10 +1,19 @@
 package com.example.hair_booking.ui.normal_user.booking
 
+import android.app.Activity
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.Spinner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.hair_booking.model.Shift
+import com.example.hair_booking.services.db.dbServices
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.*
-import kotlin.collections.ArrayList
 
 class BookingViewModel: ViewModel() {
     private lateinit var _salonId: String // Used to query database
@@ -12,7 +21,7 @@ class BookingViewModel: ViewModel() {
     private val _salonLocation = MutableLiveData<String>()
     val salonLocation: LiveData<String> = _salonLocation
 
-    private lateinit var serviceId: String // Used to query database
+    private var serviceId: String = ""// Used to query database
     private val _service = MutableLiveData<String>()
     val service: LiveData<String> = _service
 
@@ -22,6 +31,9 @@ class BookingViewModel: ViewModel() {
 
     private val _bookingDate = MutableLiveData<String>()
     val bookingDate: LiveData<String> = _bookingDate
+
+    private var _shiftId: String = "" // Used to query database
+    val shiftId: String = _shiftId // getter
 
     private val _bookingTime = MutableLiveData<String>()
     val bookingTime: LiveData<String> = _bookingTime
@@ -67,6 +79,12 @@ class BookingViewModel: ViewModel() {
         _service.value = serviceName
     }
 
+    suspend fun getChosenServiceDuration(): Int {
+        return dbServices.getServiceServices()!!.getServiceDuration(serviceId)
+    }
+
+
+
     // Set stylist edit text onclick to be observable
     private val _stylistEditTextClicked = MutableLiveData<Boolean>()
     val stylistEditTextClicked: LiveData<Boolean> = _stylistEditTextClicked
@@ -111,6 +129,10 @@ class BookingViewModel: ViewModel() {
         return false
     }
 
+    fun setChosenShift(shiftId: String) {
+        this._shiftId = shiftId
+    }
+
     // Set time edit text onclick to be observable
     private val _timeEditTextClicked = MutableLiveData<Boolean>()
     val timeEditTextClicked: LiveData<Boolean> = _timeEditTextClicked
@@ -146,6 +168,65 @@ class BookingViewModel: ViewModel() {
         return salonLocation.value.isNullOrEmpty() || service.value.isNullOrEmpty()
                 || stylist.value.isNullOrEmpty() || bookingDate.value.isNullOrEmpty()
                 || bookingTime.value.isNullOrEmpty()
+    }
+
+    fun setupShiftPickerSpinner(context: Activity, shiftPickerSpinner: Spinner, timePickerSpinner: Spinner) {
+        var shiftItems: ArrayList<String> = arrayListOf("Chọn ca hớt tóc") // Init with a placeholder first
+
+        // Get shifts and observe forever to wait for callback when data return
+        dbServices.getShiftServices()!!.getAllShifts()?.observeForever{ result ->
+            result.forEach {
+                // Shifts returned from database is an object
+                // => need convert to a string for display
+                // ex: "Sáng (08:00 - 12:00)"
+                shiftItems.add(it.toStringForBookingDisplay())
+            }
+
+            // Assign adapter to spinner
+            shiftPickerSpinner.adapter = ShiftPickerSpinnerAdapter(context, shiftItems)
+
+            shiftPickerSpinner.setSelection(0, false)
+            shiftPickerSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                    setChosenShift(result[position].id)
+                    viewModelScope.launch {
+                        Log.d("xk", "1")
+                        setupTimePickerSpinner(timePickerSpinner, result[position])
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+
+                }
+            }
+        }
+
+
+
+    }
+
+    private suspend fun setupTimePickerSpinner(timePickerSpinner: Spinner, shift: Shift) {
+        var availableTime: ArrayList<String> = arrayListOf("Chọn giờ") // Init with a placeholder first
+        Log.d("xk", "2")
+        // get chosen service duration
+        val chosenServiceDuration: Int = getChosenServiceDuration()
+        Log.d("xk", "sduration: " + chosenServiceDuration.toString())
+//        // Get available time based on shift chosen
+//        availableTime.addAll(BookingServices.generateTimeBasedOnShift(shift, chosenServiceDuration))
+//
+//        // Get list of time that stylists are busy
+//        // The function will return an array contains position of element to be disabled in availableTime
+//        // Note: just disable, not remove => user can view all, including the disable ones
+//        if(viewModel.bookingDate.value != null) {
+//            val disabledTimePositions: ArrayList<Int> = BookingServices.getDisabledTimePositions(
+//                chosenServiceDuration,
+//                availableTime,
+//                viewModel.bookingDate.value!!,
+//                viewModel.shiftId)
+//
+//            // Assign adapter to spinner
+//            timePickerSpinner.adapter = TimePickerSpinnerAdapter(this, disabledTimePositions, availableTime)
+//        }
     }
 
     fun saveBookingSchedule() {

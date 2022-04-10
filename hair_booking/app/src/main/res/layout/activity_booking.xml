@@ -19,10 +19,12 @@
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_marginBottom="100dp"
             android:fillViewport="true"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,14 +60,14 @@
                         android:id="@+id/chooseSalonEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="true"
                         android:drawableLeft="@drawable/ic_baseline_location_on_24"
                         android:drawableRight="@drawable/ic_baseline_arrow_right_24"
                         android:drawablePadding="10dp"
                         android:focusable="false"
-                        android:clickable="true"
+                        android:hint="@string/choose_salon_edit_text_hint"
                         android:onClick="@{() -> viewModel.onSalonEditTextClicked()}"
-                        android:text="@{viewModel.salonLocation}"
-                        android:hint="@string/choose_salon_edit_text_hint" />
+                        android:text="@{viewModel.salonLocation}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
@@ -94,189 +96,249 @@
                         android:id="@+id/chooseServiceEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="true"
                         android:drawableLeft="@drawable/ic_baseline_view_list_24"
                         android:drawableRight="@drawable/ic_baseline_arrow_right_24"
                         android:drawablePadding="10dp"
                         android:focusable="false"
-                        android:clickable="true"
+                        android:hint="@string/choose_service_edit_text_hint"
                         android:onClick="@{() -> viewModel.onServiceEditTextClicked()}"
-                        android:text="@{viewModel.service}"
-                        android:hint="@string/choose_service_edit_text_hint" />
+                        android:text="@{viewModel.service}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/chooseStylistLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:text="@string/choose_stylist_label"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@+id/chooseServiceTextInputLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/chooseServiceTextInputLayout" />
+                <!--                <androidx.recyclerview.widget.RecyclerView-->
+                <!--                    android:id="@+id/stylistRecycleView"-->
+                <!--                    android:layout_width="0dp"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="10dp"-->
+                <!--                    android:orientation="horizontal"-->
+                <!--                    android:paddingTop="10dp"-->
+                <!--                    android:paddingRight="20dp"-->
+                <!--                    android:paddingBottom="10dp"-->
+                <!--                    data="@{viewModel.stylistList}"-->
+                <!--                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+                <!--                    app:layout_constraintEnd_toEndOf="@+id/chooseServiceTextInputLayout"-->
+                <!--                    app:layout_constraintStart_toStartOf="@+id/chooseStylistLabel"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@+id/chooseStylistLabel" />-->
 
-<!--                <androidx.recyclerview.widget.RecyclerView-->
-<!--                    android:id="@+id/stylistRecycleView"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:orientation="horizontal"-->
-<!--                    android:paddingTop="10dp"-->
-<!--                    android:paddingRight="20dp"-->
-<!--                    android:paddingBottom="10dp"-->
-<!--                    data="@{viewModel.stylistList}"-->
-<!--                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-<!--                    app:layout_constraintEnd_toEndOf="@+id/chooseServiceTextInputLayout"-->
-<!--                    app:layout_constraintStart_toStartOf="@+id/chooseStylistLabel"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/chooseStylistLabel" />-->
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/chooseStylistTextInputLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/datePickerWrapper"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="21dp"
+                    android:layout_marginTop="30dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@+id/chooseServiceTextInputLayout"
-                    app:layout_constraintStart_toStartOf="@+id/chooseStylistLabel"
-                    app:layout_constraintTop_toBottomOf="@+id/chooseStylistLabel" >
+                    app:layout_constraintStart_toStartOf="@+id/chooseServiceTextInputLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/chooseServiceTextInputLayout">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/chooseStylistEditText"
+
+                    <TextView
+                        android:id="@+id/chooseDateLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/choose_date_label"
+                        android:textColor="#000000"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toStartOf="@+id/datePickerWrapper"
+                        app:layout_constraintTop_toTopOf="@+id/datePickerWrapper"
+                        tools:layout_editor_absoluteY="303dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/chooseDateTextInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="@+id/datePickerWrapper"
+                        app:layout_constraintStart_toStartOf="@+id/chooseDateLabel"
+                        app:layout_constraintTop_toBottomOf="@+id/chooseDateLabel">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/chooseDateEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+                            android:drawablePadding="10dp"
+                            android:focusable="false"
+                            android:hint="@string/choose_date_edit_text_hint"
+                            android:onClick="@{() -> viewModel.onDateEditTextClicked()}"
+                            android:text="@{viewModel.bookingDate}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/timePickerWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_person_24"
-                        android:drawableRight="@drawable/ic_baseline_arrow_right_24"
-                        android:drawablePadding="10dp"
-                        android:focusable="false"
-                        android:clickable="true"
-                        android:text="@{viewModel.stylist}"
-                        android:onClick="@{() -> viewModel.onStylistEditTextClicked()}"
-                        android:hint="@string/choose_stylist_edit_text_hint"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="@+id/chooseDateTextInputLayout"
+                        app:layout_constraintStart_toStartOf="@+id/chooseDateTextInputLayout"
+                        app:layout_constraintTop_toBottomOf="@+id/chooseDateTextInputLayout">
 
-                <TextView
-                    android:id="@+id/chooseDateTimeLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:text="@string/choose_datetime_label"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@+id/chooseStylistTextInputLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/chooseStylistTextInputLayout"/>
+                        <TextView
+                            android:id="@+id/chooseTimeLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:text="@string/choose_time_label"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:visibility="visible"
+                            app:layout_constraintStart_toStartOf="@+id/timePickerWrapper"
+                            app:layout_constraintTop_toTopOf="@+id/timePickerWrapper" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/chooseDateTextInputLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintEnd_toEndOf="@+id/chooseStylistTextInputLayout"
-                    app:layout_constraintStart_toStartOf="@+id/chooseDateTimeLabel"
-                    app:layout_constraintTop_toBottomOf="@+id/chooseDateTimeLabel">
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="Ca"
+                            android:visibility="visible"
+                            app:layout_constraintStart_toStartOf="@+id/chooseTimeLabel"
+                            app:layout_constraintTop_toBottomOf="@+id/chooseTimeLabel" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/chooseDateEditText"
-                        android:layout_width="match_parent"
+                        <Spinner
+                            android:id="@+id/shiftPickerSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:visibility="visible"
+                            app:layout_constraintStart_toStartOf="@+id/textView4"
+                            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+
+                        <TextView
+                            android:id="@+id/timePickerLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Giờ"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView4"
+                            app:layout_constraintStart_toStartOf="@+id/timePickerSpinner"
+                            app:layout_constraintTop_toTopOf="@+id/textView4" />
+
+                        <Spinner
+                            android:id="@+id/timePickerSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="30dp"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="@+id/shiftPickerSpinner"
+                            app:layout_constraintStart_toEndOf="@+id/shiftPickerSpinner"
+                            app:layout_constraintTop_toTopOf="@+id/shiftPickerSpinner" />
+
+
+                        <TextView
+                            android:id="@+id/chooseStylistLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:text="@string/choose_stylist_label"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:visibility="visible"
+                            app:layout_constraintStart_toStartOf="@+id/chooseTimeLabel"
+                            app:layout_constraintTop_toBottomOf="@+id/shiftPickerSpinner" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/chooseStylistTextInputLayout"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="@+id/timePickerWrapper"
+                            app:layout_constraintStart_toStartOf="@+id/chooseStylistLabel"
+                            app:layout_constraintTop_toBottomOf="@+id/chooseStylistLabel">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/chooseStylistEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:drawableLeft="@drawable/ic_baseline_person_24"
+                                android:drawableRight="@drawable/ic_baseline_arrow_right_24"
+                                android:drawablePadding="10dp"
+                                android:focusable="false"
+                                android:hint="@string/choose_stylist_edit_text_hint"
+                                android:onClick="@{() -> viewModel.onStylistEditTextClicked()}"
+                                android:text="@{viewModel.stylist}"
+                                android:visibility="visible" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <TextView
+                        android:id="@+id/noteLabel"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
-                        android:drawablePadding="10dp"
-                        android:focusable="false"
-                        android:clickable="true"
-                        android:text="@{viewModel.bookingDate}"
-                        android:onClick="@{() -> viewModel.onDateEditTextClicked()}"
-                        android:hint="@string/choose_date_edit_text_hint" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_marginTop="30dp"
+                        android:text="@string/note_label"
+                        android:textColor="#000000"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@+id/datePickerWrapper"
+                        app:layout_constraintTop_toBottomOf="@+id/timePickerWrapper" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/chooseTimeTextInputLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintEnd_toEndOf="@+id/chooseDateTextInputLayout"
-                    app:layout_constraintStart_toStartOf="@+id/chooseDateTextInputLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/chooseDateTextInputLayout">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/chooseTimeEditText"
-                        android:layout_width="match_parent"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/noteTextInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_access_time_24"
-                        android:drawablePadding="10dp"
-                        android:focusable="false"
-                        android:clickable="true"
-                        android:text="@{viewModel.bookingTime}"
-                        android:onClick="@{() -> viewModel.onTimeEditTextClicked()}"
-                        android:hint="@string/choose_time_edit_text_hint" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toEndOf="@+id/chooseDateTextInputLayout"
+                        app:layout_constraintStart_toStartOf="@+id/noteLabel"
+                        app:layout_constraintTop_toBottomOf="@+id/noteLabel">
 
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/note"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/note_edit_text_hint" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/noteLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:text="@string/note_label"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@+id/chooseTimeTextInputLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/chooseTimeTextInputLayout" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/noteTextInputLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintEnd_toEndOf="@+id/chooseTimeTextInputLayout"
-                    app:layout_constraintStart_toStartOf="@+id/noteLabel"
-                    app:layout_constraintTop_toBottomOf="@+id/noteLabel">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/note"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/discountLabel"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="@string/note_edit_text_hint" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_marginTop="30dp"
+                        android:text="@string/discount_label"
+                        android:textColor="#000000"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@+id/noteTextInputLayout"
+                        app:layout_constraintTop_toBottomOf="@+id/noteTextInputLayout" />
 
-                <TextView
-                    android:id="@+id/discountLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:text="@string/discount_label"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@+id/noteTextInputLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/noteTextInputLayout" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/discountTextInputLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="21dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/noteTextInputLayout"
-                    app:layout_constraintStart_toStartOf="@+id/discountLabel"
-                    app:layout_constraintTop_toBottomOf="@+id/discountLabel">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/discount"
-                        android:layout_width="match_parent"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/discountTextInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_baseline_local_offer_24"
-                        android:drawableRight="@drawable/ic_baseline_arrow_right_24"
-                        android:drawablePadding="10dp"
-                        android:hint="@string/discount_edit_text_hint" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="21dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/noteTextInputLayout"
+                        app:layout_constraintStart_toStartOf="@+id/discountLabel"
+                        app:layout_constraintTop_toBottomOf="@+id/discountLabel">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/discount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_baseline_local_offer_24"
+                            android:drawableRight="@drawable/ic_baseline_arrow_right_24"
+                            android:drawablePadding="10dp"
+                            android:hint="@string/discount_edit_text_hint" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -298,12 +360,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
+                android:onClick="@{() -> viewModel.onConfirmBtnClicked()}"
                 android:text="@string/confirm_booking_btn"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:backgroundTint="#C8C8C7"
-                android:onClick="@{() -> viewModel.onConfirmBtnClicked()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
