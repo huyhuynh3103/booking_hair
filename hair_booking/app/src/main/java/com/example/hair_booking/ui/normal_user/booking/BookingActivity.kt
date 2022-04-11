@@ -28,8 +28,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
-    TimePickerDialog.OnTimeSetListener {
+class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
     private val REQUEST_CODE_CHOOSE_SALON: Int = 1111
     private val REQUEST_CODE_CHOOSE_SERVICE: Int = 2222
     private val REQUEST_CODE_CHOOSE_STYLIST: Int = 3333
@@ -91,13 +90,6 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                 displayDatePickerDialog()
         })
 
-        // Observe time edit text onclick event to display date picker dialog
-        viewModel.timeEditTextClicked.observe(this, androidx.lifecycle.Observer {
-            if(viewModel.checkIfSalonEditTextIsEmpty())
-                displaySalonChosenRequiredWarning()
-            else
-                displayTimePickerDialog()
-        })
 
         // Observe discount edit text onclick event to perform navigation to choose discount screen
         viewModel.discountEditTextClicked.observe(this, androidx.lifecycle.Observer {
@@ -220,34 +212,6 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
 
         // Setup list of shifts for user to choose after choosing date
         viewModel.setupShiftPickerSpinner(this, binding.shiftPickerSpinner, binding.timePickerSpinner)
-    }
-
-    private fun displayTimePickerDialog() {
-        val now = Calendar.getInstance() // Get current time
-
-        // Init time picker dialog with current time selected
-        val tpd = TimePickerDialog.newInstance(
-            this,
-            now[Calendar.HOUR_OF_DAY],  // Initial hour selection
-            now[Calendar.MINUTE],  // Initial minute selection
-            true // Set 24hour mode
-        )
-
-        // Set min time = current time if the booking date selected is today
-//        val isInOpeningHour: Boolean = viewModel.isInOpeningHour(now[Calendar.HOUR_OF_DAY], now[Calendar.MINUTE])
-        if(viewModel.isToday(now))
-            tpd.setMinTime(now[Calendar.HOUR_OF_DAY], now[Calendar.MINUTE], now[Calendar.SECOND])
-//        else if(!isInOpeningHour) {
-//            val openHour: Int = viewModel.op
-//        }
-
-        // Show time picker dialog
-        tpd.show(supportFragmentManager, "Timepickerdialog");
-    }
-
-    override fun onTimeSet(view: TimePickerDialog?, hourOfDay: Int, minute: Int, second: Int) {
-        val timeInStringFormat: String = "" + hourOfDay + "h" + minute
-        binding.viewModel!!.setChosenTime(timeInStringFormat)
     }
 
 

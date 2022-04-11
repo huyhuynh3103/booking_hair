@@ -10,10 +10,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hair_booking.model.Shift
+import com.example.hair_booking.services.booking.BookingServices
 import com.example.hair_booking.services.db.dbServices
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.*
+import kotlin.collections.ArrayList
 
 class BookingViewModel: ViewModel() {
     private lateinit var _salonId: String // Used to query database
@@ -188,10 +191,9 @@ class BookingViewModel: ViewModel() {
             shiftPickerSpinner.setSelection(0, false)
             shiftPickerSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                    setChosenShift(result[position].id)
+                    setChosenShift(result[position - 1].id)
                     viewModelScope.launch {
-                        Log.d("xk", "1")
-                        setupTimePickerSpinner(timePickerSpinner, result[position])
+                        setupTimePickerSpinner(context, timePickerSpinner, result[position - 1])
                     }
                 }
 
@@ -205,28 +207,40 @@ class BookingViewModel: ViewModel() {
 
     }
 
-    private suspend fun setupTimePickerSpinner(timePickerSpinner: Spinner, shift: Shift) {
-        var availableTime: ArrayList<String> = arrayListOf("Chọn giờ") // Init with a placeholder first
-        Log.d("xk", "2")
-        // get chosen service duration
-        val chosenServiceDuration: Int = getChosenServiceDuration()
-        Log.d("xk", "sduration: " + chosenServiceDuration.toString())
-//        // Get available time based on shift chosen
-//        availableTime.addAll(BookingServices.generateTimeBasedOnShift(shift, chosenServiceDuration))
-//
-//        // Get list of time that stylists are busy
-//        // The function will return an array contains position of element to be disabled in availableTime
-//        // Note: just disable, not remove => user can view all, including the disable ones
-//        if(viewModel.bookingDate.value != null) {
-//            val disabledTimePositions: ArrayList<Int> = BookingServices.getDisabledTimePositions(
-//                chosenServiceDuration,
-//                availableTime,
-//                viewModel.bookingDate.value!!,
-//                viewModel.shiftId)
-//
-//            // Assign adapter to spinner
-//            timePickerSpinner.adapter = TimePickerSpinnerAdapter(this, disabledTimePositions, availableTime)
-//        }
+    private suspend fun setupTimePickerSpinner(context: Activity, timePickerSpinner: Spinner, shift: Shift) {
+        viewModelScope.launch {
+            var availableTime: ArrayList<String> = ArrayList() // Init with empty array
+            // get chosen service duration
+            val chosenServiceDuration: Int = getChosenServiceDuration()
+
+            // Get available time based on shift chosen
+            availableTime.addAll(BookingServices.generateTimeBasedOnShift(shift, chosenServiceDuration))
+
+
+            var disabledTimePositions: ArrayList<Int> = ArrayList()
+            async {
+                // Get list of time that stylists are busy
+                // The function will return an array contains position of element to be disabled in availableTime
+                // Note: just disable, not remove => user can view all, including the disable ones
+                Log.d("xk", "getting disable time")
+                if(_bookingDate.value != null) {
+                    disabledTimePositions = BookingServices.getDisabledTimePositions(
+                        chosenServiceDuration,
+                        availableTime,
+                        _bookingDate.value!!,
+                        _shiftId)
+
+                }
+                Log.d("xk", "finish getting disable time")
+            }.await()
+            Log.d("xk", "finish getting disable time1")
+            // Add placeholder
+            Log.d("xk", "placehd")
+            availableTime.add(0, "Chọn giờ")
+            // Assign adapter to spinner
+            timePickerSpinner.adapter = TimePickerSpinnerAdapter(context, disabledTimePositions, availableTime)
+
+        }
     }
 
     fun saveBookingSchedule() {

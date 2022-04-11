@@ -19,7 +19,10 @@ class TimePickerSpinnerAdapter (
     override fun isEnabled(position: Int): Boolean {
         // Disable the first item from Spinner
         // First item will be the placehoder
-        return position != 0
+
+        if(position == 0 || disableTimePosition.contains(position))
+            return false
+        return true
     }
 
     override fun getDropDownView(
@@ -33,6 +36,12 @@ class TimePickerSpinnerAdapter (
         if(position == 0 || disableTimePosition.contains(position)) {
             view.setTextColor(Color.GRAY)
         }
+
+        // Replace '.' with ':'
+        // Case xx.0 => convert to xx.00. Ex: 19.00 => convert to 19:00
+        // Case xx.3 => convert to xx.30. Ex: 19.30 => convert to 19:30
+        if(position != 0)
+            availableTime[position] = availableTime[position].replace('.', ':')
 
         return view
     }

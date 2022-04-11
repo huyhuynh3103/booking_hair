@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.model.Appointment
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
+import java.math.BigDecimal
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -47,35 +48,42 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?) {
         return result
     }
 
-    suspend fun getAppointmentTimeRanges(bookingDate: String, bookingShiftId: String): ArrayList<Pair<Double, Int>> {
-        var appointmentTimeRanges: ArrayList<Pair<Double, Int>> = ArrayList()
+    suspend fun getAppointmentTimeRanges(bookingDate: String, bookingShiftId: String): ArrayList<Pair<BigDecimal, Int>> {
+
+        var appointmentTimeRanges: ArrayList<Pair<BigDecimal, Int>> = ArrayList()
+        var addValueToAppointmentTimeRanges: Deferred<Unit>? = null
+
         if (dbInstance != null) {
             val shiftDocRef = dbInstance!!
             .collection("shifts")
                 .document(bookingShiftId)
 
-            dbInstance!!.collection("appointments")
+            val result = dbInstance!!.collection("appointments")
                 .whereEqualTo("bookingShift", shiftDocRef)
                 .whereEqualTo("bookingDate", bookingDate)
                 .get()
-                .addOnSuccessListener { documents ->
-                    for(document in documents) {
-                        val serviceId: String = (document["service"] as DocumentReference).id
-                        var serviceDuration: Int = 0
-                        runBlocking {
-                            serviceDuration = dbServices.getServiceServices()!!.getServiceDuration(serviceId)
-                        }
-
-                        val timeRange: Pair<Double, Int> = Pair((document["bookingTime"] as String).toDouble(), serviceDuration)
-
-                        appointmentTimeRanges.add(timeRange)
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.d("xk", "get failed with ", exception)
-                }
                 .await()
+
+            Log.d("xk", "got time range from database")
+            addValueToAppointmentTimeRanges = GlobalScope.async {
+                for(document in result.documents) {
+                    val serviceId: String = ((document.data?.get("service") as HashMap<Any, Any>)["id"] as DocumentReference).id
+
+                    var serviceDuration: Int = 0
+                    async {
+                        serviceDuration = dbServices.getServiceServices()!!.getServiceDuration(serviceId)
+                        Log.d("xk", "got service duration for calc time range")
+                    }.await()
+                    Log.d("xk", "start to calc time range")
+                    val timeRange: Pair<BigDecimal, Int> = Pair((document["bookingTime"] as String).toBigDecimal(), serviceDuration)
+
+                    appointmentTimeRanges.add(timeRange)
+                }
+            }
+
         }
+        addValueToAppointmentTimeRanges?.await()
+        Log.d("xk", "finish calc time range and return")
         return appointmentTimeRanges
     }
 }

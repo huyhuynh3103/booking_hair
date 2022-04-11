@@ -72,7 +72,6 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
 //                }
 //        }
 //        return serviceDuration
-        Log.d("xk", "inside service")
         var serviceDuration: Int = 0
         if (dbInstance != null) {
             val docSnap = dbInstance!!.collection("services")
@@ -82,7 +81,6 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
 
             serviceDuration = (docSnap["duration"] as Long).toInt()
         }
-        Log.d("xk", "asd" + serviceDuration)
         return serviceDuration
     }
 }
