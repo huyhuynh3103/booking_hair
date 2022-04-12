@@ -99,4 +99,8 @@ data class Salon(private val _id: String) {
         this._description = description
         this._address = address
     }
+
+    override fun toString(): String {
+        return _name!!
+    }
 }

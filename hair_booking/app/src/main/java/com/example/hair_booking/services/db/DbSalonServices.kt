@@ -38,6 +38,29 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) {
         return result
     }
 
+    fun getSalonListForWorkplace(): MutableLiveData<ArrayList<String>> {
+        var result = MutableLiveData<ArrayList<String>>()
+        var salonList: ArrayList<String> = ArrayList()
+
+        if(dbInstance != null) {
+            dbInstance!!.collection("hairSalons")
+                .get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        // Insert to list
+                        salonList.add(document.data["name"] as String)
+                    }
+
+                    // Call function to return salon list after mapping complete
+                    result.value = salonList
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("SalonServicesLog", "Get salon name list fail with ", exception)
+                }
+        }
+        return result
+    }
+
     fun getSalonDetail(id: String): MutableLiveData<Salon> {
         var result = MutableLiveData<Salon>()
 

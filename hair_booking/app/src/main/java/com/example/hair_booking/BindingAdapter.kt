@@ -1,6 +1,7 @@
 package com.example.hair_booking
 
 import android.util.Log
+import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.model.Discount
@@ -44,7 +45,6 @@ fun bindBookingDiscountListRecyclerView(recyclerView: RecyclerView, data: ArrayL
     }
 }
 
-
 @BindingAdapter("data")
 fun bindSalonListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>?) {
     val adapter = recyclerView.adapter as SalonAdapter
@@ -62,5 +62,19 @@ fun bindSalonListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>
     else
     {
         Log.d("huy-test-bind","data in binding null")
+    }
+}
+
+@BindingAdapter("list", "selected")
+fun setSelectedItem(spinner: Spinner, list: ArrayList<Salon>?, selected: String?) {
+    if (list != null && selected != null) {
+        for (i in list?.indices!!) {
+            if (list[i].id == selected) {
+                spinner.setSelection(i)
+            }
+        }
+    }
+    else {
+        Log.i("AdapterBindingError", "Set selected fail")
     }
 }
