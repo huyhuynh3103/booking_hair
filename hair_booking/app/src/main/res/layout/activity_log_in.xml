@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.hair_booking.ui.authentication.LoginViewModel" />
+    </data>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -26,31 +31,32 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/usrLabel"
+            android:id="@+id/emailLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-light"
-            android:text="Username"
+            android:text="Email"
             android:textAlignment="viewStart"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/usernameTV"
+            android:id="@+id/emailTV"
             android:layout_width="331dp"
             android:layout_height="51dp"
             android:layout_marginStart="44dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/rounded_edit_text"
             android:hint="@string/some_one_somewhere_com"
-            android:inputType="textShortMessage|textEmailAddress"
+            android:inputType="textEmailAddress"
             android:padding="10dp"
             android:shadowColor="@color/shadow_edit_text"
             android:shadowDx="0"
             android:shadowDy="2"
-            android:shadowRadius="2" />
+            android:shadowRadius="2"
+            app:addTextChangedListener="@{viewModel.emailTextWatcher}"/>
 
         <TextView
             android:id="@+id/pwdLabel"
@@ -77,7 +83,8 @@
             android:shadowColor="#1F000000"
             android:shadowDx="0"
             android:shadowDy="2"
-            android:shadowRadius="2" />
+            android:shadowRadius="2"
+            app:addTextChangedListener="@{viewModel.passwordTextWatcher}"/>
 
         <TextView
             android:id="@+id/moveToSignUpButton"
@@ -101,6 +108,7 @@
             android:background="@drawable/rounded_button"
             android:gravity="center"
             android:text="Login"
+            android:onClick="@{()->viewModel.login()}"
             app:backgroundTint="@color/theme_primary" />
 
     </LinearLayout>
