@@ -25,11 +25,12 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        binding.viewModel?.getSalonListForWorkplace()
         adapter = ArrayAdapter<Salon>(this, R.layout.support_simple_spinner_dropdown_item)
         binding.sWorkplace.adapter = adapter
 
-        getSelectedStylistDetail()
+        // get selected ID from previous activity
+        binding.viewModel?.getStylistDetail(intent.getStringExtra("StylistID").toString())
+
         setOnClickListenerForButton()
 
         // enable back button
@@ -39,10 +40,6 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         finish()
         return true
-    }
-
-    private fun getSelectedStylistDetail() {
-        binding.viewModel?.getStylistDetail("eD5l1uEdyqZafG0Gcuc3")
     }
 
     private fun setOnClickListenerForButton() {

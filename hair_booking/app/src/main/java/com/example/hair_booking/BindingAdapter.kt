@@ -8,6 +8,7 @@ import com.example.hair_booking.model.Discount
 import com.example.hair_booking.model.Salon
 import com.example.hair_booking.model.Service
 import com.example.hair_booking.model.Stylist
+import com.example.hair_booking.ui.manager.stylist.StylistRecycleViewAdapter
 import com.example.hair_booking.ui.normal_user.booking.DiscountListAdapter
 import com.example.hair_booking.ui.normal_user.booking.SalonListAdapter
 import com.example.hair_booking.ui.normal_user.booking.ServiceListAdapter
@@ -62,6 +63,14 @@ fun bindSalonListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>
     else
     {
         Log.d("huy-test-bind","data in binding null")
+    }
+}
+
+@BindingAdapter("data")
+fun bindManagerStylistListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Stylist>?) {
+    val adapter = recyclerView.adapter as StylistRecycleViewAdapter
+    if (data != null) {
+        adapter?.setData(data)
     }
 }
 

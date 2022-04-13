@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.example.hair_booking.firebase.Database
 import com.example.hair_booking.services.db.dbServices
 import com.example.hair_booking.ui.manager.stylist.ManagerStylistDetailActivity
+import com.example.hair_booking.ui.manager.stylist.ManagerStylistListActivity
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
@@ -16,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         //setContentView(R.layout.activity_main)
         dbServices.getNormalUserServices()?.foo()
 
-        val intent = Intent(this, ManagerStylistDetailActivity::class.java)
+        val intent = Intent(this, ManagerStylistListActivity::class.java)
         startActivity(intent)
     }
 

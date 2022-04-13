@@ -42,6 +42,35 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) {
         return result
     }
 
+    fun getStylistListForBooking(): MutableLiveData<ArrayList<Stylist>> {
+        var result = MutableLiveData<ArrayList<Stylist>>()
+        var stylistList: ArrayList<Stylist> = ArrayList()
+        if (dbInstance != null) {
+            dbInstance!!.collection("stylists")
+                .get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        // Mapping firestore object to kotlin model
+                        var stylist: Stylist = Stylist(
+                            document.id,
+                            document.data["fullName"] as String,
+                            document.data["avatar"] as String,
+                            document.data["description"] as String
+                        )
+                        // Insert to list
+                        stylistList.add(stylist)
+                    }
+
+                    // Call function to return salon list after mapping complete
+                    result.value = stylistList
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("xk", "get failed with ", exception)
+                }
+        }
+        return result
+    }
+
     fun getStylistDetail(id: String): MutableLiveData<Stylist> {
         var result = MutableLiveData<Stylist>()
 
