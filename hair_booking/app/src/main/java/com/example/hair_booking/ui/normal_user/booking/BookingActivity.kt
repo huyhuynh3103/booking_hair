@@ -153,9 +153,10 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
                 if(serviceId.isNotEmpty() && serviceName.isNotEmpty())
                     binding.viewModel!!.setChosenService(serviceId, serviceName)
 
-                // Show date picker
-                binding.datePickerWrapper.visibility = View.VISIBLE
-
+                displayDateTimePickerWrapper()
+                // Setup list of shifts for user to choose after reselect service
+                viewModel.setupShiftPickerSpinner(this, binding.shiftPickerSpinner, binding.timePickerLabel, binding.timePickerSpinner)
+                hideTimePicker()
             }
 
             REQUEST_CODE_CHOOSE_STYLIST -> {
@@ -177,6 +178,30 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
                 if(discountId.isNotEmpty() && discountTitle.isNotEmpty())
                     binding.viewModel!!.setChosenDiscount(discountId, discountTitle)
             }
+        }
+    }
+
+    private fun displayDateTimePickerWrapper() {
+        if(binding.datePickerWrapper.visibility == View.GONE)
+            binding.datePickerWrapper.visibility = View.VISIBLE
+    }
+
+    private fun displayShiftPicker() {
+        if(binding.timePickerWrapper.visibility == View.GONE)
+            binding.timePickerWrapper.visibility = View.VISIBLE
+    }
+
+    private fun displayTimePicker() {
+        if(binding.timePickerLabel.visibility == View.GONE && binding.timePickerSpinner.visibility == View.GONE) {
+            binding.timePickerLabel.visibility = View.VISIBLE
+            binding.timePickerSpinner.visibility = View.VISIBLE
+        }
+    }
+
+    private fun hideTimePicker() {
+        if(binding.timePickerLabel.visibility == View.VISIBLE && binding.timePickerSpinner.visibility == View.VISIBLE) {
+            binding.timePickerLabel.visibility = View.GONE
+            binding.timePickerSpinner.visibility = View.GONE
         }
     }
 
@@ -207,11 +232,14 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
         val dateInStringFormat = "$daySelected/$monthSelected/$year"
         binding.viewModel!!.setChosenDate(dateInStringFormat)
 
-        // Show time picker and stylist picker
-        binding.timePickerWrapper.visibility = View.VISIBLE
+//        // Show time picker and stylist picker
+//        if(binding.timePickerWrapper.visibility == View.GONE)
+//            binding.timePickerWrapper.visibility = View.VISIBLE
 
         // Setup list of shifts for user to choose after choosing date
-        viewModel.setupShiftPickerSpinner(this, binding.shiftPickerSpinner, binding.timePickerSpinner)
+        viewModel.setupShiftPickerSpinner(this, binding.shiftPickerSpinner, binding.timePickerLabel, binding.timePickerSpinner)
+        hideTimePicker()
+        displayShiftPicker()
     }
 
 

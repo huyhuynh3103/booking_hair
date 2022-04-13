@@ -5,27 +5,34 @@ import com.example.hair_booking.model.Shift
 import com.example.hair_booking.services.db.dbServices
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.math.BigDecimal
 import java.math.MathContext
-import java.math.RoundingMode
-import java.text.DecimalFormat
-import kotlin.math.max
-import kotlin.math.roundToInt
+import java.util.*
+import kotlin.collections.ArrayList
 
 class BookingServices {
-
     companion object {
-        fun generateTimeBasedOnShift(shift: Shift, serviceDuration: Int): ArrayList<String> {
-            val averageTimeBetweenService: BigDecimal = BigDecimal(0.3).round(MathContext(2))
 
-            var minTime = shift.startHour?.toBigDecimal()
+        // The average time between item in list of time display for user to pick
+        // is based on the average time of services
+        // In this case: the average time of services = 30 min => format in float will be: 0.3
+        private val averageTimeBetweenService: BigDecimal = BigDecimal(0.3).round(MathContext(2))
+        fun generateTimeBasedOnShift(shift: Shift, serviceDuration: Int, isToday: Boolean): ArrayList<String> {
+
+
+            // Set the minimum time in list of time display for user to pick to the start hour of the shift
+            val minTime = shift.startHour!!.toBigDecimal()
 
             // User's chosen time + chosen service duration/60 <= the shift's end hour
             // Note: chosen service duration is stored in minutes
             // => maxTime = the shift's end hour - (chosen service duration/60) = max available time for user to choose with specific service
-            var maxTime = (shift.endHour?.toBigDecimal()!! - serviceDuration.toBigDecimal()/ BigDecimal(60))
+//            var maxTime = (shift.endHour?.toBigDecimal()!! - serviceDuration.toBigDecimal()/ BigDecimal(60))
+
+            // Convert serviceDuration from minute to hour in Big Decimal
+            // Ex: 45 min (int type) => 0.75 hour (
+            var serviceDurationInHour = BigDecimalTimeServices.IntMinuteToBigDecimalHour(serviceDuration)
+            var maxTime = (shift.endHour?.toBigDecimal()!! - serviceDurationInHour)
+
 
 
             // Round maxTime to nearest number which fractional part is multiple of 0.30
@@ -79,11 +86,12 @@ class BookingServices {
             chosenServiceDuration: Int,
             availableTime: ArrayList<String>,
             bookingDate: String,
-            bookingShiftId: String)
+            bookingShiftId: String,
+            isToday: Boolean)
         : ArrayList<Int> {
             var disabledTimePositions: ArrayList<Int> = ArrayList()
 
-            var chosenServiceDurationInBigDecimal = (chosenServiceDuration.toFloat().toBigDecimal()/BigDecimal(60.0))
+            var chosenServiceDurationInBigDecimal = BigDecimalTimeServices.IntMinuteToBigDecimalHour(chosenServiceDuration)
 
             val disableTime = GlobalScope.async {
                 var appointmentTimeRanges: ArrayList<Pair<BigDecimal, Int>> = ArrayList()
@@ -97,24 +105,39 @@ class BookingServices {
                 availableTime.forEach { timeCanBePicked ->
                     var timeCanBePickedInBigDecimal = timeCanBePicked.toBigDecimal()
 
-                    val totalTimeRange = timeCanBePickedInBigDecimal + chosenServiceDurationInBigDecimal
+                    var userChosenEndTime = BigDecimalTimeServices.plusMinute(timeCanBePickedInBigDecimal, chosenServiceDurationInBigDecimal)
 
-                    appointmentTimeRanges.forEach {
-                        var totalAppointmentTimeRange = it.first + (it.second.toFloat().toBigDecimal()/BigDecimal(60.0))
-                        val intPartOfTotalAppointmentTimeRange = totalAppointmentTimeRange.toString().split('.')[0].toBigDecimal() // get int part
-                        val floatPartOfTotalAppointmentTimeRange = (totalAppointmentTimeRange - intPartOfTotalAppointmentTimeRange)// get float part
+                    for(item in appointmentTimeRanges) {
+//                        var totalAppointmentTimeRange = item.first + (item.second.toFloat().toBigDecimal()/BigDecimal(60.0))
+                        var appointmentEndTime = BigDecimalTimeServices.plusMinute(item.first, BigDecimalTimeServices.IntMinuteToBigDecimalHour(item.second))
+//                        val intPartOfUserChosenEndTime = appointmentEndTime.toString().split('.')[0].toBigDecimal() // get int part
+//                        val floatPartOfUserChosenEndTime = (appointmentEndTime - intPartOfUserChosenEndTime)// get float part
+//
+//                        if(floatPartOfUserChosenEndTime == BigDecimal(0.6).round(MathContext(2))) {
+//                            // Case current = xx.6 => convert to (xx + 1).0
+//                            // Ex: 18.6 => convert to 19.0
+//                            appointmentEndTime = intPartOfUserChosenEndTime.plus(BigDecimal(1)).round(MathContext(2))
+//                        }
 
-                        if(floatPartOfTotalAppointmentTimeRange == BigDecimal(0.6).round(MathContext(2))) {
-                            // Case current = xx.6 => convert to (xx + 1).0
-                            // Ex: 18.6 => convert to 19.0
-                            totalAppointmentTimeRange = intPartOfTotalAppointmentTimeRange.plus(BigDecimal(1)).round(MathContext(2))
-                        }
 
-                        if(timeCanBePickedInBigDecimal >= it.first
-                                    && totalTimeRange <= totalAppointmentTimeRange) {
+                        if(timeCanBePickedInBigDecimal >= item.first
+                            && userChosenEndTime <= appointmentEndTime) {
                             disabledTimePositions.add(availableTime.indexOf(timeCanBePicked))
                         }
+                        else if(isToday) {
+                            val now = Calendar.getInstance()
+                            val currentHourIn24Format: Float = now.get(Calendar.HOUR_OF_DAY).toFloat()// return the hour in 24 hrs format (ranging from 0-23)
+                            val currentMinute: Int = now.get(Calendar.MINUTE) // return minute
+                            val currentTime = BigDecimalTimeServices.toBigDecimal(currentHourIn24Format) + BigDecimalTimeServices.IntMinuteToBigDecimal(currentMinute)
+
+                            if(timeCanBePickedInBigDecimal < currentTime)
+                                disabledTimePositions.add(availableTime.indexOf(timeCanBePicked))
+                        }
+
                     }
+//                    appointmentTimeRanges.forEach {
+//
+//                    }
                 }
             }
 

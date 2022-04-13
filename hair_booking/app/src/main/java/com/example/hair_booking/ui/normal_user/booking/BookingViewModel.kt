@@ -5,11 +5,13 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hair_booking.model.Shift
+import com.example.hair_booking.services.booking.BigDecimalTimeServices
 import com.example.hair_booking.services.booking.BookingServices
 import com.example.hair_booking.services.db.dbServices
 import kotlinx.coroutines.async
@@ -113,7 +115,7 @@ class BookingViewModel: ViewModel() {
         _bookingDate.value = dateChosen
     }
 
-    fun isToday(dateToCheck: Calendar): Boolean {
+    fun isToday(): Boolean {
         val now = Calendar.getInstance()
 
         // Convert "now" to string format
@@ -173,27 +175,53 @@ class BookingViewModel: ViewModel() {
                 || bookingTime.value.isNullOrEmpty()
     }
 
-    fun setupShiftPickerSpinner(context: Activity, shiftPickerSpinner: Spinner, timePickerSpinner: Spinner) {
+    fun setupShiftPickerSpinner(context: Activity,
+                                shiftPickerSpinner: Spinner,
+                                timePickerLabel: TextView,
+                                timePickerSpinner: Spinner) {
         var shiftItems: ArrayList<String> = arrayListOf("Chọn ca hớt tóc") // Init with a placeholder first
+        var shiftToBeDisabled: ArrayList<Int> = ArrayList()
+
+
 
         // Get shifts and observe forever to wait for callback when data return
         dbServices.getShiftServices()!!.getAllShifts()?.observeForever{ result ->
-            result.forEach {
+            // Get current time
+            val now = Calendar.getInstance()
+            val currentHourIn24Format: Int = now.get(Calendar.HOUR_OF_DAY) // return the hour in 24 hrs format (ranging from 0-23)
+            val currentMinute: Int = now.get(Calendar.MINUTE) // return minute
+            val currentTime = currentHourIn24Format + (currentMinute / 100.0F)
+
+            for(shift in result) {
                 // Shifts returned from database is an object
                 // => need convert to a string for display
                 // ex: "Sáng (08:00 - 12:00)"
-                shiftItems.add(it.toStringForBookingDisplay())
+                shiftItems.add(shift.toStringForBookingDisplay())
+
+                if(isToday()) {
+                    if(BigDecimalTimeServices.isLargerThan(BigDecimalTimeServices.toBigDecimal(currentTime), shift.endHour!!.toBigDecimal())) {
+                        shiftToBeDisabled.add(result.indexOf(shift))
+                        Log.d("xk", result.indexOf(shift).toString())
+                    }
+                }
+
             }
 
             // Assign adapter to spinner
-            shiftPickerSpinner.adapter = ShiftPickerSpinnerAdapter(context, shiftItems)
+            shiftPickerSpinner.adapter = ShiftPickerSpinnerAdapter(context, shiftItems, shiftToBeDisabled)
 
-            shiftPickerSpinner.setSelection(0, false)
+//            val initPosition = shiftPickerSpinner.selectedItemPosition
+//            shiftPickerSpinner.setSelection(initPosition, false)
+//            Log.d("xk", "init pos selected $initPosition")
+//            shiftPickerSpinner.onItemSelectedListener = null
             shiftPickerSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                    setChosenShift(result[position - 1].id)
-                    viewModelScope.launch {
-                        setupTimePickerSpinner(context, timePickerSpinner, result[position - 1])
+                    Log.d("xk", "onitemselected ${position - 1}")
+                    if(position - 1 >= 0) {
+                        setChosenShift(result[position - 1].id)
+                        viewModelScope.launch {
+                            setupTimePickerSpinner(context, timePickerLabel, timePickerSpinner, result[position - 1])
+                        }
                     }
                 }
 
@@ -207,14 +235,17 @@ class BookingViewModel: ViewModel() {
 
     }
 
-    private suspend fun setupTimePickerSpinner(context: Activity, timePickerSpinner: Spinner, shift: Shift) {
+    private suspend fun setupTimePickerSpinner(context: Activity,
+                                               timePickerLabel: TextView,
+                                               timePickerSpinner: Spinner,
+                                               shift: Shift) {
         viewModelScope.launch {
             var availableTime: ArrayList<String> = ArrayList() // Init with empty array
             // get chosen service duration
             val chosenServiceDuration: Int = getChosenServiceDuration()
 
             // Get available time based on shift chosen
-            availableTime.addAll(BookingServices.generateTimeBasedOnShift(shift, chosenServiceDuration))
+            availableTime.addAll(BookingServices.generateTimeBasedOnShift(shift, chosenServiceDuration, isToday()))
 
 
             var disabledTimePositions: ArrayList<Int> = ArrayList()
@@ -228,7 +259,7 @@ class BookingViewModel: ViewModel() {
                         chosenServiceDuration,
                         availableTime,
                         _bookingDate.value!!,
-                        _shiftId)
+                        _shiftId, isToday())
 
                 }
                 Log.d("xk", "finish getting disable time")
@@ -237,9 +268,17 @@ class BookingViewModel: ViewModel() {
             // Add placeholder
             Log.d("xk", "placehd")
             availableTime.add(0, "Chọn giờ")
+            availableTime.forEach {
+                Log.d("xk", "reconstruct time picker")
+                Log.d("xk", it)
+            }
             // Assign adapter to spinner
             timePickerSpinner.adapter = TimePickerSpinnerAdapter(context, disabledTimePositions, availableTime)
 
+            if(timePickerLabel.visibility == View.GONE && timePickerSpinner.visibility == View.GONE) {
+                timePickerLabel.visibility = View.VISIBLE
+                timePickerSpinner.visibility = View.VISIBLE
+            }
         }
     }
 

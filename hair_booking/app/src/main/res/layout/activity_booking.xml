@@ -218,7 +218,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Giờ"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="@+id/textView4"
                             app:layout_constraintStart_toStartOf="@+id/timePickerSpinner"
                             app:layout_constraintTop_toTopOf="@+id/textView4" />
@@ -228,7 +228,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="30dp"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="@+id/shiftPickerSpinner"
                             app:layout_constraintStart_toEndOf="@+id/shiftPickerSpinner"
                             app:layout_constraintTop_toTopOf="@+id/shiftPickerSpinner" />
@@ -243,7 +243,7 @@
                             android:textColor="#000000"
                             android:textSize="20sp"
                             android:textStyle="bold"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             app:layout_constraintStart_toStartOf="@+id/chooseTimeLabel"
                             app:layout_constraintTop_toBottomOf="@+id/shiftPickerSpinner" />
 
@@ -253,7 +253,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             app:layout_constraintEnd_toEndOf="@+id/timePickerWrapper"
                             app:layout_constraintStart_toStartOf="@+id/chooseStylistLabel"
                             app:layout_constraintTop_toBottomOf="@+id/chooseStylistLabel">

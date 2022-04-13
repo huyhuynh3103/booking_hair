@@ -33,6 +33,8 @@ data class Shift(private val _id: String) {
 
 
     fun toStringForBookingDisplay(): String {
-        return "$_type ($_startHour - $endHour)"
+        val startHourToDisplay = _startHour?.replace('.', ':')
+        val endHourToDisplay = _endHour?.replace('.', ':')
+        return "$_type ($startHourToDisplay - $endHourToDisplay)"
     }
 }
