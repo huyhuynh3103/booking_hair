@@ -201,7 +201,7 @@ class BookingViewModel: ViewModel() {
                 if(isToday()) {
                     if(BigDecimalTimeServices.isLargerThan(BigDecimalTimeServices.toBigDecimal(currentTime), shift.endHour!!.toBigDecimal())) {
                         shiftToBeDisabled.add(result.indexOf(shift))
-                        Log.d("xk", result.indexOf(shift).toString())
+                        Log.d("xk", result.indexOf(shift).toString() + "1231")
                     }
                 }
 
@@ -215,7 +215,7 @@ class BookingViewModel: ViewModel() {
 //            Log.d("xk", "init pos selected $initPosition")
 //            shiftPickerSpinner.onItemSelectedListener = null
             shiftPickerSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                     Log.d("xk", "onitemselected ${position - 1}")
                     if(position - 1 >= 0) {
                         setChosenShift(result[position - 1].id)
@@ -240,6 +240,7 @@ class BookingViewModel: ViewModel() {
                                                timePickerSpinner: Spinner,
                                                shift: Shift) {
         viewModelScope.launch {
+            Log.d("xk", "setup time picker")
             var availableTime: ArrayList<String> = ArrayList() // Init with empty array
             // get chosen service duration
             val chosenServiceDuration: Int = getChosenServiceDuration()

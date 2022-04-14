@@ -48,9 +48,9 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?) {
         return result
     }
 
-    suspend fun getAppointmentTimeRanges(bookingDate: String, bookingShiftId: String): ArrayList<Pair<BigDecimal, Int>> {
+    suspend fun getAppointmentTimeRanges(bookingDate: String, bookingShiftId: String): ArrayList<Pair<Float, Int>> {
 
-        var appointmentTimeRanges: ArrayList<Pair<BigDecimal, Int>> = ArrayList()
+        var appointmentTimeRanges: ArrayList<Pair<Float, Int>> = ArrayList()
         var addValueToAppointmentTimeRanges: Deferred<Unit>? = null
 
         if (dbInstance != null) {
@@ -75,7 +75,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?) {
                         Log.d("xk", "got service duration for calc time range")
                     }.await()
                     Log.d("xk", "start to calc time range")
-                    val timeRange: Pair<BigDecimal, Int> = Pair((document["bookingTime"] as String).toBigDecimal(), serviceDuration)
+                    val timeRange: Pair<Float, Int> = Pair((document["bookingTime"] as String).toFloat(), serviceDuration)
 
                     appointmentTimeRanges.add(timeRange)
                 }
