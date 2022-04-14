@@ -104,12 +104,10 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
 
     @Override
     override fun onBackPressed() {
+        super.onBackPressed()
         // handling back button pressed event
         if(mDrawerLayout!!.isDrawerOpen(GravityCompat.START)){
             mDrawerLayout?.closeDrawer(GravityCompat.START)
-        }
-        else{
-            super.onBackPressed()
         }
     }
 }

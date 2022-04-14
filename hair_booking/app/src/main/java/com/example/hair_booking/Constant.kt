@@ -12,4 +12,11 @@ object Constant {
         const val stylists:String = "stylists"
     }
     const val notFoundImg = "notfoundimg"
+    object messages{
+        const val required:String = "Required"
+        const val invalidEmail:String = "Invalid Email"
+        const val invalidPassword:String = "Invalid Email"
+        const val loginFailed:String = "Invalid Email or Password. Try Again"
+        const val errorFromSever:String = "Something went wrong. Try later."
+    }
 }

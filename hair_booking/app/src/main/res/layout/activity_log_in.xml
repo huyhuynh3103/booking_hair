@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
+        <import type="android.view.View"/>
         <variable
             name="viewModel"
             type="com.example.hair_booking.ui.authentication.LoginViewModel" />
     </data>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -16,7 +17,7 @@
         <ImageView
             android:id="@+id/loginImgView"
             android:layout_width="300dp"
-            android:layout_height="220dp"
+            android:layout_height="200dp"
             android:layout_gravity="center"
             android:layout_marginTop="24dp"
             app:srcCompat="@drawable/login_img" />
@@ -26,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:text="Login"
+            android:text="@string/login"
             android:textSize="34sp"
             android:textStyle="bold" />
 
@@ -37,17 +38,18 @@
             android:layout_marginStart="44dp"
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-light"
-            android:text="Email"
+            android:text="@string/email"
             android:textAlignment="viewStart"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/emailTV"
-            android:layout_width="331dp"
+            android:layout_width="match_parent"
             android:layout_height="51dp"
             android:layout_marginStart="44dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
             android:background="@drawable/rounded_edit_text"
             android:hint="@string/some_one_somewhere_com"
             android:inputType="textEmailAddress"
@@ -56,7 +58,17 @@
             android:shadowDx="0"
             android:shadowDy="2"
             android:shadowRadius="2"
-            app:addTextChangedListener="@{viewModel.emailTextWatcher}"/>
+            app:addTextChangedListener="@{viewModel.emailTextWatcher}" />
+
+        <TextView
+            android:id="@+id/usrMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="8dp"
+            android:text="@{viewModel.usrMsg}"
+            android:textColor="#FF5252"
+            android:visibility="@{viewModel.isVisbileUsrMsg?View.VISIBLE:View.GONE}" />
 
         <TextView
             android:id="@+id/pwdLabel"
@@ -66,17 +78,18 @@
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-light"
             android:labelFor="@id/passwordTV"
-            android:text="Password"
+            android:text="@string/password"
             android:textAlignment="viewStart"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/passwordTV"
-            android:layout_width="331dp"
+            android:layout_width="match_parent"
             android:layout_height="51dp"
             android:layout_marginStart="44dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
             android:background="@drawable/rounded_edit_text"
             android:inputType="textPassword"
             android:padding="10dp"
@@ -84,20 +97,32 @@
             android:shadowDx="0"
             android:shadowDy="2"
             android:shadowRadius="2"
-            app:addTextChangedListener="@{viewModel.passwordTextWatcher}"/>
+            app:addTextChangedListener="@{viewModel.passwordTextWatcher}" />
+
+        <TextView
+            android:id="@+id/pwdMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="8dp"
+            android:text="@{viewModel.pwdMsg}"
+            android:textColor="#FF5252"
+            android:visibility="@{viewModel.isVisbilePwdMsg ? View.VISIBLE:View.GONE}" />
 
         <TextView
             android:id="@+id/moveToSignUpButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="320dp"
+            android:layout_gravity="end"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
             android:clickable="true"
+            android:focusable="true"
             android:gravity="center"
             android:minHeight="48dp"
-            android:text="Sign Up"
+            android:text="@string/sign_up"
             android:textColor="#EC0E0E"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/loginButton"
@@ -105,10 +130,10 @@
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/rounded_button"
             android:gravity="center"
-            android:text="Login"
-            android:onClick="@{()->viewModel.login()}"
+            android:text="@string/login"
             app:backgroundTint="@color/theme_primary" />
 
     </LinearLayout>
