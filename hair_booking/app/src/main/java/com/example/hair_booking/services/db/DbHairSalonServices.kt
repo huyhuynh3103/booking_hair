@@ -7,7 +7,7 @@ import com.example.hair_booking.model.Salon
 import com.google.firebase.firestore.FirebaseFirestore
 
 class DbHairSalonServices(private var dbInstance: FirebaseFirestore?):DatabaseAbstract() {
-    override fun find(data: Any): Any {
+    override suspend fun find(query: Any): Any {
         TODO("Not yet implemented")
     }
 
@@ -16,7 +16,7 @@ class DbHairSalonServices(private var dbInstance: FirebaseFirestore?):DatabaseAb
     }
 
 
-    override fun findAll(): MutableLiveData<ArrayList<Salon>> {
+    override suspend fun findAll(): MutableLiveData<ArrayList<Salon>> {
         val data:ArrayList<Salon> = ArrayList()
         val res = MutableLiveData<ArrayList<Salon>>()
         if(dbInstance!=null){

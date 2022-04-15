@@ -11,6 +11,7 @@ data class Stylist(private val _id: String) {
     private var _fullName: String? = null
     private var _avatar: String? = null
     private var _description: String? = null
+    private var _shifts: HashMap<*, *>? = null
     private var _workPlace: DocumentReference? = null
 
     // GETTERS
@@ -18,6 +19,7 @@ data class Stylist(private val _id: String) {
     val fullName: String? get() = _fullName
     val avatar: String? get() = _avatar
     val description: String? get() = _description
+    val shifts: HashMap<*, *>? get() = _shifts
     val workPlace: DocumentReference? get() = _workPlace
 
     // Full parameter constructor
@@ -26,11 +28,13 @@ data class Stylist(private val _id: String) {
         fullName: String,
         avatar: String,
         description: String,
+        shifts: HashMap<*, *>,
         workPlace: DocumentReference
     ): this(id) {
         this._fullName = fullName
         this._avatar = avatar
         this._description = description
+        this._shifts = shifts
         this._workPlace = workPlace
     }
 
@@ -44,5 +48,14 @@ data class Stylist(private val _id: String) {
         this._fullName = fullName
         this._avatar = avatar
         this._description = description
+    }
+
+
+    constructor(stylist: Stylist) : this(stylist._id) {
+        this._fullName = stylist._fullName
+        this._avatar = stylist._avatar
+        this._description = stylist._description
+        this._shifts = stylist._shifts
+        this._workPlace = stylist._workPlace
     }
 }

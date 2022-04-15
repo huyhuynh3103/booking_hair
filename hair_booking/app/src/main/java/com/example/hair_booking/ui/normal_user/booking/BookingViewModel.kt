@@ -1,22 +1,25 @@
 package com.example.hair_booking.ui.normal_user.booking
 
 import android.app.Activity
+import android.os.Build
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hair_booking.model.Shift
-import com.example.hair_booking.services.booking.BigDecimalTimeServices
+import com.example.hair_booking.services.booking.TimeServices
 import com.example.hair_booking.services.booking.BookingServices
 import com.example.hair_booking.services.db.dbServices
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import java.sql.Time
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -37,8 +40,8 @@ class BookingViewModel: ViewModel() {
     private val _bookingDate = MutableLiveData<String>()
     val bookingDate: LiveData<String> = _bookingDate
 
-    private var _shiftId: String = "" // Used to query database
-    val shiftId: String = _shiftId // getter
+    private var _shiftId: MutableLiveData<String> = MutableLiveData() // Used to query database
+    val shiftId: LiveData<String> = _shiftId // getter
 
     private val _bookingTime = MutableLiveData<String>()
     val bookingTime: LiveData<String> = _bookingTime
@@ -135,7 +138,8 @@ class BookingViewModel: ViewModel() {
     }
 
     fun setChosenShift(shiftId: String) {
-        this._shiftId = shiftId
+        Log.d("bookac", "in bookviewmodel: $shiftId")
+        this._shiftId.value = shiftId
     }
 
     // Set time edit text onclick to be observable
@@ -178,7 +182,9 @@ class BookingViewModel: ViewModel() {
     fun setupShiftPickerSpinner(context: Activity,
                                 shiftPickerSpinner: Spinner,
                                 timePickerLabel: TextView,
-                                timePickerSpinner: Spinner) {
+                                timePickerSpinner: Spinner,
+                                chooseStylistLabel: TextView,
+                                chooseStylistTextInputLayout: TextInputLayout,) {
         var shiftItems: ArrayList<String> = arrayListOf("Chọn ca hớt tóc") // Init with a placeholder first
         var shiftToBeDisabled: ArrayList<Int> = ArrayList()
 
@@ -199,7 +205,7 @@ class BookingViewModel: ViewModel() {
                 shiftItems.add(shift.toStringForBookingDisplay())
 
                 if(isToday()) {
-                    if(BigDecimalTimeServices.isLargerThan(BigDecimalTimeServices.toBigDecimal(currentTime), shift.endHour!!.toBigDecimal())) {
+                    if(TimeServices.isLargerThan(TimeServices.toBigDecimal(currentTime), shift.endHour!!.toBigDecimal())) {
                         shiftToBeDisabled.add(result.indexOf(shift))
                         Log.d("xk", result.indexOf(shift).toString() + "1231")
                     }
@@ -210,17 +216,13 @@ class BookingViewModel: ViewModel() {
             // Assign adapter to spinner
             shiftPickerSpinner.adapter = ShiftPickerSpinnerAdapter(context, shiftItems, shiftToBeDisabled)
 
-//            val initPosition = shiftPickerSpinner.selectedItemPosition
-//            shiftPickerSpinner.setSelection(initPosition, false)
-//            Log.d("xk", "init pos selected $initPosition")
-//            shiftPickerSpinner.onItemSelectedListener = null
             shiftPickerSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                @RequiresApi(Build.VERSION_CODES.N)
                 override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                    Log.d("xk", "onitemselected ${position - 1}")
                     if(position - 1 >= 0) {
                         setChosenShift(result[position - 1].id)
                         viewModelScope.launch {
-                            setupTimePickerSpinner(context, timePickerLabel, timePickerSpinner, result[position - 1])
+                            setupTimePickerSpinner(context, timePickerLabel, timePickerSpinner, result[position - 1], chooseStylistLabel, chooseStylistTextInputLayout)
                         }
                     }
                 }
@@ -235,10 +237,13 @@ class BookingViewModel: ViewModel() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private suspend fun setupTimePickerSpinner(context: Activity,
                                                timePickerLabel: TextView,
                                                timePickerSpinner: Spinner,
-                                               shift: Shift) {
+                                               shift: Shift,
+                                               chooseStylistLabel: TextView,
+                                               chooseStylistTextInputLayout: TextInputLayout,) {
         viewModelScope.launch {
             Log.d("xk", "setup time picker")
             var availableTime: ArrayList<String> = ArrayList() // Init with empty array
@@ -259,8 +264,9 @@ class BookingViewModel: ViewModel() {
                     disabledTimePositions = BookingServices.getDisabledTimePositions(
                         chosenServiceDuration,
                         availableTime,
+                        _salonId,
                         _bookingDate.value!!,
-                        _shiftId, isToday())
+                        _shiftId.value!!, isToday())
 
                 }
                 Log.d("xk", "finish getting disable time")
@@ -280,6 +286,22 @@ class BookingViewModel: ViewModel() {
                 timePickerLabel.visibility = View.VISIBLE
                 timePickerSpinner.visibility = View.VISIBLE
             }
+
+            timePickerSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                    if(position - 1 >= 0) {
+                        _bookingTime.value = availableTime[position].replace(':', '.')
+                        if(chooseStylistLabel.visibility == View.GONE && chooseStylistTextInputLayout.visibility == View.GONE) {
+                            chooseStylistLabel.visibility = View.VISIBLE
+                            chooseStylistTextInputLayout.visibility = View.VISIBLE
+                        }
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+
+                }
+            }
         }
     }
 
@@ -287,4 +309,16 @@ class BookingViewModel: ViewModel() {
         // Do sth
     }
 
+    suspend fun getTimeRangeChosenInHour(): Pair<Float, Float> {
+        val bookingTimeToDisplay: Float = bookingTime.value?.replace(':', '.')?.toFloat() ?: 0.0F
+        Log.d("bookviewmodel", "booktime value = " + bookingTime.value!!)
+        Log.d("bookviewmodel", "book time value to display =" + bookingTimeToDisplay.toString())
+        val bookingTimeInHour: Float = TimeServices.timeToDisplayToTimeInHour(bookingTimeToDisplay)
+
+        val chosenServiceDurationInHour: Float = TimeServices.minuteToHour(getChosenServiceDuration())
+
+        // estimatedEndTime = booking time + service duration
+        val estimatedEndTime: Float = TimeServices.addTimeInHour(bookingTimeInHour, chosenServiceDurationInHour)
+        return Pair(bookingTimeInHour, estimatedEndTime)
+    }
 }

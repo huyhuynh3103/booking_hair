@@ -21,11 +21,13 @@ data class Appointment(private val _id: String) {
 
     private var _bookingDate: String? = null
     private var _bookingTime: String? = null
+    private var _bookingShift: DocumentReference? = null
     private var _createdAt: String? = null
     private var _discountApplied: HashMap<String, *>? = null
 
     private var _note: String? = null
     private var _status: String? = null
+    private var _totalPrice: Long? = null
 
 
     // GETTERS
@@ -43,15 +45,19 @@ data class Appointment(private val _id: String) {
 
     val bookingDate: String? get() = _bookingDate
     val bookingTime: String? get() = _bookingTime
+    val bookingShift: DocumentReference? get() = _bookingShift
     val createdAt: String? get() = _createdAt
     val discountApplied: HashMap<String, *>? get() = _discountApplied
 
     val note: String? get() = _note
     val status: String? get() = _status
+    val totalPrice: Long? get() = _totalPrice
 
 
     // Full parameter constructor
-    constructor(id: String, userId: DocumentReference,
+    constructor(id: String,
+                appointmentSubId: String,
+                userId: DocumentReference,
                 userFullName: String,
                 userPhoneNumber: String?,
                 hairSalon: HashMap<String, *>,
@@ -59,11 +65,14 @@ data class Appointment(private val _id: String) {
                 stylist: HashMap<String, *>,
                 bookingDate: String,
                 bookingTime: String,
+                bookingShift: DocumentReference,
                 createdAt: String,
                 discountApplied: HashMap<String, *>,
                 note: String,
-                status: String
+                status: String,
+                totalPrice: Long,
     ): this(id) {
+        this._appointmentSubId = appointmentSubId
         this._userId = userId
         this._userFullName = userFullName
         this._userPhoneNumber = userPhoneNumber
@@ -72,10 +81,12 @@ data class Appointment(private val _id: String) {
         this._stylist = stylist
         this._bookingDate = bookingDate
         this._bookingTime = bookingTime
+        this._bookingShift = bookingShift
         this._createdAt = createdAt
         this._discountApplied = discountApplied
         this._note = note
         this._status = status
+        this._totalPrice = totalPrice
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW

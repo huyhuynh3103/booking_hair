@@ -2,6 +2,7 @@ package com.example.hair_booking.ui.normal_user.booking
 
 import android.app.Activity
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -19,7 +20,7 @@ class TimePickerSpinnerAdapter (
     override fun isEnabled(position: Int): Boolean {
         // Disable the first item from Spinner
         // First item will be the placehoder
-
+        Log.d("xk", "disableTimePos in isEnabled contain $position: ${disableTimePosition.contains(position)}")
         if(position == 0 || disableTimePosition.contains(position))
             return false
         return true
@@ -34,6 +35,7 @@ class TimePickerSpinnerAdapter (
         // set the color of first item in the drop down list (placeholder)
         // and items to be disabled to gray
         if(position == 0 || disableTimePosition.contains(position)) {
+            Log.d("xk", "disableTimePos in getView contain $position: ${disableTimePosition.contains(position)}")
             view.setTextColor(Color.GRAY)
         }
 

@@ -11,6 +11,7 @@ object dbServices {
     private var serviceServices: DbServiceServices? = null
     private var appointmentServices: DbAppointmentServices? = null
     private var shiftServices: DbShiftServices? = null
+    private var discountServices: DbDiscountServices? = null
 
     init {
         dbInstance = Database.getInstance()
@@ -20,6 +21,7 @@ object dbServices {
         serviceServices = DbServiceServices(dbInstance)
         appointmentServices = DbAppointmentServices(dbInstance)
         shiftServices = DbShiftServices(dbInstance)
+        discountServices = DbDiscountServices(dbInstance)
     }
 
     fun getNormalUserServices(): DbNormalUserServices? {
@@ -44,6 +46,10 @@ object dbServices {
 
     fun getShiftServices(): DbShiftServices? {
         return shiftServices
+    }
+
+    fun getDiscountServices(): DbDiscountServices? {
+        return discountServices
     }
 
     // GETTER

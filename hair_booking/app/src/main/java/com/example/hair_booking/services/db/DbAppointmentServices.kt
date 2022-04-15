@@ -2,17 +2,19 @@ package com.example.hair_booking.services.db
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.hair_booking.Constant
 import com.example.hair_booking.model.Appointment
+import com.example.hair_booking.model.Discount
+import com.example.hair_booking.model.Stylist
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
-import java.math.BigDecimal
-import java.util.*
+import java.lang.Exception
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class DbAppointmentServices(private var dbInstance: FirebaseFirestore?) {
+class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract() {
 
     fun getAppointmentListForManager(): MutableLiveData<ArrayList<Appointment>> {
         var result = MutableLiveData<ArrayList<Appointment>>()
@@ -57,14 +59,13 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?) {
             val shiftDocRef = dbInstance!!
             .collection("shifts")
                 .document(bookingShiftId)
-
             val result = dbInstance!!.collection("appointments")
                 .whereEqualTo("bookingShift", shiftDocRef)
                 .whereEqualTo("bookingDate", bookingDate)
                 .get()
                 .await()
 
-            Log.d("xk", "got time range from database")
+            Log.d("xk", "got time range from database ${result.documents.size}")
             addValueToAppointmentTimeRanges = GlobalScope.async {
                 for(document in result.documents) {
                     val serviceId: String = ((document.data?.get("service") as HashMap<Any, Any>)["id"] as DocumentReference).id
@@ -85,5 +86,89 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?) {
         addValueToAppointmentTimeRanges?.await()
         Log.d("xk", "finish calc time range and return")
         return appointmentTimeRanges
+    }
+
+    suspend fun getAppliedDiscountIds(userId: String): ArrayList<String> {
+
+        var discountIds: ArrayList<String> = ArrayList()
+
+        if (dbInstance != null) {
+
+            val userDocRef = dbInstance!!
+                .collection(Constant.collection.accounts)
+                .document(userId)
+
+            val result = dbInstance!!.collection(Constant.collection.appointments)
+                .whereEqualTo("userId", userDocRef)
+                .get()
+                .await()
+
+            for(document in result.documents) {
+                val discountApplied: HashMap<String, *> = document.data?.get("discountApplied") as HashMap<String, *>
+                val discountAppliedId: String = (discountApplied["id"] as DocumentReference).id
+                discountIds.add(discountAppliedId)
+            }
+
+        }
+
+        return discountIds
+    }
+
+    override suspend fun find(query: Any): Any {
+        TODO("Not yet implemented")
+    }
+
+    override fun save(data: Any): Any {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun findAll(): ArrayList<Appointment> {
+        var appointmentList: ArrayList<Appointment> = ArrayList()
+        try {
+            val result = dbInstance!!.collection(Constant.collection.appointments)
+                .get()
+                .await()
+
+
+            for(document in result.documents) {
+                // Mapping firestore object to kotlin model
+                val appointment: Appointment = Appointment(
+                    document.id,
+                    document.data?.get("subId") as String,
+                    document.data?.get("userId") as DocumentReference,
+                    document.data?.get("userFullName") as String,
+                    document.data?.get("userFullName") as String,
+                    document.data?.get("hairSalon") as HashMap<String, *>,
+                    document.data?.get("service") as HashMap<String, *>,
+                    document.data?.get("stylist") as HashMap<String, *>,
+                    document.data?.get("bookingDate") as String,
+                    document.data?.get("bookingTime") as String,
+                    document.data?.get("bookingShift") as DocumentReference,
+                    document.data?.get("createdAt") as String,
+                    document.data?.get("discountApplied") as HashMap<String, *>,
+                    document.data?.get("notes") as String,
+                    document.data?.get("status") as String,
+                    document.data?.get("totalPrice") as Long,
+                )
+                // Insert to list
+                appointmentList.add(appointment)
+            }
+        }
+        catch (exception: Exception) {
+            Log.e("DbAppointmentServices: ", exception.toString())
+        }
+        return appointmentList
+    }
+
+    override fun findById(data: Any): Any {
+        TODO("Not yet implemented")
+    }
+
+    override fun updateOne(id: String, updateDoc: Any): Any {
+        TODO("Not yet implemented")
+    }
+
+    override fun delete(data: Any): Any {
+        TODO("Not yet implemented")
     }
 }

@@ -23,6 +23,9 @@ import com.example.hair_booking.ui.normal_user.booking.choose_service.ChooseServ
 import com.example.hair_booking.ui.normal_user.booking.choose_stylist.ChooseStylistActivity
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.*
 import kotlin.collections.ArrayList
@@ -78,8 +81,11 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
         viewModel.stylistEditTextClicked.observe(this, androidx.lifecycle.Observer {
             if(viewModel.checkIfSalonEditTextIsEmpty())
                 displaySalonChosenRequiredWarning()
-            else
-                moveToChooseStylistScreen()
+            else {
+                GlobalScope.launch {
+                    moveToChooseStylistScreen()
+                }
+            }
         })
 
         // Observe date edit text onclick event to display date picker dialog
@@ -117,10 +123,15 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
         startActivityForResult(intent, REQUEST_CODE_CHOOSE_SERVICE)
     }
 
-    private fun moveToChooseStylistScreen() {
+    private suspend fun moveToChooseStylistScreen() {
         val intent = Intent(this, ChooseStylistActivity::class.java)
 
         intent.putExtra("chosenSalonId", viewModel.salonId)
+        intent.putExtra("chosenShiftId", viewModel.shiftId.value)
+        intent.putExtra("chosenDate", viewModel.bookingDate.value)
+        val chosenTimeRange = viewModel.getTimeRangeChosenInHour()
+        intent.putExtra("chosenTime", chosenTimeRange.first)
+        intent.putExtra("estimatedEndTime", chosenTimeRange.second)
         startActivityForResult(intent, REQUEST_CODE_CHOOSE_STYLIST)
     }
 
@@ -155,7 +166,14 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
 
                 displayDateTimePickerWrapper()
                 // Setup list of shifts for user to choose after reselect service
-                viewModel.setupShiftPickerSpinner(this, binding.shiftPickerSpinner, binding.timePickerLabel, binding.timePickerSpinner)
+                viewModel.setupShiftPickerSpinner(
+                    this,
+                    binding.shiftPickerSpinner,
+                    binding.timePickerLabel,
+                    binding.timePickerSpinner,
+                    binding.chooseStylistLabel,
+                    binding.chooseStylistTextInputLayout
+                )
                 hideTimePicker()
             }
 
@@ -205,6 +223,13 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
         }
     }
 
+    private fun hideChooseStylist() {
+        if(binding.chooseStylistLabel.visibility == View.VISIBLE && binding.chooseStylistTextInputLayout.visibility == View.VISIBLE) {
+            binding.chooseStylistLabel.visibility = View.GONE
+            binding.chooseStylistTextInputLayout.visibility = View.GONE
+        }
+    }
+
     private fun displayDatePickerDialog() {
         val now = Calendar.getInstance() // Get current time
 
@@ -237,8 +262,16 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
 //            binding.timePickerWrapper.visibility = View.VISIBLE
 
         // Setup list of shifts for user to choose after choosing date
-        viewModel.setupShiftPickerSpinner(this, binding.shiftPickerSpinner, binding.timePickerLabel, binding.timePickerSpinner)
+        viewModel.setupShiftPickerSpinner(
+            this,
+            binding.shiftPickerSpinner,
+            binding.timePickerLabel,
+            binding.timePickerSpinner,
+            binding.chooseStylistLabel,
+            binding.chooseStylistTextInputLayout
+        )
         hideTimePicker()
+        hideChooseStylist()
         displayShiftPicker()
     }
 
