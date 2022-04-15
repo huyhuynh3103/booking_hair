@@ -3,25 +3,33 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.hair_booking.ui.admin.users_list.UserDetailAdminViewModel" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".ui.normal_user.profile.NormalUserProfileActivity">
+
+
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             >
 
             <ImageView
-                android:id="@+id/coverManager"
+                android:id="@+id/coverCustomer"
                 android:layout_width="match_parent"
                 android:layout_height="170dp"
                 android:scaleType="centerCrop" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/avatarManager"
+                android:id="@+id/avatarCustomer"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_alignParentTop="true"
@@ -49,14 +57,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Tên đăng nhập"
-                    android:textSize="18sp"
                     android:textColor="@color/black"
+                    android:textSize="18sp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginBottom="5dp"
                     android:gravity="left"/>
 
                 <TextView
-                    android:id="@+id/etUsernameManager"
+                    android:id="@+id/etUsernameCustomer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -64,8 +72,11 @@
                     android:padding="5dp"
                     android:maxLines="1"
                     android:maxLength="50"
+                    android:text="@{viewModel.user.accountId.id}"
                     android:textSize="20sp"
-                    android:layout_marginLeft="20dp"/>
+                    android:layout_marginLeft="20dp"
+                    accountList = "@{viewModel.accountList}"
+                    usernameId = "@{viewModel.user.accountId.id}"/>
 
 
                 <TextView
@@ -79,50 +90,116 @@
                     android:layout_marginBottom="5dp"
                     android:gravity="left"/>
 
-                <EditText
-                    android:id="@+id/etNameManager"
+                <TextView
+                    android:id="@+id/etNameCustomer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:padding="5dp"
                     android:maxLines="1"
                     android:maxLength="50"
+                    android:text="@{viewModel.user.fullName}"
+                    android:textColor="@color/black"
                     android:textSize="20sp"
                     android:layout_marginLeft="20dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Chức vụ"
-                    android:textSize="18sp"
+                    android:text="Số điện thoại*"
                     android:textColor="@color/black"
+                    android:textSize="18sp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:gravity="left"/>
 
-                <EditText
-                    android:id="@+id/etSDTManager"
+                <TextView
+                    android:id="@+id/etSDTCustomer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:padding="5dp"
                     android:maxLines="1"
                     android:maxLength="50"
+                    android:text="@{viewModel.user.phoneNumber}"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="20dp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Giới tính*"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="left"/>
+
+                <RadioGroup
+                    android:id="@+id/rgGioiTinh"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:orientation="horizontal"
+                    android:textColor="@color/black"
+                    >
+                    <RadioButton
+                        android:id="@+id/btnNam"
+                        android:textSize="16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:clickable="false"
+                        android:text="Nam" />
+                    <RadioButton
+                        android:id="@+id/btnNu"
+                        android:textSize="16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:text="Nữ"/>
+
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Điểm thành viên"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="left"/>
+
+                <TextView
+                    android:id="@+id/etPointCustomer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textColor="@color/black"
+                    android:padding="5dp"
+                    android:maxLines="1"
+                    android:maxLength="50"
+                    android:text="@{viewModel.user.discountPoint.toString()}"
                     android:textSize="20sp"
                     android:layout_marginLeft="20dp"/>
 
-
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnCapNhatCustomer"
-                    android:text="Cập nhật"
-                    app:backgroundTint="#EDFF5722"
+                    android:layout_height="50dp"
+                    android:id="@+id/btnKhoa"
+                    android:text="Khóa"
+                    app:backgroundTint="#FF0000"
                     android:gravity="center"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="10dp"
                     android:layout_gravity="center"/>
+
 
             </LinearLayout>
         </ScrollView>

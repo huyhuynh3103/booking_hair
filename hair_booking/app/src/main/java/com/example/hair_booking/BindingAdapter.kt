@@ -1,12 +1,12 @@
 package com.example.hair_booking
 
 import android.util.Log
+import android.widget.Spinner
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.hair_booking.model.Discount
-import com.example.hair_booking.model.Salon
-import com.example.hair_booking.model.Service
-import com.example.hair_booking.model.Stylist
+import com.example.hair_booking.model.*
+import com.example.hair_booking.ui.admin.users_list.UsersListAdapter
 import com.example.hair_booking.ui.normal_user.booking.DiscountListAdapter
 import com.example.hair_booking.ui.normal_user.booking.SalonListAdapter
 import com.example.hair_booking.ui.normal_user.booking.ServiceListAdapter
@@ -62,5 +62,58 @@ fun bindSalonListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>
     else
     {
         Log.d("huy-test-bind","data in binding null")
+    }
+}
+
+@BindingAdapter("usersListData")
+fun bindUserListRecyclerView(recyclerView: RecyclerView, dataUser: ArrayList<NormalUser>?) {
+    val adapter = recyclerView.adapter as UsersListAdapter
+    if (dataUser != null) {
+        //for (i in dataUser?.indices!!) {
+            //for (j in dataAccount?.indices!!) {
+                //if (dataUser[i].accountId == dataAccount[j].id) {
+                //}
+            //}
+        adapter?.setData(dataUser)
+        }
+
+
+}
+
+@BindingAdapter("accountListData","usernameId")
+fun bindUsernameUserListTextView(textView: TextView, dataAccount: ArrayList<NormalUser>?, usernameId: String?) {
+    if (dataAccount != null && usernameId != null) {
+        for (i in dataAccount?.indices!!) {
+        if (dataAccount[i].id == usernameId)
+            textView.text = dataAccount[i].username
+        }
+    }
+}
+
+@BindingAdapter("accountList","usernameId")
+fun bindUsernameUserDetailTextView(textView: TextView, dataAccount: ArrayList<Account>?, usernameId: String?) {
+    if (dataAccount != null && usernameId != null) {
+        for (i in dataAccount?.indices!!) {
+            if (dataAccount[i].id == usernameId)
+                textView.text = dataAccount[i].username
+        }
+    }
+}
+
+
+@BindingAdapter("list", "selected")
+fun setSelectedItem(spinner: Spinner, list: ArrayList<Salon>?, selected: String?) {
+    if (list != null && selected != null) {
+        for (i in list?.indices!!) {
+            if (list[i].id == selected) {
+                spinner.setSelection(i)
+            }
+        }
+    }
+    else if (list != null && selected == null){
+        spinner.setSelection(0)
+    }
+    else {
+        Log.i("AdapterBindingError", "Set selected fail")
     }
 }

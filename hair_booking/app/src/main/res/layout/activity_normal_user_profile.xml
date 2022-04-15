@@ -73,7 +73,9 @@
                 android:maxLines="1"
                 android:maxLength="50"
                 android:textSize="20sp"
-                android:layout_marginLeft="20dp"/>
+                android:layout_marginLeft="20dp"
+                accountList = "@{viewModel.accountList}"
+                usernameId = "@{viewModel.normalUser.accountId.id}"/>
 
 
             <TextView
@@ -116,6 +118,7 @@
                 android:padding="5dp"
                 android:maxLines="1"
                 android:maxLength="50"
+                android:text="@{viewModel.normalUser.phoneNumber}"
                 android:textSize="20sp"
                 android:layout_marginLeft="20dp"/>
 
@@ -143,12 +146,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
+                        android:checked='@{viewModel.normalUser.gender.equals("Nam") ? true : false}'
                         android:text="Nam" />
                     <RadioButton
                         android:id="@+id/btnNu"
                         android:textSize="16sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checked='@{viewModel.normalUser.gender.equals("Nữ") ? true : false}'
                         android:text="Nữ"/>
 
             </RadioGroup>
@@ -172,6 +177,7 @@
                 android:padding="5dp"
                 android:maxLines="1"
                 android:maxLength="50"
+                android:text="@{viewModel.normalUser.discountPoint.toString()}"
                 android:textSize="20sp"
                 android:layout_marginLeft="20dp"/>
 

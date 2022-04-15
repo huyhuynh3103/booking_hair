@@ -7,6 +7,8 @@ import com.example.hair_booking.R
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.example.hair_booking.databinding.ActivityNormalUserProfileBinding
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 class NormalUserProfileActivity : AppCompatActivity() {
 
@@ -19,13 +21,12 @@ class NormalUserProfileActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_normal_user_profile)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-
         getSelectedNormalUserProfile()
         setOnClickListenerForButton()
     }
 
     private fun getSelectedNormalUserProfile() {
-        binding.viewModel?.getSalonDetail("lLed4Jd1HRPzEmwREbkl")
+        binding.viewModel?.getNormalUserDetail("lLed4Jd1HRPzEmwREbkl")
     }
 
     private fun setOnClickListenerForButton() {
