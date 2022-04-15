@@ -83,6 +83,9 @@ fun setSelectedItem(spinner: Spinner, list: ArrayList<Salon>?, selected: String?
             }
         }
     }
+    else if (list != null && selected == null){
+        spinner.setSelection(0)
+    }
     else {
         Log.i("AdapterBindingError", "Set selected fail")
     }

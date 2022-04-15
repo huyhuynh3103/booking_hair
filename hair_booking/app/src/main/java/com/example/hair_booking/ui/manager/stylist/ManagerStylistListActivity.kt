@@ -38,21 +38,30 @@ class ManagerStylistListActivity : AppCompatActivity() {
         binding.rvStylistList.addItemDecoration(itemDecoration)
 
         setOnStylistItemClickEvent()
+        setOnClickListenerForButton()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun setOnStylistItemClickEvent() {
         adapter.onItemClick = {
-            // Create an intent to send data back to previous activity
+            // Create an intent to send data
             val intent = Intent(this, ManagerStylistDetailActivity::class.java)
 
-//            val stylistId: String = viewModel.stylistList.value?.get(position)?.id ?: ""
-//            val stylistName: String = viewModel.stylistList.value?.get(position)?.fullName ?: ""
+            // send chosen service id and name back to previous activity
+            intent.putExtra("Task", "Edit")
+            intent.putExtra("StylistID", it.id)
 
+            startActivity(intent)
+        }
+    }
+
+    private fun setOnClickListenerForButton() {
+        binding.btAddStylist.setOnClickListener {
+            val intent = Intent(this, ManagerStylistDetailActivity::class.java)
 
             // send chosen service id and name back to previous activity
-            intent.putExtra("StylistID", it.id)
+            intent.putExtra("Task", "Add")
 
             startActivity(intent)
         }

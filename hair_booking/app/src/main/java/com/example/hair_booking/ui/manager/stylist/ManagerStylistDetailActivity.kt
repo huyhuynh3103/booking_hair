@@ -10,7 +10,10 @@ import androidx.databinding.DataBindingUtil
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityManagerStylistDetailBinding
 import com.example.hair_booking.model.Salon
-import com.example.hair_booking.ui.normal_user.booking.BookingActivity
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class ManagerStylistDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityManagerStylistDetailBinding
@@ -28,14 +31,26 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
         adapter = ArrayAdapter<Salon>(this, R.layout.support_simple_spinner_dropdown_item)
         binding.sWorkplace.adapter = adapter
 
-        // get selected ID from previous activity
-        binding.viewModel?.getStylistDetail(intent.getStringExtra("StylistID").toString())
-
         setOnClickListenerForButton()
 
-        // enable back button
+        // Support Menu Action
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        // Load data
+        runBlocking {
+            binding.task = async {
+                intent.getStringExtra("Task")
+            }.await().toString()
+
+            launch {
+                if (binding.task == "Edit") {
+                    // get selected ID from previous activity
+                    binding.viewModel?.getStylistDetail(intent.getStringExtra("StylistID").toString())
+                }
+            }.join()
+        }
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         finish()
