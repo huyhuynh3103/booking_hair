@@ -2,14 +2,20 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="viewModel"
+            type="com.example.hair_booking.ui.authentication.SignUpViewModel" />
+    </data>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             tools:context=".ui.authentication.SignUpActivity">
 
@@ -27,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="44dp"
                 android:layout_marginTop="16dp"
-                android:text="Sign Up"
+                android:text="@string/sign_up"
                 android:textSize="34sp"
                 android:textStyle="bold" />
 
@@ -39,24 +45,36 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="sans-serif-light"
-                android:labelFor="@id/usrSignUpET"
-                android:text="Username"
+                android:labelFor="@id/emailSignUpET"
+                android:text="@string/email"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/usrSignUpET"
-                android:layout_width="331dp"
+                android:id="@+id/emailSignUpET"
+                android:layout_width="match_parent"
                 android:layout_height="51dp"
                 android:layout_marginStart="44dp"
+                android:layout_marginEnd="32dp"
                 android:background="@drawable/rounded_edit_text"
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:inputType="textEmailAddress"
                 android:padding="10dp"
                 android:shadowColor="@color/shadow_edit_text"
                 android:shadowDx="0"
                 android:shadowDy="2"
-                android:shadowRadius="2" />
+                android:shadowRadius="2"
+                app:addTextChangedListener = "@{viewModel.emailTextWatcher}"/>
+
+            <TextView
+                android:id="@+id/emailWarning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="8dp"
+                android:textColor="#FF5252"
+                android:text="@{viewModel.emailWarning}"
+                android:visibility="@{viewModel.isVisibleEmailWarning?View.VISIBLE:View.GONE}"/>
 
             <TextView
                 android:id="@+id/fullNameLabel"
@@ -67,15 +85,16 @@
                 android:layout_marginBottom="8dp"
                 android:fontFamily="sans-serif-light"
                 android:labelFor="@id/nameSignUpET"
-                android:text="Full name"
+                android:text="@string/full_name"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/nameSignUpET"
-                android:layout_width="331dp"
+                android:layout_width="match_parent"
                 android:layout_height="51dp"
                 android:layout_marginStart="44dp"
+                android:layout_marginEnd="32dp"
                 android:background="@drawable/rounded_edit_text"
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -83,7 +102,18 @@
                 android:shadowColor="@color/shadow_edit_text"
                 android:shadowDx="0"
                 android:shadowDy="2"
-                android:shadowRadius="2" />
+                android:shadowRadius="2"
+                app:addTextChangedListener = "@{viewModel.fullNameTextWatcher}"/>
+
+            <TextView
+                android:id="@+id/fullNameWarning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="8dp"
+                android:textColor="#FF5252"
+                android:text="@{viewModel.fullNameWarning}"
+                android:visibility="@{viewModel.isVisibleFullNameWarning?View.VISIBLE:View.GONE}"/>
 
             <TextView
                 android:id="@+id/genderLabel"
@@ -93,7 +123,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="sans-serif-light"
-                android:text="Gender"
+                android:text="@string/gender"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -107,14 +137,14 @@
                     android:id="@+id/maleRadioBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Male" />
+                    android:text="@string/male" />
 
                 <RadioButton
                     android:id="@+id/femaleRadioBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="44dp"
-                    android:text="Female" />
+                    android:text="@string/female" />
             </LinearLayout>
 
             <TextView
@@ -126,23 +156,25 @@
                 android:layout_marginBottom="8dp"
                 android:fontFamily="sans-serif-light"
                 android:labelFor="@id/phoneNumberET"
-                android:text="Phone Number"
+                android:text="@string/phone_number"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/phoneNumberET"
-                android:layout_width="331dp"
+                android:layout_width="match_parent"
                 android:layout_height="51dp"
                 android:layout_marginStart="44dp"
+                android:layout_marginEnd="32dp"
                 android:background="@drawable/rounded_edit_text"
                 android:ems="10"
-                android:inputType="number"
+                android:inputType="phone"
                 android:padding="10dp"
                 android:shadowColor="@color/shadow_edit_text"
                 android:shadowDx="0"
                 android:shadowDy="2"
-                android:shadowRadius="2" />
+                android:shadowRadius="2"
+                tools:ignore="TextFields" />
 
             <TextView
                 android:id="@+id/pwdLabelSignUp"
@@ -153,15 +185,16 @@
                 android:layout_marginBottom="8dp"
                 android:fontFamily="sans-serif-light"
                 android:labelFor="@id/passwordSignUpET"
-                android:text="Password"
+                android:text="@string/password"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/passwordSignUpET"
-                android:layout_width="331dp"
+                android:layout_width="match_parent"
                 android:layout_height="51dp"
                 android:layout_marginStart="44dp"
+                android:layout_marginEnd="32dp"
                 android:background="@drawable/rounded_edit_text"
                 android:ems="10"
                 android:inputType="textPassword"
@@ -169,16 +202,18 @@
                 android:shadowColor="@color/shadow_edit_text"
                 android:shadowDx="0"
                 android:shadowDy="2"
-                android:shadowRadius="2" />
+                android:shadowRadius="2"
+                app:addTextChangedListener = "@{viewModel.passwordTextWatcher}"/>
 
             <TextView
-                android:id="@+id/pwdWarning"
+                android:id="@+id/passwordWarning"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="44dp"
-                android:layout_marginTop="4dp"
-                android:text="Contains at least 8 characters"
-                android:textColor="#FF5252" />
+                android:layout_marginTop="8dp"
+                android:textColor="#FF5252"
+                android:text="@{viewModel.passwordWarning}"
+                android:visibility="@{viewModel.isVisiblePasswordWarning?View.VISIBLE:View.GONE}"/>
 
             <TextView
                 android:id="@+id/confirmPwdSignUpET"
@@ -189,15 +224,16 @@
                 android:layout_marginBottom="8dp"
                 android:fontFamily="sans-serif-light"
                 android:labelFor="@id/confirmPasswordET"
-                android:text="Confirm Password"
+                android:text="@string/confirm_password"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/confirmPasswordET"
-                android:layout_width="331dp"
+                android:layout_width="match_parent"
                 android:layout_height="51dp"
                 android:layout_marginStart="44dp"
+                android:layout_marginEnd="32dp"
                 android:background="@drawable/rounded_edit_text"
                 android:ems="10"
                 android:inputType="textPassword"
@@ -205,15 +241,18 @@
                 android:shadowColor="@color/shadow_edit_text"
                 android:shadowDx="0"
                 android:shadowDy="2"
-                android:shadowRadius="2" />
+                android:shadowRadius="2"
+                app:addTextChangedListener = "@{viewModel.confirmPasswordTextWatcher}"/>
 
             <TextView
-                android:id="@+id/confirmPwdWarning"
+                android:id="@+id/confirmWarning"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="44dp"
-                android:layout_marginTop="4dp"
-                android:text="Not valid" />
+                android:layout_marginTop="8dp"
+                android:textColor="#FF5252"
+                android:text="@{viewModel.passwordConfirmationWarning}"
+                android:visibility="@{viewModel.isVisibleConfirmPasswordWarning?View.VISIBLE:View.GONE}"/>
 
             <Button
                 android:id="@+id/signUpBtn"
@@ -223,7 +262,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/rounded_button"
-                android:text="Sign Up"
+                android:text="@string/sign_up"
                 app:backgroundTint="@color/theme_primary" />
         </LinearLayout>
     </ScrollView>
