@@ -4,15 +4,26 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
 import com.example.hair_booking.model.Salon
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 
-class DbHairSalonServices(private var dbInstance: FirebaseFirestore?):DatabaseAbstract() {
-    override fun find(data: Any): Any {
+class DbAccountServices(private var dbInstance: FirebaseFirestore?):DatabaseAbstract() {
+    override  fun find(query: Any): Any {
         TODO("Not yet implemented")
     }
 
-    override suspend fun save(data: Any) : Any {
-        TODO("Not yet implemented")
+    override suspend fun save(data: Any) : DocumentReference {
+        Log.d("huy-save-account","start")
+        val task:DocumentReference?
+        try {
+            task  =  dbInstance!!.collection(Constant.collection.accounts).add(data).await()
+        }catch (e: Exception){
+            Log.d("huy-exception","Save new account failed")
+            throw e
+        }
+        return task
     }
 
 

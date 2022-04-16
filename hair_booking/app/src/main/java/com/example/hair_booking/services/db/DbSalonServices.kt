@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.model.Salon
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.tasks.await
 
 class DbSalonServices(private var dbInstance: FirebaseFirestore?) {
 

@@ -4,6 +4,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.hair_booking.Constant
 import com.example.hair_booking.utils.EmailValidator
@@ -17,6 +18,9 @@ class SignUpViewModel: ViewModel() {
     val isVisibleEmailWarning:LiveData<Boolean> = _isVisibleEmailWarning
     private val _emailWarning = MutableLiveData<String>()
     val emailWarning:LiveData<String> = _emailWarning
+    fun setEmailWarningVisible(){
+        _isVisibleEmailWarning.value = true
+    }
 
     // full name
     private val _isVisibleFullNameWarning = MutableLiveData<Boolean>()
@@ -24,11 +28,19 @@ class SignUpViewModel: ViewModel() {
     private val _fullNameWarning = MutableLiveData<String>()
     val fullNameWarning:LiveData<String> = _fullNameWarning
 
+    fun setFullNameWarningVisible(){
+        _isVisibleFullNameWarning.value = true
+    }
     // password
     private val _isVisiblePasswordWarning = MutableLiveData<Boolean>()
     val isVisiblePasswordWarning:LiveData<Boolean> = _isVisiblePasswordWarning
     private val _passwordWarning = MutableLiveData<String>()
     val passwordWarning:LiveData<String> = _passwordWarning
+
+    fun setPasswordWarningVisible(){
+        _isVisiblePasswordWarning.value = true
+    }
+
 
     //confirm password
     private val _isVisibleConfirmPasswordWarning = MutableLiveData<Boolean>()
@@ -36,15 +48,19 @@ class SignUpViewModel: ViewModel() {
     private val _passwordConfirmationWarning = MutableLiveData<String>()
     val passwordConfirmationWarning:LiveData<String> = _passwordConfirmationWarning
 
+    fun setConfirmWarningVisible(){
+        _isVisibleConfirmPasswordWarning.value = true
+    }
+
     init {
         _isVisibleEmailWarning.value = false
-        _emailWarning.value = ""
+        _emailWarning.value = Constant.messages.required
         _isVisibleFullNameWarning.value = false
-        _fullNameWarning.value = ""
+        _fullNameWarning.value = Constant.messages.required
         _isVisiblePasswordWarning.value = false
-        _passwordWarning.value=""
+        _passwordWarning.value=Constant.messages.required
         _isVisibleConfirmPasswordWarning.value = false
-        _passwordConfirmationWarning.value = ""
+        _passwordConfirmationWarning.value = Constant.messages.required
 
     }
 //    Text watcher for email
@@ -173,10 +189,10 @@ class SignUpViewModel: ViewModel() {
                     else -> {
                         _isVisibleConfirmPasswordWarning.value = false
                         _passwordConfirmationWarning.value = ""
+
                     }
                 }
             }
 
         }
-
 }

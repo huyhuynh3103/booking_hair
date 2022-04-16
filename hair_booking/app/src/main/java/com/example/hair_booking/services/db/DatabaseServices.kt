@@ -9,13 +9,13 @@ object dbServices {
     private var salonServices: DbSalonServices? = null
     private var stylistServices: DbStylistServices? = null
     private var serviceServices: DbServiceServices? = null
-
     init {
         dbInstance = Database.getInstance()
         normalUserServices = DbNormalUserServices(dbInstance)
         salonServices = DbSalonServices(dbInstance)
         stylistServices = DbStylistServices(dbInstance)
         serviceServices = DbServiceServices(dbInstance)
+
     }
 
     fun getNormalUserServices(): DbNormalUserServices? {
@@ -36,4 +36,5 @@ object dbServices {
 
     // GETTER
     val hairSalonServices = DbHairSalonServices(dbInstance)
+    val accountServices = DbAccountServices(dbInstance)
 }

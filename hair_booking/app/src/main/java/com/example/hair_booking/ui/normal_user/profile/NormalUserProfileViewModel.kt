@@ -11,7 +11,7 @@ class NormalUserProfileViewModel: ViewModel() {
     val normalUser: LiveData<NormalUser> = _normalUser
 
     fun getSalonDetail(id: String){
-        dbServices.getNormalUserServices()?.getNormalUserDetail(id)?.observeForever {
+        dbServices.getNormalUserServices()?.findById(id)?.observeForever {
             _normalUser.value = it
         }
     }

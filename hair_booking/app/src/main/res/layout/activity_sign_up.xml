@@ -127,7 +127,8 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <LinearLayout
+            <RadioGroup
+                android:id = "@+id/genderGroupBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="44dp"
@@ -137,6 +138,7 @@
                     android:id="@+id/maleRadioBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="@string/male" />
 
                 <RadioButton
@@ -145,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="44dp"
                     android:text="@string/female" />
-            </LinearLayout>
+            </RadioGroup>
 
             <TextView
                 android:id="@+id/phoneNumberTV"
@@ -262,9 +264,9 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/rounded_button"
+                android:enabled="@{!viewModel.isVisibleEmailWarning &amp;&amp; !viewModel.isVisibleFullNameWarning &amp;&amp; !viewModel.isVisiblePasswordWarning &amp;&amp; !viewModel.isVisibleConfirmPasswordWarning }"
                 android:text="@string/sign_up"
                 app:backgroundTint="@color/theme_primary" />
         </LinearLayout>
     </ScrollView>
-
 </layout>

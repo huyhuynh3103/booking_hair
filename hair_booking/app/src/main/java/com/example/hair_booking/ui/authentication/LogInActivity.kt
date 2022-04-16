@@ -40,7 +40,6 @@ class LogInActivity : AppCompatActivity() {
             val email = binding.emailTV.text.toString()
             val password = binding.passwordTV.text.toString()
             runBlocking {
-                launch {
                     val taskLoginResult = async { AuthRepository.login(email,password) }
                     val task = taskLoginResult.await()
                     task.addOnCompleteListener { t->
@@ -55,7 +54,6 @@ class LogInActivity : AppCompatActivity() {
                             Toast.makeText(applicationContext,Constant.messages.loginFailed,Toast.LENGTH_LONG).show()
                         }
                     }
-                }
             }
 
 
