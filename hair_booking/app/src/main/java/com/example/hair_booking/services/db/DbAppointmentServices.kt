@@ -95,7 +95,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         if (dbInstance != null) {
 
             val userDocRef = dbInstance!!
-                .collection(Constant.collection.accounts)
+                .collection(Constant.collection.normalUsers)
                 .document(userId)
 
             val result = dbInstance!!.collection(Constant.collection.appointments)

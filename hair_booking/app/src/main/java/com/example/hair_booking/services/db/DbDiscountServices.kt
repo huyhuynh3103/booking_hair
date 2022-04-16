@@ -37,7 +37,7 @@ class DbDiscountServices(private var dbInstance: FirebaseFirestore?): DatabaseAb
                     document.data?.get("description") as String,
                     document.data?.get("dateApplied") as String,
                     document.data?.get("dateExpired") as String,
-                    document.data?.get("percent") as Long
+                    document.data?.get("percent") as Double
                 )
 
                 discountList.add(discount)

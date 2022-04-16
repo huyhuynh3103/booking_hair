@@ -136,9 +136,17 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
     }
 
     private fun moveToChooseDiscountScreen() {
-        val intent = Intent(this, ChooseDiscountActivity::class.java)
+        if(viewModel.bookingDate.value.isNullOrEmpty())
+            displayChosenDateRequiredWarning()
+        else {
+            val intent = Intent(this, ChooseDiscountActivity::class.java)
 
-        startActivityForResult(intent, REQUEST_CODE_CHOOSE_DISCOUNT)
+            intent.putExtra("userId", "lLed4Jd1HRPzEmwREbkl")
+            intent.putExtra("chosenDate", viewModel.bookingDate.value)
+            val userCurrentPoint: Long = 2500
+            intent.putExtra("userCurrentPoint", userCurrentPoint)
+            startActivityForResult(intent, REQUEST_CODE_CHOOSE_DISCOUNT)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -306,11 +314,11 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
         builder.show()
     }
 
-    private fun displayServiceChosenRequiredWarning() {
+    private fun displayChosenDateRequiredWarning() {
         // Show warning dialog
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Cảnh báo")
-        builder.setMessage("Làm ơn chọn dịch vụ bạn muốn đặt!!!")
+        builder.setMessage("Vui lòng chọn ngày đặt trước!!")
 
         builder.setPositiveButton("Ok") { dialog, which ->
             // Do nothing

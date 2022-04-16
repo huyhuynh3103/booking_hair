@@ -34,7 +34,7 @@ fun bindBookingServiceListRecyclerView(recyclerView: RecyclerView, data: ArrayLi
     }
 }
 
-@BindingAdapter("data")
+@BindingAdapter("discountListForBookingData")
 fun bindBookingDiscountListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Discount>?) {
     val adapter = recyclerView.adapter as DiscountListAdapter
     if (data != null) {

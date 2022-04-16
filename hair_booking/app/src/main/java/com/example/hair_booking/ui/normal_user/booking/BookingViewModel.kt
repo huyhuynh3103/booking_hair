@@ -116,6 +116,7 @@ class BookingViewModel: ViewModel() {
 
     fun setChosenDate(dateChosen: String) {
         _bookingDate.value = dateChosen
+        _discount.value = "" // Empty discount when re select date
     }
 
     fun isToday(): Boolean {

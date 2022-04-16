@@ -96,10 +96,10 @@
                         android:id="@+id/chooseServiceEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
                         android:drawableLeft="@drawable/ic_baseline_view_list_24"
                         android:drawableRight="@drawable/ic_baseline_arrow_right_24"
                         android:drawablePadding="10dp"
+                        android:clickable="true"
                         android:focusable="false"
                         android:hint="@string/choose_service_edit_text_hint"
                         android:onClick="@{() -> viewModel.onServiceEditTextClicked()}"
@@ -336,6 +336,10 @@
                             android:drawableLeft="@drawable/ic_baseline_local_offer_24"
                             android:drawableRight="@drawable/ic_baseline_arrow_right_24"
                             android:drawablePadding="10dp"
+                            android:clickable="true"
+                            android:focusable="false"
+                            android:text="@{viewModel.discount}"
+                            android:onClick="@{() -> viewModel.onDiscountEditTextClicked()}"
                             android:hint="@string/discount_edit_text_hint" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
