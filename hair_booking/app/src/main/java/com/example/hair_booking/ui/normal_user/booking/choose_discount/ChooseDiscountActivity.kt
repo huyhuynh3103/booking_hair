@@ -85,11 +85,11 @@ class ChooseDiscountActivity : AppCompatActivity() {
 
                 val discountId: String = viewModel.discountList.value?.get(position)?.id ?: ""
                 val discountTitle: String = viewModel.discountList.value?.get(position)?.title ?: ""
-
-                // send chosen discount id and title back to previous activity
+                val discountPercent: Float? = viewModel.discountList.value?.get(position)?.percent?.toFloat()
+                // send chosen discount id, title and percent back to previous activity
                 replyIntent.putExtra("discountId", discountId)
                 replyIntent.putExtra("discountTitle", discountTitle)
-
+                replyIntent.putExtra("discountPercent", discountPercent)
                 setResult(Activity.RESULT_OK, replyIntent)
                 finish()
             }

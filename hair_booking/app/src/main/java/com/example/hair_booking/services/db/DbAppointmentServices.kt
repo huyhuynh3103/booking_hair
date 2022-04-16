@@ -3,14 +3,15 @@ package com.example.hair_booking.services.db
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
-import com.example.hair_booking.model.Appointment
-import com.example.hair_booking.model.Discount
-import com.example.hair_booking.model.Stylist
+import com.example.hair_booking.model.*
+import com.example.hair_booking.services.booking.DateServices
+import com.example.hair_booking.services.booking.TimeServices
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
+import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -160,7 +161,158 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         return appointmentList
     }
 
-    override fun findById(data: Any): Any {
+    suspend fun saveBookingSchedule(
+        userId: String,
+        salonId: String,
+        serviceId: String,
+        serviceTitle: String,
+        stylistId: String,
+        bookingDate: String,
+        bookingTime: String,
+        shiftId: String,
+        discountId: String,
+        discountTitle: String,
+        note: String,
+        totalPrice: Long
+    ) {
+        val dbNormalUserServices = dbServices.getNormalUserServices()!!
+        val dbSalonServices = dbServices.getSalonServices()!!
+        val dbStylistServices = dbServices.getStylistServices()!!
+
+        // Get user info
+        val user: NormalUser? = dbNormalUserServices.getUserById(userId)
+
+        // Get salon info
+        val chosenSalon: Salon? = dbSalonServices.getSalonById(salonId)
+
+        // Get stylist info
+        val chosenStylist: Stylist? = dbStylistServices.getStylistById(stylistId)
+
+        // Create user doc reference
+        val userDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.normalUsers)
+            .document(userId)
+
+        // Create salon doc reference
+        val salonDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.hairSalons)
+            .document(chosenSalon!!.id)
+
+        // Create shift doc reference
+        val stylistDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.stylists)
+            .document(stylistId)
+
+        // Create shift doc reference
+        val shiftDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.shifts)
+            .document(shiftId)
+
+        // Create service doc reference
+        val serviceDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.services)
+            .document(serviceId)
+
+        val subId: String = generateAppointmentSubId()
+        val status: String = "Chấp nhận"
+        val createdAt: String = DateServices.currentDateInString() + " " + TimeServices.getCurrentTimeInFloatFormat()
+
+
+        var discountDocRef: DocumentReference? = null
+        var docTobeSaved: HashMap<String, Any?>? = null
+        if(!discountId.isNullOrEmpty() && !discountTitle.isNullOrEmpty()) {
+            // Create discount doc reference
+            discountDocRef = dbInstance!!.collection(Constant.collection.discounts)
+                .document(discountId)
+
+            docTobeSaved = hashMapOf(
+                "userId" to userDocRef,
+                "userFullName" to (user?.fullName ?: null),
+                "userPhoneNumber" to (user?.phoneNumber ?: null),
+                "hairSalon" to hashMapOf(
+                    "address" to (chosenSalon?.address ?: null),
+                    "id" to salonDocRef,
+                    "name" to (chosenSalon?.name ?: null)
+                ),
+                "service" to hashMapOf(
+                    "id" to serviceDocRef,
+                    "title" to serviceTitle
+                ),
+                "stylist" to hashMapOf(
+                    "id" to stylistDocRef,
+                    "fullName" to (chosenStylist?.fullName ?: null),
+                    "description" to (chosenStylist?.description ?: null),
+                    "avatar" to (chosenStylist?.avatar ?: null)
+                ),
+                "bookingDate" to bookingDate,
+                "bookingTime" to bookingTime,
+                "bookingShift" to shiftDocRef,
+                "discountApplied" to hashMapOf(
+                    "id" to discountDocRef,
+                    "title" to discountTitle
+                ),
+                "notes" to note,
+                "totalPrice" to totalPrice,
+                "subId" to subId,
+                "status" to status,
+            )
+        }
+        else {
+            docTobeSaved = hashMapOf(
+                "userId" to userDocRef,
+                "userFullName" to (user?.fullName ?: null),
+                "userPhoneNumber" to (user?.phoneNumber ?: null),
+                "hairSalon" to hashMapOf(
+                    "address" to (chosenSalon?.address ?: null),
+                    "id" to salonDocRef,
+                    "name" to (chosenSalon?.name ?: null)
+                ),
+                "service" to hashMapOf(
+                    "id" to serviceDocRef,
+                    "title" to serviceTitle
+                ),
+                "stylist" to hashMapOf(
+                    "id" to stylistDocRef,
+                    "fullName" to (chosenStylist?.fullName ?: null),
+                    "description" to (chosenStylist?.description ?: null),
+                    "avatar" to (chosenStylist?.avatar ?: null)
+                ),
+                "bookingDate" to bookingDate,
+                "bookingTime" to bookingTime,
+                "bookingShift" to shiftDocRef,
+                "discountApplied" to null,
+                "notes" to note,
+                "totalPrice" to totalPrice,
+                "subId" to subId,
+                "status" to status,
+            )
+        }
+
+        // Save appointment to database
+        if(dbInstance != null && docTobeSaved != null) {
+            dbInstance!!.collection(Constant.collection.appointments)
+                .add(docTobeSaved)
+                .addOnSuccessListener { documentReference ->
+                    Log.d("DbAppointmentServices", "DocumentSnapshot written with ID: ${documentReference.id}")
+                }
+                .addOnFailureListener { e ->
+                    Log.d("DbAppointmentServices", "Error adding document", e)
+                }
+        }
+    }
+
+    private fun generateAppointmentSubId(): String {
+        // Get 4 first characters of random ID
+        val uuid = UUID.randomUUID().toString()
+        var randomIndex: ArrayList<Int> = ArrayList()
+
+        for(i in 0..3) { // Generate 4 random index
+            randomIndex.add((0..uuid.length).random())
+        }
+        var result: String = ""
+        randomIndex.forEach {
+            // Pick characters from random indexs
+            // and concatenate into final string
+            result += uuid[it]
+        }
+        return result
+    }
+    override suspend fun findById(data: Any): Any {
         TODO("Not yet implemented")
     }
 

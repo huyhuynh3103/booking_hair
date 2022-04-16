@@ -222,6 +222,28 @@ class BookingServices {
             return result
         }
 
+        @RequiresApi(Build.VERSION_CODES.N)
+        suspend fun getAvailableStylists(timeRangeChosenInHour: Pair<Float, Float>,
+                                         chosenSalon:String,
+                                         chosenDate: String,
+                                         chosenShiftId: String): ArrayList<Stylist> {
+            val busyStylistsIds: ArrayList<String> = getIdOfBusyStylistsAtSpecificTime(
+                timeRangeChosenInHour,
+                chosenSalon,
+                chosenDate,
+                chosenShiftId)
+
+            val allStylist: ArrayList<Stylist> = dbServices.getStylistServices()!!.findAll()
+
+            var availableStylist: ArrayList<Stylist> = ArrayList(allStylist)
+            availableStylist.removeIf { stylist ->
+                busyStylistsIds.contains(stylist.id)
+                        || stylist.workPlace!!.id != chosenSalon
+                        || !StylistServices.isWorking(chosenShiftId, stylist.shifts!!)
+            }
+
+            return availableStylist
+        }
     }
 }
 

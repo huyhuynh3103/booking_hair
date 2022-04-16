@@ -58,10 +58,11 @@ class ChooseServiceActivity : AppCompatActivity() {
 
             val serviceId: String = viewModel.serviceList.value?.get(position)?.id ?: ""
             val serviceName: String = viewModel.serviceList.value?.get(position)?.title ?: ""
-
+            val servicePrice: Long? = viewModel.serviceList.value?.get(position)?.price
             // send chosen service id and name back to previous activity
             replyIntent.putExtra("serviceId", serviceId)
             replyIntent.putExtra("serviceName", serviceName)
+            replyIntent.putExtra("servicePrice", servicePrice)
             setResult(Activity.RESULT_OK, replyIntent)
             finish()
         }

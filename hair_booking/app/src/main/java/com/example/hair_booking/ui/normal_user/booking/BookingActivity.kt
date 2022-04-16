@@ -2,6 +2,7 @@ package com.example.hair_booking.ui.normal_user.booking
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -9,6 +10,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.viewModelScope
@@ -41,6 +43,7 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
     // "by viewModels()" is the auto initialization of viewmodel made by the library
     private val viewModel: BookingViewModel by viewModels()
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,6 +66,7 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun observeOnClickEvent() {
         // Observe salon edit text onclick event to perform navigation to choose salon screen
         viewModel.salonEditTextClicked.observe(this, androidx.lifecycle.Observer {
@@ -106,8 +110,16 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
         viewModel.confirmBtnClicked.observe(this, androidx.lifecycle.Observer {
             if(viewModel.checkEmptyFieldsExist())
                 displayEmptyFieldsWarning()
-            else
-                viewModel.saveBookingSchedule()
+            else {
+                GlobalScope.launch {
+                    val ack = viewModel.saveBookingSchedule(binding.note.text.toString())
+                    if(!ack) {
+                        runOnUiThread {
+                            displayStylistBusyWarning()
+                        }
+                    }
+                }
+            }
         })
     }
 
@@ -168,9 +180,10 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
                 // Including service id and service name
                 val serviceId: String = data?.getStringExtra("serviceId").orEmpty()
                 val serviceName: String = data?.getStringExtra("serviceName").orEmpty()
+                val servicePrice: Long? = data?.getLongExtra("servicePrice", 0)
                 // Call viewmodel to set chosen service
-                if(serviceId.isNotEmpty() && serviceName.isNotEmpty())
-                    binding.viewModel!!.setChosenService(serviceId, serviceName)
+                if(serviceId.isNotEmpty() && serviceName.isNotEmpty() && servicePrice != null)
+                    binding.viewModel!!.setChosenService(serviceId, serviceName, servicePrice)
 
                 displayDateTimePickerWrapper()
                 // Setup list of shifts for user to choose after reselect service
@@ -183,6 +196,7 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
                     binding.chooseStylistTextInputLayout
                 )
                 hideTimePicker()
+                displayTotalPrice()
             }
 
             REQUEST_CODE_CHOOSE_STYLIST -> {
@@ -200,9 +214,10 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
                 // Including discount id and title
                 val discountId: String = data?.getStringExtra("discountId").orEmpty()
                 val discountTitle: String = data?.getStringExtra("discountTitle").orEmpty()
+                val discountPercent: Float? = data?.getFloatExtra("discountPercent", 0.0F)
                 // Call viewmodel to set chosen discount
-                if(discountId.isNotEmpty() && discountTitle.isNotEmpty())
-                    binding.viewModel!!.setChosenDiscount(discountId, discountTitle)
+                if(discountId.isNotEmpty() && discountTitle.isNotEmpty() && discountPercent != null)
+                    binding.viewModel!!.setChosenDiscount(discountId, discountTitle, discountPercent)
             }
         }
     }
@@ -235,6 +250,26 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
         if(binding.chooseStylistLabel.visibility == View.VISIBLE && binding.chooseStylistTextInputLayout.visibility == View.VISIBLE) {
             binding.chooseStylistLabel.visibility = View.GONE
             binding.chooseStylistTextInputLayout.visibility = View.GONE
+        }
+    }
+
+    private fun hideTotalPrice() {
+        if(binding.totalPriceLabel.visibility == View.VISIBLE
+            && binding.totalPrice.visibility == View.VISIBLE
+            && binding.vndUnit.visibility == View.VISIBLE) {
+            binding.totalPriceLabel.visibility = View.GONE
+            binding.totalPrice.visibility = View.GONE
+            binding.vndUnit.visibility = View.GONE
+        }
+    }
+
+    private fun displayTotalPrice() {
+        if(binding.totalPriceLabel.visibility == View.GONE
+            && binding.totalPrice.visibility == View.GONE
+            && binding.vndUnit.visibility == View.GONE) {
+            binding.totalPriceLabel.visibility = View.VISIBLE
+            binding.totalPrice.visibility = View.VISIBLE
+            binding.vndUnit.visibility = View.VISIBLE
         }
     }
 
@@ -319,6 +354,18 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Cảnh báo")
         builder.setMessage("Vui lòng chọn ngày đặt trước!!")
+
+        builder.setPositiveButton("Ok") { dialog, which ->
+            // Do nothing
+        }
+        builder.show()
+    }
+
+    private fun displayStylistBusyWarning() {
+        // Show warning dialog
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Thông báo")
+        builder.setMessage("Khung giờ bạn vừa đặt vừa bị chiếm mất rồi! Vui lòng chọn khung giờ hoặc stylist khác")
 
         builder.setPositiveButton("Ok") { dialog, which ->
             // Do nothing

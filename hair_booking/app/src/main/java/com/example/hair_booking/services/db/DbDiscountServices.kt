@@ -48,7 +48,7 @@ class DbDiscountServices(private var dbInstance: FirebaseFirestore?): DatabaseAb
         return discountList
     }
 
-    override fun findById(data: Any): Any {
+    override suspend fun findById(data: Any): Any {
         TODO("Not yet implemented")
     }
 

@@ -2,6 +2,8 @@ package com.example.hair_booking.services.db
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.hair_booking.Constant
+import com.example.hair_booking.model.Salon
 import com.example.hair_booking.model.Service
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -38,40 +40,6 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
     }
 
     suspend fun getServiceDuration(serviceId: String): Int {
-//        runBlocking {
-//            var serviceDuration: Int = 0
-//            val getServiceDurationAsync = async {
-//                if (dbInstance != null) {
-//                    dbInstance!!.collection("services")
-//                        .document(shiftId)
-//                        .get()
-//                        .addOnSuccessListener { document ->
-//                             serviceDuration = (document["duration"] as Long).toInt()
-//                        }
-//                        .addOnFailureListener { exception ->
-//                            Log.d("xk", "get failed with ", exception)
-//                        }
-//                }
-//            }
-//            launch (Dispatchers.Default) {
-//                getServiceDurationAsync.await()
-//            }
-//
-//        }
-
-//        var serviceDuration: Int = 0
-//        if (dbInstance != null) {
-//            dbInstance!!.collection("services")
-//                .document(serviceId)
-//                .get()
-//                .addOnSuccessListener { document ->
-//                    serviceDuration = (document["duration"] as Long).toInt()
-//                }
-//                .addOnFailureListener { exception ->
-//                    Log.d("xk", "get failed with ", exception)
-//                }
-//        }
-//        return serviceDuration
         var serviceDuration: Int = 0
         if (dbInstance != null) {
             val docSnap = dbInstance!!.collection("services")
@@ -82,5 +50,25 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
             serviceDuration = (docSnap["duration"] as Long).toInt()
         }
         return serviceDuration
+    }
+
+    suspend fun getServiceById(serviceId: String): Service? {
+        var service: Service? = null
+
+        if (dbInstance != null) {
+            val result = dbInstance!!.collection(Constant.collection.services)
+                .document(serviceId)
+                .get()
+                .await()
+
+            service = Service(
+                result.id,
+                result.data?.get("title") as String,
+                result.data?.get("price") as Long,
+                result.data?.get("description") as String
+            )
+        }
+
+        return service
     }
 }

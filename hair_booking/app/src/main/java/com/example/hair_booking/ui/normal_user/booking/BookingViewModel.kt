@@ -13,27 +13,34 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hair_booking.model.Shift
+import com.example.hair_booking.model.Stylist
 import com.example.hair_booking.services.booking.TimeServices
 import com.example.hair_booking.services.booking.BookingServices
+import com.example.hair_booking.services.db.DbAppointmentServices
 import com.example.hair_booking.services.db.dbServices
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.sql.Time
 import java.util.*
 import kotlin.collections.ArrayList
 
 class BookingViewModel: ViewModel() {
+    private var _userId: String = "lLed4Jd1HRPzEmwREbkl" // Used to query database
+    val userId: String get() = _userId // Getter
+
     private lateinit var _salonId: String // Used to query database
     val salonId: String get() = _salonId // Getter
     private val _salonLocation = MutableLiveData<String>()
     val salonLocation: LiveData<String> = _salonLocation
 
     private var serviceId: String = ""// Used to query database
-    private val _service = MutableLiveData<String>()
-    val service: LiveData<String> = _service
+    private val _serviceTitle = MutableLiveData<String>()
+    private val _servicePrice = MutableLiveData<Long>()
+    val serviceTitle: LiveData<String> = _serviceTitle
 
-    private lateinit var stylistId: String // Used to query database
+    val servicePrice: LiveData<Long> = _servicePrice
+
+    private var stylistId: String = "" // Used to query database
     private val _stylist = MutableLiveData<String>()
     val stylist: LiveData<String> = _stylist
 
@@ -46,12 +53,17 @@ class BookingViewModel: ViewModel() {
     private val _bookingTime = MutableLiveData<String>()
     val bookingTime: LiveData<String> = _bookingTime
 
-    private lateinit var discountId: String// Used to query database
+    private var discountId: String = ""// Used to query database
     private val _discount = MutableLiveData<String>()
+    private val _discountPercent = MutableLiveData<Float>()
     val discount: LiveData<String> = _discount
+    val discountPercent: LiveData<Float> = _discountPercent
 
     private val _note = MutableLiveData<String>()
     val note: LiveData<String> = _note
+
+    private val _totalPrice = MutableLiveData<Long>()
+    val totalPrice: LiveData<Long> = _totalPrice
 
     // Set salon edit text onclick to be observable
     private val _salonEditTextClicked = MutableLiveData<Boolean>()
@@ -71,9 +83,6 @@ class BookingViewModel: ViewModel() {
         return false
     }
 
-//    private fun getBusinessHourOfChosenSalon(): ArrayList<String> {
-//
-//    }
 
     // Set service edit text onclick to be observable
     private val _serviceEditTextClicked = MutableLiveData<Boolean>()
@@ -82,9 +91,11 @@ class BookingViewModel: ViewModel() {
         _serviceEditTextClicked.value = true
     }
 
-    fun setChosenService(serviceId: String, serviceName: String) {
+    fun setChosenService(serviceId: String, serviceName: String, servicePrice: Long) {
         this.serviceId = serviceId
-        _service.value = serviceName
+        _serviceTitle.value = serviceName
+        _servicePrice.value = servicePrice
+        _totalPrice.value = servicePrice
     }
 
     suspend fun getChosenServiceDuration(): Int {
@@ -161,9 +172,15 @@ class BookingViewModel: ViewModel() {
         _discountEditTextClicked.value = true
     }
 
-    fun setChosenDiscount(discountId: String, discountTitle: String) {
+    fun setChosenDiscount(discountId: String, discountTitle: String, discountPercent: Float) {
         this.discountId = discountId
         _discount.value = discountTitle
+        _discountPercent.value = discountPercent
+        _totalPrice.value = calculateTotal(servicePrice.value!!, discountPercent)
+    }
+
+    fun calculateTotal(servicePrice: Long, discountPercent: Float): Long {
+        return (servicePrice - (servicePrice * discountPercent)).toLong()
     }
 
     // Set confirm button onclick to be observable
@@ -175,8 +192,8 @@ class BookingViewModel: ViewModel() {
 
     // Check if there are empty fields
     fun checkEmptyFieldsExist(): Boolean {
-        return salonLocation.value.isNullOrEmpty() || service.value.isNullOrEmpty()
-                || stylist.value.isNullOrEmpty() || bookingDate.value.isNullOrEmpty()
+        return salonLocation.value.isNullOrEmpty() || serviceTitle.value.isNullOrEmpty()
+                 || bookingDate.value.isNullOrEmpty()
                 || bookingTime.value.isNullOrEmpty()
     }
 
@@ -270,11 +287,7 @@ class BookingViewModel: ViewModel() {
                         _shiftId.value!!, isToday())
 
                 }
-                Log.d("xk", "finish getting disable time")
             }.await()
-            Log.d("xk", "finish getting disable time1")
-            // Add placeholder
-            Log.d("xk", "placehd")
             availableTime.add(0, "Chọn giờ")
             availableTime.forEach {
                 Log.d("xk", "reconstruct time picker")
@@ -306,8 +319,44 @@ class BookingViewModel: ViewModel() {
         }
     }
 
-    fun saveBookingSchedule() {
-        // Do sth
+    @RequiresApi(Build.VERSION_CODES.N)
+    suspend fun saveBookingSchedule(note: String): Boolean {
+        // Re check if stylist is free
+        // In case there is someone has just booked with the chosen stylist at the chosen date and time
+        val chosenTimeRange = getTimeRangeChosenInHour()
+        var availableStylist: ArrayList<Stylist> = BookingServices.getAvailableStylists(
+            chosenTimeRange,
+            salonId,
+            bookingDate.value!!,
+            shiftId.value!!)
+
+        if(availableStylist.size <= 0)
+            return false // Announce to user
+
+        if(stylistId.isNullOrEmpty()) {
+            // Select default stylist
+            stylistId = availableStylist[0].id
+        }
+
+        if(discountId.isNullOrEmpty() || discount.value.isNullOrEmpty()) {
+            discountId = ""
+            _discount.postValue("")
+        }
+        dbServices.getAppointmentServices()!!.saveBookingSchedule(
+            userId,
+            salonId,
+            serviceId,
+            serviceTitle.value!!,
+            stylistId,
+            bookingDate.value!!,
+            bookingTime.value!!,
+            shiftId.value!!,
+            discountId,
+            discount.value!!,
+            note,
+            totalPrice.value!!
+        )
+        return true
     }
 
     suspend fun getTimeRangeChosenInHour(): Pair<Float, Float> {

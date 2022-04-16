@@ -28,36 +28,12 @@ class ChooseStylistViewModel(private val chosenSalonId: MutableLiveData<String>,
 
     @RequiresApi(Build.VERSION_CODES.N)
     private suspend fun getStylistList() {
-//        val stylistList: ArrayList<Stylist>? = dbServices.getStylistServices()?.findAll()
-//
-//        val stylistsToDisplay: ArrayList<Stylist> = ArrayList(stylistList)
 
-//        if (stylistList != null) {
-//            for(stylist in stylistList) {
-//                if(stylist.workPlace?.id == chosenSalonId.value) {
-//                    if((stylist.shifts?.get("morning") as HashMap<*, *>).containsValue(chosenShiftId.value)
-//                        || (stylist.shifts?.get("afternoon") as HashMap<*, *>).containsValue(chosenShiftId.value)
-//                        || (stylist.shifts?.get("evening") as HashMap<*, *>).containsValue(chosenShiftId.value)) {
-//                        stylistsToDisplay.add(Stylist(stylist))
-//                    }
-//                }
-//            }
-//        }
-
-        val busyStylistsIds: ArrayList<String> = BookingServices.getIdOfBusyStylistsAtSpecificTime(
+        var availableStylist: ArrayList<Stylist> = BookingServices.getAvailableStylists(
             chosenTimeRange.value!!,
             chosenSalonId.value!!,
             chosenDate.value!!,
             chosenShiftId.value!!)
-
-        val allStylist: ArrayList<Stylist> = dbServices.getStylistServices()!!.findAll()
-
-        var availableStylist: ArrayList<Stylist> = ArrayList(allStylist)
-        availableStylist.removeIf { stylist ->
-            busyStylistsIds.contains(stylist.id)
-                    || stylist.workPlace!!.id != chosenSalonId.value
-                    || !StylistServices.isWorking(chosenShiftId.value!!, stylist.shifts!!)
-        }
 
         // Add default option
         availableStylist.add(0, Stylist(availableStylist[0].id, "Mặc định", "none", ""))

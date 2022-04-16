@@ -2,6 +2,8 @@ package com.example.hair_booking.services.db
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.hair_booking.Constant
+import com.example.hair_booking.model.NormalUser
 import com.example.hair_booking.model.Salon
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -71,7 +73,30 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) {
         return result
     }
 
-//    private fun generateAvailableHoursForBooking(): ArrayList<String> {
-//
-//    }
+
+    suspend fun getSalonById(salonId: String): Salon? {
+        var salon: Salon? = null
+
+        if (dbInstance != null) {
+            val result = dbInstance!!.collection(Constant.collection.hairSalons)
+                .document(salonId)
+                .get()
+                .await()
+
+            salon = Salon(
+                result.id,
+                result.data?.get("name") as String,
+                result.data?.get("salonAvatar") as String,
+                result.data?.get("description") as String,
+                result.data?.get("rate") as Long,
+                result.data?.get("openHour") as String,
+                result.data?.get("closeHour") as String,
+                result.data?.get("address") as HashMap<String, String>,
+                result.data?.get("appointments") as ArrayList<HashMap<String, *>>,
+                result.data?.get("stylists") as ArrayList<HashMap<String, *>>,
+            )
+        }
+
+        return salon
+    }
 }

@@ -10,10 +10,6 @@ import kotlinx.coroutines.tasks.await
 
 class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) {
 
-    fun foo() {
-        Log.d("xk", "adaldqlweql")
-    }
-
     fun getNormalUserDetail(id: String): MutableLiveData<NormalUser> {
         var result = MutableLiveData<NormalUser>()
 
@@ -60,5 +56,26 @@ class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) {
 
         }
         return discountPoint
+    }
+
+    suspend fun getUserById(userId: String): NormalUser? {
+        var user: NormalUser? = null
+
+        if (dbInstance != null) {
+            val result = dbInstance!!.collection(Constant.collection.normalUsers)
+                .document(userId)
+                .get()
+                .await()
+
+            user = NormalUser(
+                result.id,
+                result.data?.get("fullName") as String,
+                result.data?.get("phoneNumber") as String,
+                result.data?.get("gender") as String,
+                result.data?.get("discountPoint") as Long
+            )
+        }
+
+        return user
     }
 }

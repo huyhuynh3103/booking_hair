@@ -51,7 +51,7 @@ class DbHairSalonServices(private var dbInstance: FirebaseFirestore?):DatabaseAb
         return res
     }
 
-    override fun findById(data: Any): Any {
+    override suspend fun findById(data: Any): Any {
         TODO("Not yet implemented")
     }
 

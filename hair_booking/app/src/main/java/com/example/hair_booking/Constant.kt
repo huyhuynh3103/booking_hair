@@ -10,6 +10,7 @@ object Constant {
         const val normalUsers:String = "normalUsers"
         const val services:String = "services"
         const val stylists:String = "stylists"
+        const val shifts: String = "shifts"
     }
     const val notFoundImg = "notfoundimg"
 }
