@@ -27,7 +27,9 @@ class UserDetailAdminActivity : AppCompatActivity() {
     }
 
     private fun getSelectedNormalUserProfile(id: String) {
+        binding.viewModel?.getUserAccountDetail(id)
         binding.viewModel?.getUserDetail(id)
+
     }
 
     private fun setOnClickListenerForButton() {

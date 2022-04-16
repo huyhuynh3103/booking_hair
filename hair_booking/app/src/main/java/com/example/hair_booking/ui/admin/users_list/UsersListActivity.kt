@@ -55,13 +55,13 @@ class UsersListActivity : AppCompatActivity() {
 
     private fun setOnUserItemClickedEvent() {
         usersListAdapter.onItemClick = {position: Int ->
-            // Create an intent to send data back to next activity
+            // Create an intent to send data to next activity
             val intent = Intent(this, UserDetailAdminActivity::class.java)
 
             val userId: String = viewModel.userList.value?.get(position)?.id ?: ""
             //val salonLocation: String = viewModel.userList.value?.get(position)?.addressToString() ?: ""
 
-            // send chosen salon id and location back to previous activity
+            // send chosen salon id and location to next activity
             intent.putExtra("userId", userId)
             startActivityForResult(intent, REQUEST_CODE)
         }

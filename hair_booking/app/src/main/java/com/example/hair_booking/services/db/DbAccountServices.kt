@@ -17,30 +17,53 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?) {
         Log.d("xk", "adaldqlweql")
     }
 
-    suspend fun getAccountDetail(id: String): Account {
-        var detail : Account = Account("")
+     fun getAccountDetail(id: String): MutableLiveData<Account> {
+        var detail = MutableLiveData<Account>()
+
+        if(dbInstance != null) {
+            dbInstance!!.collection("accounts")
+                .get()
+                .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    if (document.id == id) {
+                        // Mapping firestore object to kotlin model
+                        var account: Account = Account(
+                            document.id,
+                            document.data!!["email"] as String,
+                            document.data!!["role"] as String,
+                            document.data!!["banned"] as Boolean
+                        )
+                        detail.value = account
+                    }
+                }
+            }.addOnFailureListener { exception ->
+                    Log.d("xk", "get failed with ", exception)
+                }
+        }
+
+        return detail
+    }
+
+    suspend fun accountDetail(id: String): Account {
+        var detail = Account("")
 
         if(dbInstance != null) {
             val result = dbInstance!!.collection("accounts")
                 .get()
                 .await()
-            GlobalScope.async {
-                for (document in result.documents) {
-                    if (document.id == id) {
-                        // Mapping firestore object to kotlin model
-                        var account: Account = Account(
-                            document.id,
-                            document.data!!["username"] as String,
-                            document.data!!["password"] as String,
-                            document.data!!["role"] as String,
-                            document.data!!["banned"] as Boolean
-                        )
-                        detail = account
-                    }
+            for (document in result.documents) {
+                if (document.id == id) {
+                    // Mapping firestore object to kotlin model
+                    var account: Account = Account(
+                        document.id,
+                        document.data!!["email"] as String,
+                        document.data!!["role"] as String,
+                        document.data!!["banned"] as Boolean
+                    )
+                    detail = account
                 }
-            }.await()
+            }
         }
-
         return detail
     }
 
@@ -57,8 +80,7 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?) {
                         // Mapping firestore object to kotlin model
                         var account: Account = Account(
                             document.id,
-                            document.data!!.get("username") as String,
-                            document.data!!["password"] as String,
+                            document.data!!["email"] as String,
                             document.data!!["role"] as String,
                             document.data!!["banned"] as Boolean
                         )

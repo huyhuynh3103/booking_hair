@@ -1,6 +1,8 @@
 package com.example.hair_booking
 
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -90,15 +92,36 @@ fun bindUsernameUserListTextView(textView: TextView, dataAccount: ArrayList<Norm
     }
 }
 
+@BindingAdapter("accountListLock","usernameId")
+fun bindUserDetailButtonLock(btn: Button, dataAccount: ArrayList<Account>?, usernameId: String?) {
+    if (dataAccount != null && usernameId != null) {
+        for (i in dataAccount?.indices!!) {
+            if (dataAccount[i].id == usernameId) {
+                if (dataAccount[i].banned == false)
+                {
+                    btn.text = "Mở Khóa"
+                }
+                else btn.text = "Mở Khóa"
+            }
+
+        }
+    }
+}
+
 @BindingAdapter("accountList","usernameId")
 fun bindUsernameUserDetailTextView(textView: TextView, dataAccount: ArrayList<Account>?, usernameId: String?) {
     if (dataAccount != null && usernameId != null) {
         for (i in dataAccount?.indices!!) {
-            if (dataAccount[i].id == usernameId)
-                textView.text = dataAccount[i].username
+            if (dataAccount[i].id == usernameId) {
+                textView.text = dataAccount[i].email
+            }
+
         }
     }
 }
+
+
+
 
 
 @BindingAdapter("list", "selected")
