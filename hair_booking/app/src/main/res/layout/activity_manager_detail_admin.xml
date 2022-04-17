@@ -6,14 +6,14 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.hair_booking.ui.admin.users_list.UserDetailAdminViewModel" />
+            type="com.example.hair_booking.ui.admin.managers_list.ManagerDetailAdminViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.admin.users_list.UserDetailAdminActivity">
+        tools:context=".ui.admin.managers_list.ManagerDetailAdminActivity">
 
 
 
@@ -53,7 +53,8 @@
                 android:layout_marginLeft="15dp"
                 android:orientation="vertical"
                 android:layout_centerInParent="true"
-                android:background="#FFF5EE">
+                android:background="#FFF5EE"
+                >
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -65,7 +66,7 @@
                     android:gravity="left"/>
 
                 <TextView
-                    android:id="@+id/etUsername"
+                    android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -80,37 +81,13 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Họ và tên*"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:gravity="left"/>
-
-                <TextView
-                    android:id="@+id/etNameCustomer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:padding="5dp"
-                    android:maxLines="1"
-                    android:maxLength="50"
-                    android:text="@{viewModel.user.fullName}"
+                    android:gravity="left"
+                    android:text="Nơi làm việc*"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="20dp"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Số điện thoại*"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="left"/>
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/etSDTCustomer"
@@ -120,7 +97,7 @@
                     android:padding="5dp"
                     android:maxLines="1"
                     android:maxLength="50"
-                    android:text="@{viewModel.user.phoneNumber}"
+                    android:text="@{viewModel.account.hairSalon.id}"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:layout_marginLeft="20dp"
@@ -129,46 +106,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="left"
-                    android:text="Giới tính*"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-
-                <RadioGroup
-                    android:id="@+id/rgGender"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:orientation="horizontal"
-                    android:textColor="@color/black"
-                    >
-                    <RadioButton
-                        android:id="@+id/btnNam"
-                        android:textSize="16sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:checked='@{viewModel.user.gender.equals("Nam") ? true : false}'
-                        android:clickable="false"
-                        android:text="Nam" />
-                    <RadioButton
-                        android:id="@+id/btnNu"
-                        android:textSize="16sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked='@{viewModel.user.gender.equals("Nữ") ? true : false}'
-                        android:clickable="false"
-                        android:text="Nữ"/>
-
-                </RadioGroup>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Điểm thành viên"
+                    android:text="Chức vụ"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:layout_marginLeft="20dp"
@@ -185,7 +123,7 @@
                     android:padding="5dp"
                     android:maxLines="1"
                     android:maxLength="50"
-                    android:text="@{viewModel.user.discountPoint.toString()}"
+                    android:text="Quản lý chi nhánh"
                     android:textSize="18sp"
                     android:layout_marginLeft="20dp"/>
 

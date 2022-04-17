@@ -16,20 +16,10 @@ class UserDetailAdminViewModel: ViewModel() {
     val user: LiveData<NormalUser> = _user
     private val _account: MutableLiveData<Account> = MutableLiveData()
     val account: LiveData<Account> = _account
-    private val _accountList: MutableLiveData<ArrayList<Account>> = MutableLiveData()
-    val accountList: LiveData<ArrayList<Account>> = _accountList
-
-    init {
-        viewModelScope.launch {
-            getAccountList()
-        }
-
-    }
 
     fun getUserDetail(id: String){
         dbServices.getNormalUserServices()?.getNormalUserDetail(id)?.observeForever {
             _user.value = it
-            Log.d("tdht1", "get user detail")
         }
         //dbServices.getNormalUserServices()?.getNormalUserAccountDetail(id)?.observeForever {
             //_account.value = it
@@ -39,14 +29,7 @@ class UserDetailAdminViewModel: ViewModel() {
         viewModelScope.launch {
             _account.value = dbServices.getNormalUserServices()?.getNormalUserAccountDetail(id)
             }
-            Log.d("tdht1", "get account detail")
         }
-
-    suspend fun getAccountList() {
-        dbServices.getAccountServices()?.getAccountListForManagement()?.observeForever { accountList ->
-            _accountList.value = accountList
-        }
-    }
 
     // Set lock button onclick to be observable
     private val _lockBtnClicked = MutableLiveData<Boolean>()
@@ -58,6 +41,6 @@ class UserDetailAdminViewModel: ViewModel() {
 
     suspend fun updateLockAccount(status: String, id: String) {
 
-        dbServices.getAccountServices()!!.updateLockAccount(status, id)
+        dbServices.getAccountServices()!!.updateLockUserAccount(status, id)
     }
 }

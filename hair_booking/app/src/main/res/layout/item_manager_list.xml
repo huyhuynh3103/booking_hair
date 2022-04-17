@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="user"
-            type="com.example.hair_booking.model.NormalUser" />
+            name="manager"
+            type="com.example.hair_booking.model.Account" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -56,41 +56,28 @@
             app:layout_constraintTop_toTopOf="@+id/userAvatarWrapper">
 
             <TextView
-                android:id="@+id/userUsername"
+                android:id="@+id/managerEmail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{user.accountId.id}"
+                android:text="@{manager.email}"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/userFullname"
+                android:id="@+id/managerHairSlaon"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{user.fullName}"
+                android:text="@{manager.hairSalon.id}"
                 android:textColor="#000000"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/userUsername"
-                app:layout_constraintStart_toStartOf="@+id/userUsername"
-                app:layout_constraintTop_toBottomOf="@+id/userUsername" />
-
-            <TextView
-                android:id="@+id/userPhone"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-
-                android:text="@{user.phoneNumber}"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/userFullname"
-                app:layout_constraintStart_toStartOf="@+id/userFullname"
-                app:layout_constraintTop_toBottomOf="@+id/userFullname" />
+                app:layout_constraintEnd_toEndOf="@+id/managerEmail"
+                app:layout_constraintStart_toStartOf="@+id/managerEmail"
+                app:layout_constraintTop_toBottomOf="@+id/managerEmail" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

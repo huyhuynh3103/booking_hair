@@ -47,6 +47,18 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?) {
         return detail
     }
 
+    suspend fun getAccountStatus(id: String): Boolean {
+        var status: Boolean = false
+        if (dbInstance != null) {
+            val result = dbInstance!!.collection("accounts")
+                .document(id)
+                .get()
+                .await()
+            status = result.data?.get("banned") as Boolean
+        }
+        return status
+    }
+
     suspend fun accountDetail(id: String): Account {
         var detail = Account("")
 
@@ -75,6 +87,7 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?) {
         var accountList: ArrayList<Account> = ArrayList()
         if(dbInstance != null) {
             val result = dbInstance!!.collection("accounts")
+                .whereEqualTo("role", "manager")
                 .get()
                 .await()
 
@@ -98,7 +111,7 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?) {
         return list
     }
 
-    suspend fun updateLockAccount(status: String,userId: String) {
+    suspend fun updateLockUserAccount(status: String,userId: String) {
         val dbNormalUserServices = dbServices.getNormalUserServices()!!
 
         // Get account id
@@ -109,6 +122,24 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?) {
             banned = false
 
         val accountRef = dbInstance!!.collection(Constant.collection.accounts).document(accountId)
+
+        accountRef
+            .update("banned", banned)
+            .addOnSuccessListener {
+                Log.d("DbAccountServices", "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e ->
+                Log.d("DbAccountServices", "Error updating document", e)
+            }
+
+    }
+
+    suspend fun updateLockManagerAccount(managerId: String) {
+
+        var banned : Boolean = getAccountStatus(managerId)
+        banned = !banned
+
+        val accountRef = dbInstance!!.collection(Constant.collection.accounts).document(managerId)
 
         accountRef
             .update("banned", banned)

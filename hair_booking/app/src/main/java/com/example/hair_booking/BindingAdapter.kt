@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.model.*
+import com.example.hair_booking.ui.admin.managers_list.ManagersListAdapter
 import com.example.hair_booking.ui.admin.users_list.UsersListAdapter
 import com.example.hair_booking.ui.normal_user.booking.DiscountListAdapter
 import com.example.hair_booking.ui.normal_user.booking.SalonListAdapter
@@ -71,57 +72,18 @@ fun bindSalonListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>
 fun bindUserListRecyclerView(recyclerView: RecyclerView, dataUser: ArrayList<NormalUser>?) {
     val adapter = recyclerView.adapter as UsersListAdapter
     if (dataUser != null) {
-        //for (i in dataUser?.indices!!) {
-            //for (j in dataAccount?.indices!!) {
-                //if (dataUser[i].accountId == dataAccount[j].id) {
-                //}
-            //}
         adapter?.setData(dataUser)
         }
-
-
 }
 
-@BindingAdapter("accountListData","usernameId")
-fun bindUsernameUserListTextView(textView: TextView, dataAccount: ArrayList<NormalUser>?, usernameId: String?) {
-    if (dataAccount != null && usernameId != null) {
-        for (i in dataAccount?.indices!!) {
-        if (dataAccount[i].id == usernameId)
-            textView.text = dataAccount[i].username
-        }
+@BindingAdapter("managersListData")
+fun bindManagerListRecyclerView(recyclerView: RecyclerView, dataAccount: ArrayList<Account>?) {
+    val adapter = recyclerView.adapter as ManagersListAdapter
+    if (dataAccount != null) {
+        adapter?.setData(dataAccount)
     }
+
 }
-
-@BindingAdapter("accountListLock","usernameId")
-fun bindUserDetailButtonLock(btn: Button, dataAccount: ArrayList<Account>?, usernameId: String?) {
-    if (dataAccount != null && usernameId != null) {
-        for (i in dataAccount?.indices!!) {
-            if (dataAccount[i].id == usernameId) {
-                if (dataAccount[i].banned == false)
-                {
-                    btn.text = "Mở Khóa"
-                }
-                else btn.text = "Mở Khóa"
-            }
-
-        }
-    }
-}
-
-@BindingAdapter("accountList","usernameId")
-fun bindUsernameUserDetailTextView(textView: TextView, dataAccount: ArrayList<Account>?, usernameId: String?) {
-    if (dataAccount != null && usernameId != null) {
-        for (i in dataAccount?.indices!!) {
-            if (dataAccount[i].id == usernameId) {
-                textView.text = dataAccount[i].email
-            }
-
-        }
-    }
-}
-
-
-
 
 
 @BindingAdapter("list", "selected")

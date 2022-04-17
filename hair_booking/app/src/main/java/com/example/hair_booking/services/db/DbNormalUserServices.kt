@@ -2,6 +2,7 @@ package com.example.hair_booking.services.db
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.hair_booking.Constant
 import com.example.hair_booking.model.Account
 import com.example.hair_booking.model.NormalUser
 import com.example.hair_booking.model.Salon
@@ -124,5 +125,20 @@ class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) {
         // Call function to return salon list after mapping complete
         list.value = userList
         return list
+    }
+
+    suspend fun updateNormalUser(fullname: String, phone: String, gender: String, id: String) {
+
+        val normalUserRef = dbInstance!!.collection(Constant.collection.normalUsers).document(id)
+
+        normalUserRef
+            .update("fullName", fullname, "phoneNumber", phone, "gender", gender)
+            .addOnSuccessListener {
+                Log.d("DbNormalUserServices", "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e ->
+                Log.d("DbNormalUserServices", "Error updating document", e)
+            }
+
     }
 }

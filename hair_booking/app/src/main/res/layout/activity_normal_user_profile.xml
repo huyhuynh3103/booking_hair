@@ -36,7 +36,6 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="40dp"
-                android:background="#EDFF5722"
                 android:src="@drawable/ic_account" />
 
         </RelativeLayout>
@@ -51,31 +50,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
             android:orientation="vertical"
             android:layout_centerInParent="true"
-            >
+            android:background="#FFF5EE">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tên đăng nhập"
+                android:text="Email"
                 android:textSize="18sp"
+                android:textColor="@color/black"
                 android:layout_marginLeft="20dp"
                 android:layout_marginBottom="5dp"
                 android:gravity="left"/>
 
             <TextView
-                android:id="@+id/etUsernameCustomer"
+                android:id="@+id/etEmailUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:textColor="@color/black"
                 android:padding="5dp"
+                android:text="@{viewModel.account.email}"
                 android:maxLines="1"
                 android:maxLength="50"
                 android:textSize="20sp"
-                android:layout_marginLeft="20dp"
-                accountList = "@{viewModel.accountList}"
-                usernameId = "@{viewModel.normalUser.accountId.id}"/>
+                android:layout_marginLeft="20dp" />
 
 
             <TextView
@@ -83,16 +83,18 @@
                 android:layout_height="wrap_content"
                 android:text="Họ và tên*"
                 android:textSize="18sp"
+                android:textColor="@color/black"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:gravity="left"/>
 
             <EditText
-                android:id="@+id/etNameCustomer"
+                android:id="@+id/etNameUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="@color/black"
                 android:padding="5dp"
                 android:maxLines="1"
                 android:maxLength="50"
@@ -103,15 +105,16 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Số điện thoại*"
-                android:textSize="18sp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:gravity="left"/>
+                android:gravity="left"
+                android:text="Số điện thoại*"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/etSDTCustomer"
+                android:id="@+id/etPhoneUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -127,13 +130,14 @@
                 android:layout_height="wrap_content"
                 android:text="Giới tính*"
                 android:textSize="18sp"
+                android:textColor="@color/black"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:gravity="left"/>
 
             <RadioGroup
-                android:id="@+id/rgGioiTinh"
+                android:id="@+id/rgGender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -163,13 +167,14 @@
                 android:layout_height="wrap_content"
                 android:text="Điểm thành viên"
                 android:textSize="18sp"
+                android:textColor="@color/black"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:gravity="left"/>
 
             <TextView
-                android:id="@+id/etPointCustomer"
+                android:id="@+id/etPointUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -186,6 +191,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/btnCapNhatCustomer"
                 android:text="Cập nhật"
+                android:onClick="@{() -> viewModel.onLockBtnClicked()}"
                 app:backgroundTint="#EDFF5722"
                 android:gravity="center"
                 android:layout_marginTop="12dp"

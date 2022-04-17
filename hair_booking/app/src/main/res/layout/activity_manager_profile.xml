@@ -42,9 +42,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
                 android:orientation="vertical"
                 android:layout_centerInParent="true"
-                >
+                android:background="#FFF5EE">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -71,7 +72,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Họ và tên*"
+                    android:text="Nơi làm việc*"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:layout_marginLeft="20dp"
@@ -84,6 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:textColor="@color/black"
                     android:padding="5dp"
                     android:maxLines="1"
                     android:maxLength="50"
@@ -101,14 +103,16 @@
                     android:layout_marginBottom="5dp"
                     android:gravity="left"/>
 
-                <EditText
+                <TextView
                     android:id="@+id/etSDTManager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:textColor="@color/black"
                     android:padding="5dp"
                     android:maxLines="1"
                     android:maxLength="50"
+                    android:text="Quản lý chi nhánh"
                     android:textSize="20sp"
                     android:layout_marginLeft="20dp"/>
 
