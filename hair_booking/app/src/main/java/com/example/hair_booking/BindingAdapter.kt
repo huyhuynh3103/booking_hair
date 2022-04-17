@@ -1,7 +1,12 @@
 package com.example.hair_booking
 
+import android.annotation.SuppressLint
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.model.*
 import com.example.hair_booking.ui.manager.appointment.AppointmentListAdapter
@@ -42,13 +47,23 @@ fun bindBookingDiscountListRecyclerView(recyclerView: RecyclerView, data: ArrayL
     }
 }
 
-@BindingAdapter("data")
-fun bindAppointmentListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Appointment>?) {
+@BindingAdapter("managerAppointmentList")
+fun bindManagerAppointmentListRecyclerView(recyclerView: RecyclerView, data: LiveData<ArrayList<Appointment>>) {
     val adapter = recyclerView.adapter as AppointmentListAdapter
     if (data != null) {
         adapter?.setData(data)
     }
 }
+
+@SuppressLint("SetTextI18n")
+@BindingAdapter("serviceTitle")
+fun setServiceTitle(textView: TextView?, service: HashMap<String, *>?) {
+    if(service?.get("title") != null)
+        textView?.text = "Dịch vụ: " + service["title"] as String
+    else
+        textView?.text = ""
+}
+
 
 @BindingAdapter("data")
 fun bindSalonListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>?) {

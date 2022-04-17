@@ -1,8 +1,12 @@
 package com.example.hair_booking.ui.manager.appointment
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hair_booking.Constant
 import com.example.hair_booking.databinding.ManagerAppointmentListItemBinding
 import com.example.hair_booking.model.Appointment
 
@@ -11,8 +15,8 @@ class AppointmentListAdapter: RecyclerView.Adapter<AppointmentListAdapter.ViewHo
 
     var onItemClick: ((position: Int) -> Unit)? = null
 
-    private var appointmentList: ArrayList<Appointment> = ArrayList()
-    fun setData(salonList: ArrayList<Appointment>) {
+    private var appointmentList: LiveData<ArrayList<Appointment>>? = null
+    fun setData(appointmentList: LiveData<ArrayList<Appointment>>) {
         this.appointmentList = appointmentList
 
         // The UI will be loaded before the database return the appointment list
@@ -49,11 +53,17 @@ class AppointmentListAdapter: RecyclerView.Adapter<AppointmentListAdapter.ViewHo
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val appointment: Appointment = appointmentList[position]
+        var appointment: Appointment? = appointmentList?.value?.get(position) ?: null
+        appointment?.prepareBookingTimeForDisplay()
         holder.appointmentListItemBinding.appointment = appointment
+        if(appointment?.status == Constant.AppointmentStatus.accept) {
+            holder.appointmentListItemBinding.appointmentListStatus.setTextColor(Color.parseColor("#4CAF50"))
+        }
+        else
+            holder.appointmentListItemBinding.appointmentListStatus.setTextColor(Color.parseColor("#DD2828"))
     }
 
     override fun getItemCount(): Int {
-        return appointmentList.size
+        return appointmentList?.value?.size ?: 0
     }
 }

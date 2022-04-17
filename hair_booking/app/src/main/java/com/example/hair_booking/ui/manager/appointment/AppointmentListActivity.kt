@@ -79,7 +79,7 @@ class AppointmentListActivity : AppCompatActivity() {
 
 
         // Create an adapter to display list of filter options
-        var items: ArrayList<String> = arrayListOf("Tất cả", "Chấp nhận", "Chờ duyệt", "Từ chối") // Define placeholder
+        var items: ArrayList<String> = arrayListOf("Tất cả", "Chấp nhận", "Từ chối") // Define placeholder
         val filterSpinnerAdapter = object : ArrayAdapter<String>(
             this,
             android.R.layout.simple_spinner_item,

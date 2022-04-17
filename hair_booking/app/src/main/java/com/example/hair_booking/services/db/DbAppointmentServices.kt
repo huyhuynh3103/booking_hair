@@ -17,38 +17,47 @@ import kotlin.collections.HashMap
 
 class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract() {
 
-    fun getAppointmentListForManager(): MutableLiveData<ArrayList<Appointment>> {
-        var result = MutableLiveData<ArrayList<Appointment>>()
+    fun getAppointmentListForManager(result: MutableLiveData<ArrayList<Appointment>>) {
         var appointmentList: ArrayList<Appointment> = ArrayList()
 
         if(dbInstance != null) {
-            dbInstance!!.collection("appointments")
-                .get()
-                .addOnSuccessListener { documents ->
+            dbInstance!!.collection("appointments").addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null) {
+                    val documents = snapshot.documents
+                    appointmentList.clear()
                     for (document in documents) {
                         // Mapping firestore object to kotlin model
-                        var appointment: Appointment = Appointment(
+                        val appointment: Appointment = Appointment(
                             document.id,
-                            document.data["subId"] as String,
-                            document.data["userFullName"] as String,
-                            document.data["stylist"] as HashMap<String, *>,
-                            document.data["bookingDate"] as String,
-                            document.data["bookingTime"] as String,
-                            document.data["createdAt"] as String,
-                            document.data["status"] as String
+                            document.data?.get("subId") as String,
+                            document.data?.get("userId") as DocumentReference,
+                            document.data?.get("userFullName") as String,
+                            document.data?.get("userPhoneNumber") as String,
+                            document.data?.get("hairSalon") as HashMap<String, *>,
+                            document.data?.get("service") as HashMap<String, *>,
+                            document.data?.get("stylist") as HashMap<String, *>,
+                            document.data?.get("bookingDate") as String,
+                            document.data?.get("bookingTime") as String,
+                            document.data?.get("bookingShift") as DocumentReference,
+                            document.data?.get("createdAt") as String,
+                            document.data?.get("discountApplied") as HashMap<String, *>?,
+                            document.data?.get("notes") as String,
+                            document.data?.get("status") as String,
+                            document.data?.get("totalPrice") as Long,
                         )
                         // Insert to list
                         appointmentList.add(appointment)
                     }
 
                     // Call function to return appointment list after mapping complete
-                    result.value = appointmentList
+                    result.postValue(appointmentList)
                 }
-                .addOnFailureListener { exception ->
-                    Log.d("xk", "get failed with ", exception)
-                }
+            }
         }
-        return result
     }
 
     suspend fun getAppointmentTimeRanges(bookingDate: String, bookingShiftId: String): ArrayList<Pair<Float, Int>> {

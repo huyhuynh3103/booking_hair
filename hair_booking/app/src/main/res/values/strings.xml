@@ -52,7 +52,9 @@
     <string name="search_bar_hint">Nhập mã lịch đặt...</string>
 
     <string name="customer_name_label">Khách hàng</string>
+    <string name="service_title_label">Dịch vụ</string>
     <string name="stylist_name_label">Stylist</string>
+    <string name="colon">:</string>
     <!--    Navigation Drawer -->
     <string name="nav_home">Home</string>
     <string name="nav_wish_list">Wish List</string>

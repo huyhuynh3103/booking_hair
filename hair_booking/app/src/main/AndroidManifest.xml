@@ -13,7 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Hair_booking">
         <activity android:name=".ui.normal_user.booking.booking_confirm.BookingConfirmActivity"></activity>
-        <activity android:name=".ui.manager.appointment.AppointmentListActivity" />
+        <activity android:name=".ui.manager.appointment.AppointmentListActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.normal_user.booking.choose_discount.ChooseDiscountActivity" />
         <activity
             android:name=".ui.normal_user.home.NormalUserHomeActivity"
@@ -39,7 +46,7 @@
             android:label="@string/choose_stylist_screen_title"></activity>
         <activity
             android:name=".ui.normal_user.booking.BookingActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/booking_screen_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

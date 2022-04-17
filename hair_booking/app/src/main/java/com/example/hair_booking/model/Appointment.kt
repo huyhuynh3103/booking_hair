@@ -114,4 +114,8 @@ data class Appointment(private val _id: String) {
             return stylist!!["fullName"].toString()
         return ""
     }
+
+    fun prepareBookingTimeForDisplay() {
+        _bookingTime = _bookingTime?.replace('.', 'h')
+    }
 }
