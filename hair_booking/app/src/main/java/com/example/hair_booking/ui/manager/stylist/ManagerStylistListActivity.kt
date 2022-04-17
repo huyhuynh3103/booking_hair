@@ -25,6 +25,8 @@ class ManagerStylistListActivity : AppCompatActivity() {
     private lateinit var adapter: StylistRecycleViewAdapter
     private lateinit var itemDecoration: RecyclerView.ItemDecoration
 
+    private val REQUEST_CODE_UPDATE_DATA: Int = 1111
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -47,6 +49,17 @@ class ManagerStylistListActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        finish()
+        return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        binding.viewModel!!.getUpdatedStylistList()
+    }
+
     private fun setOnClickListenerForItem() {
         adapter.onItemClick = {
             // Create an intent to send data
@@ -56,7 +69,7 @@ class ManagerStylistListActivity : AppCompatActivity() {
             intent.putExtra("Task", "Edit")
             intent.putExtra("StylistID", it.id)
 
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_CODE_UPDATE_DATA)
         }
     }
 
@@ -68,6 +81,8 @@ class ManagerStylistListActivity : AppCompatActivity() {
             intent.putExtra("Task", "Add")
 
             startActivity(intent)
+
+            binding.rvStylistList.adapter!!.notifyDataSetChanged()
         }
     }
 
@@ -85,10 +100,5 @@ class ManagerStylistListActivity : AppCompatActivity() {
 
             }
         })
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        finish()
-        return true
     }
 }

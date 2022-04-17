@@ -1,5 +1,6 @@
 package com.example.hair_booking.ui.manager.stylist
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -69,11 +70,17 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 val workPlace = binding.viewModel!!.getSelectedWorkplace(binding.sWorkplace.selectedItemPosition)
                 val stylist = Stylist(id, name, avatar, description, workPlace!!)
-                binding.viewModel!!.updateStylist(id, stylist)
+
+                if (binding.task == "Edit") {
+                    binding.viewModel!!.updateStylist(id, stylist)
+                }
+                else {
+
+                }
             }
 
-//            val intent = Intent(this, ManagerStylistListActivity::class.java)
-//            startActivity(intent)
+            val replyIntent = Intent()
+            setResult(Activity.RESULT_OK, replyIntent)
             finish()
         }
 

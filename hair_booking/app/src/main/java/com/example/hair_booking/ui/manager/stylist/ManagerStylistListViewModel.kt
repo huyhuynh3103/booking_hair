@@ -15,7 +15,14 @@ class ManagerStylistListViewModel: ViewModel() {
     }
 
     private fun getStylistList() {
-        dbServices.getStylistServices()?.getStylistListForBooking() // get only stylists of chosen salon
+        dbServices.getStylistServices()?.getStylistListForBooking()
+            ?.observeForever{ stylistList ->
+                _stylistList.value = stylistList
+            }
+    }
+
+    fun getUpdatedStylistList() {
+        dbServices.getStylistServices()?.getStylistListForBooking()
             ?.observeForever{ stylistList ->
                 _stylistList.value = stylistList
             }

@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.FileDescriptor
 
-class ManagerStylistDetailViewModel() : ViewModel() {
+class ManagerStylistDetailViewModel: ViewModel() {
     private val _stylist: MutableLiveData<Stylist> = MutableLiveData()
     private val _salonList: MutableLiveData<ArrayList<Salon>> = MutableLiveData()
 
