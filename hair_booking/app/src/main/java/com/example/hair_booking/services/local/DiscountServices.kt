@@ -21,7 +21,7 @@ class DiscountServices {
             val discountServices = dbServices.getDiscountServices()!!
             val appointmentServices = dbServices.getAppointmentServices()!!
             var unusedDiscount: ArrayList<Discount> = ArrayList(discountServices.findAll())
-            var usedDiscountIds: ArrayList<String> = ArrayList()
+            var usedDiscountIds: ArrayList<String?> = ArrayList()
             GlobalScope.async {
                 usedDiscountIds = appointmentServices.getAppliedDiscountIds(userId)
             }.await()

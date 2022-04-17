@@ -66,18 +66,15 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 .get()
                 .await()
 
-            Log.d("xk", "got time range from database ${result.documents.size}")
             addValueToAppointmentTimeRanges = GlobalScope.async {
                 for(document in result.documents) {
-                    val serviceId: String = ((document.data?.get("service") as HashMap<Any, Any>)["id"] as DocumentReference).id
+                    val serviceId: String? = ((document.data?.get("service") as HashMap<Any, Any>)["id"] as DocumentReference).id
 
                     var serviceDuration: Int = 0
                     async {
-                        serviceDuration = dbServices.getServiceServices()!!.getServiceDuration(serviceId)
-                        Log.d("xk", "got service duration for calc time range")
+                        serviceDuration = dbServices.getServiceServices()!!.getServiceDuration(serviceId!!)
                     }.await()
-                    Log.d("xk", "start to calc time range")
-                    val timeRange: Pair<Float, Int> = Pair((document["bookingTime"] as String).toFloat(), serviceDuration)
+                    val timeRange: Pair<Float, Int> = Pair((document.data?.get("bookingTime") as String).toFloat(), serviceDuration)
 
                     appointmentTimeRanges.add(timeRange)
                 }
@@ -85,13 +82,12 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
 
         }
         addValueToAppointmentTimeRanges?.await()
-        Log.d("xk", "finish calc time range and return")
         return appointmentTimeRanges
     }
 
-    suspend fun getAppliedDiscountIds(userId: String): ArrayList<String> {
+    suspend fun getAppliedDiscountIds(userId: String): ArrayList<String?> {
 
-        var discountIds: ArrayList<String> = ArrayList()
+        var discountIds: ArrayList<String?> = ArrayList()
 
         if (dbInstance != null) {
 
@@ -105,8 +101,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 .await()
 
             for(document in result.documents) {
-                val discountApplied: HashMap<String, *> = document.data?.get("discountApplied") as HashMap<String, *>
-                val discountAppliedId: String = (discountApplied["id"] as DocumentReference).id
+                val discountApplied: HashMap<String, *>? = document.data?.get("discountApplied") as HashMap<String, *>
+                val discountAppliedId: String = (discountApplied?.get("id") as DocumentReference).id
                 discountIds.add(discountAppliedId)
             }
 
@@ -138,7 +134,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                     document.data?.get("subId") as String,
                     document.data?.get("userId") as DocumentReference,
                     document.data?.get("userFullName") as String,
-                    document.data?.get("userFullName") as String,
+                    document.data?.get("userPhoneNumber") as String,
                     document.data?.get("hairSalon") as HashMap<String, *>,
                     document.data?.get("service") as HashMap<String, *>,
                     document.data?.get("stylist") as HashMap<String, *>,
@@ -146,7 +142,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                     document.data?.get("bookingTime") as String,
                     document.data?.get("bookingShift") as DocumentReference,
                     document.data?.get("createdAt") as String,
-                    document.data?.get("discountApplied") as HashMap<String, *>,
+                    document.data?.get("discountApplied") as HashMap<String, *>?,
                     document.data?.get("notes") as String,
                     document.data?.get("status") as String,
                     document.data?.get("totalPrice") as Long,
@@ -250,6 +246,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 "totalPrice" to totalPrice,
                 "subId" to subId,
                 "status" to status,
+                "createdAt" to createdAt
             )
         }
         else {
@@ -280,6 +277,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 "totalPrice" to totalPrice,
                 "subId" to subId,
                 "status" to status,
+                "createdAt" to createdAt
             )
         }
 

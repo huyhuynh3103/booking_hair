@@ -37,7 +37,6 @@ class ChooseDiscountViewModel: ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     private suspend fun getDiscountList() {
-        Log.d("disvm", "userid: $_userId and date: $_chosenDate")
         _discountList.value = DiscountServices.getUnusedDiscounts(_userId, _chosenDate)
     }
 

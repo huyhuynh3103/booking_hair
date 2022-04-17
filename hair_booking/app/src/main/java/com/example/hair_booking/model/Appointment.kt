@@ -55,22 +55,23 @@ data class Appointment(private val _id: String) {
 
 
     // Full parameter constructor
-    constructor(id: String,
-                appointmentSubId: String,
-                userId: DocumentReference,
-                userFullName: String,
-                userPhoneNumber: String?,
-                hairSalon: HashMap<String, *>,
-                service: HashMap<String, *>,
-                stylist: HashMap<String, *>,
-                bookingDate: String,
-                bookingTime: String,
-                bookingShift: DocumentReference,
-                createdAt: String,
-                discountApplied: HashMap<String, *>,
-                note: String,
-                status: String,
-                totalPrice: Long,
+    constructor(
+        id: String,
+        appointmentSubId: String,
+        userId: DocumentReference,
+        userFullName: String,
+        userPhoneNumber: String?,
+        hairSalon: HashMap<String, *>,
+        service: HashMap<String, *>,
+        stylist: HashMap<String, *>,
+        bookingDate: String,
+        bookingTime: String,
+        bookingShift: DocumentReference,
+        createdAt: String,
+        discountApplied: HashMap<String, *>?,
+        note: String,
+        status: String,
+        totalPrice: Long,
     ): this(id) {
         this._appointmentSubId = appointmentSubId
         this._userId = userId

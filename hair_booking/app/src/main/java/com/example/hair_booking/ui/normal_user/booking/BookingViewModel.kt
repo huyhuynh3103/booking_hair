@@ -263,7 +263,6 @@ class BookingViewModel: ViewModel() {
                                                chooseStylistLabel: TextView,
                                                chooseStylistTextInputLayout: TextInputLayout,) {
         viewModelScope.launch {
-            Log.d("xk", "setup time picker")
             var availableTime: ArrayList<String> = ArrayList() // Init with empty array
             // get chosen service duration
             val chosenServiceDuration: Int = getChosenServiceDuration()
@@ -277,7 +276,6 @@ class BookingViewModel: ViewModel() {
                 // Get list of time that stylists are busy
                 // The function will return an array contains position of element to be disabled in availableTime
                 // Note: just disable, not remove => user can view all, including the disable ones
-                Log.d("xk", "getting disable time")
                 if(_bookingDate.value != null) {
                     disabledTimePositions = BookingServices.getDisabledTimePositions(
                         chosenServiceDuration,
@@ -289,9 +287,9 @@ class BookingViewModel: ViewModel() {
                 }
             }.await()
             availableTime.add(0, "Chọn giờ")
-            availableTime.forEach {
-                Log.d("xk", "reconstruct time picker")
-                Log.d("xk", it)
+            for(i in 1 until availableTime.size) {
+                if(disabledTimePositions.contains(i))
+                    availableTime[i] = availableTime[i] + " (hết chỗ)"
             }
             // Assign adapter to spinner
             timePickerSpinner.adapter = TimePickerSpinnerAdapter(context, disabledTimePositions, availableTime)

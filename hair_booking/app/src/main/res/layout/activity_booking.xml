@@ -196,7 +196,7 @@
                             android:id="@+id/textView4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
+                            android:layout_marginStart="7dp"
                             android:layout_marginTop="10dp"
                             android:text="Ca"
                             android:visibility="visible"
@@ -209,7 +209,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:visibility="visible"
-                            app:layout_constraintStart_toStartOf="@+id/textView4"
+                            app:layout_constraintStart_toStartOf="@+id/chooseTimeLabel"
                             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
 
@@ -217,22 +217,27 @@
                             android:id="@+id/timePickerLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="7dp"
                             android:text="Giờ"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="@+id/textView4"
                             app:layout_constraintStart_toStartOf="@+id/timePickerSpinner"
                             app:layout_constraintTop_toTopOf="@+id/textView4" />
 
+
                         <Spinner
                             android:id="@+id/timePickerSpinner"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="40dp"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="@+id/shiftPickerSpinner"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.051"
                             app:layout_constraintStart_toEndOf="@+id/shiftPickerSpinner"
-                            app:layout_constraintTop_toTopOf="@+id/shiftPickerSpinner" />
-
+                            app:layout_constraintTop_toTopOf="@+id/shiftPickerSpinner"
+                            app:layout_constraintVertical_bias="0.0" />
 
                         <TextView
                             android:id="@+id/chooseStylistLabel"
@@ -302,8 +307,7 @@
                             android:id="@+id/note"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/note_edit_text_hint"
-                            />
+                            android:hint="@string/note_edit_text_hint" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
@@ -334,14 +338,14 @@
                             android:id="@+id/discount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:clickable="true"
                             android:drawableLeft="@drawable/ic_baseline_local_offer_24"
                             android:drawableRight="@drawable/ic_baseline_arrow_right_24"
                             android:drawablePadding="10dp"
-                            android:clickable="true"
                             android:focusable="false"
-                            android:text="@{viewModel.discount}"
+                            android:hint="@string/discount_edit_text_hint"
                             android:onClick="@{() -> viewModel.onDiscountEditTextClicked()}"
-                            android:hint="@string/discount_edit_text_hint" />
+                            android:text="@{viewModel.discount}" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
