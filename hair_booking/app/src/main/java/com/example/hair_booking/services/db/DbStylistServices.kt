@@ -22,12 +22,12 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
         var stylistList: ArrayList<Stylist> = ArrayList()
 
         try {
-            val result = dbInstance!!.collection("stylists")
+            val docSnap = dbInstance!!.collection("stylists")
                 .whereEqualTo("deleted", false)
                 .get()
                 .await()
 
-            for (document in result.documents) {
+            for (document in docSnap.documents) {
                 // Mapping firestore object to kotlin model
                 var stylist = Stylist(
                     document.id,
@@ -35,8 +35,10 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
                     document.data?.get("avatar") as String,
                     document.data?.get("description") as String,
                     document.data?.get("workPlace") as DocumentReference,
+                    document.data?.get("shifts") as HashMap<String, HashMap<*, *>>,
                     document.data?.get("deleted") as Boolean,
                 )
+
                 // Insert to list
                 stylistList.add(stylist)
             }
@@ -52,18 +54,19 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
         var stylist: Stylist? = null
 
         try {
-            val result = dbInstance!!.collection("stylists")
+            val docSnap = dbInstance!!.collection("stylists")
                 .document(id!!.toString())
                 .get()
                 .await()
 
             stylist = Stylist(
-                result.id,
-                result.data?.get("fullName") as String,
-                result.data?.get("avatar") as String,
-                result.data?.get("description") as String,
-                result.data?.get("workPlace") as DocumentReference,
-                result.data?.get("deleted") as Boolean,
+                docSnap.id,
+                docSnap.data?.get("fullName") as String,
+                docSnap.data?.get("avatar") as String,
+                docSnap.data?.get("description") as String,
+                docSnap.data?.get("workPlace") as DocumentReference,
+                docSnap.data?.get("shifts") as HashMap<String, HashMap<*, *>>,
+                docSnap.data?.get("deleted") as Boolean,
             )
         } catch (exception: Exception) {
             Log.d("StylistServicesLog", "Get stylist detail fail with ", exception)
@@ -102,9 +105,22 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
     }
 
     override suspend fun add(data: Any?) {
-        if (dbInstance != null) {
+        TODO("Not yet implemented")
+    }
+
+    suspend fun add(data: Stylist) {
+        val docToSave = hashMapOf(
+            "fullName" to data.fullName,
+            "avatar" to data.avatar,
+            "description" to data.description,
+            "workPlace" to data.workPlace,
+            "shifts" to data.shift,
+            "deleted" to data.deleted
+        )
+
+        if (dbInstance != null && docToSave != null) {
             val docSnap = dbInstance!!.collection("stylists")
-                .add(data!!)
+                .add(docToSave)
                 .await()
         }
     }
@@ -188,6 +204,7 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
                                 document.data["avatar"] as String,
                                 document.data["description"] as String,
                                 document.data["workPlace"] as DocumentReference,
+                                document.data["workPlace"] as HashMap<String, HashMap<*, *>>,
                                 document.data["deleted"] as Boolean
                             )
 

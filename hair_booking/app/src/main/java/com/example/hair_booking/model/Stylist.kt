@@ -12,6 +12,7 @@ data class Stylist(private val _id: String) {
     private var _avatar: String? = null
     private var _description: String? = null
     private var _workPlace: DocumentReference? = null
+    private var _shift: HashMap<String, HashMap<*, *>>? = null
     private var _deleted: Boolean? = null
 
     // GETTERS
@@ -20,6 +21,7 @@ data class Stylist(private val _id: String) {
     val avatar: String? get() = _avatar
     val description: String? get() = _description
     val workPlace: DocumentReference? get() = _workPlace
+    val shift: HashMap<String, HashMap<*, *>>? get() = _shift
     val deleted: Boolean? get() = _deleted
 
     // Full parameter constructor
@@ -29,12 +31,14 @@ data class Stylist(private val _id: String) {
         avatar: String,
         description: String,
         workPlace: DocumentReference,
+        shift: HashMap<String, HashMap<*, *>>,
         deleted: Boolean
     ): this(id) {
         this._fullName = fullName
         this._avatar = avatar
         this._description = description
         this._workPlace = workPlace
+        this._shift = shift
         this._deleted = deleted
     }
 

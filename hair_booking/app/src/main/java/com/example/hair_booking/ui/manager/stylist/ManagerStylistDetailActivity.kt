@@ -64,11 +64,12 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
             val name = binding.etStylistName.text.toString()
             val avatar = ""
             val description = binding.tvStylistDescription.text.toString()
+            val shift = HashMap<String, HashMap<*, *>>()
 
             lifecycleScope.launch {
                 val workPlace =
                     binding.viewModel!!.getSelectedWorkplace(binding.sWorkplace.selectedItemPosition)
-                val stylist = Stylist(id, name, avatar, description, workPlace!!, false)
+                val stylist = Stylist(id, name, avatar, description, workPlace!!, shift, false)
 
                 if (binding.task == "Edit") {
                     binding.viewModel!!.updateStylist(id, stylist)
