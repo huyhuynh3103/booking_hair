@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
@@ -37,13 +39,15 @@ class ManagerStylistListActivity : AppCompatActivity() {
         binding.rvStylistList.layoutManager = LinearLayoutManager(this)
         binding.rvStylistList.addItemDecoration(itemDecoration)
 
-        setOnStylistItemClickEvent()
+        // Set Action listener
+        setOnClickListenerForItem()
         setOnClickListenerForButton()
+        setTextChangeListener()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun setOnStylistItemClickEvent() {
+    private fun setOnClickListenerForItem() {
         adapter.onItemClick = {
             // Create an intent to send data
             val intent = Intent(this, ManagerStylistDetailActivity::class.java)
@@ -65,6 +69,22 @@ class ManagerStylistListActivity : AppCompatActivity() {
 
             startActivity(intent)
         }
+    }
+
+    private fun setTextChangeListener() {
+        binding.actvSearchStylistName!!.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//                createData(actvSearch!!.text.toString())
+//                listAdapter.notifyDataSetChanged()
+                // Update data
+            }
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

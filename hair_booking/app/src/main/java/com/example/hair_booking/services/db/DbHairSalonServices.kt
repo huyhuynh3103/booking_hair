@@ -6,12 +6,12 @@ import com.example.hair_booking.Constant
 import com.example.hair_booking.model.Salon
 import com.google.firebase.firestore.FirebaseFirestore
 
-class DbHairSalonServices(private var dbInstance: FirebaseFirestore?):DatabaseAbstract() {
-    override fun find(data: Any): Any {
+class DbHairSalonServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract() {
+    override fun find(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 
-    override fun save(data: Any): Any {
+    override fun save(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 
@@ -51,15 +51,15 @@ class DbHairSalonServices(private var dbInstance: FirebaseFirestore?):DatabaseAb
         return res
     }
 
-    override fun findById(data: Any): Any {
+    override fun findById(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 
-    override fun updateOne(id: String, updateDoc: Any): Any {
+    override suspend fun updateOne(id: String?, updateDoc: Any?): Any? {
         TODO("Not yet implemented")
     }
 
-    override fun delete(data: Any): Any {
+    override fun delete(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 

@@ -34,7 +34,6 @@
             android:fontFamily="@font/robotomedium"
             android:text="@{stylist.id}"
             android:textSize="16sp"
-            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_stylist_avatar_item"
             app:layout_constraintTop_toTopOf="parent" />

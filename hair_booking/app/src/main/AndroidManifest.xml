@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Hair_booking">
         <activity
+            android:name=".ui.manager.appointment.ManagerAppointmentDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.manager.stylist.ManagerStylistListActivity"
             android:exported="false" />
         <activity

@@ -3,13 +3,18 @@ package com.example.hair_booking.ui.manager.stylist
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityManagerStylistDetailBinding
 import com.example.hair_booking.model.Salon
+import com.example.hair_booking.model.Stylist
+import com.google.firebase.firestore.DocumentReference
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -37,17 +42,14 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Load data
-        runBlocking {
-            binding.task = async {
-                intent.getStringExtra("Task")
-            }.await().toString()
-
-            launch {
-                if (binding.task == "Edit") {
-                    // get selected ID from previous activity
-                    binding.viewModel?.getStylistDetail(intent.getStringExtra("StylistID").toString())
-                }
-            }.join()
+        binding.task = intent.getStringExtra("Task")
+        lifecycleScope.launch {
+            if (binding.task == "Edit") {
+                // get selected ID from previous activity
+                binding.viewModel?.getStylistDetail(
+                    intent.getStringExtra("StylistID").toString()
+                )
+            }
         }
     }
 
@@ -59,11 +61,27 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
 
     private fun setOnClickListenerForButton() {
         binding.bSaveStylistInfo.setOnClickListener() {
-            // save and switch to stylist list screen
+            val id = intent.getStringExtra("StylistID").toString()
+            val name = binding.etStylistName.text.toString()
+            val avatar = ""
+            val description = binding.tvStylistDescription.text.toString()
+
+            lifecycleScope.launch {
+                val workPlace = binding.viewModel!!.getSelectedWorkplace(binding.sWorkplace.selectedItemPosition)
+                val stylist = Stylist(id, name, avatar, description, workPlace!!)
+                binding.viewModel!!.updateStylist(id, stylist)
+            }
+
+//            val intent = Intent(this, ManagerStylistListActivity::class.java)
+//            startActivity(intent)
+            finish()
         }
 
         binding.bDeleteStylist.setOnClickListener() {
             // delete and switch to stylist list screen
+
+            val intent = Intent(this, ManagerStylistListActivity::class.java)
+            startActivity(intent)
         }
     }
 }
