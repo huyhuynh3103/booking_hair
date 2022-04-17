@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hair_booking">
-        <activity android:name=".ui.manager.appointment.AppointmentListActivity"></activity>
+        <activity android:name=".ui.normal_user.booking.booking_confirm.BookingConfirmActivity"></activity>
+        <activity android:name=".ui.manager.appointment.AppointmentListActivity" />
         <activity android:name=".ui.normal_user.booking.choose_discount.ChooseDiscountActivity" />
         <activity
             android:name=".ui.normal_user.home.NormalUserHomeActivity"
@@ -27,18 +28,15 @@
         <activity
             android:name=".ui.normal_user.booking.choose_service.ChooseServiceActivity"
             android:exported="false"
-            android:label="@string/choose_service_screen_title">
-        </activity>
+            android:label="@string/choose_service_screen_title"></activity>
         <activity
             android:name=".ui.normal_user.booking.choose_salon.ChooseSalonActivity"
             android:exported="false"
-            android:label="@string/choose_salon_screen_title">
-        </activity>
+            android:label="@string/choose_salon_screen_title"></activity>
         <activity
             android:name=".ui.normal_user.booking.choose_stylist.ChooseStylistActivity"
             android:exported="false"
-            android:label="@string/choose_stylist_screen_title">
-        </activity>
+            android:label="@string/choose_stylist_screen_title"></activity>
         <activity
             android:name=".ui.normal_user.booking.BookingActivity"
             android:exported="false"
@@ -52,7 +50,7 @@
         <activity
             android:name=".ui.manager.stylist.ManagerStylistDetailActivity"
             android:exported="true"
-            android:label = "Manager Stylist">
+            android:label="Manager Stylist">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -76,11 +74,11 @@
             android:name=".ui.normal_user.profile.NormalUserProfileActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
-
         <activity android:name=".ui.manager.home.ManagerHomeActivity" />
         <activity android:name=".ui.authentication.LogInActivity" />
         <activity
-            android:name=".MainActivity" android:exported="true">
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

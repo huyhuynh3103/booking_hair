@@ -23,6 +23,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class BookingViewModel: ViewModel() {
     private var _userId: String = "lLed4Jd1HRPzEmwREbkl" // Used to query database
@@ -318,7 +319,7 @@ class BookingViewModel: ViewModel() {
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    suspend fun saveBookingSchedule(note: String): Boolean {
+    suspend fun saveBookingSchedule(note: String): HashMap<String, *>? {
         // Re check if stylist is free
         // In case there is someone has just booked with the chosen stylist at the chosen date and time
         val chosenTimeRange = getTimeRangeChosenInHour()
@@ -329,7 +330,7 @@ class BookingViewModel: ViewModel() {
             shiftId.value!!)
 
         if(availableStylist.size <= 0)
-            return false // Announce to user
+            return null // Announce to user
 
         if(stylistId.isNullOrEmpty()) {
             // Select default stylist
@@ -340,7 +341,9 @@ class BookingViewModel: ViewModel() {
             discountId = ""
             _discount.postValue("")
         }
-        dbServices.getAppointmentServices()!!.saveBookingSchedule(
+
+
+        return dbServices.getAppointmentServices()!!.saveBookingSchedule(
             userId,
             salonId,
             serviceId,
@@ -354,13 +357,10 @@ class BookingViewModel: ViewModel() {
             note,
             totalPrice.value!!
         )
-        return true
     }
 
     suspend fun getTimeRangeChosenInHour(): Pair<Float, Float> {
         val bookingTimeToDisplay: Float = bookingTime.value?.replace(':', '.')?.toFloat() ?: 0.0F
-        Log.d("bookviewmodel", "booktime value = " + bookingTime.value!!)
-        Log.d("bookviewmodel", "book time value to display =" + bookingTimeToDisplay.toString())
         val bookingTimeInHour: Float = TimeServices.timeToDisplayToTimeInHour(bookingTimeToDisplay)
 
         val chosenServiceDurationInHour: Float = TimeServices.minuteToHour(getChosenServiceDuration())

@@ -40,7 +40,13 @@
     // Warning title
     <string name="warning_title">Cảnh báo</string>
 
-
+    // Booking confirm screen
+    <string name="booking_confirm_screen_thanks_label">CẢM ƠN BẠN ĐÃ ĐẶT LỊCH CẮT TÓC</string>
+    <string name="booking_confirm_screen_appointment_label">THÔNG TIN ĐẶT LỊCH</string>
+    <string name="booking_confirm_screen_salon_label">THÔNG TIN SALON</string>
+    <string name="booking_confirm_screen_price_label">TỔNG GIÁ</string>
+    <string name="booking_confirm_screen_unit_label">VND</string>
+    <string name="booking_confirm_screen_button">TRỞ VỀ MÀN HÌNH CHÍNH</string>
 
     // Manager appointment list screen
     <string name="search_bar_hint">Nhập mã lịch đặt...</string>

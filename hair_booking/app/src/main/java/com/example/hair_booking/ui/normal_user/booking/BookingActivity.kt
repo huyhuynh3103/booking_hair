@@ -4,33 +4,25 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.Spinner
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.viewModelScope
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityBookingBinding
-import com.example.hair_booking.model.Shift
 import com.example.hair_booking.services.booking.BookingServices
-import com.example.hair_booking.services.db.dbServices
+import com.example.hair_booking.ui.normal_user.booking.booking_confirm.BookingConfirmActivity
 import com.example.hair_booking.ui.normal_user.booking.choose_discount.ChooseDiscountActivity
 import com.example.hair_booking.ui.normal_user.booking.choose_salon.ChooseSalonActivity
 import com.example.hair_booking.ui.normal_user.booking.choose_service.ChooseServiceActivity
 import com.example.hair_booking.ui.normal_user.booking.choose_stylist.ChooseStylistActivity
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
-import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.*
-import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
@@ -38,6 +30,7 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
     private val REQUEST_CODE_CHOOSE_SERVICE: Int = 2222
     private val REQUEST_CODE_CHOOSE_STYLIST: Int = 3333
     private val REQUEST_CODE_CHOOSE_DISCOUNT: Int = 4444
+    private val REQUEST_CODE_BOOKING_CONFIRM: Int = 5555
     private lateinit var binding: ActivityBookingBinding
 
     // "by viewModels()" is the auto initialization of viewmodel made by the library
@@ -112,15 +105,26 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
                 displayEmptyFieldsWarning()
             else {
                 GlobalScope.launch {
-                    val ack = viewModel.saveBookingSchedule(binding.note.text.toString())
-                    if(!ack) {
+                    val docSaved = viewModel.saveBookingSchedule(binding.note.text.toString())
+                    if(docSaved.isNullOrEmpty()) {
                         runOnUiThread {
                             displayStylistBusyWarning()
                         }
                     }
+                    else {
+                        moveToBookingConfirmScreen(BookingServices.serializeAppointmentSaved(docSaved))
+                    }
                 }
             }
         })
+    }
+
+    private fun moveToBookingConfirmScreen(docSaved: HashMap<String, *>?) {
+        val intent = Intent(this, BookingConfirmActivity::class.java)
+
+        intent.putExtra("appointmentSaved", docSaved)
+
+        startActivityForResult(intent, REQUEST_CODE_BOOKING_CONFIRM)
     }
 
     private fun moveToChooseSalonScreen() {

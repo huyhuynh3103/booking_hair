@@ -7,6 +7,7 @@ import com.example.hair_booking.model.Appointment
 import com.example.hair_booking.model.Shift
 import com.example.hair_booking.model.Stylist
 import com.example.hair_booking.services.db.dbServices
+import com.example.hair_booking.services.local.SalonServices
 import com.example.hair_booking.services.local.StylistServices
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.coroutines.GlobalScope
@@ -108,15 +109,13 @@ class BookingServices {
 
             GlobalScope.async {
                 var appointmentTimeRanges: ArrayList<Pair<Float, Int>> = ArrayList()
-                Log.d("xk", "xxx")
                 async {
                     // The first element in pair is bookingTime, the second one is service duration
                     appointmentTimeRanges = dbServices.getAppointmentServices()!!
                         .getAppointmentTimeRanges(bookingDate, bookingShiftId)
-                    Log.d("xk", "xxx1")
                 }.await()
 
-                Log.d("xk", "xxx2")
+
                 for (timeRange in appointmentTimeRanges) {
                     // Time database returned is in display format => convert to hour
                     val userPickedTimeInHour = TimeServices.timeToDisplayToTimeInHour(timeRange.first)
@@ -130,20 +129,8 @@ class BookingServices {
 
                     // Compare time range can be picked to time range of appointment booked in database
                     // If they conflict => the time can be picked became disabled
-//                    if (startTimeInHour >= userPickedTimeInHour && estimatedEndTime <= appointmentEndTime) {
-//                        isAvailable = false
-//                    }
                     if (TimeServices.checkTimeInHourConflict(Pair(startTimeInHour, estimatedEndTime), Pair(userPickedTimeInHour, appointmentEndTime))) {
                         isAvailable = false
-                    }
-                    else if (isToday) {
-                        // Disable all the time before the current time (user cannot pick the time that already passed)
-                        val currentTimeToDisplay: Float = TimeServices.getCurrentTimeInFloatFormat()
-                        val currentTimeInHour: Float =
-                            TimeServices.timeToDisplayToTimeInHour(currentTimeToDisplay)
-
-                        if (startTimeInHour < currentTimeInHour)
-                            isAvailable = false
                     }
 
                     // Check if there is any free stylist
@@ -165,6 +152,16 @@ class BookingServices {
                         isAvailable = true
                 }
             }.await()
+
+            if (isToday) {
+                // Disable all the time before the current time (user cannot pick the time that already passed)
+                val currentTimeToDisplay: Float = TimeServices.getCurrentTimeInFloatFormat()
+                val currentTimeInHour: Float =
+                    TimeServices.timeToDisplayToTimeInHour(currentTimeToDisplay)
+
+                if (startTimeInHour < currentTimeInHour)
+                    isAvailable = false
+            }
 
             return isAvailable
         }
@@ -243,6 +240,21 @@ class BookingServices {
             }
 
             return availableStylist
+        }
+
+        fun serializeAppointmentSaved(docSaved: HashMap<String, *>?): HashMap<String, Any?> {
+            return hashMapOf(
+                "userFullName" to (docSaved?.get("userFullName") ?: null),
+                "hairSalonName" to (docSaved?.get("hairSalon") as HashMap<String, *>)["name"],
+                "hairSalonAddress" to SalonServices.addressToString((docSaved?.get("hairSalon") as HashMap<String, *>)["address"] as HashMap<String, *>),
+                "serviceTitle" to (docSaved?.get("service") as HashMap<String, *>)["title"],
+                "stylist" to (docSaved?.get("stylist") as HashMap<String, *>)["fullName"],
+                "bookingDate" to (docSaved?.get("bookingDate") ?: null),
+                "bookingTime" to (docSaved?.get("bookingTime") ?: null),
+                "discountTitle" to ((docSaved?.get("discountApplied") as HashMap<String, *>?)?.get("title") ?: null),
+                "notes" to (docSaved?.get("notes") ?: null),
+                "totalPrice" to (docSaved?.get("totalPrice") ?: null)
+            )
         }
     }
 }

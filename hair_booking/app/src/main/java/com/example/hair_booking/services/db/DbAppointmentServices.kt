@@ -101,8 +101,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 .await()
 
             for(document in result.documents) {
-                val discountApplied: HashMap<String, *>? = document.data?.get("discountApplied") as HashMap<String, *>
-                val discountAppliedId: String = (discountApplied?.get("id") as DocumentReference).id
+                val discountApplied: HashMap<String, *>? = document.data?.get("discountApplied") as HashMap<String, *>?
+                val discountAppliedId: String? = (discountApplied?.get("id") as DocumentReference?)?.id
                 discountIds.add(discountAppliedId)
             }
 
@@ -170,7 +170,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         discountTitle: String,
         note: String,
         totalPrice: Long
-    ) {
+    ): HashMap<String, *> {
         val dbNormalUserServices = dbServices.getNormalUserServices()!!
         val dbSalonServices = dbServices.getSalonServices()!!
         val dbStylistServices = dbServices.getStylistServices()!!
@@ -292,23 +292,32 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                     Log.d("DbAppointmentServices", "Error adding document", e)
                 }
         }
+        return docTobeSaved
     }
 
     private fun generateAppointmentSubId(): String {
         // Get 4 first characters of random ID
         val uuid = UUID.randomUUID().toString()
-        var randomIndex: ArrayList<Int> = ArrayList()
-
-        for(i in 0..3) { // Generate 4 random index
-            randomIndex.add((0..uuid.length).random())
-        }
         var result: String = ""
-        randomIndex.forEach {
-            // Pick characters from random indexs
-            // and concatenate into final string
-            result += uuid[it]
+
+        var i: Int = 0
+        var previousIsHyphen: Boolean = false
+        while(i < 4) { // Generate 4 random index
+            val tmp: Int = (uuid.indices).random()
+            if(uuid[tmp] == '-') {
+                if(previousIsHyphen)
+                    continue
+                else {
+                    previousIsHyphen = true
+                    i--
+                    continue
+                }
+            }
+            else
+                result += uuid[tmp]
+            i++
         }
-        return result
+        return "#$result"
     }
     override suspend fun findById(data: Any): Any {
         TODO("Not yet implemented")
