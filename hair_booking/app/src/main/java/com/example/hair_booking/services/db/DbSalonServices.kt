@@ -17,7 +17,7 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
         TODO("Not yet implemented")
     }
 
-    override fun findAll(): MutableLiveData<ArrayList<Salon>> {
+    override suspend fun findAll(): MutableLiveData<ArrayList<Salon>> {
         var result = MutableLiveData<ArrayList<Salon>>()
         var salonList: ArrayList<Salon> = ArrayList()
         if (dbInstance != null) {
@@ -47,7 +47,7 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
         return result
     }
 
-    override fun findById(id: Any?): MutableLiveData<Salon> {
+    override suspend fun findById(id: Any?): MutableLiveData<Salon> {
         var result = MutableLiveData<Salon>()
 
         if (dbInstance != null) {
@@ -80,11 +80,15 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
         return result
     }
 
-    override suspend fun updateOne(id: String?, updateDoc: Any?): Any? {
+    override suspend fun updateOne(id: Any?, updateDoc: Any?): Any? {
         TODO("Not yet implemented")
     }
 
-    override fun delete(data: Any?): Any? {
+    override suspend fun delete(id: Any?): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun add(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 

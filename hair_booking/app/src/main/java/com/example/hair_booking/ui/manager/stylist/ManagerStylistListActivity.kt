@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityChooseStylistBinding
 import com.example.hair_booking.databinding.ActivityManagerStylistListBinding
 import com.example.hair_booking.ui.normal_user.booking.StylistListAdapter
+import kotlinx.coroutines.launch
 
 class ManagerStylistListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityManagerStylistListBinding
@@ -57,7 +59,9 @@ class ManagerStylistListActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        binding.viewModel!!.getUpdatedStylistList()
+        lifecycleScope.launch {
+            binding.viewModel!!.getUpdatedStylistList()
+        }
     }
 
     private fun setOnClickListenerForItem() {
@@ -80,9 +84,7 @@ class ManagerStylistListActivity : AppCompatActivity() {
             // send chosen service id and name back to previous activity
             intent.putExtra("Task", "Add")
 
-            startActivity(intent)
-
-            binding.rvStylistList.adapter!!.notifyDataSetChanged()
+            startActivityForResult(intent, REQUEST_CODE_UPDATE_DATA)
         }
     }
 

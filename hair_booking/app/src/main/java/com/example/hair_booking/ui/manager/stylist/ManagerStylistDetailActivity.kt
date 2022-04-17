@@ -44,12 +44,10 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
 
         // Load data
         binding.task = intent.getStringExtra("Task")
-        lifecycleScope.launch {
-            if (binding.task == "Edit") {
+        if (binding.task == "Edit") {
+            lifecycleScope.launch {
                 // get selected ID from previous activity
-                binding.viewModel?.getStylistDetail(
-                    intent.getStringExtra("StylistID").toString()
-                )
+                binding.viewModel?.getStylistDetail(intent.getStringExtra("StylistID").toString())
             }
         }
     }
@@ -68,27 +66,32 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
             val description = binding.tvStylistDescription.text.toString()
 
             lifecycleScope.launch {
-                val workPlace = binding.viewModel!!.getSelectedWorkplace(binding.sWorkplace.selectedItemPosition)
-                val stylist = Stylist(id, name, avatar, description, workPlace!!)
+                val workPlace =
+                    binding.viewModel!!.getSelectedWorkplace(binding.sWorkplace.selectedItemPosition)
+                val stylist = Stylist(id, name, avatar, description, workPlace!!, false)
 
                 if (binding.task == "Edit") {
                     binding.viewModel!!.updateStylist(id, stylist)
+                } else {
+                    binding.viewModel!!.addStylist(stylist)
                 }
-                else {
 
-                }
+                val replyIntent = Intent()
+                setResult(Activity.RESULT_OK, replyIntent)
+                finish()
             }
-
-            val replyIntent = Intent()
-            setResult(Activity.RESULT_OK, replyIntent)
-            finish()
         }
 
         binding.bDeleteStylist.setOnClickListener() {
-            // delete and switch to stylist list screen
+            val id = intent.getStringExtra("StylistID").toString()
 
-            val intent = Intent(this, ManagerStylistListActivity::class.java)
-            startActivity(intent)
+            lifecycleScope.launch {
+                binding.viewModel!!.deleteStylist(id)
+
+                val replyIntent = Intent()
+                setResult(Activity.RESULT_OK, replyIntent)
+                finish()
+            }
         }
     }
 }
