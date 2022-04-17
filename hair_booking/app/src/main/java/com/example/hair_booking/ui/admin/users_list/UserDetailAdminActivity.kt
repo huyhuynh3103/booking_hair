@@ -1,5 +1,6 @@
 package com.example.hair_booking.ui.admin.users_list
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -9,6 +10,7 @@ import com.example.hair_booking.databinding.ActivityUserDetailAdminBinding
 import com.example.hair_booking.ui.normal_user.profile.NormalUserProfileViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class UserDetailAdminActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUserDetailAdminBinding
@@ -23,7 +25,7 @@ class UserDetailAdminActivity : AppCompatActivity() {
 
         val userId = intent.getStringExtra("userId")
         getSelectedNormalUserProfile(userId!!)
-        setOnClickListenerForButton()
+        setOnClickListenerForButton(userId)
     }
 
     private fun getSelectedNormalUserProfile(id: String) {
@@ -32,6 +34,14 @@ class UserDetailAdminActivity : AppCompatActivity() {
 
     }
 
-    private fun setOnClickListenerForButton() {
+    private fun setOnClickListenerForButton(id: String) {
+        // Observe lock button onclick event
+        viewModel.lockBtnClicked.observe(this, androidx.lifecycle.Observer {
+            GlobalScope.launch {
+                viewModel.updateLockAccount(binding.etStatus.text.toString(), id)
+            }
+            val intent = Intent(this, UsersListActivity::class.java)
+            startActivity(intent)
+        })
     }
 }

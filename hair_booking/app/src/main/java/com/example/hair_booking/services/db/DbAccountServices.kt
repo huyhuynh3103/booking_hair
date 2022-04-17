@@ -1,10 +1,13 @@
 package com.example.hair_booking.services.db
 
+import android.text.BoringLayout
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.hair_booking.Constant
 import com.example.hair_booking.model.Account
 import com.example.hair_booking.model.NormalUser
 import com.example.hair_booking.model.Salon
+import com.example.hair_booking.model.Stylist
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.GlobalScope
@@ -94,5 +97,29 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?) {
         }
         return list
     }
+
+    suspend fun updateLockAccount(status: String,userId: String) {
+        val dbNormalUserServices = dbServices.getNormalUserServices()!!
+
+        // Get account id
+        val accountId: String = dbNormalUserServices.getNormalUserAccountId(userId)
+
+        var banned : Boolean = true
+        if (status.equals("Đã khóa"))
+            banned = false
+
+        val accountRef = dbInstance!!.collection(Constant.collection.accounts).document(accountId)
+
+        accountRef
+            .update("banned", banned)
+            .addOnSuccessListener {
+                Log.d("DbAccountServices", "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e ->
+                Log.d("DbAccountServices", "Error updating document", e)
+            }
+
+    }
+
 
 }

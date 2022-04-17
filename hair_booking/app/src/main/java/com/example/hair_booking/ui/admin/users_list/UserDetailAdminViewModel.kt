@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hair_booking.model.Account
 import com.example.hair_booking.model.NormalUser
+import com.example.hair_booking.model.Stylist
 import com.example.hair_booking.services.db.dbServices
 import kotlinx.coroutines.launch
 
@@ -45,5 +46,18 @@ class UserDetailAdminViewModel: ViewModel() {
         dbServices.getAccountServices()?.getAccountListForManagement()?.observeForever { accountList ->
             _accountList.value = accountList
         }
+    }
+
+    // Set lock button onclick to be observable
+    private val _lockBtnClicked = MutableLiveData<Boolean>()
+    val lockBtnClicked: LiveData<Boolean> = _lockBtnClicked
+
+    fun onLockBtnClicked() {
+        _lockBtnClicked.value = true
+    }
+
+    suspend fun updateLockAccount(status: String, id: String) {
+
+        dbServices.getAccountServices()!!.updateLockAccount(status, id)
     }
 }

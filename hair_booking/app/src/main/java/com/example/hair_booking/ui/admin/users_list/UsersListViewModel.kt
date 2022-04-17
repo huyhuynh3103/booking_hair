@@ -15,12 +15,11 @@ class UsersListViewModel: ViewModel() {
     private val _accountList: MutableLiveData<ArrayList<Account>> = MutableLiveData()
 
     val userList: LiveData<ArrayList<NormalUser>> = _userList
-    val accountList: LiveData<ArrayList<Account>> = _accountList
+
 
     init {
         viewModelScope.launch {
             getUserList()
-            getAccountList()
         }
 
     }
@@ -39,4 +38,5 @@ class UsersListViewModel: ViewModel() {
             _accountList.value = accountList
         }
     }
+
 }

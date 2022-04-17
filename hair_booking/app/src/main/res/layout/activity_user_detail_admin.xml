@@ -67,14 +67,14 @@
                     android:id="@+id/etUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
                     android:ems="10"
-                    android:textColor="@color/black"
-                    android:padding="5dp"
-                    android:maxLines="1"
                     android:maxLength="50"
+                    android:maxLines="1"
+                    android:padding="5dp"
                     android:text="@{viewModel.account.email}"
-                    android:textSize="20sp"
-                    android:layout_marginLeft="20dp"/>
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -97,7 +97,7 @@
                     android:maxLength="50"
                     android:text="@{viewModel.user.fullName}"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:layout_marginLeft="20dp"/>
 
                 <TextView
@@ -121,7 +121,7 @@
                     android:maxLength="50"
                     android:text="@{viewModel.user.phoneNumber}"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:layout_marginLeft="20dp"
                     />
 
@@ -185,14 +185,41 @@
                     android:maxLines="1"
                     android:maxLength="50"
                     android:text="@{viewModel.user.discountPoint.toString()}"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="20dp"/>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Trạng thái"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="left"/>
+
+                <TextView
+                    android:orientation="horizontal"
+                    android:id="@+id/etStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textColor="@color/black"
+                    android:padding="5dp"
+                    android:maxLines="1"
+                    android:maxLength="50"
+                    android:text='@{viewModel.account.banned.equals(true) ? "Đã khóa" : "Hoạt đông"}'
+                    android:textSize="18sp"
                     android:layout_marginLeft="20dp"/>
 
                 <Button
                     android:layout_width="110dp"
                     android:layout_height="50dp"
-                    android:id="@+id/btnKhoa"
-                    android:text='@{viewModel.account.banned.equals(false) ? "Khóa" : "Mở khóa"}'
+                    android:id="@+id/btnLock"
+                    android:text='@{viewModel.account.banned.equals(false) ? "Mở khóa" : "Khóa"}'
+                    android:onClick="@{() -> viewModel.onLockBtnClicked()}"
                     app:backgroundTint="#EDFF5722"
                     android:gravity="center"
                     android:layout_marginTop="12dp"
