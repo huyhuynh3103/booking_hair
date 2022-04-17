@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityNormalUserHomeBinding
+import com.example.hair_booking.databinding.LayoutHeaderNavigationBinding
+import com.example.hair_booking.services.auth.AuthRepository
 import com.example.hair_booking.ui.normal_user.booking.BookingActivity
 import com.example.hair_booking.ui.normal_user.profile.NormalUserProfileActivity
 import com.example.hair_booking.ui.normal_user.salon.NormalUserSalonDetailActivity
@@ -24,14 +26,17 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
     private var mDrawerLayout: DrawerLayout? = null
     private val salonViewModel: SalonViewModel by viewModels()
     private lateinit var binding: ActivityNormalUserHomeBinding
+    private lateinit var bindindHeaderNavigationBinding: LayoutHeaderNavigationBinding
     private lateinit var salonAdapter: SalonAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_normal_user_home)
         binding.viewModel = salonViewModel
-        binding.lifecycleOwner = this
-
+        binding.lifecycleOwner = this@NormalUserHomeActivity
+        bindindHeaderNavigationBinding = DataBindingUtil.inflate(layoutInflater,R.layout.layout_header_navigation,null,false)
+        bindindHeaderNavigationBinding.lifecycleOwner = this@NormalUserHomeActivity
         setupUI()
+        setUserProfile()
         //setupObserver()
         salonAdapter.onItemClick = { salon ->
             val intent = Intent(this,NormalUserSalonDetailActivity::class.java)
@@ -40,6 +45,13 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
         }
 
     }
+
+    private fun setUserProfile() {
+        val userProfile = AuthRepository.getCurrentUser()
+        bindindHeaderNavigationBinding.nameTextView.setText(userProfile!!.displayName.toString())
+        bindindHeaderNavigationBinding.gmailTextView.setText(userProfile.email.toString())
+    }
+
     @Override
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
@@ -49,6 +61,7 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
             }
             R.id.nav_schedule->{
                 startActivity(Intent(this,BookingActivity::class.java))
+
             }
             R.id.nav_wish_list->{
 
@@ -84,7 +97,7 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
                 DividerItemDecoration.HORIZONTAL
             )
         )
-        // config toolbar
+
         val toolbar:Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -92,6 +105,7 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
             R.string.navigation_drawer_open,R.string.navigation_drawer_close)
 
         binding.drawerLayout.addDrawerListener(toggle)
+
         toggle.syncState()
 
 

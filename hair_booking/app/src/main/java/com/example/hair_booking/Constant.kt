@@ -15,11 +15,15 @@ object Constant {
     object messages{
         const val required:String = "Required"
         const val invalidEmail:String = "Invalid Email"
-        const val loginFailed:String = "Invalid Email or Password. Try Again"
-        const val signUpFailed:String = "Email or password is already existed. Try another."
+        const val loginFailedByEmail:String = "The email does not exist or has been disabled. Try Again"
+        const val loginFailedByPassword:String = "The wrong password. Try Again"
+        const val signUpFailedByWeekPassword:String = "Week password! Try Again"
+        const val signUpFailedByMalformedEmail:String = "Malformed email! Try Again"
+        const val signUpFailedByExistsEmail:String = "Exists email! Try Again"
         const val signUpSuccess:String = "Sign Up Successfully."
         const val notMatch:String = "Not match!"
         const val errorFromSever:String = "Something went wrong. Try later."
+        const val bannedAccount: String = "This account has been banned by admin. Contact us for any question."
         const val length_password_condition_msg = "Must contains at least 8 characters."
         var passwordValidationMsg: ((String) -> String) = { condition ->
             "Must contains at least one $condition character."

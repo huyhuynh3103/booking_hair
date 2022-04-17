@@ -6,8 +6,8 @@ import com.example.hair_booking.Constant
 import com.example.hair_booking.model.Salon
 import com.google.firebase.firestore.FirebaseFirestore
 
-class DbHairSalonServices(private var dbInstance: FirebaseFirestore?):DatabaseAbstract() {
-    override fun find(data: Any): Any {
+class DbHairSalonServices(private var dbInstance: FirebaseFirestore?):DatabaseAbstract<Any>() {
+    override suspend fun find(data: Any): Any {
         TODO("Not yet implemented")
     }
 

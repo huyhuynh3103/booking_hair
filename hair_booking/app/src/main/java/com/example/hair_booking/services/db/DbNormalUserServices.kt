@@ -12,9 +12,9 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
 
-class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbstract() {
+class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbstract<Any>() {
 
-    override fun find(data: Any): Any {
+    override suspend fun find(data: Any): Any {
         TODO("Not yet implemented")
     }
 

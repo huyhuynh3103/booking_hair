@@ -11,8 +11,13 @@ import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivitySignUpBinding
 import com.example.hair_booking.services.auth.AuthRepository
 import com.example.hair_booking.services.db.dbServices
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.coroutines.*
+import java.lang.Exception
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -28,7 +33,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     @DelicateCoroutinesApi
-    private fun handleSignUpBtn()  {
+    private fun handleSignUpBtn() {
         binding.signUpBtn.setOnClickListener {
             Log.d("huy-register", "Sign up button clicked")
 //           check empty
@@ -68,52 +73,65 @@ class SignUpActivity : AppCompatActivity() {
 
 
                 GlobalScope.launch {
-                    try{
+                    try {
                         // save to fire base auth
-                        val result =
+                        val result = async { AuthRepository.createAccount(email, password) }
+                        val profile = UserProfileChangeRequest.Builder()
+                            .setDisplayName(fullName)
+                            .build()
+
+                        result.await().user?.updateProfile(profile)
+                        // save new account
+                        val newAccount = hashMapOf(
+                            "email" to email,
+                            "role" to Constant.roles.userRole,
+                            "banned" to false
+                        )
+
+                        val accountDocRef =
                             withContext(Dispatchers.Default) {
-                                AuthRepository.createAccount(email,
-                                    password)
+                                dbServices.accountServices.save(newAccount)
                             }
-                        if(result==null){
+                        val newUser = hashMapOf(
+                            "fullName" to fullName,
+                            "gender" to gender,
+                            "accountId" to accountDocRef,
+                            "phoneNumber" to phoneNumber,
+                            "discountPoint" to 0,
+                            "appointment" to arrayListOf<DocumentReference>(),
+                            "wishList" to arrayListOf<DocumentReference>()
+
+                        )
+                        // save new user
+                        dbServices.getNormalUserServices()!!.save(newUser)
+                        runOnUiThread { Toast.makeText(applicationContext,
+                            Constant.messages.signUpSuccess,
+                            Toast.LENGTH_LONG).show() }
+                        finish()
+
+
+                    } catch (e: FirebaseAuthWeakPasswordException) {
+                        runOnUiThread {
                             Toast.makeText(applicationContext,
-                                Constant.messages.signUpFailed,
+                                Constant.messages.signUpFailedByWeekPassword,
+                                Toast.LENGTH_LONG).show()
+
+                        }
+                    } catch (e: FirebaseAuthInvalidCredentialsException) {
+                        runOnUiThread {
+                            Toast.makeText(applicationContext,
+                                Constant.messages.signUpFailedByMalformedEmail,
                                 Toast.LENGTH_LONG).show()
                         }
-                        else{
-                            // save new account
-                            val newAccount = hashMapOf(
-                                "email" to email,
-                                "role" to Constant.roles.userRole,
-                                "banned" to false
-                            )
-
-                            val accountDocRef =
-                                withContext(Dispatchers.Default) {
-                                    dbServices.accountServices.save(newAccount)
-                                }
-                            val newUser = hashMapOf(
-                                "fullName" to fullName,
-                                "gender" to gender,
-                                "accountId" to accountDocRef,
-                                "phoneNumber" to phoneNumber,
-                                "discountPoint" to 0,
-                                "appointment" to arrayListOf<DocumentReference>(),
-                                "wishList" to arrayListOf<DocumentReference>()
-
-                            )
-                            // save new user
-                            dbServices.getNormalUserServices()!!.save(newUser)
+                    } catch (e: FirebaseAuthUserCollisionException) {
+                        runOnUiThread {
                             Toast.makeText(applicationContext,
-                                Constant.messages.signUpSuccess,
+                                Constant.messages.signUpFailedByExistsEmail,
                                 Toast.LENGTH_LONG).show()
-                            finish()
                         }
-
-                    }catch (e: Exception){
-                        Toast.makeText(applicationContext,
-                            Constant.messages.errorFromSever,
-                            Toast.LENGTH_LONG).show()
+                    }
+                    catch (e: Exception){
+                        Log.e("huy-sign-up","Exception occurs: ${e.message}")
                     }
 
                 }
