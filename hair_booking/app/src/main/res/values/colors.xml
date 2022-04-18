@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="shadow_edit_text">#1F000000</color>
     <color name="theme_primary">#2DB6A3</color>
     <color name="theme_secondary">#e3caa5</color>
     <color name="purple_200">#FFBB86FC</color>

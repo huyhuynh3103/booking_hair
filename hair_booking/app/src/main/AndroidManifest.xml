@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.hair_booking" >
+    package="com.example.hair_booking">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -23,8 +23,11 @@
         </activity>
         <activity android:name=".ui.normal_user.booking.choose_discount.ChooseDiscountActivity" />
         <activity
-            android:name=".ui.authentication.begining"
-            android:exported="true" >
+            android:name=".ui.authentication.SignUpActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.authentication.BeginningActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,7 +35,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.normal_user.booking.choose_service.ChooseServiceActivity"
+            android:name=".ui.normal_user.home.NormalUserHomeActivity"
+            android:exported="true"
+            android:label="@string/app_name"></activity>
+        <activity
+            android:name=".ui.normal_user.booking.ChooseDiscountActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.normal_user.booking.ChooseServiceActivity"
             android:exported="false"
             android:label="@string/choose_service_screen_title"></activity>
         <activity
@@ -85,6 +95,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
