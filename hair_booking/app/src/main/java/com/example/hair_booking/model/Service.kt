@@ -1,5 +1,7 @@
 package com.example.hair_booking.model
 
+import java.time.Duration
+
 // Primary constructor only contains 1 parameter because these following reason:
 // - Secondary constructor in kotlin MUST call primary first,
 // it means the secondary constructor must include the id
@@ -9,6 +11,7 @@ data class Service(private val _id: String) {
     private var _title: String? = null
     private var _price: Long? = null
     private var _description: String? = null
+    private var _duration: Long? =  null
 
 
     // GETTERS
@@ -16,8 +19,22 @@ data class Service(private val _id: String) {
     val title: String? get() = _title
     val price: Long? get() = _price
     val description: String? get() = _description
+    val duration: Long? get() = _duration
 
     // Full parameter constructor
+    constructor(
+        id: String,
+        title: String,
+        price: Long,
+        description: String,
+        duration: Long
+    ): this(id) {
+        this._title = title
+        this._price = price
+        this._description = description
+        this._duration = duration
+    }
+
     constructor(
         id: String,
         title: String,

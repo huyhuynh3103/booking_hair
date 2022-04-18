@@ -162,6 +162,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         val dbNormalUserServices = dbServices.getNormalUserServices()!!
         val dbSalonServices = dbServices.getSalonServices()!!
         val dbStylistServices = dbServices.getStylistServices()!!
+        val dbServiceServices = dbServices.getServiceServices()!!
 
         // Get user info
         val user: NormalUser? = dbNormalUserServices.getUserById(userId)
@@ -195,7 +196,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         val subId: String = generateAppointmentSubId()
         val status: String = "Chấp nhận"
         val createdAt: String = DateServices.currentDateInString() + " " + TimeServices.getCurrentTimeInFloatFormat()
-
+        val serviceDuration: Int = dbServiceServices.getServiceDuration(serviceId)
 
         var discountDocRef: DocumentReference? = null
         var docTobeSaved: HashMap<String, Any?>? = null
@@ -215,7 +216,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 ),
                 "service" to hashMapOf(
                     "id" to serviceDocRef,
-                    "title" to serviceTitle
+                    "title" to serviceTitle,
+                    "duration" to serviceDuration
                 ),
                 "stylist" to hashMapOf(
                     "id" to stylistDocRef,
@@ -249,7 +251,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 ),
                 "service" to hashMapOf(
                     "id" to serviceDocRef,
-                    "title" to serviceTitle
+                    "title" to serviceTitle,
+                    "duration" to serviceDuration
                 ),
                 "stylist" to hashMapOf(
                     "id" to stylistDocRef,
