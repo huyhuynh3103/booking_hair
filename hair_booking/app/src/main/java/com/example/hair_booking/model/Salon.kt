@@ -1,5 +1,7 @@
 package com.example.hair_booking.model
 
+import com.google.firebase.firestore.DocumentReference
+
 // Primary constructor only contains 1 parameter because these following reason:
 // - Secondary constructor in kotlin MUST call primary first,
 // it means the secondary constructor must include the id
@@ -16,7 +18,7 @@ data class Salon(private val _id: String) {
 
     // "*" data type is used to deal with map in map in firestore
     private var _address: HashMap<String, String>? = null
-    private var _appointments: ArrayList<HashMap<String, *>>?  = null
+    private var _appointments: ArrayList<DocumentReference>?  = null
     private var _stylists: ArrayList<HashMap<String, *>>? = null
 
 
@@ -29,7 +31,7 @@ data class Salon(private val _id: String) {
     val openHour: String? get() = _openHour
     val closeHour: String? get() = _closeHour
     val address: HashMap<String, String>? get() = _address
-    val appointments: ArrayList<HashMap<String, *>>?  get() = _appointments
+    val appointments: ArrayList<DocumentReference>?  get() = _appointments
     val stylists: ArrayList<HashMap<String, *>>? get() = _stylists
 
 
@@ -43,7 +45,7 @@ data class Salon(private val _id: String) {
         openHour: String,
         closeHour: String,
         address: HashMap<String, String>,
-        appointments: ArrayList<HashMap<String, *>>,
+        appointments: ArrayList<DocumentReference>,
         stylists: ArrayList<HashMap<String, *>>
     ): this(id) {
         this._name = name

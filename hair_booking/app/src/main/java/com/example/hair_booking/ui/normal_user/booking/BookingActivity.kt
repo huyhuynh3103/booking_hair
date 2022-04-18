@@ -157,7 +157,7 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
         else {
             val intent = Intent(this, ChooseDiscountActivity::class.java)
 
-            intent.putExtra("userId", "lLed4Jd1HRPzEmwREbkl")
+            intent.putExtra("userId", "U4mhGl554MTgKbUgMVhA")
             intent.putExtra("chosenDate", viewModel.bookingDate.value)
             val userCurrentPoint: Long = 2500
             intent.putExtra("userCurrentPoint", userCurrentPoint)

@@ -90,7 +90,7 @@ fun bindSalonListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>
     }
 }
 
-@BindingAdapter("data")
+@BindingAdapter("managerStylistList")
 fun bindManagerStylistListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Stylist>?) {
     val adapter = recyclerView.adapter as StylistRecycleViewAdapter
     if (data != null) {

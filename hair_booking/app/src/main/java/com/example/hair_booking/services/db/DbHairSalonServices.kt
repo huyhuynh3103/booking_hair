@@ -4,14 +4,15 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
 import com.example.hair_booking.model.Salon
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
-class DbHairSalonServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract() {
-    override fun find(data: Any?): Any? {
+class DbHairSalonServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract<Any?>() {
+    override suspend fun find(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 
-    override fun save(data: Any?): Any? {
+    override suspend fun save(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 
@@ -32,7 +33,7 @@ class DbHairSalonServices(private var dbInstance: FirebaseFirestore?): DatabaseA
                             dataInDoc["openHour"] as String,
                             dataInDoc["closeHour"] as String,
                             dataInDoc["address"] as HashMap<String, String>,
-                            dataInDoc["appointments"] as ArrayList<HashMap<String, *>>,
+                            dataInDoc["appointments"] as ArrayList<DocumentReference>,
                             dataInDoc["stylists"] as ArrayList<HashMap<String, *>>
                         )
                         data.add(salon)

@@ -59,17 +59,26 @@ data class NormalUser(private val _id: String) {
         phoneNumber: String,
         gender: String,
         discountPoint: Long,
-        accountId: DocumentReference,
-        //username: String,
-        //banned: Boolean
+        accountId: DocumentReference
     ): this(id) {
         this._fullName = fullName
         this._phoneNumber = phoneNumber
         this._gender = gender
         this._discountPoint = discountPoint
         this._accountId = accountId
-        //this._username = username
-        //this._banned = banned
+    }
+
+    constructor(
+        id: String,
+        fullName: String,
+        phoneNumber: String,
+        gender: String,
+        discountPoint: Long
+    ): this(id) {
+        this._fullName = fullName
+        this._phoneNumber = phoneNumber
+        this._gender = gender
+        this._discountPoint = discountPoint
     }
 
 }

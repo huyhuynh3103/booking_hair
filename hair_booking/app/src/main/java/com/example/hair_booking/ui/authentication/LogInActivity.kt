@@ -19,7 +19,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class LogInActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLogInBinding
@@ -53,7 +52,7 @@ class LogInActivity : AppCompatActivity() {
                         val query = hashMapOf(
                             "email" to email
                         )
-                        val accountResult = async { dbServices.accountServices.find(query) }.await()
+                        val accountResult = async { dbServices.getAccountServices()!!.find(query) }.await()
                         if (accountResult.isNotEmpty()) {
                             if (accountResult[0].banned != true) {
                                 if (accountResult[0].role == Constant.roles.userRole) {

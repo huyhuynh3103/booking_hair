@@ -24,11 +24,16 @@ class UserDetailAdminActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         val userId = intent.getStringExtra("userId")
-        getSelectedNormalUserProfile(userId!!)
-        setOnClickListenerForButton(userId)
+
+        if (userId != null) {
+            GlobalScope.launch {
+                getSelectedNormalUserProfile(userId)
+            }
+            setOnClickListenerForButton(userId)
+        }
     }
 
-    private fun getSelectedNormalUserProfile(id: String) {
+    private suspend fun getSelectedNormalUserProfile(id: String) {
         binding.viewModel?.getUserAccountDetail(id)
         binding.viewModel?.getUserDetail(id)
 
@@ -41,9 +46,7 @@ class UserDetailAdminActivity : AppCompatActivity() {
                 viewModel.updateLockAccount(binding.etStatus.text.toString(), id)
             }
             finish();
-            startActivity(intent);
-            //val intent = Intent(this, UsersListActivity::class.java)
-            //startActivity(intent)
+            startActivity(intent)
         })
     }
 }

@@ -1,13 +1,11 @@
 package com.example.hair_booking.ui.manager.stylist
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
-import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -15,9 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.R
-import com.example.hair_booking.databinding.ActivityChooseStylistBinding
 import com.example.hair_booking.databinding.ActivityManagerStylistListBinding
-import com.example.hair_booking.ui.normal_user.booking.StylistListAdapter
 import kotlinx.coroutines.launch
 
 class ManagerStylistListActivity : AppCompatActivity() {

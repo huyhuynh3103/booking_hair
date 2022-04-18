@@ -10,14 +10,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.tasks.await
 
-class DbDiscountServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract() {
-    override suspend fun find(query: Any): Any {
-        TODO("Not yet implemented")
-    }
-
-    override fun save(data: Any): Any {
-        TODO("Not yet implemented")
-    }
+class DbDiscountServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract<Any?>() {
 
     override suspend fun findAll(): ArrayList<Discount> {
 
@@ -48,15 +41,27 @@ class DbDiscountServices(private var dbInstance: FirebaseFirestore?): DatabaseAb
         return discountList
     }
 
-    override suspend fun findById(data: Any): Any {
+    override suspend fun find(query: Any?): Any? {
         TODO("Not yet implemented")
     }
 
-    override fun updateOne(id: String, updateDoc: Any): Any {
+    override suspend fun save(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 
-    override fun delete(data: Any): Any {
+    override suspend fun findById(id: Any?): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateOne(id: Any?, updateDoc: Any?): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun delete(id: Any?): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun add(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 }

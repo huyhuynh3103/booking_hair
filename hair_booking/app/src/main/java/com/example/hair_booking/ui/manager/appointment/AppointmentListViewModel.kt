@@ -9,6 +9,8 @@ import com.example.hair_booking.services.db.dbServices
 import kotlinx.coroutines.launch
 
 class AppointmentListViewModel: ViewModel() {
+
+
     private var _appointmentList = MutableLiveData<ArrayList<Appointment>>()
     val appointmentList: LiveData<ArrayList<Appointment>> = _appointmentList
 
@@ -23,6 +25,7 @@ class AppointmentListViewModel: ViewModel() {
 //            ?.observeForever{ appointmentList ->
 //                _appointmentList.v = appointmentList
 //            }
-        dbServices.getAppointmentServices()?.getAppointmentListForManager(_appointmentList)!!
+        val salonId: String = "b2W2npkzmw6EgHWVovPM"
+        dbServices.getAppointmentServices()?.getAppointmentListForManager(salonId, _appointmentList)!!
     }
 }

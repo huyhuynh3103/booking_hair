@@ -14,6 +14,7 @@ import kotlinx.coroutines.coroutineScope
 import java.lang.Exception
 import com.example.hair_booking.model.Account
 import com.example.hair_booking.model.Salon
+import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.*
 
 class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbstract<Any>() {
@@ -22,12 +23,15 @@ class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) : Databas
         TODO("Not yet implemented")
     }
 
-    override suspend fun save(data: Any): DocumentReference {
+    override suspend fun save(data: Any?): DocumentReference? {
         Log.d("huy-save-normal-user","start")
-        var docRef:DocumentReference?
+        var docRef:DocumentReference? = null
         try {
-            docRef = dbInstance!!.collection(Constant.collection.normalUsers).add(data).await()
-        }catch (e: Exception){
+
+            if(data != null)
+                docRef = dbInstance!!.collection(Constant.collection.normalUsers).add(data).await()
+        }
+        catch (e: Exception){
             Log.d("huy-exception","Save new User failed",e)
             throw e
         }
@@ -35,41 +39,8 @@ class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) : Databas
     }
 
 
-    override fun findAll(): Any {
+    override suspend fun findAll(): Any {
         TODO("Not yet implemented")
-    }
-
-    override fun findById(id: String): MutableLiveData<NormalUser> {
-        var result = MutableLiveData<NormalUser>()
-
-        if (dbInstance != null) {
-            dbInstance!!.collection("normalUsers")
-                .get()
-                .addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        if (document.id == id) {
-                            val accountId: String =
-                                (document.data?.get("accountId") as DocumentReference).id
-
-                            //var account: Account = dbServices.getAccountServices()!!.getAccountDetail(accountId)
-                            // Mapping firestore object to kotlin model
-                            var normalUser = NormalUser(
-                                document.id,
-                                document.data!!["fullName"] as String,
-                                document.data!!["phoneNumber"] as String,
-                                document.data!!["gender"] as String,
-                                document.data!!["discountPoint"] as Long,
-                                document.data!!["accountId"] as DocumentReference
-                            )
-
-                            detail.value = normalUser
-                        }
-                    }
-                }.addOnFailureListener { exception ->
-                    Log.d("xk", "get failed with ", exception)
-                }
-        }
-        return detail
     }
 
     suspend fun getNormalUserAccountId(id: String): String {
@@ -197,16 +168,45 @@ class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) : Databas
                 result.data?.get("fullName") as String,
                 result.data?.get("phoneNumber") as String,
                 result.data?.get("gender") as String,
-                result.data?.get("discountPoint") as Long
+                result.data?.get("discountPoint") as Long,
+                result.data?.get("accountId") as DocumentReference
             )
         }
 
         return user
-    override suspend fun updateOne(id: String, updateDoc: Any): Any {
+    }
+
+    fun updateNormalUserWhenBooking(userId: String, appointment: DocumentReference) {
+
+        val normalUserRef = dbInstance!!.collection(Constant.collection.normalUsers).document(userId)
+
+        normalUserRef
+            .update(
+                "appointments", FieldValue.arrayUnion(appointment),
+                "discountPoint", FieldValue.increment(500)
+            )
+            .addOnSuccessListener {
+                Log.d("DbNormalUserServices", "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e ->
+                Log.d("DbNormalUserServices", "Error updating document", e)
+            }
+
+    }
+
+    override suspend fun findById(id: Any?): Any? {
         TODO("Not yet implemented")
     }
 
-    override fun delete(data: Any): Any {
+    override suspend fun updateOne(id: Any?, updateDoc: Any?): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun delete(id: Any?): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun add(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 }

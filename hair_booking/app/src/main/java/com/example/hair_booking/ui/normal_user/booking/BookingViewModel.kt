@@ -26,7 +26,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class BookingViewModel: ViewModel() {
-    private var _userId: String = "lLed4Jd1HRPzEmwREbkl" // Used to query database
+    private var _userId: String = "U4mhGl554MTgKbUgMVhA" // Used to query database
     val userId: String get() = _userId // Getter
 
     private lateinit var _salonId: String // Used to query database

@@ -69,7 +69,7 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 val workPlace =
                     binding.viewModel!!.getSelectedWorkplace(binding.sWorkplace.selectedItemPosition)
-                val stylist = Stylist(id, name, avatar, description, workPlace!!, shift, false)
+                val stylist = Stylist(id, name, avatar, description, shift, workPlace!!, false)
 
                 if (binding.task == "Edit") {
                     binding.viewModel!!.updateStylist(id, stylist)

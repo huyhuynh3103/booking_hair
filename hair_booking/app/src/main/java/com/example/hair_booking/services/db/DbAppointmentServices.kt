@@ -15,13 +15,19 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract() {
+class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract<Any?>() {
 
-    fun getAppointmentListForManager(result: MutableLiveData<ArrayList<Appointment>>) {
+    fun getAppointmentListForManager(salonId: String, result: MutableLiveData<ArrayList<Appointment>>) {
         var appointmentList: ArrayList<Appointment> = ArrayList()
 
         if(dbInstance != null) {
-            dbInstance!!.collection("appointments").addSnapshotListener { snapshot, e ->
+            val salonDocRef = dbInstance!!
+                .collection(Constant.collection.hairSalons)
+                .document(salonId)
+
+            dbInstance!!.collection("appointments")
+                .whereEqualTo("hairSalon.id", salonDocRef)
+                .addSnapshotListener { snapshot, e ->
                 if (e != null) {
                     return@addSnapshotListener
                 }
@@ -120,13 +126,6 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         return discountIds
     }
 
-    override suspend fun find(query: Any): Any {
-        TODO("Not yet implemented")
-    }
-
-    override fun save(data: Any): Any {
-        TODO("Not yet implemented")
-    }
 
     override suspend fun findAll(): ArrayList<Appointment> {
         var appointmentList: ArrayList<Appointment> = ArrayList()
@@ -296,6 +295,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 .add(docTobeSaved)
                 .addOnSuccessListener { documentReference ->
                     Log.d("DbAppointmentServices", "DocumentSnapshot written with ID: ${documentReference.id}")
+                    dbSalonServices.updateHairSalonWhenBooking(salonDocRef.id, documentReference)
+                    dbNormalUserServices.updateNormalUserWhenBooking(userId, documentReference)
                 }
                 .addOnFailureListener { e ->
                     Log.d("DbAppointmentServices", "Error adding document", e)
@@ -328,15 +329,28 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         }
         return "#$result"
     }
-    override suspend fun findById(data: Any): Any {
+
+    override suspend fun find(query: Any?): Any? {
         TODO("Not yet implemented")
     }
 
-    override fun updateOne(id: String, updateDoc: Any): Any {
+    override suspend fun save(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 
-    override fun delete(data: Any): Any {
+    override suspend fun findById(id: Any?): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateOne(id: Any?, updateDoc: Any?): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun delete(id: Any?): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun add(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 }

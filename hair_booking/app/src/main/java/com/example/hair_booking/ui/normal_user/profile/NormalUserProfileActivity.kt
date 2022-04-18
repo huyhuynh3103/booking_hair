@@ -24,13 +24,16 @@ class NormalUserProfileActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_normal_user_profile)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-        getSelectedNormalUserProfile()
+
+        GlobalScope.launch {
+            getSelectedNormalUserProfile()
+        }
         setOnClickListenerForButton()
     }
 
-    private fun getSelectedNormalUserProfile() {
-        binding.viewModel?.getNormalUserDetail("lLed4Jd1HRPzEmwREbkl")
-        binding.viewModel?.getUserAccountDetail("lLed4Jd1HRPzEmwREbkl")
+    private suspend fun getSelectedNormalUserProfile() {
+        binding.viewModel?.getNormalUserDetail("U4mhGl554MTgKbUgMVhA")
+        binding.viewModel?.getUserAccountDetail("U4mhGl554MTgKbUgMVhA")
     }
 
     private fun setOnClickListenerForButton() {
@@ -39,7 +42,7 @@ class NormalUserProfileActivity : AppCompatActivity() {
             val selectedGender = binding.rgGender.checkedRadioButtonId
             val radioButton: RadioButton = findViewById(selectedGender)
             GlobalScope.launch {
-                viewModel.updateNormalUser(binding.etNameUser.text.toString(), binding.etPhoneUser.text.toString(), radioButton.text.toString(), "lLed4Jd1HRPzEmwREbkl")
+                viewModel.updateNormalUser(binding.etNameUser.text.toString(), binding.etPhoneUser.text.toString(), radioButton.text.toString(), "U4mhGl554MTgKbUgMVhA")
             }
             finish();
             startActivity(intent);

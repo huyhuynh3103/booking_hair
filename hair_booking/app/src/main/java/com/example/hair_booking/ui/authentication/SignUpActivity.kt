@@ -90,7 +90,7 @@ class SignUpActivity : AppCompatActivity() {
 
                         val accountDocRef =
                             withContext(Dispatchers.Default) {
-                                dbServices.accountServices.save(newAccount)
+                                dbServices.getAccountServices()!!.save(newAccount)
                             }
                         val newUser = hashMapOf(
                             "fullName" to fullName,

@@ -3,18 +3,19 @@ package com.example.hair_booking.services.db
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
-import com.example.hair_booking.model.NormalUser
 import com.example.hair_booking.model.Salon
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 
-class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbstract() {
+class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbstract<Any?>() {
 
-    override fun find(data: Any?): Any? {
+    override suspend fun find(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 
-    override fun save(data: Any?): Any? {
+    override suspend fun save(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 
@@ -189,11 +190,28 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
                 result.data?.get("openHour") as String,
                 result.data?.get("closeHour") as String,
                 result.data?.get("address") as HashMap<String, String>,
-                result.data?.get("appointments") as ArrayList<HashMap<String, *>>,
+                result.data?.get("appointments") as ArrayList<DocumentReference>,
                 result.data?.get("stylists") as ArrayList<HashMap<String, *>>,
             )
         }
 
         return salon
+    }
+
+    fun updateHairSalonWhenBooking(salonId: String, appointment: DocumentReference) {
+
+        val hairSalonRef = dbInstance!!.collection(Constant.collection.hairSalons).document(salonId)
+
+        hairSalonRef
+            .update(
+                "appointments", FieldValue.arrayUnion(appointment)
+            )
+            .addOnSuccessListener {
+                Log.d("DbNormalUserServices", "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e ->
+                Log.d("DbNormalUserServices", "Error updating document", e)
+            }
+
     }
 }

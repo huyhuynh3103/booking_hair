@@ -11,13 +11,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
 
-class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbstract() {
-
-    override fun find(data: Any?): Any? {
+class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbstract<Any?>() {
+    override suspend fun find(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 
-    override fun save(data: Any?): Any? {
+    override suspend fun save(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 
@@ -37,8 +36,8 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
                     document.data?.get("fullName") as String,
                     document.data?.get("avatar") as String,
                     document.data?.get("description") as String,
+                    document.data?.get("shifts") as HashMap<*, *>,
                     document.data?.get("workPlace") as DocumentReference,
-                    document.data?.get("shifts") as HashMap<String, HashMap<*, *>>,
                     document.data?.get("deleted") as Boolean,
                 )
 
@@ -67,8 +66,8 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
                 docSnap.data?.get("fullName") as String,
                 docSnap.data?.get("avatar") as String,
                 docSnap.data?.get("description") as String,
-                docSnap.data?.get("workPlace") as DocumentReference,
                 docSnap.data?.get("shifts") as HashMap<String, HashMap<*, *>>,
+                docSnap.data?.get("workPlace") as DocumentReference,
                 docSnap.data?.get("deleted") as Boolean,
             )
         } catch (exception: Exception) {
@@ -107,7 +106,7 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
         }
     }
 
-    override suspend fun add(data: Any?) {
+    override suspend fun add(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 
@@ -126,69 +125,6 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
                 .add(docToSave)
                 .await()
         }
-    }
-
-    fun getStylistListForBooking(chosenSalonId: String): MutableLiveData<ArrayList<Stylist>> {
-        var result = MutableLiveData<ArrayList<Stylist>>()
-        var stylistList: ArrayList<Stylist> = ArrayList()
-        if (dbInstance != null) {
-            val hairSalonDocRef = dbInstance!!
-                .collection("hairSalons")
-                .document(chosenSalonId)
-
-            dbInstance!!.collection("stylists")
-                .whereEqualTo("workPlace", hairSalonDocRef)
-                .get()
-                .addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        // Mapping firestore object to kotlin model
-                        var stylist: Stylist = Stylist(
-                            document.id,
-                            document.data["fullName"] as String,
-                            document.data["avatar"] as String,
-                            document.data["description"] as String
-                        )
-                        // Insert to list
-                        stylistList.add(stylist)
-                    }
-
-                    // Call function to return salon list after mapping complete
-                    result.value = stylistList
-                }
-                .addOnFailureListener { exception ->
-                    Log.d("xk", "get failed with ", exception)
-                }
-        }
-        return result
-    }
-
-    fun getStylistListForBooking(): MutableLiveData<ArrayList<Stylist>> {
-        var result = MutableLiveData<ArrayList<Stylist>>()
-        var stylistList: ArrayList<Stylist> = ArrayList()
-        if (dbInstance != null) {
-            dbInstance!!.collection("stylists")
-                .get()
-                .addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        // Mapping firestore object to kotlin model
-                        var stylist: Stylist = Stylist(
-                            document.id,
-                            document.data["fullName"] as String,
-                            document.data["avatar"] as String,
-                            document.data["description"] as String
-                        )
-                        // Insert to list
-                        stylistList.add(stylist)
-                    }
-
-                    // Call function to return salon list after mapping complete
-                    result.value = stylistList
-                }
-                .addOnFailureListener { exception ->
-                    Log.d("xk", "get failed with ", exception)
-                }
-        }
-        return result
     }
 
     fun getStylistDetail(id: String): MutableLiveData<Stylist> {
@@ -231,65 +167,17 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
                 .document(stylistId)
                 .get()
                 .await()
-
             stylist = Stylist(
                 result.id,
                 result.data?.get("fullName") as String,
                 result.data?.get("avatar") as String,
                 result.data?.get("description") as String,
                 result.data?.get("shifts") as HashMap<*, *>,
-                result.data?.get("workPlace") as DocumentReference
+                result.data?.get("workPlace") as DocumentReference,
+                result.data?.get("deleted") as Boolean,
             )
         }
 
         return stylist
     }
-
-    override suspend fun find(query: Any): Any {
-        TODO("Not yet implemented")
-    }
-
-    override fun save(data: Any): Any {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun findAll(): ArrayList<Stylist> {
-        var stylistList: ArrayList<Stylist> = ArrayList()
-        try {
-            val result = dbInstance!!.collection("stylists")
-                .get()
-                .await()
-
-
-            for(document in result.documents) {
-                val stylist: Stylist = Stylist(
-                    document.id as String,
-                    document.data?.get("fullName") as String,
-                    document.data?.get("avatar") as String,
-                    document.data?.get("description") as String,
-                    document.data?.get("shifts") as HashMap<*, *>,
-                    document.data?.get("workPlace") as DocumentReference,
-                )
-
-                stylistList.add(stylist)
-            }
-        }
-        catch (exception: Exception) {
-            Log.e("DbStylistServices: ", exception.toString())
-        }
-        return stylistList
-    }
-
-    override suspend fun findById(data: Any): Any {
-        TODO("Not yet implemented")
-    }
-
-    override fun updateOne(id: String, updateDoc: Any): Any {
-        TODO("Not yet implemented")
-    }
-
-    override fun delete(data: Any): Any {
-        TODO("Not yet implemented")
-    }
-
 }

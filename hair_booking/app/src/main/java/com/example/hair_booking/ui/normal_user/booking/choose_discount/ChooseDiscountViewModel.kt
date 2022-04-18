@@ -20,20 +20,6 @@ class ChooseDiscountViewModel: ViewModel() {
     private var _userId: String = ""
     private var _chosenDate: String = ""
 
-//    init {
-//
-//        viewModelScope.launch {
-//
-//            while(true) {
-//                Log.d("disvm", "userid: $_userId and date: $_chosenDate")
-//                if(_userId.isNotEmpty() && _chosenDate.isNotEmpty()) {
-//                    Log.d("disvm", "in while userid: $_userId and date: $_chosenDate")
-//                    getDiscountList()
-//                    break
-//                }
-//            }
-//        }
-//    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     private suspend fun getDiscountList() {
