@@ -26,15 +26,8 @@ class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) : Databas
     override suspend fun save(data: Any?): DocumentReference? {
         Log.d("huy-save-normal-user","start")
         var docRef:DocumentReference? = null
-        try {
-
-            if(data != null)
-                docRef = dbInstance!!.collection(Constant.collection.normalUsers).add(data).await()
-        }
-        catch (e: Exception){
-            Log.d("huy-exception","Save new User failed",e)
-            throw e
-        }
+        if(data != null)
+            docRef = dbInstance!!.collection(Constant.collection.normalUsers).add(data).await()
         return docRef
     }
 

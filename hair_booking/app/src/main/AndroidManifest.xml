@@ -15,11 +15,7 @@
         <activity android:name=".ui.normal_user.booking.booking_confirm.BookingConfirmActivity"></activity>
         <activity android:name=".ui.manager.appointment.AppointmentListActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.normal_user.booking.choose_discount.ChooseDiscountActivity" />
         <activity
@@ -27,7 +23,13 @@
             android:exported="true" />
         <activity
             android:name=".ui.authentication.BeginningActivity"
-            android:exported="true"/>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.admin.users_list.UserDetailAdminActivity"
             android:exported="false"

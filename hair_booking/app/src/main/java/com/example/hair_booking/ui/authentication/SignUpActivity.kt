@@ -11,10 +11,7 @@ import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivitySignUpBinding
 import com.example.hair_booking.services.auth.AuthRepository
 import com.example.hair_booking.services.db.dbServices
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
-import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.*
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.coroutines.*
 import java.lang.Exception
@@ -75,63 +72,74 @@ class SignUpActivity : AppCompatActivity() {
                 GlobalScope.launch {
                     try {
                         // save to fire base auth
-                        val result = async { AuthRepository.createAccount(email, password) }
+                        val result = async {
+                            var res:AuthResult? = null
+                            try {
+                                res = AuthRepository.createAccount(email, password)
+                            }catch (e: FirebaseAuthWeakPasswordException) {
+                                runOnUiThread {
+                                    Toast.makeText(applicationContext,
+                                        Constant.messages.signUpFailedByWeekPassword,
+                                        Toast.LENGTH_LONG).show()
+
+                                }
+                            } catch (e: FirebaseAuthInvalidCredentialsException) {
+                                runOnUiThread {
+                                    Toast.makeText(applicationContext,
+                                        Constant.messages.signUpFailedByMalformedEmail,
+                                        Toast.LENGTH_LONG).show()
+                                }
+                            } catch (e: FirebaseAuthUserCollisionException) {
+                                runOnUiThread {
+                                    Toast.makeText(applicationContext,
+                                        Constant.messages.signUpFailedByExistsEmail,
+                                        Toast.LENGTH_LONG).show()
+                                }
+                            }
+                            res
+                        }
                         val profile = UserProfileChangeRequest.Builder()
                             .setDisplayName(fullName)
                             .build()
 
-                        result.await().user?.updateProfile(profile)
-                        // save new account
-                        val newAccount = hashMapOf(
-                            "email" to email,
-                            "role" to Constant.roles.userRole,
-                            "banned" to false
-                        )
+                        result.await()?.let { it ->
+                            it.user?.updateProfile(profile)
+                            // save new account
+                            val newAccount = hashMapOf(
+                                "email" to email,
+                                "role" to Constant.roles.userRole,
+                                "banned" to false
+                            )
 
-                        val accountDocRef =
-                            withContext(Dispatchers.Default) {
-                                dbServices.getAccountServices()!!.save(newAccount)
-                            }
-                        val newUser = hashMapOf(
-                            "fullName" to fullName,
-                            "gender" to gender,
-                            "accountId" to accountDocRef,
-                            "phoneNumber" to phoneNumber,
-                            "discountPoint" to 0,
-                            "appointment" to arrayListOf<DocumentReference>(),
-                            "wishList" to arrayListOf<DocumentReference>()
+                            val accountDocRef =
+                                withContext(Dispatchers.Default) {
+                                    dbServices.getAccountServices()!!.save(newAccount)
+                                }
+                            val newUser = hashMapOf(
+                                "fullName" to fullName,
+                                "gender" to gender,
+                                "accountId" to accountDocRef,
+                                "phoneNumber" to phoneNumber,
+                                "discountPoint" to 0,
+                                "appointment" to arrayListOf<DocumentReference>(),
+                                "wishList" to arrayListOf<DocumentReference>()
 
-                        )
-                        // save new user
-                        dbServices.getNormalUserServices()!!.save(newUser)
-                        runOnUiThread { Toast.makeText(applicationContext,
-                            Constant.messages.signUpSuccess,
-                            Toast.LENGTH_LONG).show() }
-                        finish()
-
-
-                    } catch (e: FirebaseAuthWeakPasswordException) {
-                        runOnUiThread {
-                            Toast.makeText(applicationContext,
-                                Constant.messages.signUpFailedByWeekPassword,
-                                Toast.LENGTH_LONG).show()
-
+                            )
+                            // save new user
+                            dbServices.getNormalUserServices()!!.save(newUser)
+                            runOnUiThread { Toast.makeText(applicationContext,
+                                Constant.messages.signUpSuccess,
+                                Toast.LENGTH_LONG).show() }
+                            finish()
                         }
-                    } catch (e: FirebaseAuthInvalidCredentialsException) {
-                        runOnUiThread {
-                            Toast.makeText(applicationContext,
-                                Constant.messages.signUpFailedByMalformedEmail,
-                                Toast.LENGTH_LONG).show()
-                        }
-                    } catch (e: FirebaseAuthUserCollisionException) {
-                        runOnUiThread {
-                            Toast.makeText(applicationContext,
-                                Constant.messages.signUpFailedByExistsEmail,
-                                Toast.LENGTH_LONG).show()
-                        }
-                    }
-                    catch (e: Exception){
+
+
+
+                    } catch (e: Exception){
                         Log.e("huy-sign-up","Exception occurs: ${e.message}")
+                        runOnUiThread {
+                            Toast.makeText(applicationContext,Constant.messages.errorFromSever,Toast.LENGTH_LONG).show()
+                        }
                     }
 
                 }
