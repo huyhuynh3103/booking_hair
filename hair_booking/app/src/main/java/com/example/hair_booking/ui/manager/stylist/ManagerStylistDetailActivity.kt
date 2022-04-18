@@ -64,7 +64,7 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
             val name = binding.etStylistName.text.toString()
             val avatar = ""
             val description = binding.tvStylistDescription.text.toString()
-            val shift = HashMap<String, HashMap<*, *>>()
+            val shift = HashMap<String, HashMap<String, *>>()
 
             lifecycleScope.launch {
                 val workPlace =

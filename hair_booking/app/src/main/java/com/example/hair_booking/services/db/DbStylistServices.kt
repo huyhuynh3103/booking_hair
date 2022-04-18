@@ -36,7 +36,7 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
                     document.data?.get("fullName") as String,
                     document.data?.get("avatar") as String,
                     document.data?.get("description") as String,
-                    document.data?.get("shifts") as HashMap<*, *>,
+                    document.data?.get("shifts") as HashMap<String, HashMap<String, *>>?,
                     document.data?.get("workPlace") as DocumentReference,
                     document.data?.get("deleted") as Boolean,
                 )
@@ -66,7 +66,7 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
                 docSnap.data?.get("fullName") as String,
                 docSnap.data?.get("avatar") as String,
                 docSnap.data?.get("description") as String,
-                docSnap.data?.get("shifts") as HashMap<String, HashMap<*, *>>,
+                docSnap.data?.get("shifts") as HashMap<String, HashMap<String, *>>?,
                 docSnap.data?.get("workPlace") as DocumentReference,
                 docSnap.data?.get("deleted") as Boolean,
             )
@@ -116,7 +116,7 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
             "avatar" to data.avatar,
             "description" to data.description,
             "workPlace" to data.workPlace,
-            "shifts" to data.shift,
+            "shifts" to data.shifts,
             "deleted" to data.deleted
         )
 
@@ -142,7 +142,7 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
                                 document.data["fullName"] as String,
                                 document.data["avatar"] as String,
                                 document.data["description"] as String,
-                                document.data["shifts"] as HashMap<*, *>,
+                                document.data["shifts"] as HashMap<String, HashMap<String, *>>?,
                                 document.data["workPlace"] as DocumentReference,
                                 document.data["deleted"] as Boolean
                             )
@@ -172,7 +172,7 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
                 result.data?.get("fullName") as String,
                 result.data?.get("avatar") as String,
                 result.data?.get("description") as String,
-                result.data?.get("shifts") as HashMap<*, *>,
+                result.data?.get("shifts") as HashMap<String, HashMap<String, *>>?,
                 result.data?.get("workPlace") as DocumentReference,
                 result.data?.get("deleted") as Boolean,
             )
