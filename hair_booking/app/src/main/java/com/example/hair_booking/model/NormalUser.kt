@@ -14,6 +14,9 @@ data class NormalUser(private val _id: String) {
     private var _discountPoint: Long? = null
     private var _appointments: ArrayList<HashMap<String, *>>?  = null
     private var _wishList: ArrayList<HashMap<String, *>>? = null
+    private var _accountId: DocumentReference? = null
+    private var _username: String? = null
+    private var _banned: Boolean? = null
 
 
     // GETTERS
@@ -24,6 +27,9 @@ data class NormalUser(private val _id: String) {
     val discountPoint: Long? get() = _discountPoint
     val appointments: ArrayList<HashMap<String, *>>? get() = _appointments
     val wishList: ArrayList<HashMap<String, *>>? get() = _wishList
+    val accountId: DocumentReference? get() = _accountId
+    val username: String? = _username
+    val banned: Boolean? = _banned
 
     // Full parameter constructor
     constructor(
@@ -33,7 +39,8 @@ data class NormalUser(private val _id: String) {
         gender: String,
         discountPoint: Long,
         appointments: ArrayList<HashMap<String, *>>,
-        wishList: ArrayList<HashMap<String, *>>
+        wishList: ArrayList<HashMap<String, *>>,
+        accountId: DocumentReference
     ): this(id) {
         this._fullName = fullName
         this._phoneNumber = phoneNumber
@@ -41,10 +48,26 @@ data class NormalUser(private val _id: String) {
         this._discountPoint = discountPoint
         this._appointments = appointments
         this._wishList = wishList
+        this._accountId = accountId
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
     // constructor for normal user detail screen
+    constructor(
+        id: String,
+        fullName: String,
+        phoneNumber: String,
+        gender: String,
+        discountPoint: Long,
+        accountId: DocumentReference
+    ): this(id) {
+        this._fullName = fullName
+        this._phoneNumber = phoneNumber
+        this._gender = gender
+        this._discountPoint = discountPoint
+        this._accountId = accountId
+    }
+
     constructor(
         id: String,
         fullName: String,

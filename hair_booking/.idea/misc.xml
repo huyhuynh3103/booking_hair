@@ -35,6 +35,17 @@
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/menu/app_bar.xml" value="0.10416666666666667" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/menu/bottom_nav_user.xml" value="0.14375" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/menu/menu_navigation_user.xml" value="0.264" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_choose_salon.xml" value="0.20416666666666666" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_choose_service.xml" value="0.1" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_choose_stylist.xml" value="0.20416666666666666" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_manager_appointment_detail.xml" value="0.17074275362318841" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_manager_stylist.xml" value="0.20416666666666666" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_manager_stylist_detail.xml" value="0.25" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_manager_stylist_list.xml" value="0.20416666666666666" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_normal_user_home.xml" value="0.17074275362318841" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/booking_stylist_item.xml" value="0.17074275362318841" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/item_manager_stylist.xml" value="0.25" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/salon_item_user.xml" value="0.17074275362318841" />
       </map>
     </option>
   </component>

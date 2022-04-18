@@ -13,9 +13,9 @@
     <string name="choose_stylist_label">Chọn stylist</string>
     <string name="choose_stylist_edit_text_hint">Xem các stylist hiện có</string>
 
-    <string name="choose_datetime_label">Chọn ngày/giờ</string>
+    <string name="choose_date_label">Chọn ngày cắt tóc</string>
     <string name="choose_date_edit_text_hint">Chọn ngày cắt tóc</string>
-    <string name="choose_time_edit_text_hint">Chọn giờ cắt tóc</string>
+    <string name="choose_time_label">Chọn giờ cắt tóc</string>
     <string name="confirm_booking_btn">Hoàn tất</string>
     <string name="note_label">Ghi chú cho salon</string>
     <string name="note_edit_text_hint">VD: Ngoáy tai kỹ, gội nước mát,...</string>
@@ -39,6 +39,22 @@
 
     // Warning title
     <string name="warning_title">Cảnh báo</string>
+
+    // Booking confirm screen
+    <string name="booking_confirm_screen_thanks_label">CẢM ƠN BẠN ĐÃ ĐẶT LỊCH CẮT TÓC</string>
+    <string name="booking_confirm_screen_appointment_label">THÔNG TIN ĐẶT LỊCH</string>
+    <string name="booking_confirm_screen_salon_label">THÔNG TIN SALON</string>
+    <string name="booking_confirm_screen_price_label">TỔNG GIÁ</string>
+    <string name="booking_confirm_screen_unit_label">VND</string>
+    <string name="booking_confirm_screen_button">TRỞ VỀ MÀN HÌNH CHÍNH</string>
+
+    // Manager appointment list screen
+    <string name="search_bar_hint">Nhập mã lịch đặt...</string>
+
+    <string name="customer_name_label">Khách hàng</string>
+    <string name="service_title_label">Dịch vụ</string>
+    <string name="stylist_name_label">Stylist</string>
+    <string name="colon">:</string>
     <!--    Navigation Drawer -->
     <string name="nav_home">Home</string>
     <string name="nav_wish_list">Wish List</string>

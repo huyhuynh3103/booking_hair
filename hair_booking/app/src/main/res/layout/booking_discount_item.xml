@@ -10,7 +10,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/serviceItemWrapper"
+        android:id="@+id/discountItemWrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -18,62 +18,93 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp">
 
-<!--        <TextView-->
-<!--            android:id="@+id/serviceTitle"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginEnd="10dp"-->
-<!--            android:text="@{service.title}"-->
-<!--            android:textColor="#000000"-->
-<!--            android:textSize="20sp"-->
-<!--            android:textStyle="bold"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-<!--        <TextView-->
-<!--            android:id="@+id/serviceDescription"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:text="@{service.description}"-->
-<!--            android:textColor="#000000"-->
-<!--            android:textSize="16sp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/serviceTitle"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/serviceTitle"-->
-<!--            app:layout_constraintVertical_bias="0.354" />-->
+        <TextView
+            android:id="@+id/discountTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="50dp"
+            android:text="@{discount.title}"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/requiredPointLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/servicePrice"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginEnd="5dp"-->
-<!--            android:text="@{service.price.toString()}"-->
-<!--            android:textColor="#000000"-->
-<!--            android:textSize="16sp"-->
-<!--            android:textStyle="bold"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/serviceDescription"-->
-<!--            app:layout_constraintEnd_toStartOf="@+id/priceUnit"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/serviceDescription" />-->
+        <TextView
+            android:id="@+id/discountDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@{discount.description}"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="@+id/discountTitle"
+            app:layout_constraintStart_toStartOf="@+id/discountTitle"
+            app:layout_constraintTop_toBottomOf="@+id/discountTitle" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/priceUnit"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/price_unit"-->
-<!--            android:textColor="#000000"-->
-<!--            android:textSize="16sp"-->
-<!--            android:textStyle="bold"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/servicePrice"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/serviceTitle"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/servicePrice" />-->
+        <TextView
+            android:id="@+id/dateApplied"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@{discount.dateApplied}"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/discountDescription"
+            app:layout_constraintTop_toBottomOf="@+id/discountDescription" />
 
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="-"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/dateApplied"
+            app:layout_constraintStart_toEndOf="@+id/dateApplied"
+            app:layout_constraintTop_toTopOf="@+id/dateApplied" />
+
+        <TextView
+            android:id="@+id/dateExpired"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@{discount.dateExpired}"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/textView6"
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintTop_toTopOf="@+id/textView6" />
+
+        <TextView
+            android:id="@+id/requiredPointLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="Số điểm cần có"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/discountTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/discountTitle" />
+
+        <TextView
+            android:id="@+id/requiredPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@{discount.requiredPoint.toString()}"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/requiredPointLabel"
+            app:layout_constraintStart_toStartOf="@+id/requiredPointLabel"
+            app:layout_constraintTop_toBottomOf="@+id/requiredPointLabel" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

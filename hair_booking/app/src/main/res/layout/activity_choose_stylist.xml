@@ -5,13 +5,13 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.hair_booking.ui.normal_user.booking.ChooseStylistViewModel" />
+            type="com.example.hair_booking.ui.normal_user.booking.choose_stylist.ChooseStylistViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.normal_user.booking.ChooseStylistActivity">
+        tools:context=".ui.normal_user.booking.choose_stylist.ChooseStylistActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/stylistRecyclerView"

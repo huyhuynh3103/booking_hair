@@ -2,30 +2,42 @@ package com.example.hair_booking.ui.normal_user.booking
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityBookingBinding
+import com.example.hair_booking.services.booking.BookingServices
+import com.example.hair_booking.ui.normal_user.booking.booking_confirm.BookingConfirmActivity
+import com.example.hair_booking.ui.normal_user.booking.choose_discount.ChooseDiscountActivity
+import com.example.hair_booking.ui.normal_user.booking.choose_salon.ChooseSalonActivity
+import com.example.hair_booking.ui.normal_user.booking.choose_service.ChooseServiceActivity
+import com.example.hair_booking.ui.normal_user.booking.choose_stylist.ChooseStylistActivity
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
-import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.collections.HashMap
 
 
-class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
-    TimePickerDialog.OnTimeSetListener {
+class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
     private val REQUEST_CODE_CHOOSE_SALON: Int = 1111
     private val REQUEST_CODE_CHOOSE_SERVICE: Int = 2222
     private val REQUEST_CODE_CHOOSE_STYLIST: Int = 3333
     private val REQUEST_CODE_CHOOSE_DISCOUNT: Int = 4444
+    private val REQUEST_CODE_BOOKING_CONFIRM: Int = 5555
     private lateinit var binding: ActivityBookingBinding
 
     // "by viewModels()" is the auto initialization of viewmodel made by the library
     private val viewModel: BookingViewModel by viewModels()
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,7 +53,15 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         // Enable back button
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        observeOnClickEvent()
 
+
+
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun observeOnClickEvent() {
         // Observe salon edit text onclick event to perform navigation to choose salon screen
         viewModel.salonEditTextClicked.observe(this, androidx.lifecycle.Observer {
             moveToChooseSalonScreen()
@@ -59,8 +79,11 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         viewModel.stylistEditTextClicked.observe(this, androidx.lifecycle.Observer {
             if(viewModel.checkIfSalonEditTextIsEmpty())
                 displaySalonChosenRequiredWarning()
-            else
-                moveToChooseStylistScreen()
+            else {
+                GlobalScope.launch {
+                    moveToChooseStylistScreen()
+                }
+            }
         })
 
         // Observe date edit text onclick event to display date picker dialog
@@ -71,13 +94,6 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                 displayDatePickerDialog()
         })
 
-        // Observe time edit text onclick event to display date picker dialog
-        viewModel.timeEditTextClicked.observe(this, androidx.lifecycle.Observer {
-            if(viewModel.checkIfSalonEditTextIsEmpty())
-                displaySalonChosenRequiredWarning()
-            else
-                displayTimePickerDialog()
-        })
 
         // Observe discount edit text onclick event to perform navigation to choose discount screen
         viewModel.discountEditTextClicked.observe(this, androidx.lifecycle.Observer {
@@ -88,9 +104,28 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         viewModel.confirmBtnClicked.observe(this, androidx.lifecycle.Observer {
             if(viewModel.checkEmptyFieldsExist())
                 displayEmptyFieldsWarning()
-            else
-                viewModel.saveBookingSchedule()
+            else {
+                GlobalScope.launch {
+                    val docSaved = viewModel.saveBookingSchedule(binding.note.text.toString())
+                    if(docSaved.isNullOrEmpty()) {
+                        runOnUiThread {
+                            displayStylistBusyWarning()
+                        }
+                    }
+                    else {
+                        moveToBookingConfirmScreen(BookingServices.serializeAppointmentSaved(docSaved))
+                    }
+                }
+            }
         })
+    }
+
+    private fun moveToBookingConfirmScreen(docSaved: HashMap<String, *>?) {
+        val intent = Intent(this, BookingConfirmActivity::class.java)
+
+        intent.putExtra("appointmentSaved", docSaved)
+
+        startActivityForResult(intent, REQUEST_CODE_BOOKING_CONFIRM)
     }
 
     private fun moveToChooseSalonScreen() {
@@ -105,17 +140,30 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         startActivityForResult(intent, REQUEST_CODE_CHOOSE_SERVICE)
     }
 
-    private fun moveToChooseStylistScreen() {
+    private suspend fun moveToChooseStylistScreen() {
         val intent = Intent(this, ChooseStylistActivity::class.java)
 
         intent.putExtra("chosenSalonId", viewModel.salonId)
+        intent.putExtra("chosenShiftId", viewModel.shiftId.value)
+        intent.putExtra("chosenDate", viewModel.bookingDate.value)
+        val chosenTimeRange = viewModel.getTimeRangeChosenInHour()
+        intent.putExtra("chosenTime", chosenTimeRange.first)
+        intent.putExtra("estimatedEndTime", chosenTimeRange.second)
         startActivityForResult(intent, REQUEST_CODE_CHOOSE_STYLIST)
     }
 
     private fun moveToChooseDiscountScreen() {
-        val intent = Intent(this, ChooseDiscountActivity::class.java)
+        if(viewModel.bookingDate.value.isNullOrEmpty())
+            displayChosenDateRequiredWarning()
+        else {
+            val intent = Intent(this, ChooseDiscountActivity::class.java)
 
-        startActivityForResult(intent, REQUEST_CODE_CHOOSE_DISCOUNT)
+            intent.putExtra("userId", "U4mhGl554MTgKbUgMVhA")
+            intent.putExtra("chosenDate", viewModel.bookingDate.value)
+            val userCurrentPoint: Long = 2500
+            intent.putExtra("userCurrentPoint", userCurrentPoint)
+            startActivityForResult(intent, REQUEST_CODE_CHOOSE_DISCOUNT)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -137,9 +185,23 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                 // Including service id and service name
                 val serviceId: String = data?.getStringExtra("serviceId").orEmpty()
                 val serviceName: String = data?.getStringExtra("serviceName").orEmpty()
+                val servicePrice: Long? = data?.getLongExtra("servicePrice", 0)
                 // Call viewmodel to set chosen service
-                if(serviceId.isNotEmpty() && serviceName.isNotEmpty())
-                    binding.viewModel!!.setChosenService(serviceId, serviceName)
+                if(serviceId.isNotEmpty() && serviceName.isNotEmpty() && servicePrice != null)
+                    binding.viewModel!!.setChosenService(serviceId, serviceName, servicePrice)
+
+                displayDateTimePickerWrapper()
+                // Setup list of shifts for user to choose after reselect service
+                viewModel.setupShiftPickerSpinner(
+                    this,
+                    binding.shiftPickerSpinner,
+                    binding.timePickerLabel,
+                    binding.timePickerSpinner,
+                    binding.chooseStylistLabel,
+                    binding.chooseStylistTextInputLayout
+                )
+                hideTimePicker()
+                displayTotalPrice()
             }
 
             REQUEST_CODE_CHOOSE_STYLIST -> {
@@ -157,10 +219,62 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                 // Including discount id and title
                 val discountId: String = data?.getStringExtra("discountId").orEmpty()
                 val discountTitle: String = data?.getStringExtra("discountTitle").orEmpty()
+                val discountPercent: Float? = data?.getFloatExtra("discountPercent", 0.0F)
                 // Call viewmodel to set chosen discount
-                if(discountId.isNotEmpty() && discountTitle.isNotEmpty())
-                    binding.viewModel!!.setChosenDiscount(discountId, discountTitle)
+                if(discountId.isNotEmpty() && discountTitle.isNotEmpty() && discountPercent != null)
+                    binding.viewModel!!.setChosenDiscount(discountId, discountTitle, discountPercent)
             }
+        }
+    }
+
+    private fun displayDateTimePickerWrapper() {
+        if(binding.datePickerWrapper.visibility == View.GONE)
+            binding.datePickerWrapper.visibility = View.VISIBLE
+    }
+
+    private fun displayShiftPicker() {
+        if(binding.timePickerWrapper.visibility == View.GONE)
+            binding.timePickerWrapper.visibility = View.VISIBLE
+    }
+
+    private fun displayTimePicker() {
+        if(binding.timePickerLabel.visibility == View.GONE && binding.timePickerSpinner.visibility == View.GONE) {
+            binding.timePickerLabel.visibility = View.VISIBLE
+            binding.timePickerSpinner.visibility = View.VISIBLE
+        }
+    }
+
+    private fun hideTimePicker() {
+        if(binding.timePickerLabel.visibility == View.VISIBLE && binding.timePickerSpinner.visibility == View.VISIBLE) {
+            binding.timePickerLabel.visibility = View.GONE
+            binding.timePickerSpinner.visibility = View.GONE
+        }
+    }
+
+    private fun hideChooseStylist() {
+        if(binding.chooseStylistLabel.visibility == View.VISIBLE && binding.chooseStylistTextInputLayout.visibility == View.VISIBLE) {
+            binding.chooseStylistLabel.visibility = View.GONE
+            binding.chooseStylistTextInputLayout.visibility = View.GONE
+        }
+    }
+
+    private fun hideTotalPrice() {
+        if(binding.totalPriceLabel.visibility == View.VISIBLE
+            && binding.totalPrice.visibility == View.VISIBLE
+            && binding.vndUnit.visibility == View.VISIBLE) {
+            binding.totalPriceLabel.visibility = View.GONE
+            binding.totalPrice.visibility = View.GONE
+            binding.vndUnit.visibility = View.GONE
+        }
+    }
+
+    private fun displayTotalPrice() {
+        if(binding.totalPriceLabel.visibility == View.GONE
+            && binding.totalPrice.visibility == View.GONE
+            && binding.vndUnit.visibility == View.GONE) {
+            binding.totalPriceLabel.visibility = View.VISIBLE
+            binding.totalPrice.visibility = View.VISIBLE
+            binding.vndUnit.visibility = View.VISIBLE
         }
     }
 
@@ -190,36 +304,24 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         // Concatenate to a full date string
         val dateInStringFormat = "$daySelected/$monthSelected/$year"
         binding.viewModel!!.setChosenDate(dateInStringFormat)
-    }
 
-    private fun displayTimePickerDialog() {
-        val now = Calendar.getInstance() // Get current time
+//        // Show time picker and stylist picker
+//        if(binding.timePickerWrapper.visibility == View.GONE)
+//            binding.timePickerWrapper.visibility = View.VISIBLE
 
-        // Init time picker dialog with current time selected
-        val tpd = TimePickerDialog.newInstance(
+        // Setup list of shifts for user to choose after choosing date
+        viewModel.setupShiftPickerSpinner(
             this,
-            now[Calendar.HOUR_OF_DAY],  // Initial hour selection
-            now[Calendar.MINUTE],  // Initial minute selection
-            true // Set 24hour mode
+            binding.shiftPickerSpinner,
+            binding.timePickerLabel,
+            binding.timePickerSpinner,
+            binding.chooseStylistLabel,
+            binding.chooseStylistTextInputLayout
         )
-
-        // Set min time = current time if the booking date selected is today
-//        val isInOpeningHour: Boolean = viewModel.isInOpeningHour(now[Calendar.HOUR_OF_DAY], now[Calendar.MINUTE])
-        if(viewModel.isToday(now))
-            tpd.setMinTime(now[Calendar.HOUR_OF_DAY], now[Calendar.MINUTE], now[Calendar.SECOND])
-//        else if(!isInOpeningHour) {
-//            val openHour: Int = viewModel.op
-//        }
-
-        // Show time picker dialog
-        tpd.show(supportFragmentManager, "Timepickerdialog");
+        hideTimePicker()
+        hideChooseStylist()
+        displayShiftPicker()
     }
-
-    override fun onTimeSet(view: TimePickerDialog?, hourOfDay: Int, minute: Int, second: Int) {
-        val timeInStringFormat: String = "" + hourOfDay + "h" + minute
-        binding.viewModel!!.setChosenTime(timeInStringFormat)
-    }
-
 
 
     // Back to previous screen when click back button
@@ -252,6 +354,27 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         builder.show()
     }
 
+    private fun displayChosenDateRequiredWarning() {
+        // Show warning dialog
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Cảnh báo")
+        builder.setMessage("Vui lòng chọn ngày đặt trước!!")
 
+        builder.setPositiveButton("Ok") { dialog, which ->
+            // Do nothing
+        }
+        builder.show()
+    }
 
+    private fun displayStylistBusyWarning() {
+        // Show warning dialog
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Thông báo")
+        builder.setMessage("Khung giờ bạn vừa đặt vừa bị chiếm mất rồi! Vui lòng chọn khung giờ hoặc stylist khác")
+
+        builder.setPositiveButton("Ok") { dialog, which ->
+            // Do nothing
+        }
+        builder.show()
+    }
 }

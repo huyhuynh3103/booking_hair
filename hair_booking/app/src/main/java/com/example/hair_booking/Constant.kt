@@ -10,6 +10,12 @@ object Constant {
         const val normalUsers:String = "normalUsers"
         const val services:String = "services"
         const val stylists:String = "stylists"
+        const val shifts: String = "shifts"
+    }
+
+    object AppointmentStatus {
+        val accept: String = "Chấp nhận"
+        val deny: String = "Từ chối"
     }
     const val notFoundImg = "notfoundimg"
     object messages{

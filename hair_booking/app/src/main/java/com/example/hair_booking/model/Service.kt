@@ -20,11 +20,11 @@ data class Service(private val _id: String) {
     // Full parameter constructor
     constructor(
         id: String,
-        fullName: String,
+        title: String,
         price: Long,
         description: String
     ): this(id) {
-        this._title = fullName
+        this._title = title
         this._price = price
         this._description = description
     }

@@ -6,20 +6,32 @@ import com.google.firebase.firestore.FirebaseFirestore
 object dbServices {
     private var dbInstance: FirebaseFirestore? = null
     private var normalUserServices: DbNormalUserServices? = null
+    private var accountServices: DbAccountServices? = null
     private var salonServices: DbSalonServices? = null
     private var stylistServices: DbStylistServices? = null
     private var serviceServices: DbServiceServices? = null
+    private var appointmentServices: DbAppointmentServices? = null
+    private var shiftServices: DbShiftServices? = null
+    private var discountServices: DbDiscountServices? = null
+
     init {
         dbInstance = Database.getInstance()
         normalUserServices = DbNormalUserServices(dbInstance)
         salonServices = DbSalonServices(dbInstance)
         stylistServices = DbStylistServices(dbInstance)
         serviceServices = DbServiceServices(dbInstance)
-
+        appointmentServices = DbAppointmentServices(dbInstance)
+        shiftServices = DbShiftServices(dbInstance)
+        discountServices = DbDiscountServices(dbInstance)
+        accountServices = DbAccountServices(dbInstance)
     }
 
     fun getNormalUserServices(): DbNormalUserServices? {
         return normalUserServices
+    }
+
+    fun getAccountServices(): DbAccountServices? {
+        return accountServices
     }
 
     fun getSalonServices(): DbSalonServices? {
@@ -34,7 +46,18 @@ object dbServices {
         return serviceServices
     }
 
+    fun getAppointmentServices(): DbAppointmentServices? {
+        return appointmentServices
+    }
+
+    fun getShiftServices(): DbShiftServices? {
+        return shiftServices
+    }
+
+    fun getDiscountServices(): DbDiscountServices? {
+        return discountServices
+    }
+
     // GETTER
     val hairSalonServices = DbHairSalonServices(dbInstance)
-    val accountServices = DbAccountServices(dbInstance)
 }

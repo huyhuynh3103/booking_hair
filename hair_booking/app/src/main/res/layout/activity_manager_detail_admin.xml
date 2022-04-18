@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.hair_booking.ui.admin.managers_list.ManagerDetailAdminViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.admin.managers_list.ManagerDetailAdminActivity">
+
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:id="@+id/coverCustomer"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:paddingBottom="10dp"
+                android:scaleType="centerCrop" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/avatarCustomer"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:src="@drawable/ic_account" />
+
+        </RelativeLayout>
+
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:orientation="vertical"
+                android:layout_centerInParent="true"
+                android:background="#FFF5EE"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="left"/>
+
+                <TextView
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:ems="10"
+                    android:maxLength="50"
+                    android:maxLines="1"
+                    android:padding="5dp"
+                    android:text="@{viewModel.account.email}"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="left"
+                    android:text="Nơi làm việc*"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/etSDTCustomer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:padding="5dp"
+                    android:maxLines="1"
+                    android:maxLength="50"
+                    android:text="@{viewModel.account.hairSalon.id}"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="20dp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Chức vụ"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="left"/>
+
+                <TextView
+                    android:id="@+id/etPointCustomer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textColor="@color/black"
+                    android:padding="5dp"
+                    android:maxLines="1"
+                    android:maxLength="50"
+                    android:text="Quản lý chi nhánh"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="20dp"/>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Trạng thái"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="left"/>
+
+                <TextView
+                    android:orientation="horizontal"
+                    android:id="@+id/etStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textColor="@color/black"
+                    android:padding="5dp"
+                    android:maxLines="1"
+                    android:maxLength="50"
+                    android:text='@{viewModel.account.banned.equals(true) ? "Đã khóa" : "Hoạt đông"}'
+                    android:textSize="18sp"
+                    android:layout_marginLeft="20dp"/>
+
+                <Button
+                    android:layout_width="110dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/btnLock"
+                    android:text='@{viewModel.account.banned.equals(true) ? "Mở khóa" : "Khóa"}'
+                    android:onClick="@{() -> viewModel.onLockBtnClicked()}"
+                    app:backgroundTint="#EDFF5722"
+                    android:gravity="center"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    />
+
+
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>
