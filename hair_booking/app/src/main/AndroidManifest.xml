@@ -30,10 +30,17 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+        <activity
+            android:name=".ui.admin.users_list.UserDetailAdminActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.admin.users_list.UsersListActivity"/>
+        <activity
+            android:name=".ui.admin.users_list.UsersListActivity"
+            android:exported="true" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity
+            android:name=".ui.authentication.begining"
+            android:exported="true"/>
         <activity
             android:name=".ui.normal_user.home.NormalUserHomeActivity"
             android:exported="true"
@@ -86,18 +93,12 @@
         <activity
             android:name=".ui.normal_user.salon.NormalUserSalonDetailActivity"
             android:exported="true"
-            android:label="Detail Manager Profile" />
+            android:label="Detail Salon Profile" />
         <activity
             android:name=".ui.manager.profile.ManagerProfileActivity"
             android:exported="false" />
         <activity
             android:name=".ui.normal_user.profile.NormalUserProfileActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".ui.manager.home.ManagerHomeActivity" />
-        <activity android:name=".ui.authentication.LogInActivity" />
-        <activity
-            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -105,6 +106,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.manager.home.ManagerHomeActivity" />
+        <activity android:name=".ui.authentication.LogInActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
 
         <meta-data
             android:name="preloaded_fonts"
