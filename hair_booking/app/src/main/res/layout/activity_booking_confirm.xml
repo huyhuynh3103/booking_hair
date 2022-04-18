@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.hair_booking.ui.normal_user.booking.booking_confirm.BookingConfirmViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.normal_user.booking.booking_confirm.BookingConfirmActivity">
+
+        <TextView
+            android:id="@+id/thanksLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/booking_confirm_screen_thanks_label"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/appointmentLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/booking_confirm_screen_appointment_label"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/thanksLabel" />
+
+        <TextView
+            android:id="@+id/bookingDateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/ic_baseline_calendar_today_24"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="@{viewModel.bookingDateTime}"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/appointmentLabel"
+            app:layout_constraintTop_toBottomOf="@+id/appointmentLabel" />
+
+        <TextView
+            android:id="@+id/serviceTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/ic_baseline_content_paste_24"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="@{viewModel.serviceTitle}"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/bookingDateTime"
+            app:layout_constraintTop_toBottomOf="@+id/bookingDateTime" />
+
+        <TextView
+            android:id="@+id/note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/ic_baseline_sticky_note_2_24"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="@{viewModel.note}"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/serviceTitle"
+            app:layout_constraintTop_toBottomOf="@+id/serviceTitle" />
+
+        <TextView
+            android:id="@+id/stylist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/ic_baseline_content_cut_24"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="@{viewModel.stylistFullName}"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/note"
+            app:layout_constraintTop_toBottomOf="@+id/note" />
+
+        <TextView
+            android:id="@+id/discountTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/ic_baseline_local_offer_24"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="@{viewModel.discountTitle}"
+            android:textColor="#000000"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/stylist"
+            app:layout_constraintTop_toBottomOf="@+id/stylist" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/discountTitle"
+            app:layout_constraintTop_toBottomOf="@+id/discountTitle" />
+
+        <TextView
+            android:id="@+id/salonLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/booking_confirm_screen_salon_label"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/divider"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <TextView
+            android:id="@+id/salonName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/ic_home"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="@{viewModel.hairSalonName}"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/divider"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/salonLabel"
+            app:layout_constraintTop_toBottomOf="@+id/salonLabel" />
+
+        <TextView
+            android:id="@+id/salonAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/ic_baseline_location_on_24"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="@{viewModel.hairSalonAddress}"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/divider"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/salonName"
+            app:layout_constraintTop_toBottomOf="@+id/salonName" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/salonAddress"
+            app:layout_constraintTop_toBottomOf="@+id/salonAddress" />
+
+        <TextView
+            android:id="@+id/priceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/booking_confirm_screen_price_label"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/divider2"
+            app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+        <TextView
+            android:id="@+id/confirmTotalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:text="@{viewModel.totalPrice}"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/priceLabel"
+            app:layout_constraintEnd_toStartOf="@+id/confirmUnitLabel"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/priceLabel"
+            app:layout_constraintTop_toTopOf="@+id/priceLabel"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/confirmUnitLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/booking_confirm_screen_unit_label"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/confirmTotalPrice"
+            app:layout_constraintEnd_toEndOf="@+id/divider2"
+            app:layout_constraintTop_toTopOf="@+id/confirmTotalPrice"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/backToMainScreenBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/booking_confirm_screen_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.482"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/priceLabel"
+            app:layout_constraintVertical_bias="1.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

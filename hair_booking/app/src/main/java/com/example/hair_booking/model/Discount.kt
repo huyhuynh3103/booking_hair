@@ -11,6 +11,7 @@ data class Discount(private val _id: String) {
     private var _description: String? = null
     private var _dateApplied: String? = null
     private var _dateExpired: String? = null
+    private var _percent: Double? = null
 
 
     // GETTERS
@@ -20,6 +21,7 @@ data class Discount(private val _id: String) {
     val description: String? get() = _description
     val dateApplied: String? get() = _dateApplied
     val dateExpired: String? get() = _dateExpired
+    val percent: Double? get() = _percent
 
     // Full parameter constructor
     constructor(id: String,
@@ -27,13 +29,15 @@ data class Discount(private val _id: String) {
                 requiredPoint: Long,
                 description: String,
                 dateApplied: String,
-                dateExpired: String
+                dateExpired: String,
+                percent: Double
     ) : this(id) {
         this._title = title
         this._requiredPoint = requiredPoint
         this._description = description
         this._dateApplied = dateApplied
-        this._dateExpired = dateApplied
+        this._dateExpired = dateExpired
+        this._percent = percent
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
