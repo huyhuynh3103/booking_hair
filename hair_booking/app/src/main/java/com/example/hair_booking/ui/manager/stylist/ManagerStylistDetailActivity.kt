@@ -64,12 +64,51 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
             val name = binding.etStylistName.text.toString()
             val avatar = ""
             val description = binding.tvStylistDescription.text.toString()
-            val shift = HashMap<String, HashMap<*, *>>()
+
+            var workplace: DocumentReference?
+            var shift: HashMap<String, HashMap<String, *>>
+            var morningShift: HashMap<String, *>
+            var afternoonShift: HashMap<String, *>
+            var eveningShift: HashMap<String, *>
 
             lifecycleScope.launch {
-                val workPlace =
-                    binding.viewModel!!.getSelectedWorkplace(binding.sWorkplace.selectedItemPosition)
-                val stylist = Stylist(id, name, avatar, description, shift, workPlace!!, false)
+                // Get selected workplace
+                workplace = binding.viewModel!!.getSelectedWorkplace(binding.sWorkplace.selectedItemPosition)
+
+                // Get checked shift ref
+                val morningRef = binding.viewModel!!.getShiftRef("Hl0aRPOhZaI02vqMRUdr")
+                val afternoonRef = binding.viewModel!!.getShiftRef("KaZ0Gj0MzYvkZkpHAs8Q")
+                val eveningRef = binding.viewModel!!.getShiftRef("cRAgvOR26BYKSRaHbG0g")
+
+                // Morning shift
+                if (binding.cbShiftMorning.isChecked) {
+                    morningShift = hashMapOf("id" to morningRef, "isWorking" to true)
+                }
+                else {
+                    morningShift = hashMapOf("id" to morningRef, "isWorking" to false)
+                }
+
+                // Afternoon shift
+                if (binding.cbShiftAfternoon.isChecked) {
+                    afternoonShift = hashMapOf("id" to afternoonRef, "isWorking" to true)
+                }
+                else {
+                    afternoonShift = hashMapOf("id" to afternoonRef, "isWorking" to false)
+                }
+
+                // Evening shift
+                if (binding.cbShiftEvening.isChecked) {
+                    eveningShift = hashMapOf("id" to eveningRef, "isWorking" to true)
+                }
+                else {
+                    eveningShift = hashMapOf("id" to eveningRef, "isWorking" to false)
+                }
+
+                // Submit to shift hashmap
+                shift = hashMapOf("morning" to morningShift, "afternoon" to afternoonShift, "evening" to eveningShift)
+
+                // Data from UI
+                val stylist = Stylist(id, name, avatar, description, shift, workplace!!, false)
 
                 if (binding.task == "Edit") {
                     binding.viewModel!!.updateStylist(id, stylist)

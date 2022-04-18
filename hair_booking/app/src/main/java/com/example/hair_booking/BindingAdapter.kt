@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -132,3 +133,12 @@ fun setSelectedItem(spinner: Spinner, list: ArrayList<Salon>?, selected: String?
         Log.i("AdapterBindingError", "Set selected fail")
     }
 }
+
+@BindingAdapter("shift")
+fun setCheckedCheckBox(checkBox: CheckBox?, shift: HashMap<String, *>?) {
+    if (shift != null) {
+        checkBox?.isChecked = shift?.get("isWorking") == true
+    }
+}
+
+
