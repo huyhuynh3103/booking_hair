@@ -4,10 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="task"
+            type="String" />
         <variable
             name="viewModel"
             type="com.example.hair_booking.ui.manager.stylist.ManagerStylistDetailViewModel" />
+
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,7 +62,7 @@
             android:hint="Tên nhân viên"
             android:inputType="textMultiLine"
             android:minHeight="48dp"
-            android:text="@{viewModel.stylist.fullName}"
+            android:text='@{task.equals("Edit") ? viewModel.stylist.fullName : ""}'
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@+id/iv_stylist_avatar"
             app:layout_constraintHorizontal_bias="1.0"
@@ -71,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="@{viewModel.stylist.id}"
+            android:text='@{task.equals("Edit") ? viewModel.stylist.id : "(Tạo tự động)"}'
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +104,7 @@
             android:hint="Mô tả nhân viên"
             android:inputType="textMultiLine"
             android:minHeight="48dp"
-            android:text="@{viewModel.stylist.description}"
+            android:text='@{task.equals("Edit") ? viewModel.stylist.description : ""}'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_stylist_description_label" />
@@ -127,10 +131,13 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:textSize="16sp"
+            android:entries="@{viewModel.salonList}"
             android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_workplace_label" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_workplace_label"
+            list="@{viewModel.salonList}"
+            selected="@{viewModel.stylist.workPlace.id}"/>
 
         <Button
             android:id="@+id/b_save_stylist_info"
@@ -142,9 +149,11 @@
             android:text="Lưu thông tin"
             android:textAllCaps="false"
             android:textSize="20sp"
+            android:visibility="visible"
             app:backgroundTint="#E1FF5722"
-            app:layout_constraintBottom_toTopOf="@+id/b_delete_stylist"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
@@ -153,12 +162,16 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:minHeight="50dp"
             android:text="Xóa nhân viên"
             android:textAllCaps="false"
             android:textSize="20sp"
+            android:visibility='@{task.equals("Edit") ? View.VISIBLE : View.GONE}'
             app:backgroundTint="#F43636"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/b_save_stylist_info"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

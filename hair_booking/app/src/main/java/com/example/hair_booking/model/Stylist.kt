@@ -13,6 +13,8 @@ data class Stylist(private val _id: String) {
     private var _description: String? = null
     private var _shifts: HashMap<*, *>? = null
     private var _workPlace: DocumentReference? = null
+    private var _shift: HashMap<String, HashMap<*, *>>? = null
+    private var _deleted: Boolean? = null
 
     // GETTERS
     val id: String get() = _id
@@ -21,6 +23,8 @@ data class Stylist(private val _id: String) {
     val description: String? get() = _description
     val shifts: HashMap<*, *>? get() = _shifts
     val workPlace: DocumentReference? get() = _workPlace
+    val shift: HashMap<String, HashMap<*, *>>? get() = _shift
+    val deleted: Boolean? get() = _deleted
 
     // Full parameter constructor
     constructor(
@@ -29,13 +33,16 @@ data class Stylist(private val _id: String) {
         avatar: String,
         description: String,
         shifts: HashMap<*, *>,
-        workPlace: DocumentReference
+        workPlace: DocumentReference,
+        deleted: Boolean
     ): this(id) {
         this._fullName = fullName
         this._avatar = avatar
         this._description = description
         this._shifts = shifts
         this._workPlace = workPlace
+        this._shift = shift
+        this._deleted = deleted
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW

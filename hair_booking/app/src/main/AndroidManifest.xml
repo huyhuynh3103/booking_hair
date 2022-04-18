@@ -46,6 +46,16 @@
             android:exported="false"
             android:label="@string/choose_service_screen_title"></activity>
         <activity
+            android:name=".ui.manager.appointment.ManagerAppointmentDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.manager.stylist.ManagerStylistListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.normal_user.home.NormalUserHomeActivity"
+            android:exported="true"
+            android:label="@string/app_name" />
+        <activity
             android:name=".ui.normal_user.booking.choose_salon.ChooseSalonActivity"
             android:exported="false"
             android:label="@string/choose_salon_screen_title"></activity>
@@ -79,7 +89,7 @@
             android:label="Detail Manager Profile" />
         <activity
             android:name=".ui.manager.profile.ManagerProfileActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".ui.normal_user.profile.NormalUserProfileActivity"
             android:exported="false"

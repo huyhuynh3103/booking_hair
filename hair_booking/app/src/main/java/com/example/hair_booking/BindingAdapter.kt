@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,6 +15,7 @@ import com.example.hair_booking.ui.normal_user.booking.choose_discount.DiscountL
 import com.example.hair_booking.ui.normal_user.booking.choose_salon.SalonListAdapter
 import com.example.hair_booking.ui.normal_user.booking.choose_service.ServiceListAdapter
 import com.example.hair_booking.ui.normal_user.booking.choose_stylist.StylistListAdapter
+import com.example.hair_booking.ui.manager.stylist.StylistRecycleViewAdapter
 import com.example.hair_booking.ui.normal_user.home.SalonAdapter
 @BindingAdapter("data")
 fun bindBookingStylistListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Stylist>?) {
@@ -82,5 +84,30 @@ fun bindSalonListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>
     else
     {
         Log.d("huy-test-bind","data in binding null")
+    }
+}
+
+@BindingAdapter("data")
+fun bindManagerStylistListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Stylist>?) {
+    val adapter = recyclerView.adapter as StylistRecycleViewAdapter
+    if (data != null) {
+        adapter?.setData(data)
+    }
+}
+
+@BindingAdapter("list", "selected")
+fun setSelectedItem(spinner: Spinner, list: ArrayList<Salon>?, selected: String?) {
+    if (list != null && selected != null) {
+        for (i in list?.indices!!) {
+            if (list[i].id == selected) {
+                spinner.setSelection(i)
+            }
+        }
+    }
+    else if (list != null && selected == null){
+        spinner.setSelection(0)
+    }
+    else {
+        Log.i("AdapterBindingError", "Set selected fail")
     }
 }

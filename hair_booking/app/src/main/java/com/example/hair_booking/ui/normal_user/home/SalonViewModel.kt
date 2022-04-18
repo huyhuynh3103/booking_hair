@@ -20,8 +20,8 @@ class SalonViewModel: ViewModel() {
         viewModelScope.launch {
             fetchSalon()
         }
-
     }
+    
     private suspend fun fetchSalon(){
         dbServices.hairSalonServices.findAll().observeForever{
             salons ->

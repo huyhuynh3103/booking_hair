@@ -6,15 +6,14 @@ import com.example.hair_booking.Constant
 import com.example.hair_booking.model.Salon
 import com.google.firebase.firestore.FirebaseFirestore
 
-class DbHairSalonServices(private var dbInstance: FirebaseFirestore?):DatabaseAbstract<Any>() {
-    override suspend fun find(data: Any): Any {
+class DbHairSalonServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract() {
+    override fun find(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun save(data: Any) : Any {
+    override fun save(data: Any?): Any? {
         TODO("Not yet implemented")
     }
-
 
     override suspend fun findAll(): MutableLiveData<ArrayList<Salon>> {
         val data:ArrayList<Salon> = ArrayList()
@@ -51,15 +50,19 @@ class DbHairSalonServices(private var dbInstance: FirebaseFirestore?):DatabaseAb
         return res
     }
 
-    override fun findById(id: String): Any {
+    override suspend fun findById(id: Any?): Any? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun updateOne(id: String, updateDoc: Any): Any {
+    override suspend fun updateOne(id: Any?, updateDoc: Any?): Any? {
         TODO("Not yet implemented")
     }
 
-    override fun delete(data: Any): Any {
+    override suspend fun delete(id: Any?): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun add(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 
