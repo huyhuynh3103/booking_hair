@@ -66,37 +66,17 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         }
     }
 
-    suspend fun getAppointmentTimeRanges(bookingDate: String, bookingShiftId: String): ArrayList<Pair<Float, Int>> {
-
+    fun getAppointmentTimeRanges(appointmentList: ArrayList<Appointment>): ArrayList<Pair<Float, Int>> {
         var appointmentTimeRanges: ArrayList<Pair<Float, Int>> = ArrayList()
-        var addValueToAppointmentTimeRanges: Deferred<Unit>? = null
 
-        if (dbInstance != null) {
-            val shiftDocRef = dbInstance!!
-            .collection("shifts")
-                .document(bookingShiftId)
-            val result = dbInstance!!.collection("appointments")
-                .whereEqualTo("bookingShift", shiftDocRef)
-                .whereEqualTo("bookingDate", bookingDate)
-                .get()
-                .await()
+            for(appointment in appointmentList) {
+                var serviceDuration: Int = (appointment.service?.get("duration") as Long).toInt()
 
-            addValueToAppointmentTimeRanges = GlobalScope.async {
-                for(document in result.documents) {
-                    val serviceId: String? = ((document.data?.get("service") as HashMap<Any, Any>)["id"] as DocumentReference).id
+                val timeRange: Pair<Float, Int> = Pair((appointment.bookingTime)!!.toFloat(), serviceDuration)
 
-                    var serviceDuration: Int = 0
-                    async {
-                        serviceDuration = dbServices.getServiceServices()!!.getServiceDuration(serviceId!!)
-                    }.await()
-                    val timeRange: Pair<Float, Int> = Pair((document.data?.get("bookingTime") as String).toFloat(), serviceDuration)
-
-                    appointmentTimeRanges.add(timeRange)
-                }
+                appointmentTimeRanges.add(timeRange)
             }
 
-        }
-        addValueToAppointmentTimeRanges?.await()
         return appointmentTimeRanges
     }
 

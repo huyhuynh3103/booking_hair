@@ -63,6 +63,18 @@ class BookingServices {
             var disabledTimePositions: ArrayList<Int> = ArrayList()
 
             GlobalScope.async {
+                var appointmentList: ArrayList<Appointment> = ArrayList()
+                async {
+                    appointmentList = dbServices.getAppointmentServices()!!.findAll()
+                }.await()
+
+                var filteredAppointmentList = filterAppointment(appointmentList, bookingSalon, bookingDate, bookingShiftId)
+
+                // The first element in pair is bookingTime, the second one is service duration
+                var appointmentTimeRanges: ArrayList<Pair<Float, Int>> = dbServices.getAppointmentServices()!!
+                    .getAppointmentTimeRanges(appointmentList)
+
+
                 // Compare each time range can be picked to all time range of appointment booked in database
                 for(timeCanBePicked in availableTime) {
                     val timeIsAvailable: Boolean = timeRangeIsAvailable(
@@ -71,7 +83,9 @@ class BookingServices {
                         bookingSalon,
                         bookingDate,
                         bookingShiftId,
-                        isToday
+                        isToday,
+                        appointmentTimeRanges,
+                        filteredAppointmentList
                     )
 
                     if(!timeIsAvailable) { // If time is not available
@@ -91,7 +105,9 @@ class BookingServices {
                                          bookingSalon: String,
                                          bookingDate: String,
                                          bookingShiftId: String,
-                                         isToday: Boolean): Boolean {
+                                         isToday: Boolean,
+                                         appointmentTimeRanges: ArrayList<Pair<Float, Int>>,
+                                         appointmentList: ArrayList<Appointment>): Boolean {
             var isAvailable: Boolean = true
 
             // startTime is in display format, ex: 21h20m => 21.20
@@ -107,51 +123,40 @@ class BookingServices {
             // Estimated end time = time user picked + service picked duration
             var estimatedEndTime = TimeServices.addTimeInHour(startTimeInHour, chosenServiceDurationInHour)
 
-            GlobalScope.async {
-                var appointmentTimeRanges: ArrayList<Pair<Float, Int>> = ArrayList()
-                async {
-                    // The first element in pair is bookingTime, the second one is service duration
-                    appointmentTimeRanges = dbServices.getAppointmentServices()!!
-                        .getAppointmentTimeRanges(bookingDate, bookingShiftId)
-                }.await()
+            for (timeRange in appointmentTimeRanges) {
+                // Time database returned is in display format => convert to hour
+                val userPickedTimeInHour = TimeServices.timeToDisplayToTimeInHour(timeRange.first)
+                val userPickedServiceDurationInHour = TimeServices.minuteToHour(timeRange.second)
 
+                // Appointment end time = time user picked + service picked duration
+                var appointmentEndTime = TimeServices.addTimeInHour(
+                    userPickedTimeInHour,
+                    userPickedServiceDurationInHour
+                )
 
-                for (timeRange in appointmentTimeRanges) {
-                    // Time database returned is in display format => convert to hour
-                    val userPickedTimeInHour = TimeServices.timeToDisplayToTimeInHour(timeRange.first)
-                    val userPickedServiceDurationInHour = TimeServices.minuteToHour(timeRange.second)
-
-                    // Appointment end time = time user picked + service picked duration
-                    var appointmentEndTime = TimeServices.addTimeInHour(
-                        userPickedTimeInHour,
-                        userPickedServiceDurationInHour
-                    )
-
-                    // Compare time range can be picked to time range of appointment booked in database
-                    // If they conflict => the time can be picked became disabled
-                    if (TimeServices.checkTimeInHourConflict(Pair(startTimeInHour, estimatedEndTime), Pair(userPickedTimeInHour, appointmentEndTime))) {
-                        isAvailable = false
-                    }
-
-                    // Check if there is any free stylist
-                    val busyStylistsIds: ArrayList<String> = BookingServices.getIdOfBusyStylistsAtSpecificTime(
-                        Pair(startTimeInHour, estimatedEndTime),
-                        bookingSalon,
-                        bookingDate,
-                        bookingShiftId)
-
-                    val allStylist: ArrayList<Stylist> = dbServices.getStylistServices()!!.findAll()
-
-                    var availableStylist: ArrayList<Stylist> = ArrayList(allStylist)
-                    availableStylist.removeIf { stylist ->
-                        busyStylistsIds.contains(stylist.id)
-                                || stylist.workPlace!!.id != bookingSalon
-                                || !StylistServices.isWorking(bookingShiftId, stylist.shifts!!)
-                    }
-                    if(availableStylist.size > 0)
-                        isAvailable = true
+                // Compare time range can be picked to time range of appointment booked in database
+                // If they conflict => the time can be picked became disabled
+                if (TimeServices.checkTimeInHourConflict(Pair(startTimeInHour, estimatedEndTime), Pair(userPickedTimeInHour, appointmentEndTime))) {
+                    isAvailable = false
                 }
+            }
+
+            GlobalScope.async {
+                // Check if there is any free stylist
+                val busyStylistsIds: ArrayList<String> = getIdOfBusyStylistsAtSpecificTime(Pair(startTimeInHour, estimatedEndTime), appointmentList)
+
+                val allStylist: ArrayList<Stylist> = dbServices.getStylistServices()!!.findAll()
+
+                var availableStylist: ArrayList<Stylist> = ArrayList(allStylist)
+                availableStylist.removeIf { stylist ->
+                    busyStylistsIds.contains(stylist.id)
+                            || stylist.workPlace!!.id != bookingSalon
+                            || !StylistServices.isWorking(bookingShiftId, stylist.shifts!!)
+                }
+                if(availableStylist.size > 0)
+                    isAvailable = true
             }.await()
+
 
             if (isToday) {
                 // Disable all the time before the current time (user cannot pick the time that already passed)
@@ -166,30 +171,17 @@ class BookingServices {
             return isAvailable
         }
 
-        suspend fun getIdOfBusyStylistsAtSpecificTime(timeRangeChosenInHour: Pair<Float, Float>,
-                                                      chosenSalon:String,
-                                                      chosenDate: String,
-                                                      chosenShiftId: String): ArrayList<String> {
+        fun getIdOfBusyStylistsAtSpecificTime(timeRangeChosenInHour: Pair<Float, Float>, appointmentList: ArrayList<Appointment>): ArrayList<String> {
             var stylistIds: ArrayList<String> = ArrayList()
-            var appointmentList: ArrayList<Appointment> = ArrayList()
-            GlobalScope.async {
-                appointmentList = dbServices.getAppointmentServices()!!.findAll()
-            }.await()
 
-            var filteredAppointmentList = filterAppointment(appointmentList, chosenSalon, chosenDate, chosenShiftId)
-            for(appointment in filteredAppointmentList) {
+            for(appointment in appointmentList) {
                 // Calculate appointment time range
                 val appointmentStartTimeInHour: Float = TimeServices.timeToDisplayToTimeInHour(appointment.bookingTime!!.toFloat())
-                var appointmentServiceDuration: Int = 0
-                GlobalScope.async {
-                    appointmentServiceDuration = dbServices.getServiceServices()!!
-                        .getServiceDuration((appointment.service?.get("id") as DocumentReference).id)
-                }.await()
+                var appointmentServiceDuration: Int = (appointment.service?.get("duration") as Long).toInt()
                 val appointmentServiceDurationInHour: Float = TimeServices.minuteToHour(appointmentServiceDuration)
                 val appointmentEndTimeInHour: Float = TimeServices.addTimeInHour(appointmentStartTimeInHour, appointmentServiceDurationInHour)
 
                 val appointmentTimeRangeInHour: Pair<Float, Float> = Pair(appointmentStartTimeInHour, appointmentEndTimeInHour)
-                Log.d("bookserv", "stylist id: " + (appointment.stylist?.get("id") as DocumentReference).id)
                 if(TimeServices.checkTimeInHourConflict(timeRangeChosenInHour, appointmentTimeRangeInHour)) {
                     // If conflict
                     stylistIds.add((appointment.stylist?.get("id") as DocumentReference).id)
@@ -224,11 +216,14 @@ class BookingServices {
                                          chosenSalon:String,
                                          chosenDate: String,
                                          chosenShiftId: String): ArrayList<Stylist> {
-            val busyStylistsIds: ArrayList<String> = getIdOfBusyStylistsAtSpecificTime(
-                timeRangeChosenInHour,
-                chosenSalon,
-                chosenDate,
-                chosenShiftId)
+            var appointmentList: ArrayList<Appointment> = ArrayList()
+
+            GlobalScope.async {
+                appointmentList = dbServices.getAppointmentServices()!!.findAll()
+            }.await()
+
+            var filteredAppointmentList = filterAppointment(appointmentList, chosenSalon, chosenDate, chosenShiftId)
+            val busyStylistsIds: ArrayList<String> = getIdOfBusyStylistsAtSpecificTime(timeRangeChosenInHour, filteredAppointmentList)
 
             val allStylist: ArrayList<Stylist> = dbServices.getStylistServices()!!.findAll()
 
