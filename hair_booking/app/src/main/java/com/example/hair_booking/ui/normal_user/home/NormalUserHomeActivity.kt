@@ -63,6 +63,9 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
             R.id.nav_wish_list->{
 
             }
+            R.id.nav_history->{
+
+            }
             R.id.nav_membership->{
 
             }
