@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Hair_booking">
         <activity android:name=".ui.normal_user.booking.booking_confirm.BookingConfirmActivity"></activity>
-        <activity android:name=".ui.manager.appointment.AppointmentListActivity"
+        <activity android:name=".ui.manager.appointment.overview.ManagerAppointmentListActivity"
             android:exported="true">
 
         </activity>
@@ -44,7 +44,7 @@
             android:label="@string/app_name"></activity>
 
         <activity
-            android:name=".ui.manager.appointment.ManagerAppointmentDetailActivity"
+            android:name=".ui.manager.appointment.detail.ManagerAppointmentDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.manager.stylist.ManagerStylistListActivity"

@@ -10,20 +10,14 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityManagerHomeBinding
-import com.example.hair_booking.databinding.ActivityNormalUserHomeBinding
 import com.example.hair_booking.services.auth.AuthRepository
-import com.example.hair_booking.ui.manager.appointment.AppointmentListActivity
+import com.example.hair_booking.ui.manager.appointment.overview.ManagerAppointmentListActivity
 import com.example.hair_booking.ui.manager.profile.ManagerProfileActivity
 import com.example.hair_booking.ui.manager.stylist.ManagerStylistListActivity
-import com.example.hair_booking.ui.normal_user.booking.BookingActivity
 import com.example.hair_booking.ui.normal_user.home.SalonAdapter
 import com.example.hair_booking.ui.normal_user.home.SalonViewModel
-import com.example.hair_booking.ui.normal_user.profile.NormalUserProfileActivity
-import com.example.hair_booking.ui.normal_user.salon.NormalUserSalonDetailActivity
 import com.google.android.material.navigation.NavigationView
 
 class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -53,7 +47,7 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
             }
             R.id.nav_schedule_manager->{
-                startActivity(Intent(this, AppointmentListActivity::class.java))
+                startActivity(Intent(this, ManagerAppointmentListActivity::class.java))
 
             }
             R.id.nav_stylist_list->{

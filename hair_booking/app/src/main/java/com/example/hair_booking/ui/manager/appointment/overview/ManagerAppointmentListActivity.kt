@@ -1,5 +1,6 @@
-package com.example.hair_booking.ui.manager.appointment
+package com.example.hair_booking.ui.manager.appointment.overview
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -13,16 +14,20 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hair_booking.Constant
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityManagerAppointmentListBinding
+import com.example.hair_booking.ui.manager.appointment.detail.ManagerAppointmentDetailActivity
+import com.example.hair_booking.ui.normal_user.booking.choose_stylist.ChooseStylistActivity
 
-class AppointmentListActivity : AppCompatActivity() {
+class ManagerAppointmentListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityManagerAppointmentListBinding
+    private val REQUEST_CODE_DETAIL: Int = 1111
 
     // "by viewModels()" is the auto initialization of viewmodel made by the library
-    private val viewModel: AppointmentListViewModel by viewModels()
+    private val viewModel: ManagerAppointmentListViewModel by viewModels()
 
-    private lateinit var appointmentListAdapter: AppointmentListAdapter
+    private lateinit var appointmentListAdapter: ManagerAppointmentListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,7 +41,7 @@ class AppointmentListActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         // Create adapter for salon list recyclerview
-        appointmentListAdapter = AppointmentListAdapter()
+        appointmentListAdapter = ManagerAppointmentListAdapter()
         binding.appointmentListRecyclerView.adapter = appointmentListAdapter
 
         // Assign linear layout for appointment list recyclerview
@@ -58,19 +63,13 @@ class AppointmentListActivity : AppCompatActivity() {
     }
 
     private fun setOnAppointmentItemClickedEvent() {
-//        appointmentListAdapter.onItemClick = { position: Int ->
-//            // Create an intent to send data back to previous activity
-//            val replyIntent = Intent()
-//
-//            val salonId: String = viewModel.salonList.value?.get(position)?.id ?: ""
-//            val salonLocation: String = viewModel.salonList.value?.get(position)?.addressToString() ?: ""
-//
-//            // send chosen salon id and location back to previous activity
-//            replyIntent.putExtra("salonId", salonId)
-//            replyIntent.putExtra("salonLocation", salonLocation)
-//            setResult(Activity.RESULT_OK, replyIntent)
-//            finish()
-//        }
+        appointmentListAdapter.onItemClick = { position: Int ->
+            val intent = Intent(this, ManagerAppointmentDetailActivity::class.java)
+
+            intent.putExtra("appointmentId", viewModel.appointmentList.value?.get(position)?.id)
+
+            startActivityForResult(intent, REQUEST_CODE_DETAIL)
+        }
     }
 
     private fun setupFilterSpinner() {
@@ -79,7 +78,11 @@ class AppointmentListActivity : AppCompatActivity() {
 
 
         // Create an adapter to display list of filter options
-        var items: ArrayList<String> = arrayListOf("Tất cả", "Chấp nhận", "Từ chối") // Define placeholder
+        var items: ArrayList<String> = arrayListOf(
+            "Tất cả",
+            Constant.AppointmentStatus.isPending,
+            Constant.AppointmentStatus.isCheckout,
+            Constant.AppointmentStatus.isAbort)
         val filterSpinnerAdapter = object : ArrayAdapter<String>(
             this,
             android.R.layout.simple_spinner_item,

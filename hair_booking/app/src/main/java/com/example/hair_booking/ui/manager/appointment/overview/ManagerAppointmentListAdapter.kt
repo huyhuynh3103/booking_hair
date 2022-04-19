@@ -1,16 +1,15 @@
-package com.example.hair_booking.ui.manager.appointment
+package com.example.hair_booking.ui.manager.appointment.overview
 
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.Constant
 import com.example.hair_booking.databinding.ManagerAppointmentListItemBinding
 import com.example.hair_booking.model.Appointment
 
-class AppointmentListAdapter: RecyclerView.Adapter<AppointmentListAdapter.ViewHolder>() {
+class ManagerAppointmentListAdapter: RecyclerView.Adapter<ManagerAppointmentListAdapter.ViewHolder>() {
 
 
     var onItemClick: ((position: Int) -> Unit)? = null
@@ -38,7 +37,7 @@ class AppointmentListAdapter: RecyclerView.Adapter<AppointmentListAdapter.ViewHo
 
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppointmentListAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
 
@@ -56,11 +55,18 @@ class AppointmentListAdapter: RecyclerView.Adapter<AppointmentListAdapter.ViewHo
         var appointment: Appointment? = appointmentList?.value?.get(position) ?: null
         appointment?.prepareBookingTimeForDisplay()
         holder.appointmentListItemBinding.appointment = appointment
-        if(appointment?.status == Constant.AppointmentStatus.accept) {
-            holder.appointmentListItemBinding.appointmentListStatus.setTextColor(Color.parseColor("#4CAF50"))
+        when(appointment?.status) {
+            Constant.AppointmentStatus.isPending -> {
+                holder.appointmentListItemBinding.appointmentListStatus.setTextColor(Color.parseColor("#787878"))
+            }
+            Constant.AppointmentStatus.isCheckout -> {
+                holder.appointmentListItemBinding.appointmentListStatus.setTextColor(Color.parseColor("#4CAF50"))
+            }
+            Constant.AppointmentStatus.isAbort -> {
+                holder.appointmentListItemBinding.appointmentListStatus.setTextColor(Color.parseColor("#DD2828"))
+            }
         }
-        else
-            holder.appointmentListItemBinding.appointmentListStatus.setTextColor(Color.parseColor("#DD2828"))
+
     }
 
     override fun getItemCount(): Int {

@@ -66,6 +66,37 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         }
     }
 
+    suspend fun getAppointmentById(appointmentId: String): Appointment? {
+        var appointment: Appointment? = null
+
+        if(dbInstance != null) {
+            val document = dbInstance!!.collection("appointments")
+                .document(appointmentId)
+                .get()
+                .await()
+            // Mapping firestore object to kotlin model
+            appointment = Appointment(
+                document.id,
+                document.data?.get("subId") as String,
+                document.data?.get("userId") as DocumentReference,
+                document.data?.get("userFullName") as String,
+                document.data?.get("userPhoneNumber") as String,
+                document.data?.get("hairSalon") as HashMap<String, *>,
+                document.data?.get("service") as HashMap<String, *>,
+                document.data?.get("stylist") as HashMap<String, *>,
+                document.data?.get("bookingDate") as String,
+                document.data?.get("bookingTime") as String,
+                document.data?.get("bookingShift") as DocumentReference,
+                document.data?.get("createdAt") as String,
+                document.data?.get("discountApplied") as HashMap<String, *>?,
+                document.data?.get("notes") as String,
+                document.data?.get("status") as String,
+                document.data?.get("totalPrice") as Long,
+            )
+        }
+        return appointment
+    }
+
     fun getAppointmentTimeRanges(appointmentList: ArrayList<Appointment>): ArrayList<Pair<Float, Int>> {
         var appointmentTimeRanges: ArrayList<Pair<Float, Int>> = ArrayList()
 
@@ -199,7 +230,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
             .document(serviceId)
 
         val subId: String = generateAppointmentSubId()
-        val status: String = "Chấp nhận"
+        val status: String = Constant.AppointmentStatus.isPending
         val createdAt: String = DateServices.currentDateInString() + " " + TimeServices.getCurrentTimeInFloatFormat()
         val serviceDuration: Int = dbServiceServices.getServiceDuration(serviceId)
 

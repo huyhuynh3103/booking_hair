@@ -226,7 +226,7 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?):DatabaseAbst
 
     }
 
-    suspend fun getAccountByEmail(accountEmail: String): Account? {
+    suspend fun getUserAccountByEmail(accountEmail: String): Account? {
         var account: Account? = null
 
         if (dbInstance != null) {
@@ -242,6 +242,29 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?):DatabaseAbst
                     document.data!!["email"] as String,
                     document.data!!["role"] as String,
                     document.data!!["banned"] as Boolean
+                )
+            }
+        }
+        return account
+    }
+
+    suspend fun getManagerAccountByEmail(accountEmail: String): Account? {
+        var account: Account? = null
+
+        if (dbInstance != null) {
+            val result = dbInstance!!.collection(Constant.collection.accounts)
+                .whereEqualTo("email", accountEmail)
+                .get()
+                .await()
+
+            for (document in result.documents) {
+                // Mapping firestore object to kotlin
+                account = Account(
+                    document.id,
+                    document.data!!["email"] as String,
+                    document.data!!["role"] as String,
+                    document.data!!["banned"] as Boolean,
+                    document.data!!["hairSalon"] as DocumentReference
                 )
             }
         }

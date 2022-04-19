@@ -80,7 +80,7 @@ class BookingViewModel: ViewModel() {
     private suspend fun getCurrentUserInfo() {
         val currentUserEmail: String? = AuthRepository.getCurrentUser()!!.email
         if(currentUserEmail != null) {
-            val accountId: String? = dbServices.getAccountServices()!!.getAccountByEmail(currentUserEmail)?.id
+            val accountId: String? = dbServices.getAccountServices()!!.getUserAccountByEmail(currentUserEmail)?.id
 
             if(accountId != null) {
                 val currentUser = dbServices.getNormalUserServices()!!.getUserByAccountId(accountId)

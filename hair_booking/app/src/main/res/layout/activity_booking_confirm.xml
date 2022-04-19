@@ -107,6 +107,7 @@
             android:gravity="center"
             android:text="@{viewModel.discountTitle}"
             android:textColor="#000000"
+            android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/stylist"
             app:layout_constraintTop_toBottomOf="@+id/stylist" />
