@@ -52,6 +52,39 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
         return stylistList
     }
 
+    suspend fun findAll(salonID: DocumentReference?): ArrayList<Stylist> {
+        var stylistList: ArrayList<Stylist> = ArrayList()
+
+        try {
+            val docSnap = dbInstance!!.collection("stylists")
+                .whereEqualTo("workPlace", salonID)
+                .whereEqualTo("deleted", false)
+                .get()
+                .await()
+
+            for (document in docSnap.documents) {
+                // Mapping firestore object to kotlin model
+                var stylist = Stylist(
+                    document.id,
+                    document.data?.get("fullName") as String,
+                    document.data?.get("avatar") as String,
+                    document.data?.get("description") as String,
+                    document.data?.get("shifts") as HashMap<String, HashMap<String, *>>,
+                    document.data?.get("workPlace") as DocumentReference,
+                    document.data?.get("deleted") as Boolean,
+                )
+
+                // Insert to list
+                stylistList.add(stylist)
+            }
+        } catch (exception: Exception) {
+            Log.d("StylistServicesLog", "Get stylist detail fail with ", exception)
+        }
+
+        // Call function to return salon list after mapping complete
+        return stylistList
+    }
+
     override suspend fun findById(id: Any?): Stylist? {
         var stylist: Stylist? = null
 

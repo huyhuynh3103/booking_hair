@@ -225,8 +225,27 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?):DatabaseAbst
 
     }
 
-    override suspend fun findById(id: Any?): Any? {
-        TODO("Not yet implemented")
+    override suspend fun findById(id: Any?): Account? {
+        var account: Account? = null
+
+        try {
+            val docSnap = dbInstance!!.collection("accounts")
+                .document(id!!.toString())
+                .get()
+                .await()
+
+            account = Account(
+                docSnap.id,
+                docSnap.data!!["email"] as String,
+                docSnap.data!!["role"] as String,
+                docSnap.data!!["banned"] as Boolean,
+                docSnap.data!!["hairSalon"] as DocumentReference
+            )
+        } catch (exception: Exception) {
+            Log.d("StylistServicesLog", "Get stylist detail fail with ", exception)
+        }
+
+        return account
     }
 
     override suspend fun updateOne(id: Any?, updateDoc: Any?): Any? {
