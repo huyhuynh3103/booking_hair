@@ -56,31 +56,32 @@
     <string name="stylist_name_label">Stylist</string>
     <string name="colon">:</string>
     <!--    Navigation Drawer -->
-    <string name="nav_home">Home</string>
-    <string name="nav_wish_list">Wish List</string>
-    <string name="nav_membership">Membership</string>
-    <string name="nav_account">Account</string>
-    <string name="nav_my_profile">My Profile</string>
-    <string name="nav_change_password">Change Password</string>
+    <string name="nav_home">Trang chủ</string>
+    <string name="nav_wish_list">Yêu thích</string>
+    <string name="nav_membership">Thành viên</string>
+    <string name="nav_account">Tài khoản</string>
+    <string name="nav_my_profile">Thông tin cá nhân</string>
+    <string name="nav_change_password">Đổi mật khẩu</string>
     <string name="nav_sign_out">Sign Out</string>
 
     <string name="navigation_drawer_open">Navigation Drawer Open</string>
     <string name="navigation_drawer_close">Navigation Drawer Close</string>
-    <string name="history_menu_item">History</string>
-    <string name="schedule_nav_user">Schedule</string>
+    <string name="history_menu_item">Lịch đã đặt</string>
+    <string name="schedule_nav_user">Đặt lịch</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="some_one_somewhere_com">some.one@somewhere.com</string>
-    <string name="sign_up">Sign Up</string>
-    <string name="login">Login</string>
+    <string name="sign_up">Đăng ký</string>
+    <string name="login">Đăng Nhập</string>
     <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="full_name">Full Name</string>
-    <string name="gender">Gender</string>
-    <string name="male">Male</string>
-    <string name="female">Female</string>
-    <string name="confirm_password">Confirm Password</string>
-    <string name="phone_number">Phone Number</string>
+    <string name="password">Mật khẩu</string>
+    <string name="full_name">Họ và tên</string>
+    <string name="gender">Giới tính</string>
+    <string name="male">Nam</string>
+    <string name="female">Nữ</string>
+    <string name="confirm_password">Nhập lại mật khẩu</string>
+    <string name="phone_number">Số điện thoại</string>
+    <string name="sign_out">Đăng xuất</string>
 
 
 </resources>

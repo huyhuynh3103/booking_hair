@@ -9,11 +9,14 @@ import kotlinx.coroutines.tasks.await
 
 object AuthRepository {
     private val auth: FirebaseAuth = Auth.getInstance()
-    fun checkLogin():Boolean{
+    fun isSignIn():Boolean{
         if(auth.currentUser!=null){
             return true
         }
         return false
+    }
+    fun signOut(){
+        auth.signOut()
     }
     suspend fun login( email:String,  password:String): AuthResult{
         Log.d("huy-auth", "login account")
