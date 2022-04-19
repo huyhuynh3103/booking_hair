@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Tên nhân viên"
+            android:text="@string/stylist_name"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_stylist_id" />
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:text="Mã nhân viên"
+            android:text="@string/stylist_id"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Mô tả"
+            android:text="@string/description"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_stylist_avatar" />
@@ -116,7 +116,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="Nơi làm việc hiện tại"
+            android:text="@string/current_working_place"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -146,7 +146,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="Lưu thông tin"
+            android:text="@string/save_btn"
             android:textAllCaps="false"
             android:textSize="20sp"
             android:visibility="visible"
@@ -164,7 +164,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:minHeight="50dp"
-            android:text="Xóa nhân viên"
+            android:text="@string/delete_btn"
             android:textAllCaps="false"
             android:textSize="20sp"
             android:visibility='@{task.equals("Edit") ? View.VISIBLE : View.GONE}'

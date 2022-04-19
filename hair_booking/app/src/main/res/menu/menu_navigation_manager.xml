@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/group_2"
+        android:checkableBehavior="single">
+        <item android:id="@+id/nav_home_manager"
+            android:title="@string/nav_home"
+            android:icon="@drawable/ic_home"/>
+        <item
+            android:id="@+id/nav_schedule_manager"
+            android:icon="@drawable/ic_schedule"
+            android:title="@string/nav_appointment_manager" />
+        <item
+            android:id="@+id/nav_stylist_list"
+            android:title="@string/stylist"
+            android:icon="@drawable/ic_stylist"/>
+
+    </group>
+    <item android:title="@string/nav_account">
+        <menu>
+            <item android:id="@+id/nav_my_profile_manager"
+                android:title="@string/nav_my_profile"
+                android:icon="@drawable/ic_my_profile"/>
+            <item android:id="@+id/nav_change_password_manager"
+                android:title="@string/nav_change_password"
+                android:icon="@drawable/ic_change_password"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/nav_sign_out_manager"
+        android:title="@string/sign_out"
+        />
+</menu>

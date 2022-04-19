@@ -60,8 +60,7 @@ class BookingConfirmActivity: AppCompatActivity() {
         // Enable back button
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.backToMainScreenBtn.setOnClickListener {
-            val intent = Intent(applicationContext,NormalUserHomeActivity::class.java)
-            startActivity(intent)
+            finish()
         }
     }
 

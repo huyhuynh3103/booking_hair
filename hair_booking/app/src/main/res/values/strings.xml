@@ -53,7 +53,7 @@
 
     <string name="customer_name_label">Khách hàng</string>
     <string name="service_title_label">Dịch vụ</string>
-    <string name="stylist_name_label">Stylist</string>
+    <string name="stylist_name_label">Thợ làm tóc</string>
     <string name="colon">:</string>
     <!--    Navigation Drawer -->
     <string name="nav_home">Trang chủ</string>
@@ -82,6 +82,16 @@
     <string name="confirm_password">Nhập lại mật khẩu</string>
     <string name="phone_number">Số điện thoại</string>
     <string name="sign_out">Đăng xuất</string>
+    <string name="stylist">Thợ làm tóc</string>
+    <string name="nav_appointment_manager">Lịch được đặt</string>
+    <string name="stylist_name">Tên nhân viên</string>
+    <string name="stylist_id">Mã nhân viên</string>
+    <string name="description">Mô tả</string>
+    <string name="current_working_place">Nơi làm việc hiện tại</string>
+    <string name="save_btn">Lưu thông tin</string>
+    <string name="delete_btn">Xóa nhân viên</string>
+    <string name="add_stylist_btn">Thêm mới nhân viên</string>
+    <string name="search">Tìm kiếm ...</string>
 
 
 </resources>
