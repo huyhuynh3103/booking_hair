@@ -187,6 +187,32 @@ class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) : Databas
 
     }
 
+    suspend fun getUserByAccountId(accountId: String): NormalUser? {
+        var user: NormalUser? = null
+
+        if (dbInstance != null) {
+            val accountRef = dbInstance!!.collection(Constant.collection.accounts).document(accountId)
+            val result = dbInstance!!.collection(Constant.collection.normalUsers)
+                .whereEqualTo("accountId", accountRef)
+                .get()
+                .await()
+
+            for (document in result.documents) {
+                // Mapping firestore object to kotlin
+                user = NormalUser(
+                    document.id,
+                    document.data!!["fullName"] as String,
+                    document.data!!["phoneNumber"] as String,
+                    document.data!!["gender"] as String,
+                    document.data!!["discountPoint"] as Long,
+                    document.data!!["accountId"] as DocumentReference
+                )
+            }
+        }
+
+        return user
+    }
+
     override suspend fun findById(id: Any?): Any? {
         TODO("Not yet implemented")
     }

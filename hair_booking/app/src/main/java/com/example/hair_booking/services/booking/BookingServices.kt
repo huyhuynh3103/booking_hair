@@ -242,6 +242,7 @@ class BookingServices {
                 "userFullName" to (docSaved?.get("userFullName") ?: null),
                 "hairSalonName" to (docSaved?.get("hairSalon") as HashMap<String, *>)["name"],
                 "hairSalonAddress" to SalonServices.addressToString((docSaved?.get("hairSalon") as HashMap<String, *>)["address"] as HashMap<String, *>),
+                "hairSalonPhoneNumber" to (docSaved?.get("hairSalon") as HashMap<String, *>)["phoneNumber"],
                 "serviceTitle" to (docSaved?.get("service") as HashMap<String, *>)["title"],
                 "stylist" to (docSaved?.get("stylist") as HashMap<String, *>)["fullName"],
                 "bookingDate" to (docSaved?.get("bookingDate") ?: null),

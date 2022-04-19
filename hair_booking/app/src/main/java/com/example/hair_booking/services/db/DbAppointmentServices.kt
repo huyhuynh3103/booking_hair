@@ -217,7 +217,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 "hairSalon" to hashMapOf(
                     "address" to (chosenSalon?.address ?: null),
                     "id" to salonDocRef,
-                    "name" to (chosenSalon?.name ?: null)
+                    "name" to (chosenSalon?.name ?: null),
+                    "phoneNumber" to (chosenSalon?.phoneNumber ?: null)
                 ),
                 "service" to hashMapOf(
                     "id" to serviceDocRef,
@@ -252,7 +253,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 "hairSalon" to hashMapOf(
                     "address" to (chosenSalon?.address ?: null),
                     "id" to salonDocRef,
-                    "name" to (chosenSalon?.name ?: null)
+                    "name" to (chosenSalon?.name ?: null),
+                    "phoneNumber" to (chosenSalon?.phoneNumber ?: null)
                 ),
                 "service" to hashMapOf(
                     "id" to serviceDocRef,

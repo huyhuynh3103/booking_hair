@@ -15,6 +15,9 @@ class BookingConfirmViewModel(private val appointmentSaved: MutableLiveData<Hash
     private val _hairSalonAddress: MutableLiveData<String> = MutableLiveData<String>()
     val hairSalonAddress: LiveData<String> = _hairSalonAddress
 
+    private val _hairSalonPhoneNumber: MutableLiveData<String> = MutableLiveData<String>()
+    val hairSalonPhoneNumber: LiveData<String> = _hairSalonPhoneNumber
+
     private val _serviceTitle: MutableLiveData<String> = MutableLiveData<String>()
     val serviceTitle: LiveData<String> = _serviceTitle
 
@@ -42,6 +45,7 @@ class BookingConfirmViewModel(private val appointmentSaved: MutableLiveData<Hash
     private fun prepareBookingData() {
         _hairSalonName.postValue(appointmentSaved.value?.get("hairSalonName") as String?)
         _hairSalonAddress.postValue(appointmentSaved.value?.get("hairSalonAddress") as String?)
+        _hairSalonPhoneNumber.postValue(appointmentSaved.value?.get("hairSalonPhoneNumber") as String?)
         _serviceTitle.postValue(appointmentSaved.value?.get("serviceTitle") as String?)
         _stylistFullName.postValue("Stylist " + appointmentSaved.value?.get("stylist") as String?)
         val bookingDate: String = appointmentSaved.value?.get("bookingDate") as String

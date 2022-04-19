@@ -14,6 +14,7 @@ data class Salon(private val _id: String) {
     private var _rate: Long? = null
     private var _openHour: String? = null
     private var _closeHour: String? = null
+    private var _phoneNumber: String? = null
 
 
     // "*" data type is used to deal with map in map in firestore
@@ -33,9 +34,34 @@ data class Salon(private val _id: String) {
     val address: HashMap<String, String>? get() = _address
     val appointments: ArrayList<DocumentReference>?  get() = _appointments
     val stylists: ArrayList<HashMap<String, *>>? get() = _stylists
-
+    val phoneNumber: String? get() = _phoneNumber
 
     // Full parameter constructor
+    constructor(
+        id: String,
+        name: String,
+        avatar: String,
+        description: String,
+        rate: Long,
+        openHour: String,
+        closeHour: String,
+        address: HashMap<String, String>,
+        appointments: ArrayList<DocumentReference>,
+        stylists: ArrayList<HashMap<String, *>>,
+        phoneNumber: String
+    ): this(id) {
+        this._name = name
+        this._avatar = avatar
+        this._description = description
+        this._rate = rate
+        this._openHour = openHour
+        this._closeHour = closeHour
+        this._address = address
+        this._appointments = appointments
+        this._stylists = stylists
+        this._phoneNumber = phoneNumber
+    }
+
     constructor(
         id: String,
         name: String,

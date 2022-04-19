@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hair_booking.model.Shift
 import com.example.hair_booking.model.Stylist
+import com.example.hair_booking.services.auth.AuthRepository
 import com.example.hair_booking.services.booking.TimeServices
 import com.example.hair_booking.services.booking.BookingServices
 import com.example.hair_booking.services.db.dbServices
@@ -25,8 +26,11 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class BookingViewModel: ViewModel() {
-    private var _userId: String = "U4mhGl554MTgKbUgMVhA" // Used to query database
-    val userId: String get() = _userId // Getter
+    private var _userId: MutableLiveData<String> = MutableLiveData<String>() // Used to query database
+    val userId: LiveData<String> get() = _userId // Getter
+
+    private var _userDiscountPoint: MutableLiveData<Long> = MutableLiveData<Long>() // Used to query database
+    val userDiscountPoint: LiveData<Long> get() = _userDiscountPoint // Getter
 
     private lateinit var _salonId: String // Used to query database
     val salonId: String get() = _salonId // Getter
@@ -64,6 +68,27 @@ class BookingViewModel: ViewModel() {
 
     private val _totalPrice = MutableLiveData<Long>()
     val totalPrice: LiveData<Long> = _totalPrice
+
+
+    init {
+        viewModelScope.launch {
+            getCurrentUserInfo()
+        }
+    }
+
+
+    private suspend fun getCurrentUserInfo() {
+        val currentUserEmail: String? = AuthRepository.getCurrentUser()!!.email
+        if(currentUserEmail != null) {
+            val accountId: String? = dbServices.getAccountServices()!!.getAccountByEmail(currentUserEmail)?.id
+
+            if(accountId != null) {
+                val currentUser = dbServices.getNormalUserServices()!!.getUserByAccountId(accountId)
+                _userId.value = currentUser?.id
+                _userDiscountPoint.value = currentUser?.discountPoint
+            }
+        }
+    }
 
     // Set salon edit text onclick to be observable
     private val _salonEditTextClicked = MutableLiveData<Boolean>()
@@ -343,7 +368,7 @@ class BookingViewModel: ViewModel() {
 
 
         return dbServices.getAppointmentServices()!!.saveBookingSchedule(
-            userId,
+            userId.value!!,
             salonId,
             _serviceId.value!!,
             serviceTitle.value!!,

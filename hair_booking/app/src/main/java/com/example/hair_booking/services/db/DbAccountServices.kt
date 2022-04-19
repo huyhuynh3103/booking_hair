@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
 import com.example.hair_booking.model.Account
+import com.example.hair_booking.model.NormalUser
 import com.example.hair_booking.model.Salon
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -223,6 +224,28 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?):DatabaseAbst
                 Log.d("DbAccountServices", "Error updating document", e)
             }
 
+    }
+
+    suspend fun getAccountByEmail(accountEmail: String): Account? {
+        var account: Account? = null
+
+        if (dbInstance != null) {
+            val result = dbInstance!!.collection(Constant.collection.accounts)
+                .whereEqualTo("email", accountEmail)
+                .get()
+                .await()
+
+            for (document in result.documents) {
+                // Mapping firestore object to kotlin
+                account = Account(
+                    document.id,
+                    document.data!!["email"] as String,
+                    document.data!!["role"] as String,
+                    document.data!!["banned"] as Boolean
+                )
+            }
+        }
+        return account
     }
 
     override suspend fun findById(id: Any?): Any? {
