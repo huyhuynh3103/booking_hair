@@ -16,13 +16,26 @@ import com.example.hair_booking.ui.manager.home.ManagerHomeActivity
 import com.example.hair_booking.ui.normal_user.home.NormalUserHomeActivity
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class LogInActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLogInBinding
     private val viewModel: LoginViewModel by viewModels()
+    override fun onStart() {
+        super.onStart()
+//        if(AuthRepository.isSignIn()){
+//            val currentUser =AuthRepository.getCurrentUser()
+//            val email = currentUser?.email
+//            if(email != null){
+//                runBlocking {
+//                    navigateToLandingPage(email)
+//                }
+//            }
+//            else{
+//                Toast.makeText(applicationContext,Constant.messages.errorFromSever,Toast.LENGTH_LONG).show()
+//            }
+//        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_log_in)
@@ -49,41 +62,7 @@ class LogInActivity : AppCompatActivity() {
                 GlobalScope.launch {
                     try {
                         AuthRepository.login(email, password)
-                        val query = hashMapOf(
-                            "email" to email
-                        )
-                        val accountResult = async { dbServices.getAccountServices()!!.find(query) }.await()
-                        if (accountResult.isNotEmpty()) {
-                            if (accountResult[0].banned != true) {
-                                if (accountResult[0].role == Constant.roles.userRole) {
-                                    val intent = Intent(applicationContext,
-                                        NormalUserHomeActivity::class.java)
-                                    startActivity(intent)
-                                }
-                                else if(accountResult[0].role == Constant.roles.managerRole) {
-                                    val intent =
-                                        Intent(applicationContext, ManagerHomeActivity::class.java)
-                                    startActivity(intent)
-                                }
-                                else{
-                                    // Undefined role
-                                    Log.d("huy-login", "undefined role")
-                                }
-                            } else {
-                                Log.d("huy-login", "banned")
-                                runOnUiThread {
-                                    Toast.makeText(applicationContext,
-                                        Constant.messages.bannedAccount,
-                                        Toast.LENGTH_LONG).show()
-                                }
-
-                            }
-                        } else {
-                            Log.d("huy-login", "No account in firestore")
-                            runOnUiThread{
-                                Toast.makeText(applicationContext,Constant.messages.errorFromSever,Toast.LENGTH_LONG).show()
-                            }
-                        }
+                        navigateToLandingPage(email)
                     } catch (e: FirebaseAuthInvalidUserException) {
                         runOnUiThread{
                             Toast.makeText(applicationContext,
@@ -102,6 +81,43 @@ class LogInActivity : AppCompatActivity() {
                 }
 
 
+        }
+    }
+    private suspend fun navigateToLandingPage(email:String) = coroutineScope{
+        val query = hashMapOf(
+            "email" to email
+        )
+        val accountResult = async { dbServices.getAccountServices()!!.find(query) }.await()
+        if (accountResult.isNotEmpty()) {
+            if (accountResult[0].banned != true) {
+                if (accountResult[0].role == Constant.roles.userRole) {
+                    val intent = Intent(applicationContext,
+                        NormalUserHomeActivity::class.java)
+                    startActivity(intent)
+                }
+                else if(accountResult[0].role == Constant.roles.managerRole) {
+                    val intent =
+                        Intent(applicationContext, ManagerHomeActivity::class.java)
+                    startActivity(intent)
+                }
+                else{
+                    // Undefined role
+                    Log.d("huy-login", "undefined role")
+                }
+            } else {
+                Log.d("huy-login", "banned")
+                runOnUiThread {
+                    Toast.makeText(applicationContext,
+                        Constant.messages.bannedAccount,
+                        Toast.LENGTH_LONG).show()
+                }
+
+            }
+        } else {
+            Log.d("huy-login", "No account in firestore")
+            runOnUiThread{
+                Toast.makeText(applicationContext,Constant.messages.errorFromSever,Toast.LENGTH_LONG).show()
+            }
         }
     }
 }

@@ -26,15 +26,12 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
     private var mDrawerLayout: DrawerLayout? = null
     private val salonViewModel: SalonViewModel by viewModels()
     private lateinit var binding: ActivityNormalUserHomeBinding
-    private lateinit var bindindHeaderNavigationBinding: LayoutHeaderNavigationBinding
     private lateinit var salonAdapter: SalonAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_normal_user_home)
         binding.viewModel = salonViewModel
         binding.lifecycleOwner = this@NormalUserHomeActivity
-        bindindHeaderNavigationBinding = DataBindingUtil.inflate(layoutInflater,R.layout.layout_header_navigation,null,false)
-        bindindHeaderNavigationBinding.lifecycleOwner = this@NormalUserHomeActivity
         setupUI()
         setUserProfile()
         //setupObserver()
@@ -48,8 +45,8 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
 
     private fun setUserProfile() {
         val userProfile = AuthRepository.getCurrentUser()
-        bindindHeaderNavigationBinding.nameTextView.setText(userProfile!!.displayName.toString())
-        bindindHeaderNavigationBinding.gmailTextView.setText(userProfile.email.toString())
+//        bindindHeaderNavigationBinding.nameTextView.setText(userProfile!!.displayName.toString())
+//        bindindHeaderNavigationBinding.gmailTextView.setText(userProfile.email.toString())
     }
 
     @Override
@@ -74,6 +71,10 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
             }
             R.id.nav_change_password->{
 
+            }
+            R.id.nav_sign_out->{
+                AuthRepository.signOut()
+                finish()
             }
         }
 
