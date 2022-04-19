@@ -10,7 +10,7 @@
     <string name="choose_salon_edit_text_hint">Xem tất cả salon</string>
     <string name="choose_service_label">Chọn dịch vụ</string>
     <string name="choose_service_edit_text_hint">Xem tất cả dịch vụ hiện có</string>
-    <string name="choose_stylist_label">Chọn stylist</string>
+    <string name="choose_stylist_label">Chọn stylist (không bắt buộc)</string>
     <string name="choose_stylist_edit_text_hint">Xem các stylist hiện có</string>
 
     <string name="choose_date_label">Chọn ngày cắt tóc</string>
