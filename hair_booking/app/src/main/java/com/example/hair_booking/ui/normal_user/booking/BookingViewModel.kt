@@ -16,7 +16,6 @@ import com.example.hair_booking.model.Shift
 import com.example.hair_booking.model.Stylist
 import com.example.hair_booking.services.booking.TimeServices
 import com.example.hair_booking.services.booking.BookingServices
-import com.example.hair_booking.services.db.DbAppointmentServices
 import com.example.hair_booking.services.db.dbServices
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.async
@@ -34,11 +33,11 @@ class BookingViewModel: ViewModel() {
     private val _salonLocation = MutableLiveData<String>()
     val salonLocation: LiveData<String> = _salonLocation
 
-    private var serviceId: String = ""// Used to query database
+    private var _serviceId: MutableLiveData<String> = MutableLiveData()// Used to query database
     private val _serviceTitle = MutableLiveData<String>()
     private val _servicePrice = MutableLiveData<Long>()
+    val serviceId: LiveData<String> = _serviceId
     val serviceTitle: LiveData<String> = _serviceTitle
-
     val servicePrice: LiveData<Long> = _servicePrice
 
     private var stylistId: String = "" // Used to query database
@@ -93,14 +92,14 @@ class BookingViewModel: ViewModel() {
     }
 
     fun setChosenService(serviceId: String, serviceName: String, servicePrice: Long) {
-        this.serviceId = serviceId
+        this._serviceId.value = serviceId
         _serviceTitle.value = serviceName
         _servicePrice.value = servicePrice
         _totalPrice.value = servicePrice
     }
 
     suspend fun getChosenServiceDuration(): Int {
-        return dbServices.getServiceServices()!!.getServiceDuration(serviceId)
+        return dbServices.getServiceServices()!!.getServiceDuration(_serviceId.value!!)
     }
 
 
@@ -346,7 +345,7 @@ class BookingViewModel: ViewModel() {
         return dbServices.getAppointmentServices()!!.saveBookingSchedule(
             userId,
             salonId,
-            serviceId,
+            _serviceId.value!!,
             serviceTitle.value!!,
             stylistId,
             bookingDate.value!!,

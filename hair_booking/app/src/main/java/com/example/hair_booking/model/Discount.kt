@@ -1,5 +1,7 @@
 package com.example.hair_booking.model
 
+import com.google.firebase.firestore.DocumentReference
+
 // Primary constructor only contains 1 parameter because these following reason:
 // - Secondary constructor in kotlin MUST call primary first,
 // it means the secondary constructor must include the id
@@ -12,6 +14,7 @@ data class Discount(private val _id: String) {
     private var _dateApplied: String? = null
     private var _dateExpired: String? = null
     private var _percent: Double? = null
+    private var _serviceApplied: DocumentReference? = null
 
 
     // GETTERS
@@ -22,6 +25,7 @@ data class Discount(private val _id: String) {
     val dateApplied: String? get() = _dateApplied
     val dateExpired: String? get() = _dateExpired
     val percent: Double? get() = _percent
+    val serviceApplied: DocumentReference? get() = _serviceApplied
 
     // Full parameter constructor
     constructor(id: String,
@@ -30,7 +34,8 @@ data class Discount(private val _id: String) {
                 description: String,
                 dateApplied: String,
                 dateExpired: String,
-                percent: Double
+                percent: Double,
+                serviceApplied: DocumentReference
     ) : this(id) {
         this._title = title
         this._requiredPoint = requiredPoint
@@ -38,6 +43,7 @@ data class Discount(private val _id: String) {
         this._dateApplied = dateApplied
         this._dateExpired = dateExpired
         this._percent = percent
+        this._serviceApplied = serviceApplied
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW

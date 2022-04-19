@@ -80,7 +80,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         return appointmentTimeRanges
     }
 
-    suspend fun getAppliedDiscountIds(userId: String): ArrayList<String?> {
+    suspend fun getAppliedDiscountIds(userId: String, serviceId: String): ArrayList<String?> {
 
         var discountIds: ArrayList<String?> = ArrayList()
 
@@ -90,8 +90,13 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 .collection(Constant.collection.normalUsers)
                 .document(userId)
 
+            val serviceDocRef: DocumentReference = dbInstance!!
+                .collection(Constant.collection.services)
+                .document(serviceId)
+
             val result = dbInstance!!.collection(Constant.collection.appointments)
                 .whereEqualTo("userId", userDocRef)
+                .whereEqualTo("service.id", serviceDocRef)
                 .get()
                 .await()
 
