@@ -35,11 +35,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
             android:text="Tên nhân viên"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_stylist_id" />
+            app:layout_constraintBottom_toTopOf="@+id/et_stylist_name"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/iv_stylist_avatar"
@@ -50,23 +50,11 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
 
-        <TextView
-            android:id="@+id/tv_stylist_id_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:text="Mã nhân viên"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <EditText
             android:id="@+id/et_stylist_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:gravity="start|top"
@@ -75,22 +63,11 @@
             android:minHeight="48dp"
             android:text='@{task.equals("Edit") ? viewModel.stylist.fullName : ""}'
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_stylist_avatar"
             app:layout_constraintEnd_toStartOf="@+id/iv_stylist_avatar"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_stylist_name_label" />
-
-        <TextView
-            android:id="@+id/tv_stylist_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text='@{task.equals("Edit") ? viewModel.stylist.id : "(Tạo tự động)"}'
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_stylist_id_label" />
+            app:layout_constraintTop_toTopOf="@+id/iv_stylist_avatar" />
 
         <TextView
             android:id="@+id/tv_stylist_description_label"
