@@ -3,10 +3,8 @@ package com.example.hair_booking.services.db
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
-import com.example.hair_booking.model.Service
 import com.example.hair_booking.model.Stylist
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
@@ -213,5 +211,19 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
         }
 
         return stylist
+    }
+
+    suspend fun getStylistRef(stylistID: String?): DocumentReference? {
+        var stylistRef: DocumentReference? = null
+
+        if (dbInstance != null) {
+            val docSnap = dbInstance!!.collection(Constant.collection.stylists)
+                .document(stylistID!!)
+                .get()
+
+            stylistRef = docSnap.await().reference
+        }
+
+        return stylistRef
     }
 }

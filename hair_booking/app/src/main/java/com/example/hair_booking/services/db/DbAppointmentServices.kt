@@ -330,6 +330,26 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         return "#$result"
     }
 
+    suspend fun countAppointment(stylist: DocumentReference?, shift: DocumentReference?): Int {
+        var count = 0;
+
+        try {
+            val docSnap = dbInstance!!.collection(Constant.collection.appointments)
+                .whereEqualTo("stylist.id", stylist)
+                .whereEqualTo("status", "Chưa thanh toán")
+                .whereEqualTo("bookingShift", shift)
+                .get()
+                .await()
+
+            count = docSnap.documents.size
+            Log.i("isConflict", count.toString())
+        }
+        catch (exception: Exception) {
+            Log.e("DbAppointmentServices: ", exception.toString())
+        }
+        return count
+    }
+
     override suspend fun find(query: Any?): Any? {
         TODO("Not yet implemented")
     }
