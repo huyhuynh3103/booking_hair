@@ -41,5 +41,16 @@ class ManagerDetailAdminActivity : AppCompatActivity() {
             //val intent = Intent(this, UsersListActivity::class.java)
             //startActivity(intent)
         })
+
+        // Observe save button onclick event
+        viewModel.saveBtnClicked.observe(this, androidx.lifecycle.Observer {
+            GlobalScope.launch {
+                viewModel.updateManager(binding.sWorkplace.selectedItemPosition, id)
+            }
+            finish();
+            startActivity(intent);
+            //val intent = Intent(this, UsersListActivity::class.java)
+            //startActivity(intent)
+        })
     }
 }

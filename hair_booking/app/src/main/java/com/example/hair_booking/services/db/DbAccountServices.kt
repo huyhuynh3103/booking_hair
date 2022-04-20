@@ -13,6 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.tasks.await
+import java.text.FieldPosition
 
 class DbAccountServices(private var dbInstance: FirebaseFirestore?) {
 
@@ -59,6 +60,30 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?) {
         return status
     }
 
+    suspend fun accountManagerDetail(id: String): Account {
+        var detail = Account("")
+
+        if(dbInstance != null) {
+            val result = dbInstance!!.collection("accounts")
+                .get()
+                .await()
+            for (document in result.documents) {
+                if (document.id == id) {
+                    // Mapping firestore object to kotlin model
+                    var account: Account = Account(
+                        document.id,
+                        document.data!!["email"] as String,
+                        document.data!!["role"] as String,
+                        document.data!!["banned"] as Boolean,
+                        document.data!!["hairSalon"] as DocumentReference
+                    )
+                    detail = account
+                }
+            }
+        }
+        return detail
+    }
+
     suspend fun accountDetail(id: String): Account {
         var detail = Account("")
 
@@ -98,7 +123,8 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?) {
                             document.id,
                             document.data!!["email"] as String,
                             document.data!!["role"] as String,
-                            document.data!!["banned"] as Boolean
+                            document.data!!["banned"] as Boolean,
+                            document.data!!["hairSalon"] as DocumentReference
                         )
                         // Insert to list
                         accountList.add(account)
@@ -152,5 +178,24 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?) {
 
     }
 
+    suspend fun updateManager(selectedID: String, managerId: String) {
+
+        val dbSalonServices = dbServices.getSalonServices()!!
+
+        val workplaceRef: DocumentReference? = dbSalonServices.getWorkplace(selectedID)
+
+        if (dbInstance != null) {
+            val accountRef = dbInstance!!.collection(Constant.collection.accounts).document(managerId)
+            accountRef
+                .update(
+                    "hairSalon", workplaceRef)
+                .addOnSuccessListener {
+                Log.d("DbAccountServices", "DocumentSnapshot successfully updated!")
+            }
+                .addOnFailureListener { e ->
+                    Log.d("DbAccountServices", "Error updating document", e)
+                }
+        }
+    }
 
 }

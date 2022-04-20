@@ -89,19 +89,18 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/etSDTCustomer"
+
+                <Spinner
+                    android:id="@+id/sWorkplace"
+                    list="@{viewModel.salonList}"
+                    selected="@{viewModel.account.hairSalon.id}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:padding="5dp"
-                    android:maxLines="1"
-                    android:maxLength="50"
-                    android:text="@{viewModel.account.hairSalon.id}"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
                     android:layout_marginLeft="20dp"
-                    />
+                    android:entries="@{viewModel.salonList}"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -154,6 +153,19 @@
                     android:layout_marginLeft="20dp"/>
 
                 <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:id="@+id/btnSave"
+                    android:text='Cập nhật'
+                    android:onClick="@{() -> viewModel.onSaveBtnClicked()}"
+                    app:backgroundTint="#EDFF5722"
+                    android:gravity="center"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    />
+
+                <Button
                     android:layout_width="110dp"
                     android:layout_height="50dp"
                     android:id="@+id/btnLock"
@@ -161,7 +173,6 @@
                     android:onClick="@{() -> viewModel.onLockBtnClicked()}"
                     app:backgroundTint="#EDFF5722"
                     android:gravity="center"
-                    android:layout_marginTop="12dp"
                     android:layout_marginBottom="10dp"
                     android:layout_gravity="center"
                     />

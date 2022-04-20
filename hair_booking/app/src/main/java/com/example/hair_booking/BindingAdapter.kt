@@ -85,7 +85,6 @@ fun bindManagerListRecyclerView(recyclerView: RecyclerView, dataAccount: ArrayLi
 
 }
 
-
 @BindingAdapter("list", "selected")
 fun setSelectedItem(spinner: Spinner, list: ArrayList<Salon>?, selected: String?) {
     if (list != null && selected != null) {

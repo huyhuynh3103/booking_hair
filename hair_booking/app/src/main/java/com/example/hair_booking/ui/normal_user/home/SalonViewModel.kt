@@ -17,9 +17,12 @@ class SalonViewModel: ViewModel() {
     val hairSalon:LiveData<ArrayList<Salon>> = _hairSalon
 
     init {
-        fetchSalon()
+        viewModelScope.launch {
+            fetchSalon()
+        }
+
     }
-    private fun fetchSalon(){
+    private suspend fun fetchSalon(){
         dbServices.hairSalonServices.findAll().observeForever{
             salons ->
             salons.forEach { salon ->
