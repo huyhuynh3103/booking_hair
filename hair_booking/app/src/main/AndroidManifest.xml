@@ -13,16 +13,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Hair_booking">
         <activity
+            android:name=".ui.admin.managers_list.ManagerDetailAdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.managers_list.ManagersListActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".ui.admin.users_list.UserDetailAdminActivity"
             android:exported="false"
-            android:parentActivityName=".ui.admin.users_list.UsersListActivity"/>
+            android:parentActivityName=".ui.admin.users_list.UsersListActivity" />
         <activity
             android:name=".ui.admin.users_list.UsersListActivity"
-            android:exported="true" />
+            android:exported="true"/>
 
         <activity
             android:name=".ui.authentication.begining"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".ui.normal_user.home.NormalUserHomeActivity"
             android:exported="true"
@@ -59,13 +72,8 @@
             android:exported="true" />
         <activity
             android:name=".ui.normal_user.profile.NormalUserProfileActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="true" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity android:name=".ui.manager.home.ManagerHomeActivity" />
         <activity android:name=".ui.authentication.LogInActivity" />
         <activity
