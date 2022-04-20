@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="address"
+            type="String" />
+        <variable
+            name="appointment"
+            type="com.example.hair_booking.model.Appointment" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/bookingTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{appointment.bookingTime+ ` - `+appointment.bookingDate}"
+            app:layout_constraintStart_toStartOf="@+id/addressSalonHistory"
+            app:layout_constraintTop_toTopOf="@+id/bookingTimeLabel"
+            tools:text="@string/mock_booking_time" />
+
+        <TextView
+            android:id="@+id/bookingTimeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/bookingTimeLabel"
+            app:layout_constraintStart_toStartOf="@+id/addressSalonLabel"
+            app:layout_constraintTop_toBottomOf="@+id/addressSalonHistory" />
+
+        <TextView
+            android:id="@+id/addressSalonLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/addressSalonLabel"
+            app:layout_constraintStart_toStartOf="@+id/subIdLabel"
+            app:layout_constraintTop_toBottomOf="@+id/subIdLabel" />
+
+        <TextView
+            android:id="@+id/addressSalonHistory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            tools:text="@string/mock_address_data"
+            android:text="@{address}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/addressSalonLabel"
+            app:layout_constraintTop_toTopOf="@+id/addressSalonLabel" />
+
+        <TextView
+            android:id="@+id/totalPriceHistoryLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/totalPriceLabel"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/bookingTimeLabel"
+            app:layout_constraintTop_toBottomOf="@+id/bookingTime" />
+
+        <TextView
+            android:id="@+id/totalPriceHistory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{appointment.totalPrice.toString()}"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/addressSalonHistory"
+            app:layout_constraintTop_toTopOf="@+id/totalPriceHistoryLabel"
+            tools:text="@string/mockDataPrice" />
+
+        <TextView
+            android:id="@+id/statusAppointmentHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/status_appointment_history_label"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/bookingTimeLabel"
+            app:layout_constraintTop_toBottomOf="@+id/totalPriceHistory" />
+
+        <TextView
+            android:id="@+id/statusAppointmentMock"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@{appointment.status}"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/CancleButton"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/bookingTime"
+            app:layout_constraintTop_toTopOf="@+id/statusAppointmentHistory"
+            tools:text="@string/mock_data_status_appointment" />
+
+        <Button
+            android:id="@+id/CancleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_button"
+            android:text="@string/cancelBookingLabel"
+            app:backgroundTint="#FF5252"
+            app:layout_constraintBottom_toBottomOf="@+id/statusAppointmentMock"
+            app:layout_constraintEnd_toEndOf="@+id/addressSalonHistory" />
+
+        <TextView
+            android:id="@+id/subIdLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@{appointment.appointmentSubId}"
+            android:textStyle="bold|italic"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="#0646" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

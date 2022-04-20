@@ -82,6 +82,17 @@
     <string name="confirm_password">Nhập lại mật khẩu</string>
     <string name="phone_number">Số điện thoại</string>
     <string name="sign_out">Đăng xuất</string>
+    <string name="mock_booking_time">19:30 - 23/04/2022</string>
+    <string name="bookingTimeLabel">Thời gian diễn ra</string>
+    <string name="addressSalonLabel">Địa chỉ chi nhánh</string>
+    <string name="mock_address_data">342/11 Khuông việt, phường Phú Trung, Quận Tân Phú, Tp Hồ Chí Minh</string>
+    <string name="nameSalonLabel">Tên chi nhánh</string>
+    <string name="mock_data_address">Chi Nhánh quận Tân Phú</string>
+    <string name="totalPriceLabel">Tổng giá</string>
+    <string name="mockDataPrice">322.122 USD</string>
+    <string name="cancelBookingLabel">Hủy Lịch</string>
+    <string name="mock_data_status_appointment">Chưa diễn ra</string>
+    <string name="status_appointment_history_label">Trạng thái</string>
 
 
 </resources>

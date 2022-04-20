@@ -109,6 +109,21 @@ data class Appointment(private val _id: String) {
         this._status = status
     }
 
+    constructor(id: String,
+                appointmentSubId: String,
+                bookingDate: String,
+                bookingTime: String,
+                status: String,
+                hairSalon: HashMap<String, *>,
+                totalPrice: Long
+    ): this(id) {
+        this._appointmentSubId = appointmentSubId
+        this._bookingDate = bookingDate
+        this._bookingTime = bookingTime
+        this._status = status
+        this._hairSalon = hairSalon
+        this._totalPrice = totalPrice
+    }
     fun getStylistFullName(): String {
         if(stylist != null)
             return stylist!!["fullName"].toString()

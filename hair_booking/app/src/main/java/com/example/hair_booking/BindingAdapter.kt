@@ -19,6 +19,7 @@ import com.example.hair_booking.ui.normal_user.booking.choose_stylist.StylistLis
 import com.example.hair_booking.ui.manager.stylist.StylistRecycleViewAdapter
 import com.example.hair_booking.ui.admin.managers_list.ManagersListAdapter
 import com.example.hair_booking.ui.admin.users_list.UsersListAdapter
+import com.example.hair_booking.ui.normal_user.history.overview.HistoryListAdapter
 import com.example.hair_booking.ui.normal_user.home.SalonAdapter
 @BindingAdapter("data")
 fun bindBookingStylistListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Stylist>?) {
@@ -130,5 +131,13 @@ fun setSelectedItem(spinner: Spinner, list: ArrayList<Salon>?, selected: String?
     }
     else {
         Log.i("AdapterBindingError", "Set selected fail")
+    }
+}
+
+@BindingAdapter("historyList")
+fun bindHistoryListRecycleView(recyclerView: RecyclerView,data:ArrayList<Appointment>?){
+    val adapter = recyclerView.adapter as HistoryListAdapter
+    if(data!=null){
+        adapter.setData(data)
     }
 }

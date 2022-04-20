@@ -126,7 +126,51 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         return discountIds
     }
 
+    suspend fun getAppointmentListForUser(emailUser: String,statusAppointment: String? = null): ArrayList<Appointment>{
+        val appointmentList : ArrayList<Appointment> = ArrayList()
+        if(dbInstance!=null){
+            val accountQuerySnapshot = dbInstance!!
+                .collection(Constant.collection.accounts)
+                .whereEqualTo("email",emailUser)
+                .get()
+                .await()
+            val accountDocRef = accountQuerySnapshot.documents[0].reference
+            val userQuerySnapshot = dbInstance!!
+                .collection(Constant.collection.normalUsers)
+                .whereEqualTo("accountId",accountDocRef)
+                .get()
+                .await()
 
+            val appointmentRefList = userQuerySnapshot.documents[0].data!!["appointments"] as ArrayList<DocumentReference>
+            for( appointmentRef in appointmentRefList){
+                val document = appointmentRef.get().await()
+
+                if(statusAppointment!=null){
+                    if(document.get("status")!=statusAppointment){
+                        continue
+                    }
+                }
+
+                val data = document.data
+                if(data!=null){
+                    val appointment = Appointment(document.id,
+                        data["subId"] as String,
+                        data["bookingDate"] as String,
+                        data["bookingTime"] as String,
+                        data["status"] as String,
+                        data["hairSalon"] as HashMap<String, *>,
+                        data["totalPrice"] as Long)
+                    appointmentList.add(appointment)
+                }
+
+            }
+
+
+
+
+        }
+        return appointmentList
+    }
     override suspend fun findAll(): ArrayList<Appointment> {
         var appointmentList: ArrayList<Appointment> = ArrayList()
         try {

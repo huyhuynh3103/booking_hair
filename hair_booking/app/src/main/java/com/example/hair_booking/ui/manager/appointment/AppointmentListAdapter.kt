@@ -56,7 +56,7 @@ class AppointmentListAdapter: RecyclerView.Adapter<AppointmentListAdapter.ViewHo
         var appointment: Appointment? = appointmentList?.value?.get(position) ?: null
         appointment?.prepareBookingTimeForDisplay()
         holder.appointmentListItemBinding.appointment = appointment
-        if(appointment?.status == Constant.AppointmentStatus.accept) {
+        if(appointment?.status == Constant.AppointmentStatus.isPending) {
             holder.appointmentListItemBinding.appointmentListStatus.setTextColor(Color.parseColor("#4CAF50"))
         }
         else
