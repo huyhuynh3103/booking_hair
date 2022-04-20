@@ -1,4 +1,4 @@
-package com.example.hair_booking.ui.normal_user.booking
+package com.example.hair_booking.ui.normal_user.booking.choose_discount
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -34,7 +34,7 @@ class DiscountListAdapter: RecyclerView.Adapter<DiscountListAdapter.ViewHolder>(
 
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscountListAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
 

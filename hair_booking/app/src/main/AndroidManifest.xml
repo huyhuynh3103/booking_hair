@@ -12,6 +12,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hair_booking">
+        <activity android:name=".ui.normal_user.booking.booking_confirm.BookingConfirmActivity"></activity>
+        <activity android:name=".ui.manager.appointment.AppointmentListActivity"
+            android:exported="true">
+
+        </activity>
+        <activity android:name=".ui.normal_user.booking.choose_discount.ChooseDiscountActivity" />
+        <activity
+            android:name=".ui.authentication.SignUpActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.authentication.BeginningActivity"
+            android:exported="true"/>
+
         <activity
             android:name=".ui.admin.managers_list.ManagerDetailAdminActivity"
             android:exported="false" />
@@ -28,52 +41,56 @@
         <activity
             android:name=".ui.admin.users_list.UserDetailAdminActivity"
             android:exported="false"
-            android:parentActivityName=".ui.admin.users_list.UsersListActivity" />
+            android:parentActivityName=".ui.admin.users_list.UsersListActivity"/>
         <activity
             android:name=".ui.admin.users_list.UsersListActivity"
-            android:exported="true"/>
-
-        <activity
-            android:name=".ui.authentication.begining"
             android:exported="true" />
+
         <activity
             android:name=".ui.normal_user.home.NormalUserHomeActivity"
             android:exported="true"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"></activity>
+
         <activity
-            android:name=".ui.normal_user.booking.ChooseDiscountActivity"
-            android:exported="true" />
+            android:name=".ui.manager.appointment.ManagerAppointmentDetailActivity"
+            android:exported="false" />
         <activity
-            android:name=".ui.normal_user.booking.ChooseServiceActivity"
+            android:name=".ui.manager.stylist.ManagerStylistListActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.normal_user.booking.choose_salon.ChooseSalonActivity"
             android:exported="false"
-            android:label="@string/choose_service_screen_title" />
+            android:label="@string/choose_salon_screen_title"></activity>
         <activity
-            android:name=".ui.normal_user.booking.ChooseSalonActivity"
+            android:name=".ui.normal_user.booking.choose_stylist.ChooseStylistActivity"
             android:exported="false"
-            android:label="@string/choose_salon_screen_title" />
+            android:label="@string/choose_stylist_screen_title"></activity>
         <activity
-            android:name=".ui.normal_user.booking.ChooseStylistActivity"
+            android:name=".ui.normal_user.booking.choose_service.ChooseServiceActivity"
             android:exported="false"
-            android:label="@string/choose_stylist_screen_title" />
+            android:label="@string/choose_salon_screen_title"></activity>
         <activity
             android:name=".ui.normal_user.booking.BookingActivity"
-            android:exported="false"
-            android:label="@string/booking_screen_title" />
+            android:exported="true"
+            android:label="@string/booking_screen_title">
+        </activity>
         <activity
             android:name=".ui.manager.stylist.ManagerStylistDetailActivity"
             android:exported="true"
-            android:label="Manager Stylist" />
+            android:label="Manager Stylist">
+        </activity>
         <activity
             android:name=".ui.normal_user.salon.NormalUserSalonDetailActivity"
             android:exported="true"
             android:label="Detail Salon Profile" />
         <activity
             android:name=".ui.manager.profile.ManagerProfileActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".ui.normal_user.profile.NormalUserProfileActivity"
-            android:exported="true" />
-
+            android:exported="true">
+        </activity>
         <activity android:name=".ui.manager.home.ManagerHomeActivity" />
         <activity android:name=".ui.authentication.LogInActivity" />
         <activity

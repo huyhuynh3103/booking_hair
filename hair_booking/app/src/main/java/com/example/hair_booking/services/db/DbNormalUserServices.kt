@@ -3,50 +3,37 @@ package com.example.hair_booking.services.db
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
-import com.example.hair_booking.model.Account
+import com.example.hair_booking.model.Discount
 import com.example.hair_booking.model.NormalUser
-import com.example.hair_booking.model.Salon
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import java.lang.Exception
+import com.example.hair_booking.model.Account
+import com.example.hair_booking.model.Salon
+import com.google.firebase.firestore.FieldValue
+import kotlinx.coroutines.*
 
-class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) {
+class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbstract<Any>() {
 
-    fun foo() {
-        Log.d("xk", "adaldqlweql")
+    override suspend fun find(data: Any): Any {
+        TODO("Not yet implemented")
     }
 
-    fun getNormalUserDetail(id: String): MutableLiveData<NormalUser> {
-        var detail = MutableLiveData<NormalUser>()
-        if(dbInstance != null) {
-            dbInstance!!.collection("normalUsers")
-                .get()
-                .addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        if (document.id == id) {
-                            val accountId: String =
-                                (document.data?.get("accountId") as DocumentReference).id
+    override suspend fun save(data: Any?): DocumentReference? {
+        Log.d("huy-save-normal-user","start")
+        var docRef:DocumentReference? = null
+        if(data != null)
+            docRef = dbInstance!!.collection(Constant.collection.normalUsers).add(data).await()
+        return docRef
+    }
 
-                            //var account: Account = dbServices.getAccountServices()!!.getAccountDetail(accountId)
-                            // Mapping firestore object to kotlin model
-                            var normalUser: NormalUser = NormalUser(
-                                document.id,
-                                document.data!!["fullName"] as String,
-                                document.data!!["phoneNumber"] as String,
-                                document.data!!["gender"] as String,
-                                document.data!!["discountPoint"] as Long,
-                                document.data!!["accountId"] as DocumentReference
-                            )
 
-                            detail.value = normalUser
-                        }
-                    }
-                }.addOnFailureListener { exception ->
-                    Log.d("xk", "get failed with ", exception)
-                }
-        }
-        return detail
+    override suspend fun findAll(): Any {
+        TODO("Not yet implemented")
     }
 
     suspend fun getNormalUserAccountId(id: String): String {
@@ -140,5 +127,79 @@ class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) {
                 Log.d("DbNormalUserServices", "Error updating document", e)
             }
 
+    }
+
+    suspend fun getUserDiscountPoint(userId: String): Long {
+
+        var discountPoint: Long = 0
+
+        if (dbInstance != null) {
+            val result = dbInstance!!.collection(Constant.collection.normalUsers)
+                .whereEqualTo("id", userId)
+                .get()
+                .await()
+
+            for(document in result.documents) {
+                discountPoint = document.data?.get("discountPoint") as Long
+            }
+
+        }
+        return discountPoint
+    }
+
+    suspend fun getUserById(userId: String): NormalUser? {
+        var user: NormalUser? = null
+
+        if (dbInstance != null) {
+            val result = dbInstance!!.collection(Constant.collection.normalUsers)
+                .document(userId)
+                .get()
+                .await()
+
+            user = NormalUser(
+                result.id,
+                result.data?.get("fullName") as String,
+                result.data?.get("phoneNumber") as String,
+                result.data?.get("gender") as String,
+                result.data?.get("discountPoint") as Long,
+                result.data?.get("accountId") as DocumentReference
+            )
+        }
+
+        return user
+    }
+
+    fun updateNormalUserWhenBooking(userId: String, appointment: DocumentReference) {
+
+        val normalUserRef = dbInstance!!.collection(Constant.collection.normalUsers).document(userId)
+
+        normalUserRef
+            .update(
+                "appointments", FieldValue.arrayUnion(appointment),
+                "discountPoint", FieldValue.increment(500)
+            )
+            .addOnSuccessListener {
+                Log.d("DbNormalUserServices", "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e ->
+                Log.d("DbNormalUserServices", "Error updating document", e)
+            }
+
+    }
+
+    override suspend fun findById(id: Any?): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateOne(id: Any?, updateDoc: Any?): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun delete(id: Any?): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun add(data: Any?): Any? {
+        TODO("Not yet implemented")
     }
 }

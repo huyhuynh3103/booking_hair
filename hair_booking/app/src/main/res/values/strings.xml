@@ -10,12 +10,12 @@
     <string name="choose_salon_edit_text_hint">Xem tất cả salon</string>
     <string name="choose_service_label">Chọn dịch vụ</string>
     <string name="choose_service_edit_text_hint">Xem tất cả dịch vụ hiện có</string>
-    <string name="choose_stylist_label">Chọn stylist</string>
+    <string name="choose_stylist_label">Chọn stylist (không bắt buộc)</string>
     <string name="choose_stylist_edit_text_hint">Xem các stylist hiện có</string>
 
-    <string name="choose_datetime_label">Chọn ngày/giờ</string>
+    <string name="choose_date_label">Chọn ngày cắt tóc</string>
     <string name="choose_date_edit_text_hint">Chọn ngày cắt tóc</string>
-    <string name="choose_time_edit_text_hint">Chọn giờ cắt tóc</string>
+    <string name="choose_time_label">Chọn giờ cắt tóc</string>
     <string name="confirm_booking_btn">Hoàn tất</string>
     <string name="note_label">Ghi chú cho salon</string>
     <string name="note_edit_text_hint">VD: Ngoáy tai kỹ, gội nước mát,...</string>
@@ -39,22 +39,59 @@
 
     // Warning title
     <string name="warning_title">Cảnh báo</string>
+
+    // Booking confirm screen
+    <string name="booking_confirm_screen_thanks_label">CẢM ƠN BẠN ĐÃ ĐẶT LỊCH CẮT TÓC</string>
+    <string name="booking_confirm_screen_appointment_label">THÔNG TIN ĐẶT LỊCH</string>
+    <string name="booking_confirm_screen_salon_label">THÔNG TIN SALON</string>
+    <string name="booking_confirm_screen_price_label">TỔNG GIÁ</string>
+    <string name="booking_confirm_screen_unit_label">VND</string>
+    <string name="booking_confirm_screen_button">TRỞ VỀ MÀN HÌNH CHÍNH</string>
+
+    // Manager appointment list screen
+    <string name="search_bar_hint">Nhập mã lịch đặt...</string>
+
+    <string name="customer_name_label">Khách hàng</string>
+    <string name="service_title_label">Dịch vụ</string>
+    <string name="stylist_name_label">Thợ làm tóc</string>
+    <string name="colon">:</string>
     <!--    Navigation Drawer -->
-    <string name="nav_home">Home</string>
-    <string name="nav_wish_list">Wish List</string>
-    <string name="nav_membership">Membership</string>
-    <string name="nav_account">Account</string>
-    <string name="nav_my_profile">My Profile</string>
-    <string name="nav_change_password">Change Password</string>
+    <string name="nav_home">Trang chủ</string>
+    <string name="nav_wish_list">Yêu thích</string>
+    <string name="nav_membership">Thành viên</string>
+    <string name="nav_account">Tài khoản</string>
+    <string name="nav_my_profile">Thông tin cá nhân</string>
+    <string name="nav_change_password">Đổi mật khẩu</string>
     <string name="nav_sign_out">Sign Out</string>
 
     <string name="navigation_drawer_open">Navigation Drawer Open</string>
     <string name="navigation_drawer_close">Navigation Drawer Close</string>
-    <string name="history_menu_item">History</string>
-    <string name="schedule_nav_user">Schedule</string>
+    <string name="history_menu_item">Lịch đã đặt</string>
+    <string name="schedule_nav_user">Đặt lịch</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="some_one_somewhere_com">some.one@somewhere.com</string>
+    <string name="sign_up">Đăng ký</string>
+    <string name="login">Đăng Nhập</string>
+    <string name="email">Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="full_name">Họ và tên</string>
+    <string name="gender">Giới tính</string>
+    <string name="male">Nam</string>
+    <string name="female">Nữ</string>
+    <string name="confirm_password">Nhập lại mật khẩu</string>
+    <string name="phone_number">Số điện thoại</string>
+    <string name="sign_out">Đăng xuất</string>
+    <string name="stylist">Thợ làm tóc</string>
+    <string name="nav_appointment_manager">Lịch được đặt</string>
+    <string name="stylist_name">Tên nhân viên</string>
+    <string name="stylist_id">Mã nhân viên</string>
+    <string name="description">Mô tả</string>
+    <string name="current_working_place">Nơi làm việc hiện tại</string>
+    <string name="save_btn">Lưu thông tin</string>
+    <string name="delete_btn">Xóa nhân viên</string>
+    <string name="add_stylist_btn">Thêm mới nhân viên</string>
+    <string name="search">Tìm kiếm ...</string>
 
 
 </resources>

@@ -1,4 +1,4 @@
-package com.example.hair_booking.ui.normal_user.booking
+package com.example.hair_booking.ui.normal_user.booking.choose_stylist
 
 import android.app.Activity
 import android.content.Intent
@@ -20,14 +20,29 @@ class ChooseStylistActivity : AppCompatActivity() {
     private lateinit var stylistListAdapter: StylistListAdapter
 
     private var chosenSalonId: MutableLiveData<String> = MutableLiveData()
+    private var chosenShiftId: MutableLiveData<String> = MutableLiveData()
+    private var chosenDate: MutableLiveData<String> = MutableLiveData()
+    private var chosenTimeRange: MutableLiveData<Pair<Float, Float>> = MutableLiveData()
     // "by viewModels()" is the auto initialization of viewmodel made by the library
-    private val viewModel: ChooseStylistViewModel by viewModels{ChooseStylistViewModelFactory(chosenSalonId)}
+    private val viewModel: ChooseStylistViewModel by viewModels{ ChooseStylistViewModelFactory(chosenSalonId, chosenShiftId, chosenTimeRange, chosenDate) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Get chosen salon id
         chosenSalonId.value = intent.getStringExtra("chosenSalonId")
+
+        // Get chosen shift id
+        chosenShiftId.value = intent.getStringExtra("chosenShiftId")
+
+        // Get chosen date
+        chosenDate.value = intent.getStringExtra("chosenDate")
+
+        // Get chosen time range
+        val chosenTime: Float = intent.getFloatExtra("chosenTime", 0.0F)
+        val estimatedEndTime: Float = intent.getFloatExtra("estimatedEndTime", 0.0F)
+        var tmp: Pair<Float, Float> = Pair(chosenTime, estimatedEndTime)
+        chosenTimeRange.value = tmp
 
         // Setup binding with xml file
         binding = DataBindingUtil.setContentView(this, R.layout.activity_choose_stylist)

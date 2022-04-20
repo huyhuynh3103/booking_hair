@@ -17,13 +17,9 @@ class UserDetailAdminViewModel: ViewModel() {
     private val _account: MutableLiveData<Account> = MutableLiveData()
     val account: LiveData<Account> = _account
 
-    fun getUserDetail(id: String){
-        dbServices.getNormalUserServices()?.getNormalUserDetail(id)?.observeForever {
-            _user.value = it
-        }
-        //dbServices.getNormalUserServices()?.getNormalUserAccountDetail(id)?.observeForever {
-            //_account.value = it
-        //}
+    suspend fun getUserDetail(id: String){
+        _user.value = dbServices.getNormalUserServices()?.getUserById(id)
+
     }
     fun getUserAccountDetail(id: String){
         viewModelScope.launch {

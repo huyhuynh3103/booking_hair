@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hair_booking.model.Account
 import com.example.hair_booking.model.Salon
-import com.example.hair_booking.model.Stylist
 import com.example.hair_booking.services.db.dbServices
 import kotlinx.coroutines.launch
 

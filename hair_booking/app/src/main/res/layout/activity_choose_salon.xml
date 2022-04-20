@@ -6,13 +6,13 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.hair_booking.ui.normal_user.booking.ChooseSalonViewModel" />
+            type="com.example.hair_booking.ui.normal_user.booking.choose_salon.ChooseSalonViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.normal_user.booking.ChooseSalonActivity">
+        tools:context=".ui.normal_user.booking.choose_salon.ChooseSalonActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/salonListRecyclerView"

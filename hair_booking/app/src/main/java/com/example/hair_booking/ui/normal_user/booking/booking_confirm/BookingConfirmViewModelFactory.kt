@@ -1,13 +1,13 @@
-package com.example.hair_booking.ui.normal_user.booking
+package com.example.hair_booking.ui.normal_user.booking.booking_confirm
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class ChooseStylistViewModelFactory(private val chosenSalonId: MutableLiveData<String>)
+class BookingConfirmViewModelFactory(private val appointmentSaved: MutableLiveData<HashMap<String, *>?>)
     : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ChooseStylistViewModel(chosenSalonId) as T
+        return BookingConfirmViewModel(appointmentSaved) as T
     }
 }

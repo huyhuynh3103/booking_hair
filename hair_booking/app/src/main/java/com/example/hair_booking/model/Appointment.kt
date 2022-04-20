@@ -8,6 +8,7 @@ import com.google.firebase.firestore.DocumentReference
 // and the id is a required parameter for all models
 // => you can freely define secondary constructor with as many parameters as you want
 data class Appointment(private val _id: String) {
+    private var _appointmentSubId: String? = null // this id is for manager to check for the appointment when customer arrives at the salon
     private var _userId: DocumentReference? = null
     private var _userFullName: String? = null
     private var _userPhoneNumber: String? = null
@@ -20,15 +21,18 @@ data class Appointment(private val _id: String) {
 
     private var _bookingDate: String? = null
     private var _bookingTime: String? = null
+    private var _bookingShift: DocumentReference? = null
     private var _createdAt: String? = null
     private var _discountApplied: HashMap<String, *>? = null
 
     private var _note: String? = null
     private var _status: String? = null
+    private var _totalPrice: Long? = null
 
 
     // GETTERS
     val id: String get() = _id
+    val appointmentSubId: String? get() = _appointmentSubId
     val userId: DocumentReference? get() = _userId
     val userFullName: String? get() = _userFullName
     val userPhoneNumber: String? get() = _userPhoneNumber
@@ -41,27 +45,35 @@ data class Appointment(private val _id: String) {
 
     val bookingDate: String? get() = _bookingDate
     val bookingTime: String? get() = _bookingTime
+    val bookingShift: DocumentReference? get() = _bookingShift
     val createdAt: String? get() = _createdAt
     val discountApplied: HashMap<String, *>? get() = _discountApplied
 
     val note: String? get() = _note
     val status: String? get() = _status
+    val totalPrice: Long? get() = _totalPrice
 
 
     // Full parameter constructor
-    constructor(id: String, userId: DocumentReference,
-                userFullName: String,
-                userPhoneNumber: String?,
-                hairSalon: HashMap<String, *>,
-                service: HashMap<String, *>,
-                stylist: HashMap<String, *>,
-                bookingDate: String,
-                bookingTime: String,
-                createdAt: String,
-                discountApplied: HashMap<String, *>,
-                note: String,
-                status: String
+    constructor(
+        id: String,
+        appointmentSubId: String,
+        userId: DocumentReference,
+        userFullName: String,
+        userPhoneNumber: String?,
+        hairSalon: HashMap<String, *>,
+        service: HashMap<String, *>,
+        stylist: HashMap<String, *>,
+        bookingDate: String,
+        bookingTime: String,
+        bookingShift: DocumentReference,
+        createdAt: String,
+        discountApplied: HashMap<String, *>?,
+        note: String,
+        status: String,
+        totalPrice: Long,
     ): this(id) {
+        this._appointmentSubId = appointmentSubId
         this._userId = userId
         this._userFullName = userFullName
         this._userPhoneNumber = userPhoneNumber
@@ -70,11 +82,40 @@ data class Appointment(private val _id: String) {
         this._stylist = stylist
         this._bookingDate = bookingDate
         this._bookingTime = bookingTime
+        this._bookingShift = bookingShift
         this._createdAt = createdAt
         this._discountApplied = discountApplied
         this._note = note
         this._status = status
+        this._totalPrice = totalPrice
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
+    constructor(id: String,
+                appointmentSubId: String,
+                userFullName: String,
+                stylist: HashMap<String, *>,
+                bookingDate: String,
+                bookingTime: String,
+                createdAt: String,
+                status: String
+    ): this(id) {
+        this._appointmentSubId = appointmentSubId
+        this._userFullName = userFullName
+        this._stylist = stylist
+        this._bookingDate = bookingDate
+        this._bookingTime = bookingTime
+        this._createdAt = createdAt
+        this._status = status
+    }
+
+    fun getStylistFullName(): String {
+        if(stylist != null)
+            return stylist!!["fullName"].toString()
+        return ""
+    }
+
+    fun prepareBookingTimeForDisplay() {
+        _bookingTime = _bookingTime?.replace('.', 'h')
+    }
 }

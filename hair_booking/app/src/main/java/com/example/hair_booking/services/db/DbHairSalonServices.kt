@@ -8,14 +8,13 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
 class DbHairSalonServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract<Any?>() {
-    override suspend fun find(query: Any?): Any? {
+    override suspend fun find(data: Any?): Any? {
         TODO("Not yet implemented")
     }
 
     override suspend fun save(data: Any?): Any? {
         TODO("Not yet implemented")
     }
-
 
     override suspend fun findAll(): MutableLiveData<ArrayList<Salon>> {
         val data:ArrayList<Salon> = ArrayList()
@@ -52,7 +51,7 @@ class DbHairSalonServices(private var dbInstance: FirebaseFirestore?): DatabaseA
         return res
     }
 
-    override suspend fun findById(data: Any?): Any? {
+    override suspend fun findById(id: Any?): Any? {
         TODO("Not yet implemented")
     }
 

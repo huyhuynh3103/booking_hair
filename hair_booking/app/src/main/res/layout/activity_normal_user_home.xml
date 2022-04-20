@@ -13,7 +13,8 @@
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".ui.normal_user.home.NormalUserHomeActivity"
-        tools:openDrawer="start">
+        tools:openDrawer="start"
+        android:fitsSystemWindows="true">
 
         <LinearLayout
             android:layout_width="match_parent"

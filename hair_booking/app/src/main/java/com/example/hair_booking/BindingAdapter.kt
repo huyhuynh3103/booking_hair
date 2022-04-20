@@ -1,19 +1,24 @@
 package com.example.hair_booking
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.model.*
+import com.example.hair_booking.ui.manager.appointment.AppointmentListAdapter
+import com.example.hair_booking.ui.normal_user.booking.choose_discount.DiscountListAdapter
+import com.example.hair_booking.ui.normal_user.booking.choose_salon.SalonListAdapter
+import com.example.hair_booking.ui.normal_user.booking.choose_service.ServiceListAdapter
+import com.example.hair_booking.ui.normal_user.booking.choose_stylist.StylistListAdapter
+import com.example.hair_booking.ui.manager.stylist.StylistRecycleViewAdapter
 import com.example.hair_booking.ui.admin.managers_list.ManagersListAdapter
 import com.example.hair_booking.ui.admin.users_list.UsersListAdapter
-import com.example.hair_booking.ui.normal_user.booking.DiscountListAdapter
-import com.example.hair_booking.ui.normal_user.booking.SalonListAdapter
-import com.example.hair_booking.ui.normal_user.booking.ServiceListAdapter
-import com.example.hair_booking.ui.normal_user.booking.StylistListAdapter
 import com.example.hair_booking.ui.normal_user.home.SalonAdapter
 @BindingAdapter("data")
 fun bindBookingStylistListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Stylist>?) {
@@ -39,12 +44,29 @@ fun bindBookingServiceListRecyclerView(recyclerView: RecyclerView, data: ArrayLi
     }
 }
 
-@BindingAdapter("data")
+@BindingAdapter("discountListForBookingData")
 fun bindBookingDiscountListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Discount>?) {
     val adapter = recyclerView.adapter as DiscountListAdapter
     if (data != null) {
         adapter?.setData(data)
     }
+}
+
+@BindingAdapter("managerAppointmentList")
+fun bindManagerAppointmentListRecyclerView(recyclerView: RecyclerView, data: LiveData<ArrayList<Appointment>>) {
+    val adapter = recyclerView.adapter as AppointmentListAdapter
+    if (data != null) {
+        adapter?.setData(data)
+    }
+}
+
+@SuppressLint("SetTextI18n")
+@BindingAdapter("serviceTitle")
+fun setServiceTitle(textView: TextView?, service: HashMap<String, *>?) {
+    if(service?.get("title") != null)
+        textView?.text = "Dịch vụ: " + service["title"] as String
+    else
+        textView?.text = ""
 }
 
 
@@ -68,6 +90,14 @@ fun bindSalonListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>
     }
 }
 
+@BindingAdapter("managerStylistList")
+fun bindManagerStylistListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Stylist>?) {
+    val adapter = recyclerView.adapter as StylistRecycleViewAdapter
+    if (data != null) {
+        adapter?.setData(data)
+    }
+}
+
 @BindingAdapter("usersListData")
 fun bindUserListRecyclerView(recyclerView: RecyclerView, dataUser: ArrayList<NormalUser>?) {
     val adapter = recyclerView.adapter as UsersListAdapter
@@ -84,6 +114,7 @@ fun bindManagerListRecyclerView(recyclerView: RecyclerView, dataAccount: ArrayLi
     }
 
 }
+
 
 @BindingAdapter("list", "selected")
 fun setSelectedItem(spinner: Spinner, list: ArrayList<Salon>?, selected: String?) {

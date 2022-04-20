@@ -15,10 +15,8 @@ class NormalUserProfileViewModel: ViewModel() {
     private val _account: MutableLiveData<Account> = MutableLiveData()
     val account: LiveData<Account> = _account
 
-    fun getNormalUserDetail(id: String){
-        dbServices.getNormalUserServices()?.getNormalUserDetail(id)?.observeForever {
-            _normalUser.value = it
-        }
+    suspend fun getNormalUserDetail(id: String){
+        _normalUser.postValue(dbServices.getNormalUserServices()?.getUserById(id))
     }
 
     fun getUserAccountDetail(id: String){

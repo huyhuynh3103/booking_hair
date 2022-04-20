@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="appointment"
+            type="com.example.hair_booking.model.Appointment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/appointmentSubId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:text='@{"Mã lịch đặt: " + appointment.appointmentSubId}'
+            android:textSize="16sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/customerName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:drawableStart="@drawable/ic_account"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text='@{"Khách hàng: " + appointment.userFullName}'
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/appointmentSubId"
+            app:layout_constraintTop_toBottomOf="@+id/appointmentSubId" />
+
+        <TextView
+            android:id="@+id/appointmentListServiceTitle"
+            serviceTitle="@{appointment.service}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/ic_baseline_content_cut_24"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/appointmentListStylistName"
+            app:layout_constraintStart_toStartOf="@+id/appointmentListStylistName"
+            app:layout_constraintTop_toBottomOf="@+id/appointmentListStylistName" />
+
+        <TextView
+            android:id="@+id/appointmentListStylistName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/ic_baseline_sticky_note_2_24"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text='@{"Stylist: " + appointment.stylistFullName}'
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/customerName"
+            app:layout_constraintStart_toStartOf="@+id/customerName"
+            app:layout_constraintTop_toBottomOf="@+id/customerName" />
+
+        <TextView
+            android:id="@+id/appointmentListBookingDateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:drawableLeft="@drawable/ic_baseline_access_time_24"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="@{appointment.bookingTime + ' ' + appointment.bookingDate}"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/appointmentSubId"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/appointmentSubId" />
+
+        <TextView
+            android:id="@+id/appointmentListStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
+            android:text="@{appointment.status}"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/appointmentListBookingDateTime"
+            app:layout_constraintTop_toBottomOf="@+id/appointmentListServiceTitle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
