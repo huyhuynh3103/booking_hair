@@ -8,6 +8,7 @@ import com.example.hair_booking.services.booking.DateServices
 import com.example.hair_booking.services.booking.TimeServices
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
@@ -70,7 +71,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         var appointment: Appointment? = null
 
         if(dbInstance != null) {
-            val document = dbInstance!!.collection("appointments")
+            val document = dbInstance!!.collection(Constant.collection.appointments)
                 .document(appointmentId)
                 .get()
                 .await()
@@ -349,6 +350,162 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
             i++
         }
         return "#$result"
+    }
+
+    suspend fun updateAppointment(
+        appointmentId: String,
+        userId: String,
+        salonId: String,
+        serviceId: String,
+        serviceTitle: String,
+        stylistId: String,
+        bookingDate: String,
+        bookingTime: String,
+        shiftId: String,
+        discountId: String,
+        discountTitle: String,
+        note: String,
+        totalPrice: Long
+    ): HashMap<String, *> {
+        val dbNormalUserServices = dbServices.getNormalUserServices()!!
+        val dbSalonServices = dbServices.getSalonServices()!!
+        val dbStylistServices = dbServices.getStylistServices()!!
+        val dbServiceServices = dbServices.getServiceServices()!!
+
+        // Get user info
+        val user: NormalUser? = dbNormalUserServices.getUserById(userId)
+
+        // Get salon info
+        val chosenSalon: Salon? = dbSalonServices.getSalonById(salonId)
+
+        // Get stylist info
+        val chosenStylist: Stylist? = dbStylistServices.getStylistById(stylistId)
+
+        // Create user doc reference
+        val userDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.normalUsers)
+            .document(userId)
+
+        // Create salon doc reference
+        val salonDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.hairSalons)
+            .document(chosenSalon!!.id)
+
+        // Create shift doc reference
+        val stylistDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.stylists)
+            .document(stylistId)
+
+        // Create shift doc reference
+        val shiftDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.shifts)
+            .document(shiftId)
+
+        // Create service doc reference
+        val serviceDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.services)
+            .document(serviceId)
+
+        val serviceDuration: Int = dbServiceServices.getServiceDuration(serviceId)
+
+        var discountDocRef: DocumentReference? = null
+        var docTobeSaved: HashMap<String, Any?>? = null
+        if(!discountId.isNullOrEmpty() && !discountTitle.isNullOrEmpty()) {
+            // Create discount doc reference
+            discountDocRef = dbInstance!!.collection(Constant.collection.discounts)
+                .document(discountId)
+
+            docTobeSaved = hashMapOf(
+                "userId" to userDocRef,
+                "userFullName" to (user?.fullName ?: null),
+                "userPhoneNumber" to (user?.phoneNumber ?: null),
+                "hairSalon" to hashMapOf(
+                    "address" to (chosenSalon?.address ?: null),
+                    "id" to salonDocRef,
+                    "name" to (chosenSalon?.name ?: null),
+                    "phoneNumber" to (chosenSalon?.phoneNumber ?: null)
+                ),
+                "service" to hashMapOf(
+                    "id" to serviceDocRef,
+                    "title" to serviceTitle,
+                    "duration" to serviceDuration
+                ),
+                "stylist" to hashMapOf(
+                    "id" to stylistDocRef,
+                    "fullName" to (chosenStylist?.fullName ?: null),
+                    "description" to (chosenStylist?.description ?: null),
+                    "avatar" to (chosenStylist?.avatar ?: null)
+                ),
+                "bookingDate" to bookingDate,
+                "bookingTime" to bookingTime,
+                "bookingShift" to shiftDocRef,
+                "discountApplied" to hashMapOf(
+                    "id" to discountDocRef,
+                    "title" to discountTitle
+                ),
+                "notes" to note,
+                "totalPrice" to totalPrice
+            )
+        }
+        else {
+            docTobeSaved = hashMapOf(
+                "userId" to userDocRef,
+                "userFullName" to (user?.fullName ?: null),
+                "userPhoneNumber" to (user?.phoneNumber ?: null),
+                "hairSalon" to hashMapOf(
+                    "address" to (chosenSalon?.address ?: null),
+                    "id" to salonDocRef,
+                    "name" to (chosenSalon?.name ?: null),
+                    "phoneNumber" to (chosenSalon?.phoneNumber ?: null)
+                ),
+                "service" to hashMapOf(
+                    "id" to serviceDocRef,
+                    "title" to serviceTitle,
+                    "duration" to serviceDuration
+                ),
+                "stylist" to hashMapOf(
+                    "id" to stylistDocRef,
+                    "fullName" to (chosenStylist?.fullName ?: null),
+                    "description" to (chosenStylist?.description ?: null),
+                    "avatar" to (chosenStylist?.avatar ?: null)
+                ),
+                "bookingDate" to bookingDate,
+                "bookingTime" to bookingTime,
+                "bookingShift" to shiftDocRef,
+                "discountApplied" to null,
+                "notes" to note,
+                "totalPrice" to totalPrice
+            )
+        }
+
+        // Find and update appointment to database
+        // If appointment does not exist, firestore will create a new one
+        if(dbInstance != null && docTobeSaved != null) {
+            dbInstance!!.collection(Constant.collection.appointments)
+                .document(appointmentId)
+                .set(docTobeSaved, SetOptions.merge()) // Set merge option to tell firestore to update changed fields only
+                .addOnSuccessListener {
+                    Log.d("DbAppointmentServices", "DocumentSnapshot successfully updated!")
+                }
+                .addOnFailureListener { e ->
+                    Log.d("DbAppointmentServices", "Error updating document", e)
+                }
+        }
+        return docTobeSaved
+    }
+
+    suspend fun updateAppointmentStatus(appointmentId: String, appointmentStatus: String): Boolean? {
+        var ack: Boolean = false
+        try {
+            // Find and update appointment status
+            if(dbInstance != null) {
+                dbInstance!!.collection(Constant.collection.appointments)
+                    .document(appointmentId)
+                    .update("status", appointmentStatus)
+                    .await()
+
+                ack = true
+            }
+        }
+        catch (e: Exception) {
+            Log.e("DbAppointmentServices", "Error updating document", e)
+        }
+        return ack
     }
 
     override suspend fun find(query: Any?): Any? {

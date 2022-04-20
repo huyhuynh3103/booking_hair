@@ -103,7 +103,6 @@
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/appointmentListBookingDateTime"
             app:layout_constraintTop_toBottomOf="@+id/appointmentListServiceTitle" />

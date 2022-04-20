@@ -1,4 +1,4 @@
-package com.example.hair_booking.ui.normal_user.booking
+package com.example.hair_booking.ui.manager.appointment.detail.edit
 
 import android.app.Activity
 import android.os.Build
@@ -12,20 +12,28 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.hair_booking.model.Appointment
 import com.example.hair_booking.model.Shift
 import com.example.hair_booking.model.Stylist
 import com.example.hair_booking.services.auth.AuthRepository
 import com.example.hair_booking.services.booking.TimeServices
 import com.example.hair_booking.services.booking.BookingServices
 import com.example.hair_booking.services.db.dbServices
+import com.example.hair_booking.services.local.SalonServices
+import com.example.hair_booking.ui.normal_user.booking.ShiftPickerSpinnerAdapter
+import com.example.hair_booking.ui.normal_user.booking.TimePickerSpinnerAdapter
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.firestore.DocumentReference
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class BookingViewModel: ViewModel() {
+class ManagerEditAppointmentViewModel: ViewModel() {
+    private val _appointmentId: MutableLiveData<String> = MutableLiveData<String>()
+    val appointmentId: LiveData<String> = _appointmentId
+
     private var _userId: MutableLiveData<String> = MutableLiveData<String>() // Used to query database
     val userId: LiveData<String> get() = _userId // Getter
 
@@ -70,12 +78,6 @@ class BookingViewModel: ViewModel() {
     val totalPrice: LiveData<Long> = _totalPrice
 
 
-    init {
-        viewModelScope.launch {
-            getCurrentUserInfo()
-        }
-    }
-
 
     private suspend fun getCurrentUserInfo() {
         val currentUserEmail: String? = AuthRepository.getCurrentUser()!!.email
@@ -89,6 +91,77 @@ class BookingViewModel: ViewModel() {
             }
         }
     }
+
+    fun setAppointmentId(appointmentId: String) {
+        this._appointmentId.postValue(appointmentId)
+    }
+
+    suspend fun prepareAppointmentDetail(
+        context: Activity,
+        appointmentId: String,
+        shiftPickerSpinner: Spinner,
+        timePickerLabel: TextView,
+        timePickerSpinner: Spinner,
+        chooseStylistLabel: TextView,
+        chooseStylistTextInputLayout: TextInputLayout) {
+
+        viewModelScope.launch {
+            _appointmentId.postValue(appointmentId)
+            val currentAppointment: Appointment? = dbServices.getAppointmentServices()!!.getAppointmentById(appointmentId)
+            _userId.postValue(currentAppointment?.userId!!.id)
+            val userDiscountPointOfCurrentAppointment = dbServices.getNormalUserServices()!!.getUserDiscountPoint(currentAppointment?.userId!!.id)
+            _userDiscountPoint.postValue(userDiscountPointOfCurrentAppointment)
+            Log.d("123", _userDiscountPoint.value.toString() + " or " + userDiscountPointOfCurrentAppointment)
+            _salonId = (currentAppointment?.hairSalon?.get("id") as DocumentReference?)!!.id
+            _salonLocation.postValue(SalonServices.addressToString(currentAppointment?.hairSalon?.get("address") as HashMap<String, *>))
+            _serviceId.postValue((currentAppointment.service?.get("id") as DocumentReference?)!!.id)
+
+            val chosenService = dbServices.getServiceServices()!!.getServiceById((currentAppointment.service?.get("id") as DocumentReference?)!!.id)
+            _serviceTitle.postValue(chosenService?.title)
+            _servicePrice.postValue(chosenService?.price)
+
+            stylistId = (currentAppointment?.stylist?.get("id") as DocumentReference?)!!.id
+            _stylist.postValue(currentAppointment?.stylist?.get("fullName") as String?)
+
+            _bookingDate.postValue(currentAppointment.bookingDate!!)
+
+            _shiftId.postValue(currentAppointment.bookingShift!!.id)
+
+            var tmpBookingTime: String = currentAppointment.bookingTime!!
+            _bookingTime.postValue(tmpBookingTime.replace('.', ':'))
+
+            setupShiftPickerSpinner(
+                context,
+                shiftPickerSpinner,
+                timePickerLabel,
+                timePickerSpinner,
+                chooseStylistLabel,
+                chooseStylistTextInputLayout,
+                true
+            )
+
+
+
+            if(currentAppointment.discountApplied.isNullOrEmpty()) {
+                _discount.postValue("")
+            }
+            else {
+                discountId = (currentAppointment.discountApplied!!["id"] as DocumentReference?)!!.id
+                val chosenDiscount = dbServices.getDiscountServices()!!.getDiscountsById(discountId)
+                _discount.postValue(chosenDiscount?.title)
+                _discountPercent.postValue(chosenDiscount?.percent?.toFloat())
+            }
+
+
+            if(currentAppointment.note.isNullOrEmpty())
+                _note.postValue("")
+            else
+                _note.postValue(currentAppointment.note)
+
+            _totalPrice.postValue(currentAppointment.totalPrice)
+        }
+    }
+
 
     // Set salon edit text onclick to be observable
     private val _salonEditTextClicked = MutableLiveData<Boolean>()
@@ -122,7 +195,7 @@ class BookingViewModel: ViewModel() {
         _servicePrice.value = servicePrice
         _totalPrice.value = servicePrice
 
-        removeDiscount() // re select discount
+        removeDiscount() // Empty discount when re select service
     }
 
     suspend fun getChosenServiceDuration(): Int {
@@ -156,6 +229,8 @@ class BookingViewModel: ViewModel() {
         _bookingDate.value = dateChosen
         removeDiscount() // Empty discount when re select date
         _totalPrice.value = servicePrice.value
+        _bookingTime.value = ""
+        _shiftId.value = ""
     }
 
     fun removeDiscount() {
@@ -184,7 +259,6 @@ class BookingViewModel: ViewModel() {
     }
 
     fun setChosenShift(shiftId: String) {
-        Log.d("bookac", "in bookviewmodel: $shiftId")
         this._shiftId.value = shiftId
     }
 
@@ -227,7 +301,7 @@ class BookingViewModel: ViewModel() {
     // Check if there are empty fields
     fun checkEmptyFieldsExist(): Boolean {
         return salonLocation.value.isNullOrEmpty() || serviceTitle.value.isNullOrEmpty()
-                 || bookingDate.value.isNullOrEmpty()
+                || bookingDate.value.isNullOrEmpty()
                 || bookingTime.value.isNullOrEmpty()
     }
 
@@ -236,7 +310,8 @@ class BookingViewModel: ViewModel() {
                                 timePickerLabel: TextView,
                                 timePickerSpinner: Spinner,
                                 chooseStylistLabel: TextView,
-                                chooseStylistTextInputLayout: TextInputLayout,) {
+                                chooseStylistTextInputLayout: TextInputLayout,
+                                setupFirstTime: Boolean) {
         var shiftItems: ArrayList<String> = arrayListOf("Chọn ca hớt tóc") // Init with a placeholder first
         var shiftToBeDisabled: ArrayList<Int> = ArrayList()
 
@@ -249,7 +324,7 @@ class BookingViewModel: ViewModel() {
             val currentHourIn24Format: Int = now.get(Calendar.HOUR_OF_DAY) // return the hour in 24 hrs format (ranging from 0-23)
             val currentMinute: Int = now.get(Calendar.MINUTE) // return minute
             val currentTime = currentHourIn24Format + (currentMinute / 100.0F)
-
+            var chosenShiftIndex: Int = -1
             for(shift in result) {
                 // Shifts returned from database is an object
                 // => need convert to a string for display
@@ -259,22 +334,26 @@ class BookingViewModel: ViewModel() {
                 if(isToday()) {
                     if(TimeServices.isLargerThan(TimeServices.toBigDecimal(currentTime), shift.endHour!!.toBigDecimal())) {
                         shiftToBeDisabled.add(result.indexOf(shift))
-                        Log.d("xk", result.indexOf(shift).toString() + "1231")
                     }
                 }
 
+                if(shift.id == _shiftId.value)
+                    chosenShiftIndex = shiftItems.size - 1
             }
 
             // Assign adapter to spinner
             shiftPickerSpinner.adapter = ShiftPickerSpinnerAdapter(context, shiftItems, shiftToBeDisabled)
 
+
+            if(setupFirstTime)
+                shiftPickerSpinner.setSelection(chosenShiftIndex)
             shiftPickerSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 @RequiresApi(Build.VERSION_CODES.N)
                 override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                     if(position - 1 >= 0) {
                         setChosenShift(result[position - 1].id)
                         viewModelScope.launch {
-                            setupTimePickerSpinner(context, timePickerLabel, timePickerSpinner, result[position - 1], chooseStylistLabel, chooseStylistTextInputLayout)
+                            setupTimePickerSpinner(context, timePickerLabel, timePickerSpinner, result[position - 1], chooseStylistLabel, chooseStylistTextInputLayout, setupFirstTime)
                         }
                     }
                 }
@@ -295,7 +374,8 @@ class BookingViewModel: ViewModel() {
                                                timePickerSpinner: Spinner,
                                                shift: Shift,
                                                chooseStylistLabel: TextView,
-                                               chooseStylistTextInputLayout: TextInputLayout,) {
+                                               chooseStylistTextInputLayout: TextInputLayout,
+                                               setupFirstTime: Boolean) {
         viewModelScope.launch {
             var availableTime: ArrayList<String> = ArrayList() // Init with empty array
             // get chosen service duration
@@ -320,13 +400,26 @@ class BookingViewModel: ViewModel() {
 
                 }
             }.await()
+
+
             availableTime.add(0, "Chọn giờ")
+            val chosenTime = _bookingTime.value!!.replace(':', '.')
+            val chosenTimeIndex: Int = availableTime.indexOf(chosenTime)
+
             for(i in 1 until availableTime.size) {
-                if(disabledTimePositions.contains(i))
-                    availableTime[i] = availableTime[i] + " (hết chỗ)"
+                if(disabledTimePositions.contains(i) && i != chosenTimeIndex) {
+                    if(!setupFirstTime || i != chosenTimeIndex)
+                        availableTime[i] = availableTime[i] + " (hết chỗ)"
+                }
+
             }
+
             // Assign adapter to spinner
             timePickerSpinner.adapter = TimePickerSpinnerAdapter(context, disabledTimePositions, availableTime)
+
+            if(setupFirstTime) {
+                timePickerSpinner.setSelection(chosenTimeIndex)
+            }
 
             if(timePickerLabel.visibility == View.GONE && timePickerSpinner.visibility == View.GONE) {
                 timePickerLabel.visibility = View.VISIBLE
@@ -352,7 +445,7 @@ class BookingViewModel: ViewModel() {
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    suspend fun saveBookingSchedule(note: String): HashMap<String, *>? {
+    suspend fun updateBookingSchedule(note: String): HashMap<String, *>? {
         // Re check if stylist is free
         // In case there is someone has just booked with the chosen stylist at the chosen date and time
         val chosenTimeRange = getTimeRangeChosenInHour()
@@ -376,7 +469,8 @@ class BookingViewModel: ViewModel() {
         }
 
 
-        return dbServices.getAppointmentServices()!!.saveBookingSchedule(
+        return dbServices.getAppointmentServices()!!.updateAppointment(
+            appointmentId.value!!,
             userId.value!!,
             salonId,
             _serviceId.value!!,

@@ -134,14 +134,12 @@ class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) : Databas
         var discountPoint: Long = 0
 
         if (dbInstance != null) {
-            val result = dbInstance!!.collection(Constant.collection.normalUsers)
-                .whereEqualTo("id", userId)
+            val document = dbInstance!!.collection(Constant.collection.normalUsers)
+                .document(userId)
                 .get()
                 .await()
 
-            for(document in result.documents) {
-                discountPoint = document.data?.get("discountPoint") as Long
-            }
+            discountPoint = document.data?.get("discountPoint") as Long
 
         }
         return discountPoint

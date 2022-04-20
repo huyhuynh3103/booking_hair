@@ -348,12 +348,48 @@
                     app:layout_constraintVertical_bias="1.0" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/statusWrapper"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/totalPriceWrapper"
+                app:layout_constraintStart_toStartOf="@+id/totalPriceWrapper"
+                app:layout_constraintTop_toBottomOf="@+id/totalPriceWrapper">
+
+                <TextView
+                    android:id="@+id/statusLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TRẠNG THÁI"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/statusWrapper"
+                    app:layout_constraintTop_toTopOf="@+id/statusWrapper" />
+
+                <TextView
+                    android:id="@+id/managerAppointmentStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.status}"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <Button
-                android:id="@+id/managerCancelAppointmentBtn"
+                android:id="@+id/managerEditAppointmentBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="Chỉnh sửa lịch đặt"
+                android:onClick="@{() -> viewModel.onEditBtnClicked()}"
                 android:textColor="#000000"
                 android:textStyle="bold"
                 app:backgroundTint="#BDBDBD"
@@ -369,17 +405,18 @@
                 android:fadingEdgeLength="0dp"
                 android:showDividers="middle"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/managerCancelAppointmentBtn"
-                app:layout_constraintStart_toStartOf="@+id/managerCancelAppointmentBtn"
-                app:layout_constraintTop_toBottomOf="@+id/managerCancelAppointmentBtn">
+                app:layout_constraintEnd_toEndOf="@+id/managerEditAppointmentBtn"
+                app:layout_constraintStart_toStartOf="@+id/managerEditAppointmentBtn"
+                app:layout_constraintTop_toBottomOf="@+id/managerEditAppointmentBtn">
 
                 <Button
-                    android:id="@+id/editAppointmentBtn"
+                    android:id="@+id/managerCancelAppointmentBtn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="0dp"
                     android:text="Hủy lịch"
+                    android:onClick="@{() -> viewModel.onCancelBtnClicked()}"
                     android:textColor="#FFFFFF"
                     android:textStyle="bold"
                     app:backgroundTint="#E34040"
@@ -398,6 +435,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Check out"
+                    android:onClick="@{() -> viewModel.onCheckOutBtnClicked()}"
                     android:textColor="#000000"
                     android:textStyle="bold"
                     app:backgroundTint="#4CAF50"

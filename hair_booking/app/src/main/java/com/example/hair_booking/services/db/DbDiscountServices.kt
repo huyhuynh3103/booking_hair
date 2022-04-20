@@ -46,6 +46,32 @@ class DbDiscountServices(private var dbInstance: FirebaseFirestore?): DatabaseAb
         return discountList
     }
 
+    suspend fun getDiscountsById(discountId: String): Discount? {
+
+        var discount: Discount? = null
+
+        if (dbInstance != null) {
+            val document = dbInstance!!.collection(Constant.collection.discounts)
+                .document(discountId)
+                .get()
+                .await()
+
+            discount = Discount(
+                document.id,
+                document.data?.get("title") as String,
+                document.data?.get("requiredPoint") as Long,
+                document.data?.get("description") as String,
+                document.data?.get("dateApplied") as String,
+                document.data?.get("dateExpired") as String,
+                document.data?.get("percent") as Double,
+                document.data?.get("serviceApplied") as DocumentReference
+            )
+
+        }
+
+        return discount
+    }
+
     override suspend fun findAll(): ArrayList<Discount> {
 
         var discountList: ArrayList<Discount> = ArrayList()
