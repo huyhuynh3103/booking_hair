@@ -17,6 +17,9 @@ class ManagerAppointmentListViewModel: ViewModel() {
     private var _appointmentList = MutableLiveData<ArrayList<Appointment>>()
     val appointmentList: LiveData<ArrayList<Appointment>> = _appointmentList
 
+    private var _appointmentSubIds = MutableLiveData<ArrayList<String>>()
+    val appointmentSubIds: LiveData<ArrayList<String>> = _appointmentSubIds
+
     init {
         viewModelScope.launch {
             async {
@@ -35,6 +38,6 @@ class ManagerAppointmentListViewModel: ViewModel() {
     }
 
     private fun getAppointmentList() {
-        dbServices.getAppointmentServices()?.getAppointmentListForManager(salonId.value!!, _appointmentList)!!
+        dbServices.getAppointmentServices()?.getAppointmentListForManager(salonId.value!!, _appointmentList, _appointmentSubIds)!!
     }
 }

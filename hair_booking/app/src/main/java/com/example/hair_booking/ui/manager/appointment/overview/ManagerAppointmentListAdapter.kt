@@ -2,6 +2,7 @@ package com.example.hair_booking.ui.manager.appointment.overview
 
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -15,11 +16,26 @@ class ManagerAppointmentListAdapter: RecyclerView.Adapter<ManagerAppointmentList
     var onItemClick: ((position: Int) -> Unit)? = null
 
     private var appointmentList: LiveData<ArrayList<Appointment>>? = null
+    private var appointmentToBeHiddenIndexWhenSearch: ArrayList<Int>? = null
+    private var appointmentToBeHiddenIndexWhenFilter: ArrayList<Int>? = null
+
     fun setData(appointmentList: LiveData<ArrayList<Appointment>>) {
         this.appointmentList = appointmentList
 
         // The UI will be loaded before the database return the appointment list
         // => need notify data set changed to tell the UI that the data is ready
+        notifyDataSetChanged()
+    }
+
+    fun setAppointmentToBeHiddenIndexWhenSearch(appointmentToBeHiddenIndex: ArrayList<Int>?) {
+        this.appointmentToBeHiddenIndexWhenSearch = appointmentToBeHiddenIndex
+
+        notifyDataSetChanged()
+    }
+
+    fun setAppointmentToBeHiddenIndexWhenFilter(appointmentToBeHiddenIndex: ArrayList<Int>?) {
+        this.appointmentToBeHiddenIndexWhenFilter = appointmentToBeHiddenIndex
+
         notifyDataSetChanged()
     }
 
@@ -55,6 +71,30 @@ class ManagerAppointmentListAdapter: RecyclerView.Adapter<ManagerAppointmentList
         var appointment: Appointment? = appointmentList?.value?.get(position) ?: null
         appointment?.prepareBookingTimeForDisplay()
         holder.appointmentListItemBinding.appointment = appointment
+
+        // Show appointment
+        holder.itemView.visibility = View.VISIBLE
+        holder.itemView.layoutParams = RecyclerView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        if(appointmentToBeHiddenIndexWhenSearch != null){
+            if(appointmentToBeHiddenIndexWhenSearch!!.contains(position)) {
+                // Hide appointment
+                holder.itemView.visibility = View.GONE
+                holder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
+            }
+        }
+
+        if(appointmentToBeHiddenIndexWhenFilter != null) {
+            if(appointmentToBeHiddenIndexWhenFilter!!.contains(position)) {
+                // Hide appointment
+                holder.itemView.visibility = View.GONE
+                holder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
+            }
+        }
+
         when(appointment?.status) {
             Constant.AppointmentStatus.isPending -> {
                 holder.appointmentListItemBinding.appointmentListStatus.setTextColor(Color.parseColor("#787878"))

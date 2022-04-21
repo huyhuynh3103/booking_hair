@@ -18,9 +18,10 @@ import kotlin.collections.HashMap
 
 class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract<Any?>() {
 
-    fun getAppointmentListForManager(salonId: String, result: MutableLiveData<ArrayList<Appointment>>) {
-        var appointmentList: ArrayList<Appointment> = ArrayList()
-
+    fun getAppointmentListForManager(salonId: String, appointmentList: MutableLiveData<ArrayList<Appointment>>,
+                                     appointmentSubIds: MutableLiveData<ArrayList<String>>) {
+        var tmpAppointmentList: ArrayList<Appointment> = ArrayList()
+        var tmpAppointmentSubIds: ArrayList<String> = ArrayList()
         if(dbInstance != null) {
             val salonDocRef = dbInstance!!
                 .collection(Constant.collection.hairSalons)
@@ -35,7 +36,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
 
                 if (snapshot != null) {
                     val documents = snapshot.documents
-                    appointmentList.clear()
+                    tmpAppointmentList.clear()
                     for (document in documents) {
                         // Mapping firestore object to kotlin model
                         val appointment: Appointment = Appointment(
@@ -57,11 +58,13 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                             document.data?.get("totalPrice") as Long,
                         )
                         // Insert to list
-                        appointmentList.add(appointment)
+                        tmpAppointmentList.add(appointment)
+                        tmpAppointmentSubIds.add(document.data?.get("subId") as String)
                     }
 
                     // Call function to return appointment list after mapping complete
-                    result.postValue(appointmentList)
+                    appointmentList.postValue(tmpAppointmentList)
+                    appointmentSubIds.postValue(tmpAppointmentSubIds)
                 }
             }
         }
