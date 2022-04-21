@@ -1,6 +1,8 @@
 package com.example.hair_booking.services.db
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
 import com.example.hair_booking.model.*
@@ -146,6 +148,49 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         }
         catch (exception: Exception) {
             Log.e("DbAppointmentServices: ", exception.toString())
+        }
+        return appointmentList
+    }
+
+    suspend fun findAllWithHairSalon(salonId: String): ArrayList<Appointment> {
+        var appointmentList: ArrayList<Appointment> = ArrayList()
+        if(dbInstance != null) {
+            val salonDocRef = dbInstance!!
+                .collection(Constant.collection.hairSalons)
+                .document(salonId)
+            try {
+                val result = dbInstance!!.collection(Constant.collection.appointments)
+                    .whereEqualTo("hairSalon.id", salonDocRef)
+                    .get()
+                    .await()
+
+
+                for (document in result.documents) {
+                    // Mapping firestore object to kotlin model
+                    val appointment: Appointment = Appointment(
+                        document.id,
+                        document.data?.get("subId") as String,
+                        document.data?.get("userId") as DocumentReference,
+                        document.data?.get("userFullName") as String,
+                        document.data?.get("userPhoneNumber") as String,
+                        document.data?.get("hairSalon") as HashMap<String, *>,
+                        document.data?.get("service") as HashMap<String, *>,
+                        document.data?.get("stylist") as HashMap<String, *>,
+                        document.data?.get("bookingDate") as String,
+                        document.data?.get("bookingTime") as String,
+                        document.data?.get("bookingShift") as DocumentReference,
+                        document.data?.get("createdAt") as String,
+                        document.data?.get("discountApplied") as HashMap<String, *>?,
+                        document.data?.get("notes") as String,
+                        document.data?.get("status") as String,
+                        document.data?.get("totalPrice") as Long,
+                    )
+                    // Insert to list
+                    appointmentList.add(appointment)
+                }
+            } catch (exception: Exception) {
+                Log.e("DbAppointmentServices: ", exception.toString())
+            }
         }
         return appointmentList
     }
@@ -316,6 +361,73 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
             i++
         }
         return "#$result"
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    suspend fun getServicesBooked(salonId: String): HashMap<String, Int> {
+        var services : HashMap<String, Int> = HashMap()
+        var appointmentList: ArrayList<Appointment> = ArrayList()
+        GlobalScope.async {
+            async {
+                appointmentList = findAllWithHairSalon(salonId)
+            }.await()
+            for (i in appointmentList.indices) {
+                val appointment = appointmentList[i]
+                services.putIfAbsent(appointment.service?.get("title").toString(), 0)
+            }
+        }.await()
+        return services
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    suspend fun getAmountOfServicesBooked(salonId: String): Map<String, Int> {
+        var amountServices: HashMap<String, Int> = HashMap()
+        var appointmentList: ArrayList<Appointment> = ArrayList()
+        var services: HashMap<String, Int> = getServicesBooked(salonId)
+        GlobalScope.async {
+            async {
+                appointmentList = findAllWithHairSalon(salonId)
+            }.await()
+            for (key in services.keys) {
+                var count: Int = 0
+                if (appointmentList != null) {
+                    for (i in appointmentList.indices) {
+                        val appointment = appointmentList.get(i)
+                        if (key == appointment.service?.get("title").toString())
+                            count += 1
+                    }
+                }
+                amountServices.put(key, count)
+            }
+        }.await()
+        val result = amountServices.toList().sortedByDescending { (_, value) -> value }.toMap()
+        return result
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    suspend fun getAmountOfShiftsBooked(salonId: String): Map<String, Int> {
+        var amountShifts: HashMap<String, Int> = HashMap()
+        var appointmentList: ArrayList<Appointment> = ArrayList()
+        var shifts: HashMap<String, String> = hashMapOf("Hl0aRPOhZaI02vqMRUdr" to "Sáng",
+            "KaZ0Gj0MzYvkZkpHAs8Q" to "Chiều", "cRAgvOR26BYKSRaHbG0g" to "Tối")
+        GlobalScope.async {
+            async {
+                appointmentList = findAllWithHairSalon(salonId)
+            }.await()
+            for (key in shifts.keys) {
+                var count: Int = 0
+                if (appointmentList != null) {
+                    for (i in appointmentList.indices) {
+                        val appointment = appointmentList.get(i)
+                        if (key == appointment.bookingShift?.id.toString())
+                            count += 1
+                    }
+                }
+                amountShifts.put(shifts[key]!!, count)
+            }
+        }.await()
+        val result = amountShifts.toList().sortedByDescending { (_, value) -> value }.toMap()
+        return result
     }
 
     override suspend fun find(query: Any?): Any? {

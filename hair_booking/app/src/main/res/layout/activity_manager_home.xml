@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="task"
+            type="String" />
+    </data>
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         xmlns:tools="http://schemas.android.com/tools"
@@ -19,8 +25,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <Spinner
+                android:id="@+id/statisticsListFilter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="180dp"
+                android:textSize="40sp" />
 
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/chartShift"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"/>
         </LinearLayout>
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigation_view_manager"
@@ -29,5 +52,7 @@
             android:layout_gravity="start"
             app:headerLayout="@layout/layout_header_navigation"
             app:menu="@menu/menu_navigation_manager"/>
+
+
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>
