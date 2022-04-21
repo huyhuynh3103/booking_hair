@@ -3,10 +3,12 @@ package com.example.hair_booking.ui.authentication
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.viewModelScope
 import com.example.hair_booking.Constant
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityLogInBinding
@@ -59,9 +61,11 @@ class LogInActivity : AppCompatActivity() {
             val email = binding.emailTV.text.toString()
             val password = binding.passwordTV.text.toString()
 
-                GlobalScope.launch {
+                viewModel.viewModelScope.launch {
                     try {
+                        binding.progressBarLogin.visibility = View.VISIBLE
                         AuthRepository.login(email, password)
+                        binding.progressBarLogin.visibility = View.INVISIBLE
                         navigateToLandingPage(email)
                     } catch (e: FirebaseAuthInvalidUserException) {
                         runOnUiThread{
