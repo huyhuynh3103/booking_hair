@@ -145,14 +145,13 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
             for( appointmentRef in appointmentRefList){
                 val document = appointmentRef.get().await()
 
-                if(statusAppointment!=null){
-                    if(document.get("status")!=statusAppointment){
-                        continue
-                    }
-                }
-
                 val data = document.data
                 if(data!=null){
+                    if(statusAppointment!=null){
+                        if(data["status"] !=statusAppointment){
+                            continue
+                        }
+                    }
                     val appointment = Appointment(document.id,
                         data["subId"] as String,
                         data["bookingDate"] as String,

@@ -12,16 +12,24 @@ import kotlinx.coroutines.launch
 class HistoryBookingViewModel: ViewModel() {
     private val _historyList = MutableLiveData<ArrayList<Appointment>>()
     val historyList:LiveData<ArrayList<Appointment>> = _historyList
+    private val _isVisibleProgressBar = MutableLiveData<Boolean>()
+    val isVisibleProgressBar:LiveData<Boolean> = _isVisibleProgressBar
     init {
         viewModelScope.launch {
-            val currentUser = AuthRepository.getCurrentUser()
-            try {
-               val listAppointment = dbServices.getAppointmentServices()?.getAppointmentListForUser(currentUser!!.email!!)
-               _historyList.value = listAppointment!!
-            }catch (e:Exception){
-                Log.e("huy-exception",e.message.toString(),e)
-                throw e
-            }
+            getHistoryList()
+        }
+    }
+    suspend fun getHistoryList(status:String? = null){
+        val currentUser = AuthRepository.getCurrentUser()
+        try {
+            _isVisibleProgressBar.value = true
+            val listAppointment = dbServices.getAppointmentServices()?.getAppointmentListForUser(currentUser!!.email!!,status)
+            _isVisibleProgressBar.value = false
+            _historyList.value = listAppointment!!
+
+        }catch (e:Exception){
+            Log.e("huy-exception",e.message.toString(),e)
+            throw e
         }
     }
 

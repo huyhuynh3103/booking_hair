@@ -8,11 +8,14 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hair_booking.Constant
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityHistoryBookingBinding
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class HistoryBooking : AppCompatActivity() {
     private lateinit var binding: ActivityHistoryBookingBinding
@@ -36,11 +39,15 @@ class HistoryBooking : AppCompatActivity() {
 
         binding.filterSpinner.adapter = ArrayAdapter(this,android.R.layout.simple_expandable_list_item_1,statusSource)
         binding.filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                Log.d("huy","onItemSelected Spinner History")
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
+                val statusAppointment = statusSource[pos]
+                viewModel.viewModelScope.launch {
+                    viewModel.getHistoryList(statusAppointment)
+                }
+
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
                 Log.d("huy","onNothingSelected Spinner History")
             }
 

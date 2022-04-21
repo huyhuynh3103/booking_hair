@@ -14,8 +14,8 @@ object Constant {
     }
 
     object AppointmentStatus {
-        val isPending: String = "Chưa check out"
-        val isCheckout: String = "Đã check out"
+        val isPending: String = "Chưa thanh toán"
+        val isCheckout: String = "Đã thanh toán"
         val isAbort: String = "Đã hủy"
     }
     const val notFoundImg = "notfoundimg"
