@@ -3,6 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
+        <import type="android.graphics.Color"/>
+        <import type="android.view.View"/>
+        <variable
+            name="isAbort"
+            type="String" />
+        <variable
+            name="isCheckOut"
+            type="String" />
+        <variable
+            name="isPending"
+            type="String" />
         <variable
             name="address"
             type="String" />
@@ -91,6 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="@{appointment.status}"
+            android:textColor="@{appointment.status.toString().equals(isAbort)?Color.parseColor(`#FF5252`):(appointment.status.toString().equals(isCheckOut)?Color.parseColor(`#B2FF59`):Color.parseColor(`#000000`))}"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/CancleButton"
             app:layout_constraintHorizontal_bias="0.0"
@@ -104,6 +116,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_button"
             android:text="@string/cancelBookingLabel"
+            android:visibility="@{appointment.status.toString().equals(isPending)?View.VISIBLE:View.GONE}"
             app:backgroundTint="#FF5252"
             app:layout_constraintBottom_toBottomOf="@+id/statusAppointmentMock"
             app:layout_constraintEnd_toEndOf="@+id/addressSalonHistory" />

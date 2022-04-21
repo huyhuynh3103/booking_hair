@@ -37,7 +37,7 @@ class HistoryBooking : AppCompatActivity() {
         statusSource.add(Constant.AppointmentStatus.isAbort)
         statusSource.add(Constant.AppointmentStatus.isCheckout)
 
-        binding.filterSpinner.adapter = ArrayAdapter(this,android.R.layout.simple_expandable_list_item_1,statusSource)
+        binding.filterSpinner.adapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,statusSource)
         binding.filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 val statusAppointment = statusSource[pos]

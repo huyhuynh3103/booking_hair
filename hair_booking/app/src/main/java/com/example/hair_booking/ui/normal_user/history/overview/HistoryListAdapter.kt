@@ -3,6 +3,7 @@ package com.example.hair_booking.ui.normal_user.history.overview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hair_booking.Constant
 import com.example.hair_booking.databinding.HistoryBookingItemBinding
 import com.example.hair_booking.model.Appointment
 
@@ -73,6 +74,9 @@ class HistoryListAdapter:RecyclerView.Adapter<HistoryListAdapter.ViewHolder>() {
         //val address = "$streetNumber $streetName, phường $ward, quận $district, tp $city"
         holder.historyBookingItemBinding.appointment = appointment
         holder.historyBookingItemBinding.address = address
+        holder.historyBookingItemBinding.isPending = Constant.AppointmentStatus.isPending
+        holder.historyBookingItemBinding.isCheckOut = Constant.AppointmentStatus.isCheckout
+        holder.historyBookingItemBinding.isAbort = Constant.AppointmentStatus.isAbort
     }
 
     override fun getItemCount(): Int {

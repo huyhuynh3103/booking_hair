@@ -28,8 +28,8 @@
 
         <ImageView
             android:id="@+id/filterIcon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="8dp"
             android:labelFor="@id/filterSpinner"
             app:layout_constraintBottom_toBottomOf="@+id/filterSpinner"
@@ -42,9 +42,9 @@
             android:id="@+id/filterSpinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
+            android:background="@drawable/gradient_spinner"
             android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
