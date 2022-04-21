@@ -372,7 +372,21 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         }
         return "#$result"
     }
-
+    suspend fun cancel(subId:String){
+        try{
+            val res = dbInstance!!.collection(Constant.collection.appointments)
+                .whereEqualTo("subId",subId)
+                .get()
+                .await()
+            if(!res.isEmpty){
+                val docReference = res.documents[0].reference
+                docReference.update("status",Constant.AppointmentStatus.isAbort).await()
+            }
+        }catch (e:Exception){
+            Log.e("DbAppointmentServices", "Error cancel appointment", e)
+            throw e
+        }
+    }
     override suspend fun find(query: Any?): Any? {
         TODO("Not yet implemented")
     }

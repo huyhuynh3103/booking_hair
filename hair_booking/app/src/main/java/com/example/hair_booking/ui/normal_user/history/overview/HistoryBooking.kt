@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.viewModelScope
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hair_booking.Constant
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityHistoryBookingBinding
+import com.example.hair_booking.services.db.dbServices
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -30,6 +32,24 @@ class HistoryBooking : AppCompatActivity() {
         binding.historyRecycleView.adapter = adapter
         binding.historyRecycleView.layoutManager = LinearLayoutManager(this)
         binding.historyRecycleView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+
+        adapter.onItemClick = { position ->
+
+        }
+
+        adapter.onCancleClick = { subId ->
+            if (subId!=null){
+                viewModel.viewModelScope.launch {
+                    dbServices.getAppointmentServices()!!.cancel(subId)
+                    viewModel.getHistoryList(Constant.AppointmentStatus.isPending)
+                }
+            }
+            else
+            {
+                Toast.makeText(this,"Không thể hủy lịch vì subId null, Thử lại sau",Toast.LENGTH_LONG).show()
+            }
+        }
+
 
         //spinner
         val statusSource = ArrayList<String>()

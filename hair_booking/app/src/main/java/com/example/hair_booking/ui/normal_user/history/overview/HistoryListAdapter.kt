@@ -4,12 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.Constant
+import com.example.hair_booking.R
 import com.example.hair_booking.databinding.HistoryBookingItemBinding
 import com.example.hair_booking.model.Appointment
 
 class HistoryListAdapter:RecyclerView.Adapter<HistoryListAdapter.ViewHolder>() {
     var onItemClick: ((position: Int) -> Unit)? = null
-
+    var onCancleClick: ((subId:String?) -> Unit)? = null
     private var historyList: ArrayList<Appointment> = ArrayList()
     fun setData(historyList: ArrayList<Appointment>) {
         this.historyList = historyList
@@ -25,7 +26,10 @@ class HistoryListAdapter:RecyclerView.Adapter<HistoryListAdapter.ViewHolder>() {
             // Set on item click listener
             historyBookingItemBinding.root.setOnClickListener {
                 // When item clicked, invoke onItemClick function with clicked item position as parameter
-                onItemClick?.invoke(adapterPosition)
+                onItemClick?.invoke(absoluteAdapterPosition)
+            }
+            historyBookingItemBinding.CancleButton.setOnClickListener {
+                onCancleClick?.invoke(historyList[absoluteAdapterPosition].appointmentSubId)
             }
             historyBookingItemBinding.executePendingBindings()
         }

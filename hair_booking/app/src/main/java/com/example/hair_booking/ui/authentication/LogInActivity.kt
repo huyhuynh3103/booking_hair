@@ -65,18 +65,20 @@ class LogInActivity : AppCompatActivity() {
                     try {
                         binding.progressBarLogin.visibility = View.VISIBLE
                         AuthRepository.login(email, password)
-                        binding.progressBarLogin.visibility = View.INVISIBLE
                         navigateToLandingPage(email)
+                        binding.progressBarLogin.visibility = View.INVISIBLE
                     } catch (e: FirebaseAuthInvalidUserException) {
+                        Log.d("Login Failed",Constant.messages.loginFailedByEmail)
                         runOnUiThread{
                             Toast.makeText(applicationContext,
-                                Constant.messages.loginFailedByEmail,
+                                Constant.messages.loginFailed,
                                 Toast.LENGTH_LONG).show()
                         }
                     } catch (e: FirebaseAuthInvalidCredentialsException) {
+                        Log.d("Login Failed",Constant.messages.loginFailedByPassword)
                         runOnUiThread {
                             Toast.makeText(applicationContext,
-                                Constant.messages.loginFailedByPassword,
+                                Constant.messages.loginFailed,
                                 Toast.LENGTH_LONG).show()
                         }
                     }
