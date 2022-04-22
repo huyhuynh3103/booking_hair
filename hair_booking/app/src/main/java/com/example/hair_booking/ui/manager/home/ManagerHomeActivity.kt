@@ -10,31 +10,47 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityManagerHomeBinding
-import com.example.hair_booking.databinding.ActivityNormalUserHomeBinding
 import com.example.hair_booking.services.auth.AuthRepository
 import com.example.hair_booking.ui.manager.appointment.AppointmentListActivity
 import com.example.hair_booking.ui.manager.profile.ManagerProfileActivity
 import com.example.hair_booking.ui.manager.stylist.ManagerStylistListActivity
-import com.example.hair_booking.ui.normal_user.booking.BookingActivity
 import com.example.hair_booking.ui.normal_user.home.SalonAdapter
 import com.example.hair_booking.ui.normal_user.home.SalonViewModel
-import com.example.hair_booking.ui.normal_user.profile.NormalUserProfileActivity
-import com.example.hair_booking.ui.normal_user.salon.NormalUserSalonDetailActivity
 import com.google.android.material.navigation.NavigationView
+import com.journeyapps.barcodescanner.ScanOptions
+import android.widget.Toast
+
+import com.journeyapps.barcodescanner.ScanContract
+
+import androidx.activity.result.ActivityResultLauncher
+import com.journeyapps.barcodescanner.ScanIntentResult
+
 
 class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var mDrawerLayout: DrawerLayout? = null
     private val salonViewModel: SalonViewModel by viewModels()
     private lateinit var binding: ActivityManagerHomeBinding
     private lateinit var salonAdapter: SalonAdapter
+    private lateinit var barcodeLauncher: ActivityResultLauncher<ScanOptions>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_manager_home)
         binding.lifecycleOwner = this@ManagerHomeActivity
+        barcodeLauncher = registerForActivityResult(ScanContract()
+        ) { result: ScanIntentResult ->
+            if (result.contents == null) {
+                Toast.makeText(this@ManagerHomeActivity, "Cancelled", Toast.LENGTH_LONG).show()
+                // Start Activity for this
+            } else {
+                Toast.makeText(this@ManagerHomeActivity,
+                    "Scanned: " + result.contents,
+                    Toast.LENGTH_LONG).show()
+
+            }
+        }
         setupUI()
         setUserProfile()
     }
@@ -51,6 +67,15 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         when(id){
             R.id.nav_home_manager->{
 
+            }
+            R.id.nav_scan_qr->{
+                val options = ScanOptions()
+                options.setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+                options.setPrompt("Quét QR Code")
+                options.setCameraId(0) // Use a specific camera of the device
+                options.setBeepEnabled(false)
+                options.setBarcodeImageEnabled(true)
+                barcodeLauncher.launch(options)
             }
             R.id.nav_schedule_manager->{
                 startActivity(Intent(this, AppointmentListActivity::class.java))
