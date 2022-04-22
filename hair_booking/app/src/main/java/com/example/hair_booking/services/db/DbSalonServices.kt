@@ -81,6 +81,27 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
 
         return result
     }
+    suspend fun setSalonRatingById(id:String,rating:Float){
+        if (dbInstance != null) {
+            val docQuery = dbInstance!!.collection(Constant.collection.hairSalons)
+                .document(id)
+                .get()
+                .await()
+            val data = docQuery.data
+            val numRates = data?.get("numRates") as Long?
+            val rate = data?.get("rate") as Long?
+            val newRating = ((rate!!*numRates!!)+rating)/(numRates+1)
+            val newNumRates = numRates + 1
+            val updatedField = hashMapOf<String,Any>(
+                "rate" to newRating,
+                "numRates" to newNumRates
+            )
+            dbInstance!!.collection(Constant.collection.hairSalons)
+                .document(id)
+                .update(updatedField)
+                .await()
+        }
+    }
 
     override suspend fun updateOne(id: Any?, updateDoc: Any?): Any? {
         TODO("Not yet implemented")

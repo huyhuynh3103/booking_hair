@@ -51,7 +51,7 @@
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/historyQRcodeLabel"
-                app:layout_constraintTop_toBottomOf="@+id/qrInstruction" />
+                app:layout_constraintTop_toBottomOf="@+id/ratingContent" />
 
             <TextView
                 android:id="@+id/historyBookingDate"
@@ -72,6 +72,7 @@
                 android:id="@+id/historySubId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:drawablePadding="10dp"
                 android:text="@{viewModel.appointmentSubId}"
@@ -158,6 +159,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/historyDetailLabel"
                 android:text="MÃ QR CHO LỊCH ĐẶT"/>
+
+            <TextView
+                android:id="@+id/historyRatingLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/ratingLabel"
+                android:textAlignment="viewStart"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="@{viewModel.appointmentStatus.toString().equals(isCheckOut)?View.VISIBLE:View.GONE}"
+                app:layout_constraintStart_toStartOf="@+id/historyQRcodeLabel"
+                app:layout_constraintTop_toBottomOf="@+id/qrInstruction" />
 
             <View
                 android:id="@+id/historyDivider"
@@ -508,6 +523,38 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:visibility="invisible"/>
+
+            <RatingBar
+                android:id="@+id/historyRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="@{viewModel.appointmentStatus.toString().equals(isCheckOut)?View.VISIBLE:View.GONE}"
+                app:layout_constraintStart_toStartOf="@+id/historyRatingLabel"
+                app:layout_constraintTop_toBottomOf="@+id/historyRatingLabel" />
+
+            <TextView
+                android:id="@+id/ratingContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="@{viewModel.appointmentStatus.toString().equals(isCheckOut)?View.VISIBLE:View.GONE}"
+                android:text="@string/send_your_rating_pls"
+                app:layout_constraintStart_toStartOf="@+id/historyRatingBar"
+                app:layout_constraintTop_toBottomOf="@+id/historyRatingBar" />
+
+            <Button
+                android:id="@+id/sendRatingBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_button"
+                android:text="@string/send"
+                android:visibility="gone"
+                app:backgroundTint="@color/theme_primary"
+                app:layout_constraintBottom_toBottomOf="@+id/historyRatingBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/historyRatingBar"
+                app:layout_constraintTop_toTopOf="@+id/historyRatingBar" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

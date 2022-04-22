@@ -2,12 +2,13 @@ package com.example.hair_booking.ui.normal_user.history.detail
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.RatingBar.OnRatingBarChangeListener
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -15,9 +16,11 @@ import com.example.hair_booking.Constant
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityHistoryBookingDetailBinding
 import com.example.hair_booking.services.db.dbServices
+import com.google.firebase.firestore.DocumentReference
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.launch
+
 
 class HistoryBookingDetailActivity : AppCompatActivity() {
     lateinit var binding: ActivityHistoryBookingDetailBinding
@@ -75,6 +78,49 @@ class HistoryBookingDetailActivity : AppCompatActivity() {
 
             }catch (e:Exception){
                 Log.e("huy_exception",e.message.toString(),e)
+            }
+        }
+        binding.historyRatingBar.onRatingBarChangeListener =
+            OnRatingBarChangeListener { ratingBar, newRating, fromUser ->
+                binding.sendRatingBtn.visibility = View.VISIBLE
+                ratingBar.rating = newRating
+                if(newRating>4){
+                    binding.ratingContent.text = Constant.rating.great
+                }
+                else if(newRating>3){
+                    binding.ratingContent.text = Constant.rating.good
+                }
+                else if(newRating>2){
+                    binding.ratingContent.text = Constant.rating.normal
+                }
+                else if(newRating>1){
+                    binding.ratingContent.text = Constant.rating.bad
+                }
+                else{
+                    binding.ratingContent.text = Constant.rating.veryBad
+                }
+            }
+        binding.sendRatingBtn.setOnClickListener { sendBtn ->
+            val rating = binding.historyRatingBar.rating
+            viewModel.viewModelScope.launch {
+                try {
+                    val appointment = dbServices.getAppointmentServices()!!.getAppointmentById(id.value!!)
+                    if(appointment!=null){
+
+                        val hairSalonRef = appointment.hairSalon?.get("id") as DocumentReference?
+                        val hairSalonId = hairSalonRef?.id
+                        if(hairSalonId!=null){
+                            binding.progressBarHistoryDetail.visibility = View.VISIBLE
+                            dbServices.getSalonServices()!!.setSalonRatingById(hairSalonId,rating)
+                            binding.progressBarHistoryDetail.visibility = View.GONE
+                            sendBtn.visibility = View.GONE
+                            binding.historyRatingBar.setIsIndicator(true)
+                        }
+                    }
+                }
+                catch (e:Exception){
+                    Log.e("sendRatingBtn",e.message,e)
+                }
             }
         }
     }

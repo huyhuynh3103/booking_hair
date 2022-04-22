@@ -106,6 +106,9 @@
     <string name="delete_btn">Xóa nhân viên</string>
     <string name="add_stylist_btn">Thêm mới nhân viên</string>
     <string name="search">Tìm kiếm ...</string>
+    <string name="ratingLabel">ĐÁNH GIÁ TRẢI NGHIỆM</string>
+    <string name="send_your_rating_pls">Gửi đánh giá của bạn đến chúng tôi</string>
+    <string name="send">Gửi</string>
 
 
 </resources>

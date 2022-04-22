@@ -98,7 +98,7 @@
 
         <TextView
             android:id="@+id/statusAppointmentMock"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="@{appointment.status}"
@@ -132,6 +132,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="#0646" />
+
+        <TextView
+            android:id="@+id/labelRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nhấp vào để đánh giá >>"
+            android:textStyle="italic"
+            android:visibility="@{appointment.status.toString().equals(isCheckOut)?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/statusAppointmentMock"
+            app:layout_constraintEnd_toEndOf="@+id/addressSalonHistory" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

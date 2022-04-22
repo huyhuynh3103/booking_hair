@@ -37,6 +37,13 @@ object Constant {
             "Must contains at least one $condition character."
         }
     }
+    object rating{
+        const val great:String = "Vô cùng hài lòng"
+        const val good: String = "Tốt"
+        const val normal: String = "Bình thường"
+        const val bad: String = "Khá tệ"
+        const val veryBad:String = "Rất tệ."
+    }
     object roles{
         const val userRole:String = "user"
         const val managerRole:String = "manager"
