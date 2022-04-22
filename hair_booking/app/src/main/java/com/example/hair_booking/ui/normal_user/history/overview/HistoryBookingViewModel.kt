@@ -1,6 +1,7 @@
 package com.example.hair_booking.ui.normal_user.history.overview
 
 import android.util.Log
+import android.widget.ArrayAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,5 +33,20 @@ class HistoryBookingViewModel: ViewModel() {
             throw e
         }
     }
+    suspend fun cancelAppointment(adapter:HistoryListAdapter,position:Int,status:String? = null){
+        val currentUser = AuthRepository.getCurrentUser()
+        try {
+            _isVisibleProgressBar.value = true
+            val listAppointment = dbServices.getAppointmentServices()?.getAppointmentListForUser(currentUser!!.email!!,status)
+            _isVisibleProgressBar.value = false
+            adapter.notifyItemRemoved(position)
+            _historyList.value = listAppointment!!
+
+        }catch (e:Exception){
+            Log.e("huy-exception",e.message.toString(),e)
+            throw e
+        }
+    }
+
 
 }

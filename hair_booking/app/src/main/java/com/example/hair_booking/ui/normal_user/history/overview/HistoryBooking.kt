@@ -8,6 +8,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -16,7 +17,6 @@ import com.example.hair_booking.Constant
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityHistoryBookingBinding
 import com.example.hair_booking.services.db.dbServices
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class HistoryBooking : AppCompatActivity() {
@@ -37,12 +37,32 @@ class HistoryBooking : AppCompatActivity() {
 
         }
 
-        adapter.onCancleClick = { subId ->
+        adapter.onCancleClick = { position,subId ->
             if (subId!=null){
-                viewModel.viewModelScope.launch {
-                    dbServices.getAppointmentServices()!!.cancel(subId)
-                    viewModel.getHistoryList(Constant.AppointmentStatus.isPending)
+
+                try{
+                    val builder = AlertDialog.Builder(this)
+                    builder.setTitle("Xác nhận hủy lịch")
+                    builder.setMessage("Bạn có chắn chắn hủy lịch có mã: $subId")
+                    builder.setPositiveButton("Xác nhận") { dialog, which ->
+                        viewModel.viewModelScope.launch {
+                            dbServices.getAppointmentServices()!!.cancel(subId)
+
+                            viewModel.cancelAppointment(adapter,position,Constant.AppointmentStatus.isPending)
+
+                        }
+                    }
+
+                    builder.setNegativeButton("Quay lại") { dialog, which ->
+                        dialog.cancel()
+                    }
+                    builder.show()
+
+                }catch (e:Exception){
+                    Log.e("huy_exception",e.message.toString(),e)
                 }
+
+
             }
             else
             {
