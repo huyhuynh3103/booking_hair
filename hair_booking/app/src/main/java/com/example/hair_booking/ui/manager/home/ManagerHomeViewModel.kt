@@ -13,17 +13,33 @@ import kotlinx.coroutines.launch
 
 class ManagerHomeViewModel: ViewModel() {
 
-    @RequiresApi(Build.VERSION_CODES.N)
+    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getAmountOfServicesBooked(): Map<String, Int>? {
         val salonId: String = "b2W2npkzmw6EgHWVovPM"
         return dbServices.getAppointmentServices()?.getAmountOfServicesBooked(salonId)
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getAmountOfShiftsBooked(): Map<String, Int>? {
         val salonId: String = "b2W2npkzmw6EgHWVovPM"
         var result : Map<String, Int>? = emptyMap()
         result = dbServices.getAppointmentServices()?.getAmountOfShiftsBooked(salonId)
+        return result
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getRevenueOfNLastDays(): ArrayList<Pair<String, Long>>? {
+        val salonId: String = "b2W2npkzmw6EgHWVovPM"
+        var result : ArrayList<Pair<String, Long>>? =
+            dbServices.getAppointmentServices()?.getRevenueOfNLastDays(6, salonId)
+        return result
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getRevenueOfNLastMonths(): ArrayList<Pair<Pair<Int, Int>, Long>>? {
+        val salonId: String = "b2W2npkzmw6EgHWVovPM"
+        var result: ArrayList<Pair<Pair<Int, Int>, Long>>? =
+            dbServices.getAppointmentServices()?.getRevenueOfNLastMonths(6, salonId)
         return result
     }
 

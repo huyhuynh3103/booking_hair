@@ -37,13 +37,8 @@
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/chart"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="520dp" />
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/chartShift"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"/>
         </LinearLayout>
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigation_view_manager"

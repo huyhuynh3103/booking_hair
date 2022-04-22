@@ -30,13 +30,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.admin.managers_list.ManagersListActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
 
         <activity
             android:name=".ui.admin.users_list.UserDetailAdminActivity"
@@ -91,7 +85,14 @@
             android:name=".ui.normal_user.profile.NormalUserProfileActivity"
             android:exported="true">
         </activity>
-        <activity android:name=".ui.manager.home.ManagerHomeActivity" />
+        <activity android:name=".ui.manager.home.ManagerHomeActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.authentication.LogInActivity" />
         <activity
             android:name=".MainActivity"

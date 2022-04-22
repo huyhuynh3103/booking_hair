@@ -1,6 +1,6 @@
 package com.example.hair_booking.model
 
-data class ShiftStatistics(
+data class Statistics(
     val name:String,
     val amount: Int,
 )

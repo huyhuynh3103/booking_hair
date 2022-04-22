@@ -22,14 +22,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityManagerHomeBinding
-import com.example.hair_booking.model.ServiceStatistics
-import com.example.hair_booking.model.ShiftStatistics
+import com.example.hair_booking.model.Statistics
 import com.example.hair_booking.services.auth.AuthRepository
 import com.example.hair_booking.ui.manager.appointment.AppointmentListActivity
 import com.example.hair_booking.ui.manager.profile.ManagerProfileActivity
 import com.example.hair_booking.ui.manager.stylist.ManagerStylistListActivity
-import com.example.hair_booking.ui.normal_user.home.SalonAdapter
-import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -39,19 +36,19 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
 class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private var serviceList = ArrayList<ServiceStatistics>()
-    private var shiftList = ArrayList<ShiftStatistics>()
+    private var serviceList = ArrayList<Statistics>()
+    private var shiftList = ArrayList<Statistics>()
+    private var pairDayList = ArrayList<Pair<String, Long>>()
+    private var pairMonthList = ArrayList<Pair<Pair<Int, Int>, Long>>()
     private var typeChart = 0
 
     private var mDrawerLayout: DrawerLayout? = null
     private val managerHomeViewModel: ManagerHomeViewModel by viewModels()
     private lateinit var binding: ActivityManagerHomeBinding
-    private lateinit var salonAdapter: SalonAdapter
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +57,6 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         setupUI()
         setUserProfile()
         //barChart = findViewById<View>(R.id.chart) as BarChart
-
 
         initBarChart()
         setupFilterSpinner()
@@ -154,17 +150,19 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         //remove description label
         binding.chart.description.isEnabled = false
 
+        //binding.chart.extraBottomOffset = 2f
+
 
         //add animation
         binding.chart.animateY(2000)
 
         // to draw label on xAxis
-        xAxis.position = XAxis.XAxisPosition.BOTTOM_INSIDE
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.valueFormatter = MyAxisFormatter()
         xAxis.setDrawLabels(true)
         xAxis.granularity = 1f
-        xAxis.textSize = 20f
-        xAxis.labelRotationAngle = +90f
+        //xAxis.textSize = 15f
+        xAxis.labelRotationAngle = +0f
 
     }
 
@@ -183,6 +181,12 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             else if (typeChart == 1) {
                 label = shiftList[index].name
             }
+            else if (typeChart == 2) {
+                label = pairDayList[index].first
+            }
+            else if (typeChart == 3) {
+                label = pairMonthList[index].first.first.toString() + "/" + pairMonthList[index].first.second.toString()
+            }
             return label
         }
     }
@@ -190,34 +194,37 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     // simulate api call
     // we are initialising it directly
-    private fun getServiceList(map: Map<String, Int>?): ArrayList<ServiceStatistics> {
+    private fun getServiceList(map: Map<String, Int>?): ArrayList<Statistics> {
         if (map != null) {
             for (key in map.keys) {
-                serviceList.add(ServiceStatistics(key, map[key]!!))
+                serviceList.add(Statistics(key, map[key]!!))
             }
         }
 
         return serviceList
     }
 
-    private fun getShiftList(map: Map<String, Int>?): ArrayList<ShiftStatistics> {
+    private fun getShiftList(map: Map<String, Int>?): ArrayList<Statistics> {
         if (map != null) {
             for (key in map.keys) {
-                shiftList.add(ShiftStatistics(key, map[key]!!))
+                shiftList.add(Statistics(key, map[key]!!))
             }
         }
 
         return shiftList
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun drawBarChart(type: Int)
     {
         var map : Map<String, Int>? = emptyMap()
         val entries: ArrayList<BarEntry> = ArrayList()
+
         if (type == 0) {
             GlobalScope.launch {
                 map = managerHomeViewModel.getAmountOfServicesBooked()
+
                 serviceList = getServiceList(map)
                 //now draw bar chart with dynamic data
 
@@ -234,7 +241,8 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
                 val data = BarData(barDataSet)
 
-
+                binding.chart.xAxis.textSize = 15f
+                binding.chart.extraBottomOffset = 3f
 
                 binding.chart.data = data
                 binding.chart.notifyDataSetChanged()
@@ -244,13 +252,7 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         else if (type == 1)
         {
             GlobalScope.launch {
-                async {
-                    map = managerHomeViewModel.getAmountOfShiftsBooked()
-                }.await()
-                for (key in map?.keys!!) {
-                    Log.d("shiftmap", key)
-                    Log.d("shiftmap", map!![key].toString())
-                }
+                map = managerHomeViewModel.getAmountOfShiftsBooked()
                 shiftList = getShiftList(map)
                 //now draw bar chart with dynamic data
 
@@ -267,6 +269,64 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
                 val data = BarData(barDataSet)
 
+                binding.chart.xAxis.textSize = 20f
+                binding.chart.extraBottomOffset = 4f
+
+                binding.chart.data = data
+                binding.chart.notifyDataSetChanged();
+
+                binding.chart.invalidate()
+            }
+        }
+
+        else if (type == 2)
+        {
+            GlobalScope.launch {
+                pairDayList = managerHomeViewModel.getRevenueOfNLastDays()!!
+                //statisticsList = getShiftList(map)
+                //now draw bar chart with dynamic data
+
+                //you can replace this data object with  your custom object
+                for (i in pairDayList.indices) {
+                    val (day, amount) = pairDayList[i]
+                    entries.add(BarEntry(i.toFloat(), amount.toFloat()))
+                }
+
+                val barDataSet = BarDataSet(entries, "Statistics")
+                barDataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
+                barDataSet.valueTextSize = 16f
+
+                val data = BarData(barDataSet)
+
+                binding.chart.xAxis.textSize = 12f
+
+                binding.chart.data = data
+                binding.chart.notifyDataSetChanged();
+
+                binding.chart.invalidate()
+            }
+        }
+        else if (type == 3)
+        {
+            GlobalScope.launch {
+                pairMonthList = managerHomeViewModel.getRevenueOfNLastMonths()!!
+                //statisticsList = getShiftList(map)
+                //now draw bar chart with dynamic data
+
+                //you can replace this data object with  your custom object
+                for (i in pairMonthList.indices) {
+                    val (time, amount) = pairMonthList[i]
+                    entries.add(BarEntry(i.toFloat(), amount.toFloat()))
+                }
+
+                val barDataSet = BarDataSet(entries, "Statistics")
+                barDataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
+                barDataSet.valueTextSize = 16f
+
+                val data = BarData(barDataSet)
+
+                binding.chart.xAxis.textSize = 14f
+
                 binding.chart.data = data
                 binding.chart.notifyDataSetChanged();
 
@@ -274,6 +334,7 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             }
         }
     }
+
     private fun resetBarChart(type : Int) {
         val entries: ArrayList<BarEntry> = ArrayList()
         if (type == 0) {
@@ -321,6 +382,54 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             binding.chart.notifyDataSetChanged()
             binding.chart.invalidate()
         }
+
+        else if (type == 2)
+        {
+            //now draw bar chart with dynamic data
+            pairDayList.clear()
+            //you can replace this data object with  your custom object
+            for (i in pairDayList.indices) {
+                val (day ,amount) = pairDayList[i]
+                entries.add(BarEntry(i.toFloat(), amount.toFloat()))
+            }
+
+
+            val barDataSet = BarDataSet(entries, "Statistics")
+            barDataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
+            barDataSet.valueTextSize = 10f
+
+            val data = BarData(barDataSet)
+
+
+
+            binding.chart.data = data
+            binding.chart.notifyDataSetChanged()
+            binding.chart.invalidate()
+        }
+
+        else if (type == 3)
+        {
+            //now draw bar chart with dynamic data
+            pairMonthList.clear()
+            //you can replace this data object with  your custom object
+            for (i in pairMonthList.indices) {
+                val (time ,amount) = pairMonthList[i]
+                entries.add(BarEntry(i.toFloat(), amount.toFloat()))
+            }
+
+
+            val barDataSet = BarDataSet(entries, "Statistics")
+            barDataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
+            barDataSet.valueTextSize = 20f
+
+            val data = BarData(barDataSet)
+
+
+
+            binding.chart.data = data
+            binding.chart.notifyDataSetChanged()
+            binding.chart.invalidate()
+        }
     }
 
     private fun setupFilterSpinner() {
@@ -331,7 +440,9 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         // Create an adapter to display list of filter options
         var items: ArrayList<String> = arrayListOf(
             "Dịch vụ đặt nhiều nhất",
-            "Ca đặt nhiều nhất")
+            "Ca đặt nhiều nhất",
+            "Doanh thu ngày",
+            "Doanh thu tháng")
         val filterSpinnerAdapter = object : ArrayAdapter<String>(
             this,
             android.R.layout.simple_spinner_item,
@@ -353,7 +464,7 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         filterSpinner.adapter = filterSpinnerAdapter
 
         filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            @RequiresApi(Build.VERSION_CODES.N)
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 if(position  > 0) {
                     typeChart = position
