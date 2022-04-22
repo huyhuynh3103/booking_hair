@@ -12,6 +12,7 @@ import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -62,6 +63,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                         tmpAppointmentSubIds.add(document.data?.get("subId") as String)
                     }
 
+                    val sdf: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+                    tmpAppointmentList.sortByDescending { sdf.parse(it.bookingDate) }
                     // Call function to return appointment list after mapping complete
                     appointmentList.postValue(tmpAppointmentList)
                     appointmentSubIds.postValue(tmpAppointmentSubIds)
