@@ -10,7 +10,7 @@
     <string name="choose_salon_edit_text_hint">Xem tất cả salon</string>
     <string name="choose_service_label">Chọn dịch vụ</string>
     <string name="choose_service_edit_text_hint">Xem tất cả dịch vụ hiện có</string>
-    <string name="choose_stylist_label">Chọn stylist</string>
+    <string name="choose_stylist_label">Chọn stylist (không bắt buộc)</string>
     <string name="choose_stylist_edit_text_hint">Xem các stylist hiện có</string>
 
     <string name="choose_date_label">Chọn ngày cắt tóc</string>
@@ -53,7 +53,7 @@
 
     <string name="customer_name_label">Khách hàng</string>
     <string name="service_title_label">Dịch vụ</string>
-    <string name="stylist_name_label">Stylist</string>
+    <string name="stylist_name_label">Thợ làm tóc</string>
     <string name="colon">:</string>
     <!--    Navigation Drawer -->
     <string name="nav_home">Trang chủ</string>
@@ -96,6 +96,16 @@
     <string name="appointmentDetailLabel">CHI TIẾT LỊCH ĐẶT</string>
     <string name="price_services">GIÁ DỊCH VỤ</string>
     <string name="qr_instruction">Quét mã khi để thanh toán sau khi hớt tóc xong.</string>
+    <string name="stylist">Thợ làm tóc</string>
+    <string name="nav_appointment_manager">Lịch được đặt</string>
+    <string name="stylist_name">Tên nhân viên</string>
+    <string name="stylist_id">Mã nhân viên</string>
+    <string name="description">Mô tả</string>
+    <string name="current_working_place">Nơi làm việc hiện tại</string>
+    <string name="save_btn">Lưu thông tin</string>
+    <string name="delete_btn">Xóa nhân viên</string>
+    <string name="add_stylist_btn">Thêm mới nhân viên</string>
+    <string name="search">Tìm kiếm ...</string>
 
 
 </resources>

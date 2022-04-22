@@ -66,6 +66,10 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
             }
             R.id.nav_history->{
                 startActivity(Intent(this,HistoryBooking::class.java))
+
+            }
+            R.id.nav_membership->{
+
             }
             R.id.nav_my_profile->{
                 startActivity(Intent(this,NormalUserProfileActivity::class.java))

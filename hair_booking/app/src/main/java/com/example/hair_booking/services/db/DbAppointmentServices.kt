@@ -66,41 +66,21 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         }
     }
 
-    suspend fun getAppointmentTimeRanges(bookingDate: String, bookingShiftId: String): ArrayList<Pair<Float, Int>> {
-
+    fun getAppointmentTimeRanges(appointmentList: ArrayList<Appointment>): ArrayList<Pair<Float, Int>> {
         var appointmentTimeRanges: ArrayList<Pair<Float, Int>> = ArrayList()
-        var addValueToAppointmentTimeRanges: Deferred<Unit>? = null
 
-        if (dbInstance != null) {
-            val shiftDocRef = dbInstance!!
-            .collection("shifts")
-                .document(bookingShiftId)
-            val result = dbInstance!!.collection("appointments")
-                .whereEqualTo("bookingShift", shiftDocRef)
-                .whereEqualTo("bookingDate", bookingDate)
-                .get()
-                .await()
+            for(appointment in appointmentList) {
+                var serviceDuration: Int = (appointment.service?.get("duration") as Long).toInt()
 
-            addValueToAppointmentTimeRanges = GlobalScope.async {
-                for(document in result.documents) {
-                    val serviceId: String? = ((document.data?.get("service") as HashMap<Any, Any>)["id"] as DocumentReference).id
+                val timeRange: Pair<Float, Int> = Pair((appointment.bookingTime)!!.toFloat(), serviceDuration)
 
-                    var serviceDuration: Int = 0
-                    async {
-                        serviceDuration = dbServices.getServiceServices()!!.getServiceDuration(serviceId!!)
-                    }.await()
-                    val timeRange: Pair<Float, Int> = Pair((document.data?.get("bookingTime") as String).toFloat(), serviceDuration)
-
-                    appointmentTimeRanges.add(timeRange)
-                }
+                appointmentTimeRanges.add(timeRange)
             }
 
-        }
-        addValueToAppointmentTimeRanges?.await()
         return appointmentTimeRanges
     }
 
-    suspend fun getAppliedDiscountIds(userId: String): ArrayList<String?> {
+    suspend fun getAppliedDiscountIds(userId: String, serviceId: String): ArrayList<String?> {
 
         var discountIds: ArrayList<String?> = ArrayList()
 
@@ -110,8 +90,13 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 .collection(Constant.collection.normalUsers)
                 .document(userId)
 
+            val serviceDocRef: DocumentReference = dbInstance!!
+                .collection(Constant.collection.services)
+                .document(serviceId)
+
             val result = dbInstance!!.collection(Constant.collection.appointments)
                 .whereEqualTo("userId", userDocRef)
+                .whereEqualTo("service.id", serviceDocRef)
                 .get()
                 .await()
 
@@ -225,6 +210,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         val dbNormalUserServices = dbServices.getNormalUserServices()!!
         val dbSalonServices = dbServices.getSalonServices()!!
         val dbStylistServices = dbServices.getStylistServices()!!
+        val dbServiceServices = dbServices.getServiceServices()!!
 
         // Get user info
         val user: NormalUser? = dbNormalUserServices.getUserById(userId)
@@ -258,7 +244,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         val subId: String = generateAppointmentSubId()
         val status: String = "Chấp nhận"
         val createdAt: String = DateServices.currentDateInString() + " " + TimeServices.getCurrentTimeInFloatFormat()
-
+        val serviceDuration: Int = dbServiceServices.getServiceDuration(serviceId)
 
         var discountDocRef: DocumentReference? = null
         var docTobeSaved: HashMap<String, Any?>? = null
@@ -278,7 +264,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 ),
                 "service" to hashMapOf(
                     "id" to serviceDocRef,
-                    "title" to serviceTitle
+                    "title" to serviceTitle,
+                    "duration" to serviceDuration
                 ),
                 "stylist" to hashMapOf(
                     "id" to stylistDocRef,
@@ -312,7 +299,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 ),
                 "service" to hashMapOf(
                     "id" to serviceDocRef,
-                    "title" to serviceTitle
+                    "title" to serviceTitle,
+                    "duration" to serviceDuration
                 ),
                 "stylist" to hashMapOf(
                     "id" to stylistDocRef,

@@ -22,6 +22,7 @@ import com.example.hair_booking.ui.normal_user.booking.choose_salon.SalonListAda
 import com.example.hair_booking.ui.normal_user.booking.choose_stylist.ChooseStylistViewModel
 import com.example.hair_booking.ui.normal_user.booking.choose_stylist.ChooseStylistViewModelFactory
 import com.example.hair_booking.ui.normal_user.booking.choose_stylist.StylistListAdapter
+import com.example.hair_booking.ui.normal_user.home.NormalUserHomeActivity
 
 class BookingConfirmActivity: AppCompatActivity() {
 
@@ -58,7 +59,9 @@ class BookingConfirmActivity: AppCompatActivity() {
 
         // Enable back button
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
+        binding.backToMainScreenBtn.setOnClickListener {
+            finish()
+        }
     }
 
     private fun displayDiscount() {

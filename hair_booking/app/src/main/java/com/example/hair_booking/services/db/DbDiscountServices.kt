@@ -13,6 +13,40 @@ import kotlinx.coroutines.tasks.await
 
 class DbDiscountServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract<Any?>() {
 
+    suspend fun getDiscountsByServiceId(serviceId: String): ArrayList<Discount> {
+
+        var discountList: ArrayList<Discount> = ArrayList()
+
+        if (dbInstance != null) {
+            val serviceDocRef: DocumentReference = dbInstance!!
+                .collection(Constant.collection.services)
+                .document(serviceId)
+
+            val result = dbInstance!!.collection(Constant.collection.discounts)
+                .whereEqualTo("serviceApplied", serviceDocRef)
+                .get()
+                .await()
+
+            for(document in result.documents) {
+                val discount: Discount = Discount(
+                    document.id,
+                    document.data?.get("title") as String,
+                    document.data?.get("requiredPoint") as Long,
+                    document.data?.get("description") as String,
+                    document.data?.get("dateApplied") as String,
+                    document.data?.get("dateExpired") as String,
+                    document.data?.get("percent") as Double,
+                    document.data?.get("serviceApplied") as DocumentReference
+                )
+
+                discountList.add(discount)
+            }
+
+        }
+
+        return discountList
+    }
+
     override suspend fun findAll(): ArrayList<Discount> {
 
         var discountList: ArrayList<Discount> = ArrayList()
@@ -31,7 +65,8 @@ class DbDiscountServices(private var dbInstance: FirebaseFirestore?): DatabaseAb
                     document.data?.get("description") as String,
                     document.data?.get("dateApplied") as String,
                     document.data?.get("dateExpired") as String,
-                    document.data?.get("percent") as Double
+                    document.data?.get("percent") as Double,
+                    document.data?.get("serviceApplied") as DocumentReference
                 )
 
                 discountList.add(discount)

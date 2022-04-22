@@ -17,13 +17,13 @@ import kotlin.collections.ArrayList
 class DiscountServices {
     companion object {
         @RequiresApi(Build.VERSION_CODES.N)
-        suspend fun getUnusedDiscounts(userId: String, chosenDate: String): ArrayList<Discount> {
+        suspend fun getUnusedDiscounts(userId: String, chosenDate: String, serviceId: String): ArrayList<Discount> {
             val discountServices = dbServices.getDiscountServices()!!
             val appointmentServices = dbServices.getAppointmentServices()!!
-            var unusedDiscount: ArrayList<Discount> = ArrayList(discountServices.findAll())
+            var unusedDiscount: ArrayList<Discount> = ArrayList(discountServices.getDiscountsByServiceId(serviceId))
             var usedDiscountIds: ArrayList<String?> = ArrayList()
             GlobalScope.async {
-                usedDiscountIds = appointmentServices.getAppliedDiscountIds(userId)
+                usedDiscountIds = appointmentServices.getAppliedDiscountIds(userId, serviceId)
             }.await()
 
 

@@ -26,6 +26,7 @@ class ChooseDiscountActivity : AppCompatActivity() {
     // "by viewModels()" is the auto initialization of viewmodel made by the library
     private val viewModel: ChooseDiscountViewModel by viewModels()
     private lateinit var userId: String
+    private lateinit var serviceId: String
     private var userCurrentPoint: Long = 0
     private lateinit var chosenDate: String
     private lateinit var discountListAdapter: DiscountListAdapter
@@ -34,12 +35,13 @@ class ChooseDiscountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // Get current user id and chosen date
         userId = intent.getStringExtra("userId").toString()
+        serviceId = intent.getStringExtra("serviceId").toString()
         userCurrentPoint = intent.getLongExtra("userCurrentPoint", 0)
-        Log.d("xk", "choosediscountactivity: $userCurrentPoint")
         chosenDate = intent.getStringExtra("chosenDate").toString()
         viewModel.setUserId(userId)
+        viewModel.setServiceId(serviceId)
         viewModel.setChosenDate(chosenDate)
-        viewModel.setupDiscountList(userId, chosenDate)
+        viewModel.setupDiscountList()
 
         // Setup binding with xml file
         binding = DataBindingUtil.setContentView(this, R.layout.activity_choose_discount)

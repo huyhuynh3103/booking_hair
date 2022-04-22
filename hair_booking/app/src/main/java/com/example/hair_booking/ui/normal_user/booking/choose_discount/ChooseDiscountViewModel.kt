@@ -19,14 +19,14 @@ class ChooseDiscountViewModel: ViewModel() {
 
     private var _userId: String = ""
     private var _chosenDate: String = ""
-
+    private var _serviceId: String = ""
 
     @RequiresApi(Build.VERSION_CODES.N)
     private suspend fun getDiscountList() {
-        _discountList.value = DiscountServices.getUnusedDiscounts(_userId, _chosenDate)
+        _discountList.value = DiscountServices.getUnusedDiscounts(_userId, _chosenDate, _serviceId)
     }
 
-    fun setupDiscountList(userId: String, chosenDate: String) {
+    fun setupDiscountList() {
         viewModelScope.launch {
             getDiscountList()
         }
@@ -34,6 +34,10 @@ class ChooseDiscountViewModel: ViewModel() {
 
     fun setUserId(userId: String) {
         this._userId = userId
+    }
+
+    fun setServiceId(serviceId: String) {
+        this._serviceId = serviceId
     }
 
     fun setChosenDate(chosenDate: String) {
