@@ -40,5 +40,15 @@ class DateServices {
             }
             return listOfNLastDays
         }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun getTheNLastMonthsFromNow(numOfMonths: Int): ArrayList<Pair<Int, Int>> {
+            var listOfNLastMonths: ArrayList<Pair<Int, Int>> = ArrayList()
+            for(i in 0 until numOfMonths) {
+                val tmp: LocalDate = LocalDate.now(ZoneId.systemDefault()).minusMonths(i.toLong())
+                listOfNLastMonths.add(Pair(tmp.monthValue, tmp.year))
+            }
+            return listOfNLastMonths
+        }
     }
 }

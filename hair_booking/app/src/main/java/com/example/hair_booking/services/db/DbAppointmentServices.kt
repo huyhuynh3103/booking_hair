@@ -13,11 +13,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
-import java.lang.Exception
 import java.text.SimpleDateFormat
+import java.time.ZoneId
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract<Any?>() {
 
@@ -533,14 +532,16 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 .get()
                 .await()
 
+            if(result.documents.size == 0)
+                return revenueOfNLastDays // return empty array
 
-            val appointmentList = result.documents
+            var appointmentList = result.documents
 
             // Sort appointments with date descending
             val sdf: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
             appointmentList.sortByDescending { sdf.parse(it.data?.get("bookingDate") as String) }
 
-            appointmentList.reverse()
+            appointmentList = appointmentList.reversed()
 
             // Init with 0th element
             var dateRevenuePair: Pair<String, Long> = Pair(
@@ -550,20 +551,22 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
             revenueOfNLastDays.add(dateRevenuePair)
 
             // Continue with remain elements in appointmentList
+
             for(i in 1 until appointmentList.size) {
                 val bookingDate = appointmentList[i].data?.get("bookingDate") as String
                 val totalPrice = appointmentList[i].data?.get("totalPrice") as Long
 
-                if(revenueOfNLastDays[i - 1].first == bookingDate) {
+
+                if( revenueOfNLastDays[revenueOfNLastDays.size - 1].first == bookingDate) {
                     // There is a previous duplicate
                     // => total price of previous += current total price
 
                     // Because elements in pair is val => need to assign a new pair to change the total price
                     dateRevenuePair = Pair(
                         bookingDate,
-                        totalPrice + revenueOfNLastDays[i - 1].second
+                        totalPrice + revenueOfNLastDays[revenueOfNLastDays.size - 1].second
                     )
-                    revenueOfNLastDays[i - 1] = dateRevenuePair // re assign
+                    revenueOfNLastDays[revenueOfNLastDays.size - 1] = dateRevenuePair // re assign
                 }
                 else {
                     dateRevenuePair = Pair(
@@ -579,62 +582,91 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
     }
 
 
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    suspend fun getRevenueOfNLastMonths(numOfMonths: Int): ArrayList<Pair<String, Long>> {
-//        val listOfNLastMonths: ArrayList<String> = DateServices.getTheNLastMonthsFromNow(numOfMonths)
-//        var revenueOfNLastMonths:  ArrayList<Pair<String, Long>> = ArrayList()
-//
-//        // Get list of appointments that have bookingDate is one of the day in listOfNLastDays
-//        if(dbInstance != null) {
-//            val result = dbInstance!!.collection(Constant.collection.appointments)
-//                .whereIn("bookingDate", listOfNLastMonths)
-//                .get()
-//                .await()
-//
-//
-//            val appointmentList = result.documents
-//
-//            // Sort appointments with date descending
-//            val sdf: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
-//            appointmentList.sortByDescending { sdf.parse(it.data?.get("bookingDate") as String) }
-//
-//            appointmentList.reverse()
-//
-//            // Init with 0th element
-//            var dateRevenuePair: Pair<String, Long> = Pair(
-//                appointmentList[0].data?.get("bookingDate") as String,
-//                appointmentList[0].data?.get("totalPrice") as Long
-//            )
-//            revenueOfNLastMonths.add(dateRevenuePair)
-//
-//            // Continue with remain elements in appointmentList
-//            for(i in 1 until appointmentList.size) {
-//                val bookingDate = appointmentList[i].data?.get("bookingDate") as String
-//                val totalPrice = appointmentList[i].data?.get("totalPrice") as Long
-//
-//                if(revenueOfNLastMonths[i - 1].first == bookingDate) {
-//                    // There is a previous duplicate
-//                    // => total price of previous += current total price
-//
-//                    // Because elements in pair is val => need to assign a new pair to change the total price
-//                    dateRevenuePair = Pair(
-//                        bookingDate,
-//                        totalPrice + revenueOfNLastMonths[i - 1].second
-//                    )
-//                    revenueOfNLastMonths[i - 1] = dateRevenuePair // re assign
-//                }
-//                else {
-//                    dateRevenuePair = Pair(
-//                        bookingDate,
-//                        totalPrice
-//                    )
-//                    revenueOfNLastMonths.add(dateRevenuePair)
-//                }
-//            }
-//        }
-//
-//        return revenueOfNLastMonths
-//    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getRevenueOfNLastMonths(numOfMonths: Int): ArrayList<Pair<Pair<Int, Int>, Long>> {
+        // Pair of month value and year value
+        val listOfNLastMonths: ArrayList<Pair<Int, Int>> = DateServices.getTheNLastMonthsFromNow(numOfMonths)
+        var revenueOfNLastMonths:  ArrayList<Pair<Pair<Int, Int>, Long>> = ArrayList()
+
+        // Get list of appointments that have bookingDate is one of the day in listOfNLastDays
+        if(dbInstance != null) {
+            val result = dbInstance!!.collection(Constant.collection.appointments)
+                .get()
+                .await()
+
+            if(result.documents.size == 0)
+                return revenueOfNLastMonths // return empty array
+
+            var appointmentList = result.documents
+
+            // Sort appointments with date descending
+            val sdf: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+
+            appointmentList.sortByDescending { sdf.parse(it.data?.get("bookingDate") as String) }
+            appointmentList = appointmentList.reversed()
+
+            appointmentList.filter {
+                // only get appointment which month value and year value in bookingDate is in listOfNLastMonths
+                listOfNLastMonths.contains(Pair(
+                    sdf.parse(it.data?.get("bookingDate") as String).month,
+                    sdf.parse(it.data?.get("bookingDate") as String).year
+                ))
+            }
+
+
+            // Init with 0th element
+            val cal = Calendar.getInstance(TimeZone.getTimeZone(ZoneId.systemDefault()))
+            cal.time = sdf.parse(appointmentList[0].data?.get("bookingDate") as String)
+            var bookingMonth = cal[Calendar.MONTH] + 1
+            var bookingYear = cal[Calendar.YEAR]
+
+            var monthRevenuePair: Pair<Pair<Int, Int>, Long> = Pair(
+                Pair(
+                    bookingMonth,
+                    bookingYear,
+                ),
+                appointmentList[0].data?.get("totalPrice") as Long
+            )
+            revenueOfNLastMonths.add(monthRevenuePair)
+
+            // Continue with remain elements in appointmentList
+            for(i in 1 until appointmentList.size) {
+                cal.time = sdf.parse(appointmentList[i].data?.get("bookingDate") as String)
+                bookingMonth = cal[Calendar.MONTH] + 1
+                bookingYear = cal[Calendar.YEAR]
+
+                val totalPrice = appointmentList[i].data?.get("totalPrice") as Long
+
+                if(revenueOfNLastMonths[revenueOfNLastMonths.size - 1].first.first == bookingMonth
+                    && revenueOfNLastMonths[revenueOfNLastMonths.size - 1].first.second == bookingYear) {
+                    // There is a previous duplicate
+                    // => total price of previous += current total price
+
+                    // Because elements in pair is val => need to assign a new pair to change the total price
+                    monthRevenuePair = Pair(
+                        Pair(
+                            bookingMonth,
+                            bookingYear
+                        ),
+                        totalPrice + revenueOfNLastMonths[revenueOfNLastMonths.size - 1].second
+                    )
+                    revenueOfNLastMonths[revenueOfNLastMonths.size - 1] = monthRevenuePair // re assign
+                }
+                else {
+                    monthRevenuePair = Pair(
+                        Pair(
+                            bookingMonth,
+                            bookingYear
+                        ),
+                        totalPrice
+                    )
+                    revenueOfNLastMonths.add(monthRevenuePair)
+                }
+            }
+        }
+
+        return revenueOfNLastMonths
+    }
 
     override suspend fun find(query: Any?): Any? {
         TODO("Not yet implemented")
