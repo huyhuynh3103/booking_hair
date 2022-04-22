@@ -349,8 +349,8 @@ class ManagerEditAppointmentActivity : AppCompatActivity(), DatePickerDialog.OnD
     private fun displayEmptyFieldsWarning() {
         // Show warning dialog
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Warning")
-        builder.setMessage("Please fill out all fields!!!")
+        builder.setTitle("Cảnh báo")
+        builder.setMessage("Làm ơn điền đầy đủ các trường !!!")
 
         builder.setPositiveButton("Ok") { dialog, which ->
             // Do nothing

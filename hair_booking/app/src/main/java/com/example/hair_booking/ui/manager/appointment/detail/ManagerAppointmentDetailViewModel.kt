@@ -13,6 +13,12 @@ class ManagerAppointmentDetailViewModel : ViewModel() {
     private val _appointmentId: MutableLiveData<String> = MutableLiveData<String>()
     val appointmentId: LiveData<String> = _appointmentId
 
+    private val _userFullName: MutableLiveData<String> = MutableLiveData<String>()
+    val userFullName: LiveData<String> = _userFullName
+
+    private val _userPhoneNumber: MutableLiveData<String> = MutableLiveData<String>()
+    val userPhoneNumber: LiveData<String> = _userPhoneNumber
+
     private val _hairSalonName: MutableLiveData<String> = MutableLiveData<String>()
     val hairSalonName: LiveData<String> = _hairSalonName
 
@@ -78,6 +84,8 @@ class ManagerAppointmentDetailViewModel : ViewModel() {
         _appointmentId.postValue(appointmentId)
         val appointment: Appointment? = dbServices.getAppointmentServices()!!.getAppointmentById(appointmentId)
         _status.postValue(appointment?.status!!.uppercase())
+        _userFullName.postValue(appointment?.userFullName)
+        _userPhoneNumber.postValue(appointment?.userPhoneNumber)
         _hairSalonName.postValue(appointment?.hairSalon?.get("name") as String?)
         _hairSalonAddress.postValue(SalonServices.addressToString(appointment?.hairSalon?.get("address") as HashMap<String, *>))
         _hairSalonPhoneNumber.postValue(appointment.hairSalon?.get("phoneNumber") as String?)

@@ -213,6 +213,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         // Get stylist info
         val chosenStylist: Stylist? = dbStylistServices.getStylistById(stylistId)
 
+        val chosenService: Service? = dbServiceServices.getServiceById(serviceId)
         // Create user doc reference
         val userDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.normalUsers)
             .document(userId)
@@ -236,7 +237,6 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         val subId: String = generateAppointmentSubId()
         val status: String = Constant.AppointmentStatus.isPending
         val createdAt: String = DateServices.currentDateInString() + " " + TimeServices.getCurrentTimeInFloatFormat()
-        val serviceDuration: Int = dbServiceServices.getServiceDuration(serviceId)
 
         var discountDocRef: DocumentReference? = null
         var docTobeSaved: HashMap<String, Any?>? = null
@@ -258,7 +258,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 "service" to hashMapOf(
                     "id" to serviceDocRef,
                     "title" to serviceTitle,
-                    "duration" to serviceDuration
+                    "duration" to (chosenService?.duration ?: null),
+                    "price" to (chosenService?.price ?: null)
                 ),
                 "stylist" to hashMapOf(
                     "id" to stylistDocRef,
@@ -294,7 +295,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 "service" to hashMapOf(
                     "id" to serviceDocRef,
                     "title" to serviceTitle,
-                    "duration" to serviceDuration
+                    "duration" to (chosenService?.duration ?: null),
+                    "price" to (chosenService?.price ?: null)
                 ),
                 "stylist" to hashMapOf(
                     "id" to stylistDocRef,
@@ -384,6 +386,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         // Get stylist info
         val chosenStylist: Stylist? = dbStylistServices.getStylistById(stylistId)
 
+        val chosenService: Service? = dbServiceServices.getServiceById(serviceId)
+
         // Create user doc reference
         val userDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.normalUsers)
             .document(userId)
@@ -404,7 +408,6 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         val serviceDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.services)
             .document(serviceId)
 
-        val serviceDuration: Int = dbServiceServices.getServiceDuration(serviceId)
 
         var discountDocRef: DocumentReference? = null
         var docTobeSaved: HashMap<String, Any?>? = null
@@ -426,7 +429,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 "service" to hashMapOf(
                     "id" to serviceDocRef,
                     "title" to serviceTitle,
-                    "duration" to serviceDuration
+                    "duration" to (chosenService?.duration ?: null),
+                    "price" to (chosenService?.price ?: null)
                 ),
                 "stylist" to hashMapOf(
                     "id" to stylistDocRef,
@@ -459,7 +463,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 "service" to hashMapOf(
                     "id" to serviceDocRef,
                     "title" to serviceTitle,
-                    "duration" to serviceDuration
+                    "duration" to (chosenService?.duration ?: null),
+                    "price" to (chosenService?.price ?: null)
                 ),
                 "stylist" to hashMapOf(
                     "id" to stylistDocRef,

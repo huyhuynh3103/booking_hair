@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.hair_booking.ui.admin.service.edit_service.AdminEditServiceViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="100dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".ui.admin.service.edit_service.AdminEditServiceActivity">
+
+                <TextView
+                    android:id="@+id/adminEditServiceScreenLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="CHỈNH SỬA THÔNG TIN DỊCH VỤ"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/adminEditServiceTitleLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="40dp"
+                    android:text="Tên dịch vụ"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/adminEditServiceScreenLabel" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/adminEditServiceTitleTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/adminEditServiceTitleLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/adminEditServiceTitleLabel">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/adminEditServiceTitleEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_content_paste_24"
+                        android:drawablePadding="10dp"
+                        android:hint="Nhập tên dịch vụ..."
+                        android:text="@{viewModel.serviceTitle}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/adminEditServiceDescriptionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="Mô tả"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/adminEditServiceTitleTextInputLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/adminEditServiceTitleTextInputLayout" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/adminEditServiceDescriptionTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="@+id/adminEditServiceTitleTextInputLayout"
+                    app:layout_constraintStart_toStartOf="@+id/adminEditServiceDescriptionLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/adminEditServiceDescriptionLabel">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/adminEditServiceDescriptionEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_sticky_note_2_24"
+                        android:drawablePadding="10dp"
+                        android:hint="Nhập mô tả cho dịch vụ..."
+                        android:text="@{viewModel.serviceDescription}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/adminEditServiceDurationLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="Thời gian dự kiến"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/adminEditServiceDescriptionTextInputLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/adminEditServiceDescriptionTextInputLayout" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/adminEditServiceDurationTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="@+id/adminEditServiceDescriptionTextInputLayout"
+                    app:layout_constraintStart_toStartOf="@+id/adminEditServiceDurationLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/adminEditServiceDurationLabel">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/adminEditServiceDurationEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_access_time_24"
+                        android:drawablePadding="10dp"
+                        android:hint="Nhập thời gian dự kiến cho dịch vụ (phút)..."
+                        android:inputType="numberSigned"
+                        android:text="@{viewModel.serviceDuration.toString()}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/adminEditServicePriceLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="Giá dịch vụ"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/adminEditServiceDurationTextInputLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/adminEditServiceDurationTextInputLayout" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/adminEditServicePriceTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="@+id/adminEditServiceDurationTextInputLayout"
+                    app:layout_constraintStart_toStartOf="@+id/adminEditServicePriceLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/adminEditServicePriceLabel">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/adminEditServicePriceEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_attach_money_24"
+                        android:drawablePadding="10dp"
+                        android:hint="Đơn giá cho dịch vụ..."
+                        android:inputType="numberSigned"
+                        android:text="@{viewModel.servicePrice.toString()}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/adminEditServiceConfirmBtnWrapper"
+            android:layout_width="0dp"
+            android:layout_height="68dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/adminEditServiceConfirmBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:onClick="@{() -> viewModel.onConfirmBtnClicked()}"
+                android:text="@string/confirm_booking_btn"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:backgroundTint="#C8C8C7"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

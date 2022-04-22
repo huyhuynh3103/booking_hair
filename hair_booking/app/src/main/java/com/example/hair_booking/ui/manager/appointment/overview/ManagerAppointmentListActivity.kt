@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import com.example.hair_booking.Constant
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityManagerAppointmentListBinding
 import com.example.hair_booking.ui.manager.appointment.detail.ManagerAppointmentDetailActivity
+import com.google.android.material.navigation.NavigationView
 
 class ManagerAppointmentListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityManagerAppointmentListBinding
@@ -44,6 +46,7 @@ class ManagerAppointmentListActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         setupAppointmentListAdapter()
+
 
         // Enable back button
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -176,6 +179,7 @@ class ManagerAppointmentListActivity : AppCompatActivity() {
 
     // Back to main screen when click back button
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Log.d("xk123", "aaa")
         finish()
         return true
     }
