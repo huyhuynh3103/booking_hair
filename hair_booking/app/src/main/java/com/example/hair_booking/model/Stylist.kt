@@ -65,4 +65,13 @@ data class Stylist(private val _id: String) {
         this._shifts = stylist._shifts
         this._workPlace = stylist._workPlace
     }
+    constructor(
+        id: String,
+        fullName: String,
+        description: String
+    ): this(id) {
+        this._fullName = fullName
+        this._avatar = avatar
+        this._description = description
+    }
 }

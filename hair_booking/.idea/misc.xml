@@ -5,6 +5,13 @@
       <map>
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/drawable/gradient_spinner.xml" value="0.1875" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/drawable/ic_arrow.xml" value="0.1875" />
+        <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/drawable/ic_baseline_access_time_24.xml" value="0.19947916666666668" />
+        <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/drawable/ic_baseline_arrow_right_24.xml" value="0.19947916666666668" />
+        <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/drawable/ic_baseline_calendar_today_24.xml" value="0.19947916666666668" />
+        <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/drawable/ic_baseline_content_cut_24.xml" value="0.19947916666666668" />
+        <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/drawable/ic_baseline_content_paste_24.xml" value="0.19947916666666668" />
+        <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.19947916666666668" />
+        <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.19947916666666668" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/drawable/ic_launcher_background.xml" value="0.14635416666666667" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/drawable/ic_my_profile.xml" value="0.23802083333333332" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/drawable/ic_schedule.xml" value="0.23125" />
@@ -18,10 +25,11 @@
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_choose_service.xml" value="0.16621376811594202" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_choose_stylist.xml" value="0.16621376811594202" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_history_booking.xml" value="0.264" />
+        <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_history_booking_detail.xml" value="0.1" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_log_in.xml" value="0.20350877192982456" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_login.xml" value="0.176" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_manager_appointment_detail.xml" value="0.2509057971014493" />
+        <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_manager_appointment_detail.xml" value="0.176" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_manager_appointment_list.xml" value="0.21240942028985507" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_manager_detail_admin.xml" value="0.21240942028985507" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_manager_home.xml" value="0.264" />

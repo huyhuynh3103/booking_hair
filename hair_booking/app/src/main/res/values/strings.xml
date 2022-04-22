@@ -93,6 +93,9 @@
     <string name="cancelBookingLabel">Hủy Lịch</string>
     <string name="mock_data_status_appointment">Chưa diễn ra</string>
     <string name="status_appointment_history_label">Trạng thái</string>
+    <string name="appointmentDetailLabel">CHI TIẾT LỊCH ĐẶT</string>
+    <string name="price_services">GIÁ DỊCH VỤ</string>
+    <string name="qr_instruction">Quét mã khi để thanh toán sau khi hớt tóc xong.</string>
 
 
 </resources>

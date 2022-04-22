@@ -2,6 +2,7 @@ package com.example.hair_booking.services.db
 
 import android.util.Log
 import com.example.hair_booking.Constant
+import com.example.hair_booking.model.Appointment
 import com.example.hair_booking.model.Discount
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -39,6 +40,20 @@ class DbDiscountServices(private var dbInstance: FirebaseFirestore?): DatabaseAb
         }
 
         return discountList
+    }
+
+    suspend fun getDiscountById(id:String):Discount?{
+        var result: Discount? = null
+        val queryResult = dbInstance!!.collection(Constant.collection.discounts).document(id).get().await()
+        val data = queryResult.data
+        if(data!=null){
+            result = Discount(
+                id,
+                data["title"] as String,
+                data["percent"] as Double
+            )
+        }
+        return result
     }
 
     override suspend fun find(query: Any?): Any? {

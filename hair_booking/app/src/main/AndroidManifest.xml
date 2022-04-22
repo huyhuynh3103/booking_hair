@@ -13,12 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Hair_booking">
         <activity
+            android:name=".ui.normal_user.history.detail.HistoryBookingDetailActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.normal_user.history.overview.HistoryBooking"
             android:exported="true" />
         <activity android:name=".ui.normal_user.booking.booking_confirm.BookingConfirmActivity" />
         <activity
             android:name=".ui.manager.appointment.AppointmentListActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity android:name=".ui.normal_user.booking.choose_discount.ChooseDiscountActivity" />
         <activity
             android:name=".ui.authentication.SignUpActivity"
@@ -64,11 +67,11 @@
         <activity
             android:name=".ui.normal_user.booking.BookingActivity"
             android:exported="true"
-            android:label="@string/booking_screen_title"></activity>
+            android:label="@string/booking_screen_title" />
         <activity
             android:name=".ui.manager.stylist.ManagerStylistDetailActivity"
             android:exported="true"
-            android:label="Manager Stylist"></activity>
+            android:label="Manager Stylist" />
         <activity
             android:name=".ui.normal_user.salon.NormalUserSalonDetailActivity"
             android:exported="true"
@@ -78,7 +81,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.normal_user.profile.NormalUserProfileActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity android:name=".ui.manager.home.ManagerHomeActivity" />
         <activity android:name=".ui.authentication.LogInActivity" />
         <activity

@@ -9,7 +9,7 @@ import com.example.hair_booking.databinding.HistoryBookingItemBinding
 import com.example.hair_booking.model.Appointment
 
 class HistoryListAdapter:RecyclerView.Adapter<HistoryListAdapter.ViewHolder>() {
-    var onItemClick: ((position: Int) -> Unit)? = null
+    var onItemClick: ((id: String) -> Unit)? = null
     var onCancleClick: ((position:Int,subId:String?) -> Unit)? = null
     private var historyList: ArrayList<Appointment> = ArrayList()
     fun setData(historyList: ArrayList<Appointment>) {
@@ -26,7 +26,7 @@ class HistoryListAdapter:RecyclerView.Adapter<HistoryListAdapter.ViewHolder>() {
             // Set on item click listener
             historyBookingItemBinding.root.setOnClickListener {
                 // When item clicked, invoke onItemClick function with clicked item position as parameter
-                onItemClick?.invoke(absoluteAdapterPosition)
+                onItemClick?.invoke(historyList[absoluteAdapterPosition].id)
             }
             historyBookingItemBinding.CancleButton.setOnClickListener {
                 onCancleClick?.invoke(absoluteAdapterPosition,historyList[absoluteAdapterPosition].appointmentSubId)

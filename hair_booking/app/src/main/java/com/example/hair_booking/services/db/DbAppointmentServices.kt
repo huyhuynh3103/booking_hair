@@ -387,6 +387,29 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
             throw e
         }
     }
+    suspend fun getAppointmentById(id:String):Appointment?{
+        var result:Appointment? = null
+        val queryResult = dbInstance!!.collection(Constant.collection.appointments).document(id).get().await()
+        val data = queryResult.data
+        if(data!=null){
+            result = Appointment(
+                id,
+                data.get("subId") as String,
+                data.get("bookingDate") as String,
+                data.get("bookingTime") as String,
+                data.get("status") as String,
+                data.get("hairSalon") as HashMap<String, *>,
+                data.get("service") as HashMap<String, *>,
+                data.get("stylist") as HashMap<String, *>,
+                data.get("discountApplied") as HashMap<String, *>?,
+                data.get("totalPrice") as Long,
+            )
+        }
+
+
+
+        return result
+    }
     override suspend fun find(query: Any?): Any? {
         TODO("Not yet implemented")
     }

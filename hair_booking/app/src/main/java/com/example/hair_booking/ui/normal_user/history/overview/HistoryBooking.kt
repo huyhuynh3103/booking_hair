@@ -1,5 +1,6 @@
 package com.example.hair_booking.ui.normal_user.history.overview
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,7 @@ import com.example.hair_booking.Constant
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityHistoryBookingBinding
 import com.example.hair_booking.services.db.dbServices
+import com.example.hair_booking.ui.normal_user.history.detail.HistoryBookingDetailActivity
 import kotlinx.coroutines.launch
 
 class HistoryBooking : AppCompatActivity() {
@@ -33,8 +35,10 @@ class HistoryBooking : AppCompatActivity() {
         binding.historyRecycleView.layoutManager = LinearLayoutManager(this)
         binding.historyRecycleView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
-        adapter.onItemClick = { position ->
-
+        adapter.onItemClick = { id ->
+            val intent = Intent(this,HistoryBookingDetailActivity::class.java)
+            intent.putExtra("id",id)
+            startActivity(intent)
         }
 
         adapter.onCancleClick = { position,subId ->
