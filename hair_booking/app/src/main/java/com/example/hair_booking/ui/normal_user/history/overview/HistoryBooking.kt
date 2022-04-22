@@ -50,7 +50,7 @@ class HistoryBooking : AppCompatActivity() {
                     builder.setMessage("Bạn có chắn chắn hủy lịch có mã: $subId")
                     builder.setPositiveButton("Xác nhận") { dialog, which ->
                         viewModel.viewModelScope.launch {
-                            dbServices.getAppointmentServices()!!.cancel(subId)
+                            dbServices.getAppointmentServices()!!.cancelBySubId(subId)
 
                             viewModel.cancelAppointment(adapter,position,Constant.AppointmentStatus.isPending)
 

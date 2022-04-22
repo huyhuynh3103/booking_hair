@@ -3,6 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View"/>
+        <import type="android.graphics.Color"/>
+        <variable
+            name="isPending"
+            type="String" />
+        <variable
+            name="isCheckOut"
+            type="String" />
+        <variable
+            name="isAbort"
+            type="String" />
         <variable
             name="viewModel"
             type="com.example.hair_booking.ui.normal_user.history.detail.HistoryBookingDetailViewModel" />
@@ -411,7 +422,7 @@
                     android:layout_height="wrap_content"
                     tools:text="Chưa hoàn thành"
                     android:text="@{viewModel.appointmentStatus}"
-                    android:textColor="#000000"
+                    android:textColor="@{viewModel.appointmentStatus.toString().equals(isAbort)?Color.parseColor(`#FF5252`):(viewModel.appointmentStatus.toString().equals(isCheckOut)?Color.parseColor(`#B2FF59`):Color.parseColor(`#000000`))}"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -430,6 +441,7 @@
                 android:layout_weight="1"
                 android:padding="0dp"
                 android:text="Hủy lịch"
+                android:visibility="@{viewModel.appointmentStatus.equals(isPending)?View.VISIBLE:View.GONE}"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
                 app:backgroundTint="#E34040"
@@ -484,6 +496,18 @@
                 app:layout_constraintStart_toStartOf="@+id/historyQRcodeLabel"
                 app:layout_constraintTop_toBottomOf="@+id/QRCodeForAppointment"
                 app:drawableStartCompat="@drawable/ic_warning" />
+
+            <ProgressBar
+                android:id="@+id/progressBarHistoryDetail"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="invisible"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

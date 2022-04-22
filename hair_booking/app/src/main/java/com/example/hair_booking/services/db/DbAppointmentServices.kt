@@ -372,7 +372,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         }
         return "#$result"
     }
-    suspend fun cancel(subId:String){
+    suspend fun cancelBySubId(subId:String){
         try{
             val res = dbInstance!!.collection(Constant.collection.appointments)
                 .whereEqualTo("subId",subId)
@@ -382,6 +382,19 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 val docReference = res.documents[0].reference
                 docReference.update("status",Constant.AppointmentStatus.isAbort).await()
             }
+        }catch (e:Exception){
+            Log.e("DbAppointmentServices", "Error cancel appointment", e)
+            throw e
+        }
+    }
+    suspend fun cancelById(id:String?){
+        try{
+            val res = dbInstance!!.collection(Constant.collection.appointments)
+                .document(id!!)
+                .get()
+                .await()
+            val docReference = res.reference
+            docReference.update("status",Constant.AppointmentStatus.isAbort).await()
         }catch (e:Exception){
             Log.e("DbAppointmentServices", "Error cancel appointment", e)
             throw e

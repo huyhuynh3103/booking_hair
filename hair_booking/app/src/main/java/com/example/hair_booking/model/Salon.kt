@@ -132,11 +132,9 @@ data class Salon(private val _id: String) {
         id:String,
         name:String,
         address: HashMap<String, String>,
-        phoneNumber: String
     ):this(id){
         this._name= name
         this._address = address
-        this._phoneNumber = phoneNumber
     }
 
     override fun toString(): String {

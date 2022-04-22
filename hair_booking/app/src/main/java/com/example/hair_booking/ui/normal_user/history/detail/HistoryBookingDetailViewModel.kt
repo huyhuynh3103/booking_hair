@@ -1,8 +1,6 @@
 package com.example.hair_booking.ui.normal_user.history.detail
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +10,6 @@ import com.example.hair_booking.services.db.dbServices
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.coroutines.launch
 
-@RequiresApi(Build.VERSION_CODES.N)
 class HistoryBookingDetailViewModel(private val id: MutableLiveData<String>): ViewModel() {
 
     private val _appointmentSubId = MutableLiveData<String>()
@@ -83,12 +80,14 @@ class HistoryBookingDetailViewModel(private val id: MutableLiveData<String>): Vi
             val salon = Salon(
                 salonRef!!.id,
                 salonQuery!!["name"] as String,
-                salonQuery!!["address"] as HashMap<String, String>,
-                salonQuery!!["phoneNumber"] as String
+                salonQuery!!["address"] as HashMap<String, String>
             )
             _salonName.value = salon.name
             _salonAddress.value = salon.addressToString()
-            _salonPhoneNumber.value = salon.phoneNumber.toString()
+            if(salonQuery!!["phoneNumber"]!=null){
+                _salonPhoneNumber.value = salonQuery!!["phoneNumber"].toString()
+            }
+
 
 
 
