@@ -39,9 +39,9 @@ class AdminServiceListViewModel: ViewModel() {
         viewModelScope.launch {
             getServiceList()
 
-//            val test = dbServices.getAppointmentServices()!!.getRevenueOfNLastDays(7)
-//            val test2 = dbServices.getAppointmentServices()!!.getRevenueOfNLastMonths(6)
-//            val a = 2
+            val test = dbServices.getAppointmentServices()!!.getRevenueOfNLastDays(7)
+            val test2 = dbServices.getAppointmentServices()!!.getRevenueOfNLastMonths(6)
+            val a = 2
         }
     }
 
