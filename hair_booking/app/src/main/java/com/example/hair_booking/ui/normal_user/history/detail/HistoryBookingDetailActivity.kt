@@ -15,6 +15,8 @@ import com.example.hair_booking.Constant
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityHistoryBookingDetailBinding
 import com.example.hair_booking.services.db.dbServices
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.launch
 
 class HistoryBookingDetailActivity : AppCompatActivity() {
@@ -32,6 +34,18 @@ class HistoryBookingDetailActivity : AppCompatActivity() {
         binding.isCheckOut = Constant.AppointmentStatus.isCheckout
         binding.isPending = Constant.AppointmentStatus.isPending
         binding.isAbort = Constant.AppointmentStatus.isAbort
+
+
+        // generate QR code
+        try{
+            val barcodeEncoder = BarcodeEncoder()
+            val bitmap = barcodeEncoder.encodeBitmap(id.value!!, BarcodeFormat.QR_CODE,600,600)
+            binding.QRCodeForAppointment.setImageBitmap(bitmap)
+        }catch (e:Exception){
+            Log.e("history-detai","Qr code exception",e)
+        }
+
+
         binding.historyContactBtn.setOnClickListener {
             val dialIntent = Intent(Intent.ACTION_DIAL)
             dialIntent.data = Uri.parse("tel:" +binding.historySalonPhoneNumber.text.toString())
