@@ -1,5 +1,7 @@
 package com.example.hair_booking.ui.admin.service.overview
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +11,7 @@ import com.example.hair_booking.services.db.dbServices
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 class AdminServiceListViewModel: ViewModel() {
 
     private var _serviceList = MutableLiveData<ArrayList<Service>>()
@@ -35,6 +38,10 @@ class AdminServiceListViewModel: ViewModel() {
     init {
         viewModelScope.launch {
             getServiceList()
+
+            val test = dbServices.getAppointmentServices()!!.getRevenueOfNLastDays(7)
+
+            val a = 2
         }
     }
 

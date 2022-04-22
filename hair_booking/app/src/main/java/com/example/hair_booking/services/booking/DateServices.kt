@@ -1,7 +1,13 @@
 package com.example.hair_booking.services.booking
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 
 class DateServices {
     companion object {
@@ -23,6 +29,16 @@ class DateServices {
         fun currentDateInString(): String {
             val currentDate: Date = Date()
             return sdf.format(currentDate)
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun getTheNLastDaysFromNow(numOfDays: Int): ArrayList<String> {
+            var listOfNLastDays: ArrayList<String> = ArrayList()
+            for(i in 0 until numOfDays) {
+                val tmp: LocalDate = LocalDate.now(ZoneId.systemDefault()).minusDays(i.toLong())
+                listOfNLastDays.add(tmp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
+            }
+            return listOfNLastDays
         }
     }
 }
