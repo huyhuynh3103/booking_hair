@@ -510,7 +510,12 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 }
                 else {
                     // If there is no more duplicate to check => skip 1 loop to get next value of listOfNLastDays
-                    if(revenueOfNLastDays.size - 1 >= 0 && revenueOfNLastDays[revenueOfNLastDays.size - 1].first != listOfNLastDays[i]) {
+                    if(i != 0 && revenueOfNLastDays.size - 1 >= 0 && revenueOfNLastDays[revenueOfNLastDays.size - 1].first != listOfNLastDays[i]) {
+                        // Assign zero revenue for days that did not have any appointment
+                        revenueOfNLastDays.add(Pair(listOfNLastDays[i], 0))
+                    }
+                    else if (i == 0 && revenueOfNLastDays.size - 1 < 0)
+                    {
                         // Assign zero revenue for days that did not have any appointment
                         revenueOfNLastDays.add(Pair(listOfNLastDays[i], 0))
                     }
@@ -618,7 +623,12 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 }
                 else {
                     // If there is no more duplicate to check => skip 1 loop to get next value of listOfNLastMonths
-                    if(revenueOfNLastMonths.size - 1 >= 0 && revenueOfNLastMonths[revenueOfNLastMonths.size - 1].first != listOfNLastMonths[i]) {
+                    if(i != 0 && revenueOfNLastMonths.size - 1 >= 0 && revenueOfNLastMonths[revenueOfNLastMonths.size - 1].first != listOfNLastMonths[i]) {
+                        // Assign zero revenue for days that did not have any appointment
+                        revenueOfNLastMonths.add(Pair(listOfNLastMonths[i], 0))
+                    }
+                    else if (i == 0 && revenueOfNLastMonths.size - 1 < 0)
+                    {
                         // Assign zero revenue for days that did not have any appointment
                         revenueOfNLastMonths.add(Pair(listOfNLastMonths[i], 0))
                     }

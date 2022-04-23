@@ -31,7 +31,7 @@ class ManagerHomeViewModel: ViewModel() {
     suspend fun getRevenueOfNLastDays(): ArrayList<Pair<String, Long>>? {
         val salonId: String = "b2W2npkzmw6EgHWVovPM"
         var result : ArrayList<Pair<String, Long>>? =
-            dbServices.getAppointmentServices()?.getRevenueOfNLastDays(6, salonId)
+            dbServices.getAppointmentServices()?.getRevenueOfNLastDays(5, salonId)
         return result
     }
 
