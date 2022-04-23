@@ -2,22 +2,20 @@ package com.example.hair_booking
 
 import android.annotation.SuppressLint
 import android.util.Log
-import android.view.View
-import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.model.*
-import com.example.hair_booking.ui.manager.appointment.AppointmentListAdapter
+import com.example.hair_booking.ui.manager.appointment.overview.ManagerAppointmentListAdapter
 import com.example.hair_booking.ui.normal_user.booking.choose_discount.DiscountListAdapter
 import com.example.hair_booking.ui.normal_user.booking.choose_salon.SalonListAdapter
 import com.example.hair_booking.ui.normal_user.booking.choose_service.ServiceListAdapter
 import com.example.hair_booking.ui.normal_user.booking.choose_stylist.StylistListAdapter
 import com.example.hair_booking.ui.manager.stylist.StylistRecycleViewAdapter
 import com.example.hair_booking.ui.admin.managers_list.ManagersListAdapter
+import com.example.hair_booking.ui.admin.service.overview.AdminServiceListAdapter
 import com.example.hair_booking.ui.admin.users_list.UsersListAdapter
 import com.example.hair_booking.ui.normal_user.history.overview.HistoryListAdapter
 import com.example.hair_booking.ui.normal_user.home.SalonAdapter
@@ -55,7 +53,7 @@ fun bindBookingDiscountListRecyclerView(recyclerView: RecyclerView, data: ArrayL
 
 @BindingAdapter("managerAppointmentList")
 fun bindManagerAppointmentListRecyclerView(recyclerView: RecyclerView, data: LiveData<ArrayList<Appointment>>) {
-    val adapter = recyclerView.adapter as AppointmentListAdapter
+    val adapter = recyclerView.adapter as ManagerAppointmentListAdapter
     if (data != null) {
         adapter?.setData(data)
     }
@@ -139,5 +137,12 @@ fun bindHistoryListRecycleView(recyclerView: RecyclerView,data:ArrayList<Appoint
     val adapter = recyclerView.adapter as HistoryListAdapter
     if(data!=null){
         adapter.setData(data)
+    }
+}
+@BindingAdapter("adminServiceList")
+fun bindAdminServiceListRecyclerView(recyclerView: RecyclerView, data: LiveData<ArrayList<Service>>) {
+    val adapter = recyclerView.adapter as AdminServiceListAdapter
+    if (data != null) {
+        adapter?.setData(data)
     }
 }

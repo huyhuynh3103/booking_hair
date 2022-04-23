@@ -235,6 +235,7 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
                 result.data?.get("address") as HashMap<String, String>,
                 result.data?.get("appointments") as ArrayList<DocumentReference>,
                 result.data?.get("stylists") as ArrayList<HashMap<String, *>>,
+                result.data?.get("phoneNumber") as String
             )
         }
 

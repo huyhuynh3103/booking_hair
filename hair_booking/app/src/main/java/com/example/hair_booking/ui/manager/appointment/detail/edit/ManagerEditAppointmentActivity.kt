@@ -1,63 +1,80 @@
-package com.example.hair_booking.ui.normal_user.booking
+package com.example.hair_booking.ui.manager.appointment.detail.edit
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.drawable.Icon
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.example.hair_booking.R
-import com.example.hair_booking.databinding.ActivityBookingBinding
+import com.example.hair_booking.databinding.ActivityManagerEditAppointmentBinding
 import com.example.hair_booking.services.booking.BookingServices
-import com.example.hair_booking.ui.normal_user.booking.booking_confirm.BookingConfirmActivity
+import com.example.hair_booking.ui.manager.appointment.detail.ManagerAppointmentDetailActivity
 import com.example.hair_booking.ui.normal_user.booking.choose_discount.ChooseDiscountActivity
 import com.example.hair_booking.ui.normal_user.booking.choose_salon.ChooseSalonActivity
 import com.example.hair_booking.ui.normal_user.booking.choose_service.ChooseServiceActivity
 import com.example.hair_booking.ui.normal_user.booking.choose_stylist.ChooseStylistActivity
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.HashMap
 
-
-class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
+class ManagerEditAppointmentActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
     private val REQUEST_CODE_CHOOSE_SALON: Int = 1111
     private val REQUEST_CODE_CHOOSE_SERVICE: Int = 2222
     private val REQUEST_CODE_CHOOSE_STYLIST: Int = 3333
     private val REQUEST_CODE_CHOOSE_DISCOUNT: Int = 4444
-    private val REQUEST_CODE_BOOKING_CONFIRM: Int = 5555
-    private lateinit var binding: ActivityBookingBinding
+    private val REQUEST_CODE_CONFIRM: Int = 5555
+    private lateinit var binding: ActivityManagerEditAppointmentBinding
 
     // "by viewModels()" is the auto initialization of viewmodel made by the library
-    private val viewModel: BookingViewModel by viewModels()
+    private val viewModel: ManagerEditAppointmentViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Setup binding with xml file
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_booking)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_manager_edit_appointment)
 
-        // Assign view model to binding
-        binding.viewModel = viewModel
+        // Get id of appointment to be edited
+        val appointmentToBeEditedId: String? = intent.getStringExtra("appointmentId")
+        if(appointmentToBeEditedId != null) {
+            lifecycleScope.launch {
+                async {
+                    viewModel.prepareAppointmentDetail(
+                        this@ManagerEditAppointmentActivity,
+                        appointmentToBeEditedId,
+                        binding.managerShiftPickerSpinner,
+                        binding.managerTimePickerLabel,
+                        binding.managerTimePickerSpinner,
+                        binding.managerChooseStylistLabel,
+                        binding.managerChooseStylistTextInputLayout
+                    )
+                }.await()
 
-        // Tell binding to observe the life cycle of this activity
-        binding.lifecycleOwner = this
+                // Assign view model to binding
+                binding.viewModel = viewModel
 
-        // Enable back button
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        observeOnClickEvent()
+                // Tell binding to observe the life cycle of this activity
+                binding.lifecycleOwner = this@ManagerEditAppointmentActivity
 
 
 
 
+                // Enable back button
+                supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+                observeOnClickEvent()
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -79,6 +96,8 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
         viewModel.stylistEditTextClicked.observe(this, androidx.lifecycle.Observer {
             if(viewModel.checkIfSalonEditTextIsEmpty())
                 displaySalonChosenRequiredWarning()
+            else if(viewModel.shiftId.value.isNullOrEmpty() || viewModel.bookingTime.value.isNullOrEmpty())
+                displayChosenTimeRequiredWarning()
             else {
                 GlobalScope.launch {
                     moveToChooseStylistScreen()
@@ -106,26 +125,26 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
                 displayEmptyFieldsWarning()
             else {
                 GlobalScope.launch {
-                    val docSaved = viewModel.saveBookingSchedule(binding.note.text.toString())
+                    val docSaved = viewModel.updateBookingSchedule(binding.managerNote.text.toString())
                     if(docSaved.isNullOrEmpty()) {
                         runOnUiThread {
                             displayStylistBusyWarning()
                         }
                     }
                     else {
-                        moveToBookingConfirmScreen(BookingServices.serializeAppointmentSaved(docSaved))
+                        moveToAppointmentDetailScreen()
                     }
                 }
             }
         })
+
     }
 
-    private fun moveToBookingConfirmScreen(docSaved: HashMap<String, *>?) {
-        val intent = Intent(this, BookingConfirmActivity::class.java)
+    private fun moveToAppointmentDetailScreen() {
+        val intent = Intent(this, ManagerAppointmentDetailActivity::class.java)
+        intent.putExtra("appointmentId", viewModel.appointmentId.value)
 
-        intent.putExtra("appointmentSaved", docSaved)
-
-        startActivityForResult(intent, REQUEST_CODE_BOOKING_CONFIRM)
+        startActivity(intent)
     }
 
     private fun moveToChooseSalonScreen() {
@@ -194,11 +213,12 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
                 // Setup list of shifts for user to choose after reselect service
                 viewModel.setupShiftPickerSpinner(
                     this,
-                    binding.shiftPickerSpinner,
-                    binding.timePickerLabel,
-                    binding.timePickerSpinner,
-                    binding.chooseStylistLabel,
-                    binding.chooseStylistTextInputLayout
+                    binding.managerShiftPickerSpinner,
+                    binding.managerTimePickerLabel,
+                    binding.managerTimePickerSpinner,
+                    binding.managerChooseStylistLabel,
+                    binding.managerChooseStylistTextInputLayout,
+                    false
                 )
                 hideTimePicker()
                 displayTotalPrice()
@@ -228,53 +248,53 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
     }
 
     private fun displayDateTimePickerWrapper() {
-        if(binding.datePickerWrapper.visibility == View.GONE)
-            binding.datePickerWrapper.visibility = View.VISIBLE
+        if(binding.managerDatePickerWrapper.visibility == View.GONE)
+            binding.managerDatePickerWrapper.visibility = View.VISIBLE
     }
 
     private fun displayShiftPicker() {
-        if(binding.timePickerWrapper.visibility == View.GONE)
-            binding.timePickerWrapper.visibility = View.VISIBLE
+        if(binding.managerTimePickerWrapper.visibility == View.GONE)
+            binding.managerTimePickerWrapper.visibility = View.VISIBLE
     }
 
     private fun displayTimePicker() {
-        if(binding.timePickerLabel.visibility == View.GONE && binding.timePickerSpinner.visibility == View.GONE) {
-            binding.timePickerLabel.visibility = View.VISIBLE
-            binding.timePickerSpinner.visibility = View.VISIBLE
+        if(binding.managerTimePickerLabel.visibility == View.GONE && binding.managerTimePickerSpinner.visibility == View.GONE) {
+            binding.managerTimePickerLabel.visibility = View.VISIBLE
+            binding.managerTimePickerSpinner.visibility = View.VISIBLE
         }
     }
 
     private fun hideTimePicker() {
-        if(binding.timePickerLabel.visibility == View.VISIBLE && binding.timePickerSpinner.visibility == View.VISIBLE) {
-            binding.timePickerLabel.visibility = View.GONE
-            binding.timePickerSpinner.visibility = View.GONE
+        if(binding.managerTimePickerLabel.visibility == View.VISIBLE && binding.managerTimePickerSpinner.visibility == View.VISIBLE) {
+            binding.managerTimePickerLabel.visibility = View.GONE
+            binding.managerTimePickerSpinner.visibility = View.GONE
         }
     }
 
     private fun hideChooseStylist() {
-        if(binding.chooseStylistLabel.visibility == View.VISIBLE && binding.chooseStylistTextInputLayout.visibility == View.VISIBLE) {
-            binding.chooseStylistLabel.visibility = View.GONE
-            binding.chooseStylistTextInputLayout.visibility = View.GONE
+        if(binding.managerChooseStylistLabel.visibility == View.VISIBLE && binding.managerChooseStylistTextInputLayout.visibility == View.VISIBLE) {
+            binding.managerChooseStylistLabel.visibility = View.GONE
+            binding.managerChooseStylistTextInputLayout.visibility = View.GONE
         }
     }
 
     private fun hideTotalPrice() {
-        if(binding.totalPriceLabel.visibility == View.VISIBLE
-            && binding.totalPrice.visibility == View.VISIBLE
-            && binding.vndUnit.visibility == View.VISIBLE) {
-            binding.totalPriceLabel.visibility = View.GONE
-            binding.totalPrice.visibility = View.GONE
-            binding.vndUnit.visibility = View.GONE
+        if(binding.managerTotalPriceLabel.visibility == View.VISIBLE
+            && binding.managerTotalPrice.visibility == View.VISIBLE
+            && binding.managerVndUnit.visibility == View.VISIBLE) {
+            binding.managerTotalPriceLabel.visibility = View.GONE
+            binding.managerTotalPrice.visibility = View.GONE
+            binding.managerVndUnit.visibility = View.GONE
         }
     }
 
     private fun displayTotalPrice() {
-        if(binding.totalPriceLabel.visibility == View.GONE
-            && binding.totalPrice.visibility == View.GONE
-            && binding.vndUnit.visibility == View.GONE) {
-            binding.totalPriceLabel.visibility = View.VISIBLE
-            binding.totalPrice.visibility = View.VISIBLE
-            binding.vndUnit.visibility = View.VISIBLE
+        if(binding.managerTotalPriceLabel.visibility == View.GONE
+            && binding.managerTotalPrice.visibility == View.GONE
+            && binding.managerVndUnit.visibility == View.GONE) {
+            binding.managerTotalPriceLabel.visibility = View.VISIBLE
+            binding.managerTotalPrice.visibility = View.VISIBLE
+            binding.managerVndUnit.visibility = View.VISIBLE
         }
     }
 
@@ -293,7 +313,7 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
         dpd.minDate = now
 
         // Show date picker dialog
-         dpd.show(supportFragmentManager, "Datepickerdialog");
+        dpd.show(supportFragmentManager, "Datepickerdialog");
     }
 
     override fun onDateSet(view: DatePickerDialog?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
@@ -305,21 +325,17 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
         val dateInStringFormat = "$daySelected/$monthSelected/$year"
         binding.viewModel!!.setChosenDate(dateInStringFormat)
 
-//        // Show time picker and stylist picker
-//        if(binding.timePickerWrapper.visibility == View.GONE)
-//            binding.timePickerWrapper.visibility = View.VISIBLE
-
         // Setup list of shifts for user to choose after choosing date
         viewModel.setupShiftPickerSpinner(
             this,
-            binding.shiftPickerSpinner,
-            binding.timePickerLabel,
-            binding.timePickerSpinner,
-            binding.chooseStylistLabel,
-            binding.chooseStylistTextInputLayout
+            binding.managerShiftPickerSpinner,
+            binding.managerTimePickerLabel,
+            binding.managerTimePickerSpinner,
+            binding.managerChooseStylistLabel,
+            binding.managerChooseStylistTextInputLayout,
+            false
         )
         hideTimePicker()
-        hideChooseStylist()
         displayShiftPicker()
     }
 
@@ -334,7 +350,7 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
         // Show warning dialog
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Cảnh báo")
-        builder.setMessage("Làm ơn điền đầy đủ các trường!!!")
+        builder.setMessage("Làm ơn điền đầy đủ các trường !!!")
 
         builder.setPositiveButton("Ok") { dialog, which ->
             // Do nothing
@@ -377,4 +393,18 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
         }
         builder.show()
     }
+
+    private fun displayChosenTimeRequiredWarning() {
+        // Show warning dialog
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Cảnh báo")
+        builder.setMessage("Vui lòng chọn ca và giờ cắt tóc trước!!")
+
+        builder.setPositiveButton("Ok") { dialog, which ->
+            // Do nothing
+        }
+        builder.show()
+    }
+
+
 }

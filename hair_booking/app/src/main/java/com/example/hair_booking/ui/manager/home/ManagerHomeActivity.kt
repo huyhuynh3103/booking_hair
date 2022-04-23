@@ -13,7 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityManagerHomeBinding
 import com.example.hair_booking.services.auth.AuthRepository
-import com.example.hair_booking.ui.manager.appointment.AppointmentListActivity
+import com.example.hair_booking.ui.manager.appointment.overview.ManagerAppointmentListActivity
 import com.example.hair_booking.ui.manager.profile.ManagerProfileActivity
 import com.example.hair_booking.ui.manager.stylist.ManagerStylistListActivity
 import com.example.hair_booking.ui.normal_user.home.SalonAdapter
@@ -78,7 +78,7 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 barcodeLauncher.launch(options)
             }
             R.id.nav_schedule_manager->{
-                startActivity(Intent(this, AppointmentListActivity::class.java))
+                startActivity(Intent(this, ManagerAppointmentListActivity::class.java))
 
             }
             R.id.nav_stylist_list->{

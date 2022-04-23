@@ -3,9 +3,11 @@ package com.example.hair_booking.services.db
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
-import com.example.hair_booking.model.Salon
+import com.example.hair_booking.model.Appointment
 import com.example.hair_booking.model.Service
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
 
 class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
@@ -65,10 +67,83 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
                 result.id,
                 result.data?.get("title") as String,
                 result.data?.get("price") as Long,
-                result.data?.get("description") as String
+                result.data?.get("description") as String,
+                result.data?.get("duration") as Long,
             )
         }
 
         return service
+    }
+
+    fun getServiceListForAdmin(serviceList: MutableLiveData<ArrayList<Service>>) {
+        var tmpServiceList: ArrayList<Service> = ArrayList()
+
+        if(dbInstance != null) {
+            dbInstance!!.collection(Constant.collection.services)
+                .addSnapshotListener { snapshot, e ->
+                    if (e != null) {
+                        return@addSnapshotListener
+                    }
+
+                    if (snapshot != null) {
+                        val documents = snapshot.documents
+                        tmpServiceList.clear()
+                        for (document in documents) {
+                            // Mapping firestore object to kotlin model
+                            val service = Service(
+                                document.id,
+                                document.data?.get("title") as String,
+                                document.data?.get("price") as Long,
+                                document.data?.get("description") as String,
+                                document.data?.get("duration") as Long,
+                            )
+                            // Insert to list
+                            tmpServiceList.add(service)
+                        }
+
+                        // Call function to return appointment list after mapping complete
+                        serviceList.postValue(tmpServiceList)
+                    }
+                }
+        }
+    }
+
+    suspend fun saveService(service: HashMap<String, *>): Boolean {
+        var ack: Boolean = false
+        // Save service to database
+        try {
+            if(dbInstance != null && service != null) {
+                dbInstance!!.collection(Constant.collection.services)
+                    .add(service)
+                    .await()
+
+                ack = true
+            }
+        }
+        catch (e: Exception) {
+            Log.e("DbAppointmentServices", "Error adding document", e)
+        }
+
+        return ack
+    }
+
+    suspend fun updateService(serviceId: String, service: HashMap<String, *>): Boolean {
+        var ack: Boolean = false
+        // Save service to database
+        try {
+            if(dbInstance != null && service != null) {
+                dbInstance!!.collection(Constant.collection.services)
+                    .document(serviceId)
+                    .set(service, SetOptions.merge())
+                    .await()
+
+                ack = true
+            }
+        }
+        catch (e: Exception) {
+            Log.e("DbAppointmentServices", "Error updating document", e)
+        }
+
+        return ack
     }
 }

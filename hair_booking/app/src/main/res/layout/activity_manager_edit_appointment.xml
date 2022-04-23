@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.hair_booking.ui.manager.appointment.detail.edit.ManagerEditAppointmentViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="100dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".ui.manager.appointment.detail.edit.ManagerEditAppointmentActivity">
+
+                <TextView
+                    android:id="@+id/managerChooseSalonLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="40dp"
+                    android:text="@string/choose_salon_label"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/managerChooseSalonTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/managerChooseSalonLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/managerChooseSalonLabel">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/managerChooseSalonEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:drawableLeft="@drawable/ic_baseline_location_on_24"
+                        android:drawableRight="@drawable/ic_baseline_arrow_right_24"
+                        android:drawablePadding="10dp"
+                        android:focusable="false"
+                        android:hint="@string/choose_salon_edit_text_hint"
+                        android:onClick="@{() -> viewModel.onSalonEditTextClicked()}"
+                        android:text="@{viewModel.salonLocation}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/managerChooseServiceLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="@string/choose_service_label"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/managerChooseSalonTextInputLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/managerChooseSalonTextInputLayout" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/managerChooseServiceTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="@+id/managerChooseSalonTextInputLayout"
+                    app:layout_constraintStart_toStartOf="@+id/managerChooseServiceLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/managerChooseServiceLabel">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/managerChooseServiceEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_view_list_24"
+                        android:drawableRight="@drawable/ic_baseline_arrow_right_24"
+                        android:drawablePadding="10dp"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="@string/choose_service_edit_text_hint"
+                        android:onClick="@{() -> viewModel.onServiceEditTextClicked()}"
+                        android:text="@{viewModel.serviceTitle}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/managerDatePickerWrapper"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="@+id/managerChooseServiceTextInputLayout"
+                    app:layout_constraintStart_toStartOf="@+id/managerChooseServiceTextInputLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/managerChooseServiceTextInputLayout">
+
+
+                    <TextView
+                        android:id="@+id/managerChooseDateLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/choose_date_label"
+                        android:textColor="#000000"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toStartOf="@+id/managerDatePickerWrapper"
+                        app:layout_constraintTop_toTopOf="@+id/managerDatePickerWrapper"
+                        tools:layout_editor_absoluteY="303dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/managerChooseDateTextInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="@+id/managerDatePickerWrapper"
+                        app:layout_constraintStart_toStartOf="@+id/managerChooseDateLabel"
+                        app:layout_constraintTop_toBottomOf="@+id/managerChooseDateLabel">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/managerChooseDateEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+                            android:drawablePadding="10dp"
+                            android:focusable="false"
+                            android:hint="@string/choose_date_edit_text_hint"
+                            android:onClick="@{() -> viewModel.onDateEditTextClicked()}"
+                            android:text="@{viewModel.bookingDate}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/managerTimePickerWrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="@+id/managerChooseDateTextInputLayout"
+                        app:layout_constraintStart_toStartOf="@+id/managerChooseDateTextInputLayout"
+                        app:layout_constraintTop_toBottomOf="@+id/managerChooseDateTextInputLayout">
+
+                        <TextView
+                            android:id="@+id/managerChooseTimeLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:text="@string/choose_time_label"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:visibility="visible"
+                            app:layout_constraintStart_toStartOf="@+id/managerTimePickerWrapper"
+                            app:layout_constraintTop_toTopOf="@+id/managerTimePickerWrapper" />
+
+                        <TextView
+                            android:id="@+id/managerShiftLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="7dp"
+                            android:layout_marginTop="10dp"
+                            android:text="Ca"
+                            android:visibility="visible"
+                            app:layout_constraintStart_toStartOf="@+id/managerChooseTimeLabel"
+                            app:layout_constraintTop_toBottomOf="@+id/managerChooseTimeLabel" />
+
+                        <Spinner
+                            android:id="@+id/managerShiftPickerSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:visibility="visible"
+                            app:layout_constraintStart_toStartOf="@+id/managerChooseTimeLabel"
+                            app:layout_constraintTop_toBottomOf="@+id/managerShiftLabel" />
+
+
+                        <TextView
+                            android:id="@+id/managerTimePickerLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="7dp"
+                            android:text="Giờ"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="@+id/managerShiftLabel"
+                            app:layout_constraintStart_toStartOf="@+id/managerTimePickerSpinner"
+                            app:layout_constraintTop_toTopOf="@+id/managerShiftLabel" />
+
+
+                        <Spinner
+                            android:id="@+id/managerTimePickerSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="40dp"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="@+id/managerShiftPickerSpinner"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.051"
+                            app:layout_constraintStart_toEndOf="@+id/managerShiftPickerSpinner"
+                            app:layout_constraintTop_toTopOf="@+id/managerShiftPickerSpinner"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <TextView
+                            android:id="@+id/managerChooseStylistLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:text="@string/choose_stylist_label"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:visibility="visible"
+                            app:layout_constraintStart_toStartOf="@+id/managerChooseTimeLabel"
+                            app:layout_constraintTop_toBottomOf="@+id/managerShiftPickerSpinner" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/managerChooseStylistTextInputLayout"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="@+id/managerTimePickerWrapper"
+                            app:layout_constraintStart_toStartOf="@+id/managerChooseStylistLabel"
+                            app:layout_constraintTop_toBottomOf="@+id/managerChooseStylistLabel">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/managerChooseStylistEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:drawableLeft="@drawable/ic_baseline_person_24"
+                                android:drawableRight="@drawable/ic_baseline_arrow_right_24"
+                                android:drawablePadding="10dp"
+                                android:focusable="false"
+                                android:hint="@string/choose_stylist_edit_text_hint"
+                                android:onClick="@{() -> viewModel.onStylistEditTextClicked()}"
+                                android:text="@{viewModel.stylist}"
+                                android:visibility="visible" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <TextView
+                        android:id="@+id/managerNoteLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:text="@string/note_label"
+                        android:textColor="#000000"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@+id/managerDatePickerWrapper"
+                        app:layout_constraintTop_toBottomOf="@+id/managerTimePickerWrapper" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/managerNoteTextInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toEndOf="@+id/managerChooseDateTextInputLayout"
+                        app:layout_constraintStart_toStartOf="@+id/managerNoteLabel"
+                        app:layout_constraintTop_toBottomOf="@+id/managerNoteLabel">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/managerNote"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.note}"
+                            android:hint="@string/note_edit_text_hint" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/managerDiscountLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:text="@string/discount_label"
+                        android:textColor="#000000"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@+id/managerNoteTextInputLayout"
+                        app:layout_constraintTop_toBottomOf="@+id/managerNoteTextInputLayout" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/managerDiscountTextInputLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="21dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/managerNoteTextInputLayout"
+                        app:layout_constraintStart_toStartOf="@+id/managerDiscountLabel"
+                        app:layout_constraintTop_toBottomOf="@+id/managerDiscountLabel">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/managerDiscount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:drawableLeft="@drawable/ic_baseline_local_offer_24"
+                            android:drawableRight="@drawable/ic_baseline_arrow_right_24"
+                            android:drawablePadding="10dp"
+                            android:focusable="false"
+                            android:hint="@string/discount_edit_text_hint"
+                            android:onClick="@{() -> viewModel.onDiscountEditTextClicked()}"
+                            android:text="@{viewModel.discount}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/managerConfirmBtnWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/managerConfirmBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:onClick="@{() -> viewModel.onConfirmBtnClicked()}"
+                android:text="@string/confirm_booking_btn"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:backgroundTint="#C8C8C7"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/managerTotalPriceLabel" />
+
+            <TextView
+                android:id="@+id/managerTotalPriceLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Tổng giá:"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/managerTotalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@{viewModel.totalPrice.toString()}"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/managerTotalPriceLabel"
+                app:layout_constraintStart_toEndOf="@+id/managerTotalPriceLabel"
+                app:layout_constraintTop_toTopOf="@+id/managerTotalPriceLabel" />
+
+            <TextView
+                android:id="@+id/managerVndUnit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="VND"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/managerTotalPrice"
+                app:layout_constraintStart_toEndOf="@+id/managerTotalPrice"
+                app:layout_constraintTop_toTopOf="@+id/managerTotalPrice" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

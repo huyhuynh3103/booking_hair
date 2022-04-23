@@ -1,26 +1,41 @@
-package com.example.hair_booking.ui.manager.appointment
+package com.example.hair_booking.ui.manager.appointment.overview
 
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.Constant
 import com.example.hair_booking.databinding.ManagerAppointmentListItemBinding
 import com.example.hair_booking.model.Appointment
 
-class AppointmentListAdapter: RecyclerView.Adapter<AppointmentListAdapter.ViewHolder>() {
+class ManagerAppointmentListAdapter: RecyclerView.Adapter<ManagerAppointmentListAdapter.ViewHolder>() {
 
 
     var onItemClick: ((position: Int) -> Unit)? = null
 
     private var appointmentList: LiveData<ArrayList<Appointment>>? = null
+    private var appointmentToBeHiddenIndexWhenSearch: ArrayList<Int>? = null
+    private var appointmentToBeHiddenIndexWhenFilter: ArrayList<Int>? = null
+
     fun setData(appointmentList: LiveData<ArrayList<Appointment>>) {
         this.appointmentList = appointmentList
 
         // The UI will be loaded before the database return the appointment list
         // => need notify data set changed to tell the UI that the data is ready
+        notifyDataSetChanged()
+    }
+
+    fun setAppointmentToBeHiddenIndexWhenSearch(appointmentToBeHiddenIndex: ArrayList<Int>?) {
+        this.appointmentToBeHiddenIndexWhenSearch = appointmentToBeHiddenIndex
+
+        notifyDataSetChanged()
+    }
+
+    fun setAppointmentToBeHiddenIndexWhenFilter(appointmentToBeHiddenIndex: ArrayList<Int>?) {
+        this.appointmentToBeHiddenIndexWhenFilter = appointmentToBeHiddenIndex
+
         notifyDataSetChanged()
     }
 
@@ -38,7 +53,7 @@ class AppointmentListAdapter: RecyclerView.Adapter<AppointmentListAdapter.ViewHo
 
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppointmentListAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
 
@@ -56,11 +71,35 @@ class AppointmentListAdapter: RecyclerView.Adapter<AppointmentListAdapter.ViewHo
         var appointment: Appointment? = appointmentList?.value?.get(position) ?: null
         appointment?.prepareBookingTimeForDisplay()
         holder.appointmentListItemBinding.appointment = appointment
-        if(appointment?.status == Constant.AppointmentStatus.isPending) {
-            holder.appointmentListItemBinding.appointmentListStatus.setTextColor(Color.parseColor("#4CAF50"))
+
+        // Show appointment
+        holder.itemView.visibility = View.VISIBLE
+        holder.itemView.layoutParams = RecyclerView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+
+        if(appointmentToBeHiddenIndexWhenFilter != null) {
+            if(appointmentToBeHiddenIndexWhenFilter!!.contains(position)) {
+                // Hide appointment
+                holder.itemView.visibility = View.GONE
+                holder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
+            }
         }
-        else
-            holder.appointmentListItemBinding.appointmentListStatus.setTextColor(Color.parseColor("#DD2828"))
+
+        when(appointment?.status) {
+            Constant.AppointmentStatus.isPending -> {
+                holder.appointmentListItemBinding.appointmentListStatus.setTextColor(Color.parseColor("#787878"))
+            }
+            Constant.AppointmentStatus.isCheckout -> {
+                holder.appointmentListItemBinding.appointmentListStatus.setTextColor(Color.parseColor("#4CAF50"))
+            }
+            Constant.AppointmentStatus.isAbort -> {
+                holder.appointmentListItemBinding.appointmentListStatus.setTextColor(Color.parseColor("#DD2828"))
+            }
+        }
+
     }
 
     override fun getItemCount(): Int {

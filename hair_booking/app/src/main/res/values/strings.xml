@@ -46,6 +46,7 @@
     <string name="booking_confirm_screen_salon_label">THÔNG TIN SALON</string>
     <string name="booking_confirm_screen_price_label">TỔNG GIÁ</string>
     <string name="booking_confirm_screen_unit_label">VND</string>
+    <string name="booking_confirm_screen_note_for_user">Nếu bạn muốn điều chỉnh thông tin lịch đặt, vui lòng gọi vào số điện thoại của Salon ở trên</string>
     <string name="booking_confirm_screen_button">TRỞ VỀ MÀN HÌNH CHÍNH</string>
 
     // Manager appointment list screen

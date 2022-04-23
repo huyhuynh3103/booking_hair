@@ -72,6 +72,31 @@ data class Salon(private val _id: String) {
         closeHour: String,
         address: HashMap<String, String>,
         appointments: ArrayList<DocumentReference>,
+        stylists: ArrayList<HashMap<String, *>>,
+        phoneNumber: String
+    ): this(id) {
+        this._name = name
+        this._avatar = avatar
+        this._description = description
+        this._rate = rate
+        this._openHour = openHour
+        this._closeHour = closeHour
+        this._address = address
+        this._appointments = appointments
+        this._stylists = stylists
+        this._phoneNumber = phoneNumber
+    }
+
+    constructor(
+        id: String,
+        name: String,
+        avatar: String,
+        description: String,
+        rate: Long,
+        openHour: String,
+        closeHour: String,
+        address: HashMap<String, String>,
+        appointments: ArrayList<DocumentReference>,
         stylists: ArrayList<HashMap<String, *>>
     ): this(id) {
         this._name = name

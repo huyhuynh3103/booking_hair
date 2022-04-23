@@ -1,6 +1,8 @@
 package com.example.hair_booking.services.db
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
 import com.example.hair_booking.model.*
@@ -8,18 +10,20 @@ import com.example.hair_booking.services.booking.DateServices
 import com.example.hair_booking.services.booking.TimeServices
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
-import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.time.ZoneId
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract<Any?>() {
 
-    fun getAppointmentListForManager(salonId: String, result: MutableLiveData<ArrayList<Appointment>>) {
-        var appointmentList: ArrayList<Appointment> = ArrayList()
-
+    fun getAppointmentListForManager(salonId: String, appointmentList: MutableLiveData<ArrayList<Appointment>>,
+                                     appointmentSubIds: MutableLiveData<ArrayList<String>>) {
+        var tmpAppointmentList: ArrayList<Appointment> = ArrayList()
+        var tmpAppointmentSubIds: ArrayList<String> = ArrayList()
         if(dbInstance != null) {
             val salonDocRef = dbInstance!!
                 .collection(Constant.collection.hairSalons)
@@ -34,7 +38,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
 
                 if (snapshot != null) {
                     val documents = snapshot.documents
-                    appointmentList.clear()
+                    tmpAppointmentList.clear()
                     for (document in documents) {
                         // Mapping firestore object to kotlin model
                         val appointment: Appointment = Appointment(
@@ -56,14 +60,49 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                             document.data?.get("totalPrice") as Long,
                         )
                         // Insert to list
-                        appointmentList.add(appointment)
+                        tmpAppointmentList.add(appointment)
+                        tmpAppointmentSubIds.add(document.data?.get("subId") as String)
                     }
 
+                    val sdf: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+                    tmpAppointmentList.sortByDescending { sdf.parse(it.bookingDate) }
                     // Call function to return appointment list after mapping complete
-                    result.postValue(appointmentList)
+                    appointmentList.postValue(tmpAppointmentList)
+                    appointmentSubIds.postValue(tmpAppointmentSubIds)
                 }
             }
         }
+    }
+
+    suspend fun getAppointmentById(appointmentId: String): Appointment? {
+        var appointment: Appointment? = null
+
+        if(dbInstance != null) {
+            val document = dbInstance!!.collection(Constant.collection.appointments)
+                .document(appointmentId)
+                .get()
+                .await()
+            // Mapping firestore object to kotlin model
+            appointment = Appointment(
+                document.id,
+                document.data?.get("subId") as String,
+                document.data?.get("userId") as DocumentReference,
+                document.data?.get("userFullName") as String,
+                document.data?.get("userPhoneNumber") as String,
+                document.data?.get("hairSalon") as HashMap<String, *>,
+                document.data?.get("service") as HashMap<String, *>,
+                document.data?.get("stylist") as HashMap<String, *>,
+                document.data?.get("bookingDate") as String,
+                document.data?.get("bookingTime") as String,
+                document.data?.get("bookingShift") as DocumentReference,
+                document.data?.get("createdAt") as String,
+                document.data?.get("discountApplied") as HashMap<String, *>?,
+                document.data?.get("notes") as String,
+                document.data?.get("status") as String,
+                document.data?.get("totalPrice") as Long,
+            )
+        }
+        return appointment
     }
 
     fun getAppointmentTimeRanges(appointmentList: ArrayList<Appointment>): ArrayList<Pair<Float, Int>> {
@@ -228,6 +267,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         // Get stylist info
         val chosenStylist: Stylist? = dbStylistServices.getStylistById(stylistId)
 
+        val chosenService: Service? = dbServiceServices.getServiceById(serviceId)
         // Create user doc reference
         val userDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.normalUsers)
             .document(userId)
@@ -249,9 +289,9 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
             .document(serviceId)
 
         val subId: String = generateAppointmentSubId()
-        val status: String = "Chấp nhận"
+        val status: String = Constant.AppointmentStatus.isPending
         val createdAt: String = DateServices.currentDateInString() + " " + TimeServices.getCurrentTimeInFloatFormat()
-        val serviceDuration: Int = dbServiceServices.getServiceDuration(serviceId)
+        val rate: Long = 0
 
         var discountDocRef: DocumentReference? = null
         var docTobeSaved: HashMap<String, Any?>? = null
@@ -267,12 +307,14 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 "hairSalon" to hashMapOf(
                     "address" to (chosenSalon?.address ?: null),
                     "id" to salonDocRef,
-                    "name" to (chosenSalon?.name ?: null)
+                    "name" to (chosenSalon?.name ?: null),
+                    "phoneNumber" to (chosenSalon?.phoneNumber ?: null)
                 ),
                 "service" to hashMapOf(
                     "id" to serviceDocRef,
                     "title" to serviceTitle,
-                    "duration" to serviceDuration
+                    "duration" to (chosenService?.duration ?: null),
+                    "price" to (chosenService?.price ?: null)
                 ),
                 "stylist" to hashMapOf(
                     "id" to stylistDocRef,
@@ -291,7 +333,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 "totalPrice" to totalPrice,
                 "subId" to subId,
                 "status" to status,
-                "createdAt" to createdAt
+                "createdAt" to createdAt,
+                "rate" to rate
             )
         }
         else {
@@ -302,12 +345,14 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 "hairSalon" to hashMapOf(
                     "address" to (chosenSalon?.address ?: null),
                     "id" to salonDocRef,
-                    "name" to (chosenSalon?.name ?: null)
+                    "name" to (chosenSalon?.name ?: null),
+                    "phoneNumber" to (chosenSalon?.phoneNumber ?: null)
                 ),
                 "service" to hashMapOf(
                     "id" to serviceDocRef,
                     "title" to serviceTitle,
-                    "duration" to serviceDuration
+                    "duration" to (chosenService?.duration ?: null),
+                    "price" to (chosenService?.price ?: null)
                 ),
                 "stylist" to hashMapOf(
                     "id" to stylistDocRef,
@@ -323,7 +368,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 "totalPrice" to totalPrice,
                 "subId" to subId,
                 "status" to status,
-                "createdAt" to createdAt
+                "createdAt" to createdAt,
+                "rate" to rate
             )
         }
 
@@ -431,6 +477,360 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
             .update("rate",rating)
             .await()
     }
+    suspend fun updateAppointment(
+        appointmentId: String,
+        userId: String,
+        salonId: String,
+        serviceId: String,
+        serviceTitle: String,
+        stylistId: String,
+        bookingDate: String,
+        bookingTime: String,
+        shiftId: String,
+        discountId: String,
+        discountTitle: String,
+        note: String,
+        totalPrice: Long
+    ): HashMap<String, *> {
+        val dbNormalUserServices = dbServices.getNormalUserServices()!!
+        val dbSalonServices = dbServices.getSalonServices()!!
+        val dbStylistServices = dbServices.getStylistServices()!!
+        val dbServiceServices = dbServices.getServiceServices()!!
+
+        // Get user info
+        val user: NormalUser? = dbNormalUserServices.getUserById(userId)
+
+        // Get salon info
+        val chosenSalon: Salon? = dbSalonServices.getSalonById(salonId)
+
+        // Get stylist info
+        val chosenStylist: Stylist? = dbStylistServices.getStylistById(stylistId)
+
+        val chosenService: Service? = dbServiceServices.getServiceById(serviceId)
+
+        // Create user doc reference
+        val userDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.normalUsers)
+            .document(userId)
+
+        // Create salon doc reference
+        val salonDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.hairSalons)
+            .document(chosenSalon!!.id)
+
+        // Create shift doc reference
+        val stylistDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.stylists)
+            .document(stylistId)
+
+        // Create shift doc reference
+        val shiftDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.shifts)
+            .document(shiftId)
+
+        // Create service doc reference
+        val serviceDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.services)
+            .document(serviceId)
+
+        var discountDocRef: DocumentReference? = null
+        var docTobeSaved: HashMap<String, Any?>? = null
+        if(!discountId.isNullOrEmpty() && !discountTitle.isNullOrEmpty()) {
+            // Create discount doc reference
+            discountDocRef = dbInstance!!.collection(Constant.collection.discounts)
+                .document(discountId)
+
+            docTobeSaved = hashMapOf(
+                "userId" to userDocRef,
+                "userFullName" to (user?.fullName ?: null),
+                "userPhoneNumber" to (user?.phoneNumber ?: null),
+                "hairSalon" to hashMapOf(
+                    "address" to (chosenSalon?.address ?: null),
+                    "id" to salonDocRef,
+                    "name" to (chosenSalon?.name ?: null),
+                    "phoneNumber" to (chosenSalon?.phoneNumber ?: null)
+                ),
+                "service" to hashMapOf(
+                    "id" to serviceDocRef,
+                    "title" to serviceTitle,
+                    "duration" to (chosenService?.duration ?: null),
+                    "price" to (chosenService?.price ?: null)
+                ),
+                "stylist" to hashMapOf(
+                    "id" to stylistDocRef,
+                    "fullName" to (chosenStylist?.fullName ?: null),
+                    "description" to (chosenStylist?.description ?: null),
+                    "avatar" to (chosenStylist?.avatar ?: null)
+                ),
+                "bookingDate" to bookingDate,
+                "bookingTime" to bookingTime,
+                "bookingShift" to shiftDocRef,
+                "discountApplied" to hashMapOf(
+                    "id" to discountDocRef,
+                    "title" to discountTitle
+                ),
+                "notes" to note,
+                "totalPrice" to totalPrice
+            )
+        }
+        else {
+            docTobeSaved = hashMapOf(
+                "userId" to userDocRef,
+                "userFullName" to (user?.fullName ?: null),
+                "userPhoneNumber" to (user?.phoneNumber ?: null),
+                "hairSalon" to hashMapOf(
+                    "address" to (chosenSalon?.address ?: null),
+                    "id" to salonDocRef,
+                    "name" to (chosenSalon?.name ?: null),
+                    "phoneNumber" to (chosenSalon?.phoneNumber ?: null)
+                ),
+                "service" to hashMapOf(
+                    "id" to serviceDocRef,
+                    "title" to serviceTitle,
+                    "duration" to (chosenService?.duration ?: null),
+                    "price" to (chosenService?.price ?: null)
+                ),
+                "stylist" to hashMapOf(
+                    "id" to stylistDocRef,
+                    "fullName" to (chosenStylist?.fullName ?: null),
+                    "description" to (chosenStylist?.description ?: null),
+                    "avatar" to (chosenStylist?.avatar ?: null)
+                ),
+                "bookingDate" to bookingDate,
+                "bookingTime" to bookingTime,
+                "bookingShift" to shiftDocRef,
+                "discountApplied" to null,
+                "notes" to note,
+                "totalPrice" to totalPrice
+            )
+        }
+
+        // Find and update appointment to database
+        // If appointment does not exist, firestore will create a new one
+        if(dbInstance != null && docTobeSaved != null) {
+            dbInstance!!.collection(Constant.collection.appointments)
+                .document(appointmentId)
+                .set(docTobeSaved, SetOptions.merge()) // Set merge option to tell firestore to update changed fields only
+                .addOnSuccessListener {
+                    Log.d("DbAppointmentServices", "DocumentSnapshot successfully updated!")
+                }
+                .addOnFailureListener { e ->
+                    Log.d("DbAppointmentServices", "Error updating document", e)
+                }
+        }
+        return docTobeSaved
+    }
+
+    suspend fun updateAppointmentStatus(appointmentId: String, appointmentStatus: String): Boolean? {
+        var ack: Boolean = false
+        try {
+            // Find and update appointment status
+            if(dbInstance != null) {
+                dbInstance!!.collection(Constant.collection.appointments)
+                    .document(appointmentId)
+                    .update("status", appointmentStatus)
+                    .await()
+
+                ack = true
+            }
+        }
+        catch (e: Exception) {
+            Log.e("DbAppointmentServices", "Error updating document", e)
+        }
+        return ack
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getRevenueOfNLastDays(numOfDays: Int): ArrayList<Pair<String, Long>> {
+        val listOfNLastDays: ArrayList<String> = DateServices.getTheNLastDaysFromNow(numOfDays)
+        var revenueOfNLastDays:  ArrayList<Pair<String, Long>> = ArrayList()
+
+
+        // Get list of appointments that have bookingDate is one of the day in listOfNLastDays
+        if(dbInstance != null) {
+            val result = dbInstance!!.collection(Constant.collection.appointments)
+                .whereIn("bookingDate", listOfNLastDays)
+                .get()
+                .await()
+
+            if(result.documents.size == 0)
+                return revenueOfNLastDays // return empty array
+
+
+            var appointmentList = result.documents
+
+            // Sort appointments with date descending
+            val sdf: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+            appointmentList.sortByDescending { sdf.parse(it.data?.get("bookingDate") as String) }
+
+
+            // Continue with remain elements in appointmentList
+            var i: Int = 0
+            var appointmentIndex: Int = 0
+            while(i < listOfNLastDays.size) {
+                if(appointmentIndex < appointmentList.size) { // check in case size of appointmentList < size of listOfNLastDays
+                    val bookingDate = appointmentList[appointmentIndex].data?.get("bookingDate") as String
+                    val totalPrice = appointmentList[appointmentIndex].data?.get("totalPrice") as Long
+
+                    if(listOfNLastDays[i] == bookingDate) {
+                        var prevBookingDate = ""
+                        if(appointmentIndex - 1 >= 0) {
+                            // If the current day has an appointment => check if it's duplicate with the prev one
+                            prevBookingDate = appointmentList[appointmentIndex - 1].data?.get("bookingDate") as String
+                        }
+
+                        if(prevBookingDate != "" && prevBookingDate == bookingDate) {
+                            // There is a previous duplicate
+                            // => total price of previous += current total price
+                            // Because elements in pair is val => need to assign a new pair to change the total price
+
+                            val prevTotalPrice = appointmentList[appointmentIndex - 1].data?.get("totalPrice") as Long
+                            val dateRevenuePair = Pair(
+                                bookingDate,
+                                totalPrice + prevTotalPrice
+                            )
+                            revenueOfNLastDays[revenueOfNLastDays.size - 1] = dateRevenuePair // re assign
+//                            continue // Keep current day in listOfNLastDays to continue to check for duplicates
+                        }
+                        else {
+                            // If there is no previous duplicate => assign current day with current appointment total price
+                            revenueOfNLastDays.add(Pair(listOfNLastDays[i], totalPrice))
+
+                            if(appointmentIndex - 1 > 0 )
+                                i++ // continue with the next day in listOfNLastDays
+                        }
+                        appointmentIndex++ // continue with a another appointment
+                    }
+                    else {
+                        // If there is no more duplicate to check => skip 1 loop to get next value of listOfNLastDays
+                        if(revenueOfNLastDays.size - 1 >= 0 && revenueOfNLastDays[revenueOfNLastDays.size - 1].first != listOfNLastDays[i]) {
+                            // Assign zero revenue for days that did not have any appointment
+                            revenueOfNLastDays.add(Pair(listOfNLastDays[i], 0))
+                        }
+                        i++
+                    }
+
+                }
+                else {
+                    // If there is no more duplicate to check => skip 1 loop to get next value of listOfNLastDays
+                    if(i != 0 && revenueOfNLastDays.size - 1 >= 0 && revenueOfNLastDays[revenueOfNLastDays.size - 1].first != listOfNLastDays[i]) {
+                        // Assign zero revenue for days that did not have any appointment
+                        revenueOfNLastDays.add(Pair(listOfNLastDays[i], 0))
+                    }
+                    else if(i == 0 && revenueOfNLastDays.size - 1 < 0) {
+                        // Assign zero revenue for days that did not have any appointment
+                        revenueOfNLastDays.add(Pair(listOfNLastDays[i], 0))
+                    }
+                    i++
+                }
+            }
+        }
+
+        return revenueOfNLastDays.reversed() as ArrayList<Pair<String, Long>>
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getRevenueOfNLastMonths(numOfMonths: Int): ArrayList<Pair<Pair<Int, Int>, Long>> {
+        // Pair of month value and year value
+        val listOfNLastMonths: ArrayList<Pair<Int, Int>> = DateServices.getTheNLastMonthsFromNow(numOfMonths)
+        var revenueOfNLastMonths:  ArrayList<Pair<Pair<Int, Int>, Long>> = ArrayList()
+
+        // Get list of appointments that have bookingDate is one of the day in listOfNLastDays
+        if(dbInstance != null) {
+            val result = dbInstance!!.collection(Constant.collection.appointments)
+                .get()
+                .await()
+
+            if(result.documents.size == 0)
+                return revenueOfNLastMonths // return empty array
+
+            var appointmentList = result.documents
+
+            // Sort appointments with date descending
+            val sdf: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+
+            appointmentList.sortByDescending { sdf.parse(it.data?.get("bookingDate") as String) }
+
+            appointmentList.filter {
+                // only get appointment which month value and year value in bookingDate is in listOfNLastMonths
+                listOfNLastMonths.contains(Pair(
+                    sdf.parse(it.data?.get("bookingDate") as String).month,
+                    sdf.parse(it.data?.get("bookingDate") as String).year
+                ))
+            }
+
+
+            // Init with 0th element
+            val cal = Calendar.getInstance(TimeZone.getTimeZone(ZoneId.systemDefault()))
+
+            // Continue with remain elements in appointmentList
+            var i: Int = 0
+            var appointmentIndex: Int = 0
+            while(i < listOfNLastMonths.size) {
+                if(appointmentIndex < appointmentList.size) { // check in case size of appointmentList < size of listOfNLastMonths
+                    cal.time = sdf.parse(appointmentList[appointmentIndex].data?.get("bookingDate") as String)
+                    var bookingMonth = cal[Calendar.MONTH] + 1
+                    var bookingYear = cal[Calendar.YEAR]
+                    val totalPrice = appointmentList[appointmentIndex].data?.get("totalPrice") as Long
+
+                    if(listOfNLastMonths[i].first == bookingMonth && listOfNLastMonths[i].second == bookingYear) {
+                        var prevBookingMonth: Pair<Int, Int>? = null
+                        if(appointmentIndex - 1 >= 0) {
+                            // If the current month has an appointment => check if it's duplicate with the prev one
+                            cal.time = sdf.parse(appointmentList[appointmentIndex - 1].data?.get("bookingDate") as String)
+                            prevBookingMonth = Pair(cal[Calendar.MONTH] + 1, cal[Calendar.YEAR])
+                        }
+
+                        if(prevBookingMonth != null
+                            && prevBookingMonth.first == bookingMonth
+                            && prevBookingMonth.second == bookingYear) {
+                            // There is a previous duplicate
+                            // => total price of previous += current total price
+                            // Because elements in pair is val => need to assign a new pair to change the total price
+
+                            val prevTotalPrice = appointmentList[appointmentIndex - 1].data?.get("totalPrice") as Long
+                            val monthRevenuePair: Pair<Pair<Int, Int>, Long> = Pair(
+                                Pair(
+                                    bookingMonth,
+                                    bookingYear,
+                                ),
+                                prevTotalPrice
+                            )
+                            revenueOfNLastMonths[revenueOfNLastMonths.size - 1] = monthRevenuePair // re assign
+                        }
+                        else {
+                            // If there is no previous duplicate => assign current day with current appointment total price
+                            revenueOfNLastMonths.add(Pair(listOfNLastMonths[i], totalPrice))
+
+                            if(appointmentIndex - 1 > 0 )
+                                i++ // continue with the next day in listOfNLastMonths
+                        }
+                        appointmentIndex++ // continue with a another appointment
+                    }
+                    else {
+                        // If there is no more duplicate to check => skip 1 loop to get next value of listOfNLastMonths
+                        if(revenueOfNLastMonths.size - 1 >= 0 && revenueOfNLastMonths[revenueOfNLastMonths.size - 1].first != listOfNLastMonths[i]) {
+                            // Assign zero revenue for days that did not have any appointment
+                            revenueOfNLastMonths.add(Pair(listOfNLastMonths[i], 0))
+                        }
+                        i++
+                    }
+
+                }
+                else {
+                    // If there is no more duplicate to check => skip 1 loop to get next value of listOfNLastMonths
+                    if(i != 0 && revenueOfNLastMonths.size - 1 >= 0 && revenueOfNLastMonths[revenueOfNLastMonths.size - 1].first != listOfNLastMonths[i]) {
+                        // Assign zero revenue for days that did not have any appointment
+                        revenueOfNLastMonths.add(Pair(listOfNLastMonths[i], 0))
+                    }
+                    else if(i == 0 && revenueOfNLastMonths.size - 1 < 0) {
+                        // Assign zero revenue for days that did not have any appointment
+                        revenueOfNLastMonths.add(Pair(listOfNLastMonths[i], 0))
+                    }
+                    i++
+                }
+            }
+        }
+
+        return  revenueOfNLastMonths.reversed() as ArrayList<Pair<Pair<Int, Int>, Long>>
+    }
+
     override suspend fun find(query: Any?): Any? {
         TODO("Not yet implemented")
     }
