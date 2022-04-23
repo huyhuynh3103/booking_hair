@@ -25,11 +25,17 @@ class DbHairSalonServices(private var dbInstance: FirebaseFirestore?): DatabaseA
                 .addOnSuccessListener { result ->
                     for(document in result){
                         val dataInDoc = document.data
+                        var rate:Double
+                        if(dataInDoc["rate"] is Long){
+                            rate = Double.fromBits(dataInDoc["rate"] as Long)
+                        }else{
+                            rate = dataInDoc["rate"] as Double
+                        }
                         val salon = Salon(document.id,
                             dataInDoc["name"] as String,
                             dataInDoc["salonAvatar"] as String,
                             dataInDoc["description"] as String,
-                            dataInDoc["rate"] as Long,
+                            rate,
                             dataInDoc["openHour"] as String,
                             dataInDoc["closeHour"] as String,
                             dataInDoc["address"] as HashMap<String, String>,

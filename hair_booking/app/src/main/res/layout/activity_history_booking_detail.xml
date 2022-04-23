@@ -72,7 +72,6 @@
                 android:id="@+id/historySubId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:drawablePadding="10dp"
                 android:text="@{viewModel.appointmentSubId}"
@@ -529,6 +528,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:rating="@{viewModel.rating}"
+                android:isIndicator="@{viewModel.ratingIndicator}"
                 android:visibility="@{viewModel.appointmentStatus.toString().equals(isCheckOut)?View.VISIBLE:View.GONE}"
                 app:layout_constraintStart_toStartOf="@+id/historyRatingLabel"
                 app:layout_constraintTop_toBottomOf="@+id/historyRatingLabel" />
@@ -539,7 +540,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:visibility="@{viewModel.appointmentStatus.toString().equals(isCheckOut)?View.VISIBLE:View.GONE}"
-                android:text="@string/send_your_rating_pls"
+                android:text="@{viewModel.ratingContent}"
                 app:layout_constraintStart_toStartOf="@+id/historyRatingBar"
                 app:layout_constraintTop_toBottomOf="@+id/historyRatingBar" />
 
@@ -549,7 +550,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_button"
                 android:text="@string/send"
-                android:visibility="gone"
+                android:visibility="@{viewModel.isVisibleSendRating==true?View.VISIBLE:View.GONE}"
                 app:backgroundTint="@color/theme_primary"
                 app:layout_constraintBottom_toBottomOf="@+id/historyRatingBar"
                 app:layout_constraintEnd_toEndOf="parent"

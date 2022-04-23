@@ -28,7 +28,7 @@ data class Appointment(private val _id: String) {
     private var _note: String? = null
     private var _status: String? = null
     private var _totalPrice: Long? = null
-
+    private var _rate:Double? = null
 
     // GETTERS
     val id: String get() = _id
@@ -52,7 +52,7 @@ data class Appointment(private val _id: String) {
     val note: String? get() = _note
     val status: String? get() = _status
     val totalPrice: Long? get() = _totalPrice
-
+    val rate:Double? get() = _rate
 
     // Full parameter constructor
     constructor(
@@ -115,7 +115,8 @@ data class Appointment(private val _id: String) {
                 bookingTime: String,
                 status: String,
                 hairSalon: HashMap<String, *>,
-                totalPrice: Long
+                totalPrice: Long,
+                rate: Double
     ): this(id) {
         this._appointmentSubId = appointmentSubId
         this._bookingDate = bookingDate
@@ -123,6 +124,7 @@ data class Appointment(private val _id: String) {
         this._status = status
         this._hairSalon = hairSalon
         this._totalPrice = totalPrice
+        this._rate = rate
     }
     constructor(id: String,
                 appointmentSubId: String,
@@ -133,7 +135,8 @@ data class Appointment(private val _id: String) {
                 service: HashMap<String, *>,
                 stylist: HashMap<String, *>,
                 discountApplied: HashMap<String, *>?,
-                totalPrice: Long
+                totalPrice: Long,
+                rate:Double
     ): this(id) {
         this._appointmentSubId = appointmentSubId
         this._bookingDate = bookingDate
@@ -144,6 +147,7 @@ data class Appointment(private val _id: String) {
         this._stylist  = stylist
         this._discountApplied = discountApplied
         this._totalPrice = totalPrice
+        this._rate = rate
     }
     fun getStylistFullName(): String {
         if(stylist != null)

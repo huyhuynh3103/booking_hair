@@ -137,13 +137,20 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                             continue
                         }
                     }
+                    var rate:Double
+                    if(data["rate"]  is Long){
+                        rate = Double.fromBits(data["rate"] as Long)
+                    }else{
+                        rate = data["rate"] as Double
+                    }
                     val appointment = Appointment(document.id,
                         data["subId"] as String,
                         data["bookingDate"] as String,
                         data["bookingTime"] as String,
                         data["status"] as String,
                         data["hairSalon"] as HashMap<String, *>,
-                        data["totalPrice"] as Long)
+                        data["totalPrice"] as Long,
+                        rate)
                     appointmentList.add(appointment)
                 }
 
@@ -393,6 +400,12 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         val queryResult = dbInstance!!.collection(Constant.collection.appointments).document(id).get().await()
         val data = queryResult.data
         if(data!=null){
+            var rate:Double
+            if(data.get("rate")  is Long){
+                rate = Double.fromBits(data.get("rate")  as Long)
+            }else{
+                rate = data.get("rate")  as Double
+            }
             result = Appointment(
                 id,
                 data.get("subId") as String,
@@ -404,12 +417,19 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 data.get("stylist") as HashMap<String, *>,
                 data.get("discountApplied") as HashMap<String, *>?,
                 data.get("totalPrice") as Long,
+                rate
             )
         }
 
 
 
         return result
+    }
+    suspend fun rateAppointment(id:String, rating:Float){
+        var result:Appointment? = null
+        dbInstance!!.collection(Constant.collection.appointments).document(id)
+            .update("rate",rating)
+            .await()
     }
     override suspend fun find(query: Any?): Any? {
         TODO("Not yet implemented")

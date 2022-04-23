@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.example.hair_booking.ui.normal_user.salon.NormalUserSalonDetailViewModel" />
@@ -130,9 +129,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:clickable="false"
+                android:isIndicator="true"
                 android:numStars="5"
-                android:rating="@{viewModel.salon.rate}"
+                android:stepSize="0.1"
+                android:rating="@{viewModel.rate}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_salon_rate"
                 tools:ignore="SpeakableTextPresentCheck" />

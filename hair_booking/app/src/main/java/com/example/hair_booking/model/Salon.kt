@@ -11,7 +11,7 @@ data class Salon(private val _id: String) {
     private var _name: String? = null
     private var _avatar: String? = null
     private var _description: String? = null
-    private var _rate: Long? = null
+    private var _rate: Double? = null
     private var _openHour: String? = null
     private var _closeHour: String? = null
     private var _phoneNumber: String? = null
@@ -28,7 +28,7 @@ data class Salon(private val _id: String) {
     val name: String? get() = _name
     val avatar: String? get() = _avatar
     val description: String? get() = _description
-    val rate: Long? get() = _rate
+    val rate: Double? get() = _rate
     val openHour: String? get() = _openHour
     val closeHour: String? get() = _closeHour
     val address: HashMap<String, String>? get() = _address
@@ -42,7 +42,7 @@ data class Salon(private val _id: String) {
         name: String,
         avatar: String,
         description: String,
-        rate: Long,
+        rate: Double,
         openHour: String,
         closeHour: String,
         address: HashMap<String, String>,
@@ -67,7 +67,7 @@ data class Salon(private val _id: String) {
         name: String,
         avatar: String,
         description: String,
-        rate: Long,
+        rate: Double,
         openHour: String,
         closeHour: String,
         address: HashMap<String, String>,
@@ -101,7 +101,7 @@ data class Salon(private val _id: String) {
         name: String,
         avatar: String,
         description: String,
-        rate: Long,
+        rate: Double,
         openHour: String,
         closeHour: String,
         address: HashMap<String, String>

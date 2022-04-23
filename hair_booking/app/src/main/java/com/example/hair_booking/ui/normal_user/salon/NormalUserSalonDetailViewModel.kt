@@ -34,10 +34,12 @@ class NormalUserSalonDetailViewModel: ViewModel() {
 //        Salon("1", "MySalon", "AvatarString", "Describe something", 4, "08:00", "16:00", hashMapOf("1" to "39 Cao Lỗ, phường 4, quận 8"))
     )
     val salon: LiveData<Salon> = _salon
-
+    private val _rate = MutableLiveData<Float>()
+    val rate:LiveData<Float> = _rate
     fun getSalonDetail(id: String){
         dbServices.getSalonServices()?.getSalonDetail(id)?.observeForever {
             _salon.value = it
+            _rate.value = it.rate!!.toFloat()
         }
     }
 }

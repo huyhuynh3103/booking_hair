@@ -81,24 +81,8 @@ class HistoryBookingDetailActivity : AppCompatActivity() {
             }
         }
         binding.historyRatingBar.onRatingBarChangeListener =
-            OnRatingBarChangeListener { ratingBar, newRating, fromUser ->
-                binding.sendRatingBtn.visibility = View.VISIBLE
-                ratingBar.rating = newRating
-                if(newRating>4){
-                    binding.ratingContent.text = Constant.rating.great
-                }
-                else if(newRating>3){
-                    binding.ratingContent.text = Constant.rating.good
-                }
-                else if(newRating>2){
-                    binding.ratingContent.text = Constant.rating.normal
-                }
-                else if(newRating>1){
-                    binding.ratingContent.text = Constant.rating.bad
-                }
-                else{
-                    binding.ratingContent.text = Constant.rating.veryBad
-                }
+            OnRatingBarChangeListener { _, newRating, _ ->
+                viewModel.rating(newRating)
             }
         binding.sendRatingBtn.setOnClickListener { sendBtn ->
             val rating = binding.historyRatingBar.rating
@@ -112,9 +96,10 @@ class HistoryBookingDetailActivity : AppCompatActivity() {
                         if(hairSalonId!=null){
                             binding.progressBarHistoryDetail.visibility = View.VISIBLE
                             dbServices.getSalonServices()!!.setSalonRatingById(hairSalonId,rating)
+                            dbServices.getAppointmentServices()!!.rateAppointment(id.value!!,rating)
                             binding.progressBarHistoryDetail.visibility = View.GONE
                             sendBtn.visibility = View.GONE
-                            binding.historyRatingBar.setIsIndicator(true)
+                            viewModel.setIndicator(true)
                         }
                     }
                 }

@@ -81,6 +81,7 @@ class HistoryListAdapter:RecyclerView.Adapter<HistoryListAdapter.ViewHolder>() {
         holder.historyBookingItemBinding.isPending = Constant.AppointmentStatus.isPending
         holder.historyBookingItemBinding.isCheckOut = Constant.AppointmentStatus.isCheckout
         holder.historyBookingItemBinding.isAbort = Constant.AppointmentStatus.isAbort
+        holder.historyBookingItemBinding.rate = appointment.rate!!.toFloat()
     }
 
     override fun getItemCount(): Int {

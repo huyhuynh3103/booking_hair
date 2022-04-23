@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.hair_booking.Constant
 import com.example.hair_booking.model.*
 import com.example.hair_booking.services.db.dbServices
 import com.google.firebase.firestore.DocumentReference
@@ -51,9 +52,23 @@ class HistoryBookingDetailViewModel(private val id: MutableLiveData<String>): Vi
     private val _totalPrice = MutableLiveData<String>()
     val totalPrice:LiveData<String> = _totalPrice
 
+    private val _rating = MutableLiveData<Float>()
+    val rating:LiveData<Float> = _rating
 
+    private val _ratingContent = MutableLiveData<String>()
+    val ratingContent:LiveData<String> = _ratingContent
+
+    private val _ratingIndicator = MutableLiveData<Boolean>()
+    val ratingIndicator:LiveData<Boolean> = _ratingIndicator
+
+    private val _isVisibleSendRating = MutableLiveData<Boolean>()
+    val isVisibleSendRating:LiveData<Boolean> = _isVisibleSendRating
 
     init {
+        _ratingIndicator.value = false
+        _isVisibleSendRating.value = false
+        _rating.value = Float.fromBits(0)
+        _ratingContent.value = "Gửi đánh giá của bạn đến chúng tôi"
         _appointmentDiscount.value = "Không có"
         _priceDiscount.value = "0"
         _appointmentStylist.value = "Không có"
@@ -62,10 +77,62 @@ class HistoryBookingDetailViewModel(private val id: MutableLiveData<String>): Vi
             prepareData()
         }
     }
-
+    fun rating(rate:Float){
+        if(rate!=_rating.value){
+            _isVisibleSendRating.value = true
+        }
+        _rating.value = rate
+        if(_rating.value != Float.fromBits(0)){
+            if(rate>4){
+                _ratingContent.value = Constant.rating.great
+            }
+            else if(rate>3){
+                _ratingContent.value = Constant.rating.good
+            }
+            else if(rate>2){
+                _ratingContent.value = Constant.rating.normal
+            }
+            else if(rate>1){
+                _ratingContent.value = Constant.rating.bad
+            }
+            else{
+                _ratingContent.value = Constant.rating.veryBad
+            }
+        }
+    }
+    fun setIndicator(bool:Boolean){
+        _ratingIndicator.value = bool
+    }
     suspend fun prepareData(){
         val appointment = dbServices.getAppointmentServices()!!.getAppointmentById(id.value!!)
         if(appointment!=null){
+            val rate = appointment.rate
+            _rating.value = rate!!.toFloat()
+            if(_rating.value != Float.fromBits(0)){
+                _ratingIndicator.value = true
+                _isVisibleSendRating.value = false
+                if(rate>4){
+                    _ratingContent.value = Constant.rating.great
+                }
+                else if(rate>3){
+                    _ratingContent.value = Constant.rating.good
+                }
+                else if(rate>2){
+                    _ratingContent.value = Constant.rating.normal
+                }
+                else if(rate>1){
+                    _ratingContent.value = Constant.rating.bad
+                }
+                else{
+                    _ratingContent.value = Constant.rating.veryBad
+                }
+            }
+            else{
+                _ratingIndicator.value = false
+            }
+
+
+
             _appointmentSubId.value = appointment.appointmentSubId
             _appointmentTime.value = appointment.bookingTime +" - "+appointment.bookingDate
             if(appointment.note!=null){

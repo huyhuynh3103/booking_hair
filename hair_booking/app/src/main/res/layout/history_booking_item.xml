@@ -6,6 +6,9 @@
         <import type="android.graphics.Color"/>
         <import type="android.view.View"/>
         <variable
+            name="rate"
+            type="Float" />
+        <variable
             name="isAbort"
             type="String" />
         <variable
@@ -139,9 +142,23 @@
             android:layout_height="wrap_content"
             android:text="Nhấp vào để đánh giá >>"
             android:textStyle="italic"
-            android:visibility="@{appointment.status.toString().equals(isCheckOut)?View.VISIBLE:View.GONE}"
+            android:visibility="@{appointment.status.toString().equals(isCheckOut)?(appointment.rate!=0?View.GONE:View.VISIBLE):View.GONE}"
             app:layout_constraintBottom_toBottomOf="@+id/statusAppointmentMock"
             app:layout_constraintEnd_toEndOf="@+id/addressSalonHistory" />
+
+        <RatingBar
+            android:id="@+id/historyRatingBar"
+            style="@android:style/Widget.DeviceDefault.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isIndicator="true"
+            android:visibility="@{appointment.status.toString().equals(isCheckOut)?(appointment.rate==0?View.GONE:View.VISIBLE):View.GONE}"
+            android:numStars="5"
+            android:rating="@{rate}"
+            android:stepSize="0.5"
+            app:layout_constraintBottom_toBottomOf="@+id/labelRating"
+            app:layout_constraintEnd_toEndOf="@+id/labelRating"
+            app:layout_constraintTop_toTopOf="@+id/labelRating" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

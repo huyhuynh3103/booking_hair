@@ -86,6 +86,7 @@ class SalonAdapter:RecyclerView.Adapter<SalonAdapter.ViewHolder>() {
             val addr = "$streetNumber, $streetName, phường $ward, $district, $city"
             holder.salonItemUserBinding.addressSalonItemTV.setText(addr)
         }
+        holder.salonItemUserBinding.rate = salon.rate!!.toFloat()
     }
 
     override fun getItemCount(): Int {
