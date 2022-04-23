@@ -2,6 +2,9 @@ package com.example.hair_booking
 
 import android.annotation.SuppressLint
 import android.util.Log
+import android.view.View
+import android.widget.Button
+import android.widget.CheckBox
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -148,3 +151,11 @@ fun bindAdminServiceListRecyclerView(recyclerView: RecyclerView, data: LiveData<
         adapter?.setData(data)
     }
 }
+@BindingAdapter("shift")
+fun setCheckedCheckBox(checkBox: CheckBox?, shift: HashMap<String, *>?) {
+    if (shift != null) {
+        checkBox?.isChecked = shift?.get("isWorking") == true
+    }
+}
+
+

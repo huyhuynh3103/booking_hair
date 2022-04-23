@@ -3,10 +3,8 @@ package com.example.hair_booking.services.db
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
-import com.example.hair_booking.model.Service
 import com.example.hair_booking.model.Stylist
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
@@ -36,7 +34,40 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
                     document.data?.get("fullName") as String,
                     document.data?.get("avatar") as String,
                     document.data?.get("description") as String,
-                    document.data?.get("shifts") as HashMap<String, HashMap<String, *>>?,
+                    document.data?.get("shifts") as HashMap<String, HashMap<String, *>>,
+                    document.data?.get("workPlace") as DocumentReference,
+                    document.data?.get("deleted") as Boolean,
+                )
+
+                // Insert to list
+                stylistList.add(stylist)
+            }
+        } catch (exception: Exception) {
+            Log.d("StylistServicesLog", "Get stylist detail fail with ", exception)
+        }
+
+        // Call function to return salon list after mapping complete
+        return stylistList
+    }
+
+    suspend fun findAll(salonID: DocumentReference?): ArrayList<Stylist> {
+        var stylistList: ArrayList<Stylist> = ArrayList()
+
+        try {
+            val docSnap = dbInstance!!.collection("stylists")
+                .whereEqualTo("workPlace", salonID)
+                .whereEqualTo("deleted", false)
+                .get()
+                .await()
+
+            for (document in docSnap.documents) {
+                // Mapping firestore object to kotlin model
+                var stylist = Stylist(
+                    document.id,
+                    document.data?.get("fullName") as String,
+                    document.data?.get("avatar") as String,
+                    document.data?.get("description") as String,
+                    document.data?.get("shifts") as HashMap<String, HashMap<String, *>>,
                     document.data?.get("workPlace") as DocumentReference,
                     document.data?.get("deleted") as Boolean,
                 )
@@ -66,7 +97,7 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
                 docSnap.data?.get("fullName") as String,
                 docSnap.data?.get("avatar") as String,
                 docSnap.data?.get("description") as String,
-                docSnap.data?.get("shifts") as HashMap<String, HashMap<String, *>>?,
+                docSnap.data?.get("shifts") as HashMap<String, HashMap<String, *>>,
                 docSnap.data?.get("workPlace") as DocumentReference,
                 docSnap.data?.get("deleted") as Boolean,
             )
@@ -89,7 +120,8 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
                 .update(
                     "fullName", updateDoc?.fullName,
                     "description", updateDoc?.description,
-                    "workPlace", updateDoc?.workPlace
+                    "workPlace", updateDoc?.workPlace,
+                    "shifts", updateDoc?.shifts
                 )
                 .await()
         }
@@ -142,7 +174,7 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
                                 document.data["fullName"] as String,
                                 document.data["avatar"] as String,
                                 document.data["description"] as String,
-                                document.data["shifts"] as HashMap<String, HashMap<String, *>>?,
+                                document.data["shifts"] as HashMap<String, HashMap<String, *>>,
                                 document.data["workPlace"] as DocumentReference,
                                 document.data["deleted"] as Boolean
                             )
@@ -172,12 +204,26 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
                 result.data?.get("fullName") as String,
                 result.data?.get("avatar") as String,
                 result.data?.get("description") as String,
-                result.data?.get("shifts") as HashMap<String, HashMap<String, *>>?,
+                result.data?.get("shifts") as HashMap<String, HashMap<String, *>>,
                 result.data?.get("workPlace") as DocumentReference,
                 result.data?.get("deleted") as Boolean,
             )
         }
 
         return stylist
+    }
+
+    suspend fun getStylistRef(stylistID: String?): DocumentReference? {
+        var stylistRef: DocumentReference? = null
+
+        if (dbInstance != null) {
+            val docSnap = dbInstance!!.collection(Constant.collection.stylists)
+                .document(stylistID!!)
+                .get()
+
+            stylistRef = docSnap.await().reference
+        }
+
+        return stylistRef
     }
 }

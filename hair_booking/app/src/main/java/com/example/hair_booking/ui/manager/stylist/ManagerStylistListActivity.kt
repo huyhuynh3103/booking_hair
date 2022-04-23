@@ -45,6 +45,16 @@ class ManagerStylistListActivity : AppCompatActivity() {
         setTextChangeListener()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        // Get manager ID
+        val managerID = "eOPpMKdBw9iQL1CDIg28"
+
+        lifecycleScope.launch {
+            binding.viewModel!!.getManagerDetail(managerID)
+
+            val salonID = binding.viewModel!!.manager.value?.hairSalon
+            binding.viewModel!!.getStylistList(salonID)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -56,7 +66,8 @@ class ManagerStylistListActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         lifecycleScope.launch {
-            binding.viewModel!!.getUpdatedStylistList()
+            val salonID = binding.viewModel!!.manager.value?.hairSalon
+            binding.viewModel!!.getUpdatedStylistList(salonID)
         }
     }
 
