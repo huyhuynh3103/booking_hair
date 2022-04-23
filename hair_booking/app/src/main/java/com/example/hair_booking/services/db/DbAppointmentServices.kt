@@ -241,6 +241,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         val subId: String = generateAppointmentSubId()
         val status: String = Constant.AppointmentStatus.isPending
         val createdAt: String = DateServices.currentDateInString() + " " + TimeServices.getCurrentTimeInFloatFormat()
+        val rate: Long = 0
 
         var discountDocRef: DocumentReference? = null
         var docTobeSaved: HashMap<String, Any?>? = null
@@ -282,7 +283,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 "totalPrice" to totalPrice,
                 "subId" to subId,
                 "status" to status,
-                "createdAt" to createdAt
+                "createdAt" to createdAt,
+                "rate" to rate
             )
         }
         else {
@@ -316,7 +318,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 "totalPrice" to totalPrice,
                 "subId" to subId,
                 "status" to status,
-                "createdAt" to createdAt
+                "createdAt" to createdAt,
+                "rate" to rate
             )
         }
 
@@ -411,7 +414,6 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         // Create service doc reference
         val serviceDocRef: DocumentReference = dbInstance!!.collection(Constant.collection.services)
             .document(serviceId)
-
 
         var discountDocRef: DocumentReference? = null
         var docTobeSaved: HashMap<String, Any?>? = null
@@ -593,7 +595,11 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 }
                 else {
                     // If there is no more duplicate to check => skip 1 loop to get next value of listOfNLastDays
-                    if(revenueOfNLastDays.size - 1 >= 0 && revenueOfNLastDays[revenueOfNLastDays.size - 1].first != listOfNLastDays[i]) {
+                    if(i != 0 && revenueOfNLastDays.size - 1 >= 0 && revenueOfNLastDays[revenueOfNLastDays.size - 1].first != listOfNLastDays[i]) {
+                        // Assign zero revenue for days that did not have any appointment
+                        revenueOfNLastDays.add(Pair(listOfNLastDays[i], 0))
+                    }
+                    else if(i == 0 && revenueOfNLastDays.size - 1 < 0) {
                         // Assign zero revenue for days that did not have any appointment
                         revenueOfNLastDays.add(Pair(listOfNLastDays[i], 0))
                     }
@@ -696,7 +702,11 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 }
                 else {
                     // If there is no more duplicate to check => skip 1 loop to get next value of listOfNLastMonths
-                    if(revenueOfNLastMonths.size - 1 >= 0 && revenueOfNLastMonths[revenueOfNLastMonths.size - 1].first != listOfNLastMonths[i]) {
+                    if(i != 0 && revenueOfNLastMonths.size - 1 >= 0 && revenueOfNLastMonths[revenueOfNLastMonths.size - 1].first != listOfNLastMonths[i]) {
+                        // Assign zero revenue for days that did not have any appointment
+                        revenueOfNLastMonths.add(Pair(listOfNLastMonths[i], 0))
+                    }
+                    else if(i == 0 && revenueOfNLastMonths.size - 1 < 0) {
                         // Assign zero revenue for days that did not have any appointment
                         revenueOfNLastMonths.add(Pair(listOfNLastMonths[i], 0))
                     }
