@@ -9,6 +9,10 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
+import com.example.hair_booking.model.NormalUser
+import com.example.hair_booking.model.Salon
+import com.github.mikephil.charting.data.BarEntry
+import java.lang.Exception
 
 class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
 
@@ -146,4 +150,30 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
 
         return ack
     }
+    suspend fun findAll(): ArrayList<Service> {
+        var serviceList: ArrayList<Service> = ArrayList()
+        try {
+            val result = dbInstance!!.collection(Constant.collection.services)
+                .get()
+                .await()
+
+
+            for(document in result.documents) {
+                // Mapping firestore object to kotlin model
+                val service: Service = Service(
+                    document.id,
+                    document.data?.get("title") as String,
+                    document.data?.get("price") as Long,
+                    document.data?.get("description") as String
+                )
+                // Insert to list
+                serviceList.add(service)
+            }
+        }
+        catch (exception: Exception) {
+            Log.e("DbServiceServices: ", exception.toString())
+        }
+        return serviceList
+    }
+
 }

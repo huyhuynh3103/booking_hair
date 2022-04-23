@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.model.*
 import com.example.hair_booking.ui.manager.appointment.overview.ManagerAppointmentListAdapter
+import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.ui.normal_user.booking.choose_discount.DiscountListAdapter
 import com.example.hair_booking.ui.normal_user.booking.choose_salon.SalonListAdapter
 import com.example.hair_booking.ui.normal_user.booking.choose_service.ServiceListAdapter
@@ -54,6 +55,7 @@ fun bindBookingDiscountListRecyclerView(recyclerView: RecyclerView, data: ArrayL
 @BindingAdapter("managerAppointmentList")
 fun bindManagerAppointmentListRecyclerView(recyclerView: RecyclerView, data: LiveData<ArrayList<Appointment>>) {
     val adapter = recyclerView.adapter as ManagerAppointmentListAdapter
+    //val adapter = recyclerView.adapter as AppointmentListAdapter
     if (data != null) {
         adapter?.setData(data)
     }

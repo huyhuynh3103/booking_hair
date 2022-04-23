@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
 import com.example.hair_booking.model.Account
-import com.example.hair_booking.model.NormalUser
 import com.example.hair_booking.model.Salon
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -156,6 +155,30 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?):DatabaseAbst
         return detail
     }
 
+    suspend fun accountManagerDetail(id: String): Account {
+        var detail = Account("")
+
+        if(dbInstance != null) {
+            val result = dbInstance!!.collection("accounts")
+                .get()
+                .await()
+            for (document in result.documents) {
+                if (document.id == id) {
+                    // Mapping firestore object to kotlin model
+                    var account: Account = Account(
+                        document.id,
+                        document.data!!["email"] as String,
+                        document.data!!["role"] as String,
+                        document.data!!["banned"] as Boolean,
+                        document.data!!["hairSalon"] as DocumentReference
+                    )
+                    detail = account
+                }
+            }
+        }
+        return detail
+    }
+
     suspend fun getAccountListForManagement(): MutableLiveData<ArrayList<Account>> {
         var list = MutableLiveData<ArrayList<Account>>()
         var accountList: ArrayList<Account> = ArrayList()
@@ -166,21 +189,22 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?):DatabaseAbst
                 .await()
 
             GlobalScope.async {
-                    for (document in result.documents) {
-                        // Mapping firestore object to kotlin model
-                        var account: Account = Account(
-                            document.id,
-                            document.data!!["email"] as String,
-                            document.data!!["role"] as String,
-                            document.data!!["banned"] as Boolean
-                        )
-                        // Insert to list
-                        accountList.add(account)
-                    }
+                for (document in result.documents) {
+                    // Mapping firestore object to kotlin model
+                    var account: Account = Account(
+                        document.id,
+                        document.data!!["email"] as String,
+                        document.data!!["role"] as String,
+                        document.data!!["banned"] as Boolean,
+                        document.data!!["hairSalon"] as DocumentReference
+                    )
+                    // Insert to list
+                    accountList.add(account)
+                }
 
-                    // Call function to return salon list after mapping complete
-                    list.postValue(accountList)
-                }.await()
+                // Call function to return salon list after mapping complete
+                list.postValue(accountList)
+            }.await()
         }
         return list
     }
@@ -269,6 +293,24 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?):DatabaseAbst
             }
         }
         return account
+    suspend fun updateManager(selectedID: String, managerId: String) {
+
+        val dbSalonServices = dbServices.getSalonServices()!!
+
+        val workplaceRef: DocumentReference? = dbSalonServices.getWorkplace(selectedID)
+
+        if (dbInstance != null) {
+            val accountRef = dbInstance!!.collection(Constant.collection.accounts).document(managerId)
+            accountRef
+                .update(
+                    "hairSalon", workplaceRef)
+                .addOnSuccessListener {
+                    Log.d("DbAccountServices", "DocumentSnapshot successfully updated!")
+                }
+                .addOnFailureListener { e ->
+                    Log.d("DbAccountServices", "Error updating document", e)
+                }
+        }
     }
 
     override suspend fun findById(id: Any?): Any? {

@@ -59,6 +59,7 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
             }
             R.id.nav_schedule->{
                 startActivity(Intent(this,BookingActivity::class.java))
+
             }
             R.id.nav_wish_list->{
 

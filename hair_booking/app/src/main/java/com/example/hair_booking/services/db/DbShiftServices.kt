@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.model.Shift
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 
 class DbShiftServices(private var dbInstance: FirebaseFirestore?) {
 
@@ -34,5 +35,17 @@ class DbShiftServices(private var dbInstance: FirebaseFirestore?) {
                 }
         }
         return result
+    }
+
+    suspend fun getShiftType(id: String): String {
+        var type: String = ""
+        if (dbInstance != null) {
+            val result = dbInstance!!.collection("shifts")
+                .document(id)
+                .get()
+                .await()
+            type = result.data?.get("type") as String
+        }
+        return type
     }
 }

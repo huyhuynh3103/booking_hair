@@ -13,10 +13,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.time.ZoneId
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract<Any?>() {
 
@@ -235,6 +237,49 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         }
         catch (exception: Exception) {
             Log.e("DbAppointmentServices: ", exception.toString())
+        }
+        return appointmentList
+    }
+
+    suspend fun findAllWithHairSalon(salonId: String): ArrayList<Appointment> {
+        var appointmentList: ArrayList<Appointment> = ArrayList()
+        if(dbInstance != null) {
+            val salonDocRef = dbInstance!!
+                .collection(Constant.collection.hairSalons)
+                .document(salonId)
+            try {
+                val result = dbInstance!!.collection(Constant.collection.appointments)
+                    .whereEqualTo("hairSalon.id", salonDocRef)
+                    .get()
+                    .await()
+
+
+                for (document in result.documents) {
+                    // Mapping firestore object to kotlin model
+                    val appointment: Appointment = Appointment(
+                        document.id,
+                        document.data?.get("subId") as String,
+                        document.data?.get("userId") as DocumentReference,
+                        document.data?.get("userFullName") as String,
+                        document.data?.get("userPhoneNumber") as String,
+                        document.data?.get("hairSalon") as HashMap<String, *>,
+                        document.data?.get("service") as HashMap<String, *>,
+                        document.data?.get("stylist") as HashMap<String, *>,
+                        document.data?.get("bookingDate") as String,
+                        document.data?.get("bookingTime") as String,
+                        document.data?.get("bookingShift") as DocumentReference,
+                        document.data?.get("createdAt") as String,
+                        document.data?.get("discountApplied") as HashMap<String, *>?,
+                        document.data?.get("notes") as String,
+                        document.data?.get("status") as String,
+                        document.data?.get("totalPrice") as Long,
+                    )
+                    // Insert to list
+                    appointmentList.add(appointment)
+                }
+            } catch (exception: Exception) {
+                Log.e("DbAppointmentServices: ", exception.toString())
+            }
         }
         return appointmentList
     }
@@ -637,13 +682,89 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getRevenueOfNLastDays(numOfDays: Int): ArrayList<Pair<String, Long>> {
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getServicesBooked(salonId: String): HashMap<String, Int> {
+        var services : HashMap<String, Int> = HashMap()
+        var appointmentList: ArrayList<Appointment> = ArrayList()
+        GlobalScope.async {
+            async {
+                appointmentList = findAllWithHairSalon(salonId)
+            }.await()
+            for (i in appointmentList.indices) {
+                val appointment = appointmentList[i]
+                services.putIfAbsent(appointment.service?.get("title").toString(), 0)
+            }
+        }.await()
+        return services
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getAmountOfServicesBooked(salonId: String): Map<String, Int> {
+        var amountServices: HashMap<String, Int> = HashMap()
+        var appointmentList: ArrayList<Appointment> = ArrayList()
+        var services: HashMap<String, Int> = getServicesBooked(salonId)
+        GlobalScope.async {
+            async {
+                appointmentList = findAllWithHairSalon(salonId)
+            }.await()
+            for (key in services.keys) {
+                var count: Int = 0
+                if (appointmentList != null) {
+                    for (i in appointmentList.indices) {
+                        val appointment = appointmentList.get(i)
+                        if (key == appointment.service?.get("title").toString())
+                            count += 1
+                    }
+                }
+                amountServices.put(key, count)
+            }
+        }.await()
+        val result = amountServices.toList().sortedByDescending { (_, value) -> value }.toMap()
+        return result
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getAmountOfShiftsBooked(salonId: String): Map<String, Int> {
+        var amountShifts: HashMap<String, Int> = HashMap()
+        var appointmentList: ArrayList<Appointment> = ArrayList()
+        var shifts: HashMap<String, String> = hashMapOf("Hl0aRPOhZaI02vqMRUdr" to "Sáng",
+            "KaZ0Gj0MzYvkZkpHAs8Q" to "Chiều", "cRAgvOR26BYKSRaHbG0g" to "Tối")
+        GlobalScope.async {
+            async {
+                appointmentList = findAllWithHairSalon(salonId)
+            }.await()
+            for (key in shifts.keys) {
+                var count: Int = 0
+                if (appointmentList != null) {
+                    for (i in appointmentList.indices) {
+                        val appointment = appointmentList.get(i)
+                        if (key == appointment.bookingShift?.id.toString())
+                            count += 1
+                    }
+                }
+                amountShifts.put(shifts[key]!!, count)
+            }
+        }.await()
+        val result = amountShifts.toList().sortedByDescending { (_, value) -> value }.toMap()
+        return result
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getRevenueOfNLastDays(numOfDays: Int, salonId: String): ArrayList<Pair<String, Long>> {
         val listOfNLastDays: ArrayList<String> = DateServices.getTheNLastDaysFromNow(numOfDays)
         var revenueOfNLastDays:  ArrayList<Pair<String, Long>> = ArrayList()
 
 
         // Get list of appointments that have bookingDate is one of the day in listOfNLastDays
         if(dbInstance != null) {
+            //val result = dbInstance!!.collection(Constant.collection.appointments)
+            val salonDocRef = dbInstance!!
+                .collection(Constant.collection.hairSalons)
+                .document(salonId)
+
             val result = dbInstance!!.collection(Constant.collection.appointments)
+                .whereEqualTo("hairSalon.id",salonDocRef)
                 .whereIn("bookingDate", listOfNLastDays)
                 .get()
                 .await()
@@ -712,7 +833,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                         // Assign zero revenue for days that did not have any appointment
                         revenueOfNLastDays.add(Pair(listOfNLastDays[i], 0))
                     }
-                    else if(i == 0 && revenueOfNLastDays.size - 1 < 0) {
+                    else if (i == 0 && revenueOfNLastDays.size - 1 < 0)
+                    {
                         // Assign zero revenue for days that did not have any appointment
                         revenueOfNLastDays.add(Pair(listOfNLastDays[i], 0))
                     }
@@ -726,14 +848,21 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun getRevenueOfNLastMonths(numOfMonths: Int): ArrayList<Pair<Pair<Int, Int>, Long>> {
+    //suspend fun getRevenueOfNLastMonths(numOfMonths: Int): ArrayList<Pair<Pair<Int, Int>, Long>> {
+    suspend fun getRevenueOfNLastMonths(numOfMonths: Int, salonId: String): ArrayList<Pair<Pair<Int, Int>, Long>> {
         // Pair of month value and year value
         val listOfNLastMonths: ArrayList<Pair<Int, Int>> = DateServices.getTheNLastMonthsFromNow(numOfMonths)
         var revenueOfNLastMonths:  ArrayList<Pair<Pair<Int, Int>, Long>> = ArrayList()
 
         // Get list of appointments that have bookingDate is one of the day in listOfNLastDays
         if(dbInstance != null) {
+            //val result = dbInstance!!.collection(Constant.collection.appointments)
+            val salonDocRef = dbInstance!!
+                .collection(Constant.collection.hairSalons)
+                .document(salonId)
+
             val result = dbInstance!!.collection(Constant.collection.appointments)
+                .whereEqualTo("hairSalon.id",salonDocRef)
                 .get()
                 .await()
 
@@ -819,7 +948,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                         // Assign zero revenue for days that did not have any appointment
                         revenueOfNLastMonths.add(Pair(listOfNLastMonths[i], 0))
                     }
-                    else if(i == 0 && revenueOfNLastMonths.size - 1 < 0) {
+                    else if (i == 0 && revenueOfNLastMonths.size - 1 < 0)
+                    {
                         // Assign zero revenue for days that did not have any appointment
                         revenueOfNLastMonths.add(Pair(listOfNLastMonths[i], 0))
                     }
