@@ -6,38 +6,38 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:hardwareAccelerated="true"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hair_booking">
-        <activity android:name=".ui.normal_user.booking.booking_confirm.BookingConfirmActivity"></activity>
-
+        <activity
+            android:name=".ui.admin.home.AdminHomeActivity"
+            android:exported="true" />
+        <activity android:name=".ui.normal_user.booking.booking_confirm.BookingConfirmActivity" />
         <activity android:name=".ui.normal_user.booking.choose_discount.ChooseDiscountActivity" />
         <activity
             android:name=".ui.authentication.SignUpActivity"
             android:exported="true" />
-
         <activity
             android:name=".ui.admin.managers_list.ManagerDetailAdminActivity"
             android:exported="false" />
         <activity
             android:name=".ui.admin.managers_list.ManagersListActivity"
             android:exported="true" />
-
         <activity
             android:name=".ui.normal_user.history.detail.HistoryBookingDetailActivity"
             android:exported="true" />
         <activity
             android:name=".ui.normal_user.history.overview.HistoryBooking"
             android:exported="true" />
-        <activity android:name=".ui.admin.service.edit_service.AdminEditServiceActivity"/>
+        <activity android:name=".ui.admin.service.edit_service.AdminEditServiceActivity" />
         <activity android:name=".ui.admin.service.add_new_service.AdminAddNewServiceActivity" />
         <activity
             android:name=".ui.admin.service.overview.AdminServiceListActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity android:name=".ui.manager.appointment.detail.edit.ManagerEditAppointmentActivity" />
         <activity
             android:name=".ui.manager.appointment.overview.ManagerAppointmentListActivity"
@@ -61,8 +61,7 @@
         <activity
             android:name=".ui.normal_user.home.NormalUserHomeActivity"
             android:exported="true"
-            android:label="@string/app_name"/>
-
+            android:label="@string/app_name" />
         <activity
             android:name=".ui.manager.appointment.detail.ManagerAppointmentDetailActivity"
             android:exported="false" />
@@ -72,11 +71,11 @@
         <activity
             android:name=".ui.normal_user.booking.choose_salon.ChooseSalonActivity"
             android:exported="false"
-            android:label="@string/choose_salon_screen_title"/>
+            android:label="@string/choose_salon_screen_title" />
         <activity
             android:name=".ui.normal_user.booking.choose_stylist.ChooseStylistActivity"
             android:exported="false"
-            android:label="@string/choose_stylist_screen_title"/>
+            android:label="@string/choose_stylist_screen_title" />
         <activity
             android:name=".ui.normal_user.booking.choose_service.ChooseServiceActivity"
             android:exported="false"
@@ -88,7 +87,7 @@
         <activity
             android:name=".ui.manager.stylist.ManagerStylistDetailActivity"
             android:exported="true"
-            android:label="Manager Stylist"/>
+            android:label="Manager Stylist" />
         <activity
             android:name=".ui.normal_user.salon.NormalUserSalonDetailActivity"
             android:exported="true"
@@ -101,7 +100,6 @@
             android:exported="true" />
         <activity android:name=".ui.manager.home.ManagerHomeActivity" />
         <activity android:name=".ui.authentication.LogInActivity" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true">

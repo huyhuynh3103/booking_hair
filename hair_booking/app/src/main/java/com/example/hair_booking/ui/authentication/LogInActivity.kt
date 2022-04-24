@@ -14,6 +14,7 @@ import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityLogInBinding
 import com.example.hair_booking.services.auth.AuthRepository
 import com.example.hair_booking.services.db.dbServices
+import com.example.hair_booking.ui.admin.home.AdminHomeActivity
 import com.example.hair_booking.ui.manager.home.ManagerHomeActivity
 import com.example.hair_booking.ui.normal_user.home.NormalUserHomeActivity
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -70,6 +71,7 @@ class LogInActivity : AppCompatActivity() {
                         navigateToLandingPage(email)
                         binding.progressBarLogin.visibility = View.INVISIBLE
                     } catch (e: FirebaseAuthInvalidUserException) {
+                        binding.progressBarLogin.visibility = View.INVISIBLE
                         Log.d("Login Failed",Constant.messages.loginFailedByEmail)
                         runOnUiThread{
                             Toast.makeText(applicationContext,
@@ -77,6 +79,7 @@ class LogInActivity : AppCompatActivity() {
                                 Toast.LENGTH_LONG).show()
                         }
                     } catch (e: FirebaseAuthInvalidCredentialsException) {
+                        binding.progressBarLogin.visibility = View.INVISIBLE
                         Log.d("Login Failed",Constant.messages.loginFailedByPassword)
                         runOnUiThread {
                             Toast.makeText(applicationContext,
@@ -105,6 +108,11 @@ class LogInActivity : AppCompatActivity() {
                 else if(accountResult[0].role == Constant.roles.managerRole) {
                     val intent =
                         Intent(applicationContext, ManagerHomeActivity::class.java)
+                    startActivity(intent)
+                }
+                else if(accountResult[0].role == Constant.roles.adminRole){
+                    val intent =
+                        Intent(applicationContext,AdminHomeActivity::class.java)
                     startActivity(intent)
                 }
                 else{
