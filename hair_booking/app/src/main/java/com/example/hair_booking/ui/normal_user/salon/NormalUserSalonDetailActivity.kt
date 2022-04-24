@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.R
@@ -16,7 +17,7 @@ import com.example.hair_booking.ui.normal_user.booking.BookingActivity
 class NormalUserSalonDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNormalUserSalonDetailBinding
-    private val viewModel: NormalUserSalonDetailViewModel by viewModels()
+    private val viewModel: NormalUserSalonDetailViewModel by viewModels{NormalUserSalonViewModelFactory(applicationContext)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +30,8 @@ class NormalUserSalonDetailActivity : AppCompatActivity() {
         setOnClickListenerForButton()
 
         // enable back button
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
