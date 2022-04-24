@@ -467,16 +467,23 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
             }else{
                 rate = data.get("rate")  as Double
             }
+
             result = Appointment(
                 id,
                 data.get("subId") as String,
-                data.get("bookingDate") as String,
-                data.get("bookingTime") as String,
-                data.get("status") as String,
+                data.get("userId") as DocumentReference,
+                data.get("userFullName") as String,
+                data.get("userPhoneNumber") as String,
                 data.get("hairSalon") as HashMap<String, *>,
                 data.get("service") as HashMap<String, *>,
                 data.get("stylist") as HashMap<String, *>,
+                data.get("bookingDate") as String,
+                data.get("bookingTime") as String,
+                data.get("bookingShift") as DocumentReference,
+                data.get("createdAt") as String,
                 data.get("discountApplied") as HashMap<String, *>?,
+                data.get("notes") as String,
+                data.get("status") as String,
                 data.get("totalPrice") as Long,
                 rate
             )

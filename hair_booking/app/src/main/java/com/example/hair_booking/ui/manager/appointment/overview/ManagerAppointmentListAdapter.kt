@@ -1,6 +1,7 @@
 package com.example.hair_booking.ui.manager.appointment.overview
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class ManagerAppointmentListAdapter: RecyclerView.Adapter<ManagerAppointmentList
     fun setAppointmentToBeHiddenIndexWhenSearch(appointmentToBeHiddenIndex: ArrayList<Int>?) {
         this.appointmentToBeHiddenIndexWhenSearch = appointmentToBeHiddenIndex
 
+        Log.d("text1231", "notify")
         notifyDataSetChanged()
     }
 
@@ -72,6 +74,7 @@ class ManagerAppointmentListAdapter: RecyclerView.Adapter<ManagerAppointmentList
         appointment?.prepareBookingTimeForDisplay()
         holder.appointmentListItemBinding.appointment = appointment
 
+        Log.d("text1231", position.toString())
         // Show appointment
         holder.itemView.visibility = View.VISIBLE
         holder.itemView.layoutParams = RecyclerView.LayoutParams(
@@ -79,6 +82,13 @@ class ManagerAppointmentListAdapter: RecyclerView.Adapter<ManagerAppointmentList
                 ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
+        if(appointmentToBeHiddenIndexWhenSearch != null){
+            if(appointmentToBeHiddenIndexWhenSearch!!.contains(position)) {
+                // Hide appointment
+                holder.itemView.visibility = View.GONE
+                holder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
+            }
+        }
 
         if(appointmentToBeHiddenIndexWhenFilter != null) {
             if(appointmentToBeHiddenIndexWhenFilter!!.contains(position)) {
