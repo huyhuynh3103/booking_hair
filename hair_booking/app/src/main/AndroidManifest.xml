@@ -29,7 +29,9 @@
             android:exported="true" />
         <activity
             android:name=".ui.normal_user.history.detail.HistoryBookingDetailActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:label="Chi tiết lịch sử"
+            android:parentActivityName=".ui.normal_user.history.overview.HistoryBooking"/>
         <activity
             android:name=".ui.normal_user.history.overview.HistoryBooking"
             android:exported="true"
@@ -93,7 +95,7 @@
         <activity
             android:name=".ui.normal_user.salon.NormalUserSalonDetailActivity"
             android:exported="true"
-            android:label="Thông tin của hàng" />
+            android:label="Thông tin cửa hàng" />
         <activity
             android:name=".ui.manager.profile.ManagerProfileActivity"
             android:exported="false" />
@@ -104,13 +106,7 @@
         <activity android:name=".ui.authentication.LogInActivity" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true"/>
 
         <meta-data
             android:name="preloaded_fonts"
