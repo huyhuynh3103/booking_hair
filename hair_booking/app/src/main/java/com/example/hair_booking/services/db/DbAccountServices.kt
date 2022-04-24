@@ -1,19 +1,15 @@
 package com.example.hair_booking.services.db
 
-import android.text.BoringLayout
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
 import com.example.hair_booking.model.Account
-import com.example.hair_booking.model.Salon
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
-import kotlin.coroutines.suspendCoroutine
 
 class DbAccountServices(private var dbInstance: FirebaseFirestore?):DatabaseAbstract<HashMap<String,String>>() {
     override suspend fun find(query: HashMap<String,String>): ArrayList<Account> {
@@ -293,6 +289,7 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?):DatabaseAbst
             }
         }
         return account
+    }
     suspend fun updateManager(selectedID: String, managerId: String) {
 
         val dbSalonServices = dbServices.getSalonServices()!!
@@ -313,8 +310,6 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?):DatabaseAbst
         }
     }
 
-    override suspend fun findById(id: Any?): Any? {
-        TODO("Not yet implemented")
     override suspend fun findById(id: Any?): Account? {
         var account: Account? = null
 

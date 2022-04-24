@@ -36,8 +36,6 @@ import com.example.hair_booking.services.auth.AuthRepository
 import com.example.hair_booking.ui.manager.appointment.overview.ManagerAppointmentListActivity
 import com.example.hair_booking.ui.manager.profile.ManagerProfileActivity
 import com.example.hair_booking.ui.manager.stylist.ManagerStylistListActivity
-import com.example.hair_booking.ui.normal_user.home.SalonAdapter
-import com.example.hair_booking.ui.normal_user.home.SalonViewModel
 import com.google.android.material.navigation.NavigationView
 import com.journeyapps.barcodescanner.ScanOptions
 import android.widget.Toast
@@ -50,9 +48,8 @@ import com.journeyapps.barcodescanner.ScanIntentResult
 
 class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var mDrawerLayout: DrawerLayout? = null
-    private val salonViewModel: SalonViewModel by viewModels()
+    private val managerHomeViewModel: ManagerHomeViewModel by viewModels()
     private lateinit var binding: ActivityManagerHomeBinding
-    private lateinit var salonAdapter: SalonAdapter
     private lateinit var barcodeLauncher: ActivityResultLauncher<ScanOptions>
     private var serviceList = ArrayList<Statistics>()
     private var shiftList = ArrayList<Statistics>()
