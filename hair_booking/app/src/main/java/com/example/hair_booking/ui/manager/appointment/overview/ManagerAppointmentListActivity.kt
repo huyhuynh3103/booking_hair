@@ -155,15 +155,17 @@ class ManagerAppointmentListActivity : AppCompatActivity() {
                  override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
                  override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
                      if(s != "" && s != "\n") {
                          // Filter appointments by subId
                          var appointmentToBeHiddenIndex: ArrayList<Int> = ArrayList()
-                         viewModel.appointmentSubIds.value!!.forEach { subId ->
-                             val keyword = s.toString()
-                             if(!subId!!.contains(keyword))
-                                 appointmentToBeHiddenIndex.add(viewModel.appointmentSubIds.value!!.indexOf(subId))
-                         }
 
+                         viewModel.appointmentList.value!!.forEach { appointment ->
+                             val keyword = s.toString()
+                             Log.d("text1231", keyword)
+                             if(!appointment.appointmentSubId!!.contains(keyword))
+                                 appointmentToBeHiddenIndex.add(viewModel.appointmentList.value!!.indexOf(appointment))
+                         }
 
                          appointmentListAdapter.setAppointmentToBeHiddenIndexWhenSearch(appointmentToBeHiddenIndex)
                      }

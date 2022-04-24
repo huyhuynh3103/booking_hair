@@ -90,6 +90,43 @@ data class Appointment(private val _id: String) {
         this._totalPrice = totalPrice
     }
 
+    constructor(
+        id: String,
+        appointmentSubId: String,
+        userId: DocumentReference,
+        userFullName: String,
+        userPhoneNumber: String?,
+        hairSalon: HashMap<String, *>,
+        service: HashMap<String, *>,
+        stylist: HashMap<String, *>,
+        bookingDate: String,
+        bookingTime: String,
+        bookingShift: DocumentReference,
+        createdAt: String,
+        discountApplied: HashMap<String, *>?,
+        note: String,
+        status: String,
+        totalPrice: Long,
+        rate: Double
+    ): this(id) {
+        this._appointmentSubId = appointmentSubId
+        this._userId = userId
+        this._userFullName = userFullName
+        this._userPhoneNumber = userPhoneNumber
+        this._hairSalon = hairSalon
+        this._service = service
+        this._stylist = stylist
+        this._bookingDate = bookingDate
+        this._bookingTime = bookingTime
+        this._bookingShift = bookingShift
+        this._createdAt = createdAt
+        this._discountApplied = discountApplied
+        this._note = note
+        this._status = status
+        this._totalPrice = totalPrice
+        this._rate = rate
+    }
+
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
     constructor(id: String,
                 appointmentSubId: String,
