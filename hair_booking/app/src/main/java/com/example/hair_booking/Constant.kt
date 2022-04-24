@@ -47,5 +47,6 @@ object Constant {
     object roles{
         const val userRole:String = "user"
         const val managerRole:String = "manager"
+        const val adminRole:String = "admin"
     }
 }

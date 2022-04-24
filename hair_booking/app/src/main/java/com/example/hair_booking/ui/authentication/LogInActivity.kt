@@ -60,7 +60,9 @@ class LogInActivity : AppCompatActivity() {
             Log.d("huy-login", "login button clicked")
             val email = binding.emailTV.text.toString()
             val password = binding.passwordTV.text.toString()
-
+            val isValidateEmail = viewModel.validateEmail(email)
+            val isValidatePassword = viewModel.validatePwd(password)
+            if(isValidateEmail&&isValidatePassword){
                 viewModel.viewModelScope.launch {
                     try {
                         binding.progressBarLogin.visibility = View.VISIBLE
@@ -85,8 +87,7 @@ class LogInActivity : AppCompatActivity() {
 
 
                 }
-
-
+            }
         }
     }
     private suspend fun navigateToLandingPage(email:String) = coroutineScope{
