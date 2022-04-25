@@ -15,7 +15,8 @@
         android:theme="@style/Theme.Hair_booking">
         <activity
             android:name=".ui.admin.home.AdminHomeActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:label="Trang chủ"/>
         <activity android:name=".ui.normal_user.booking.booking_confirm.BookingConfirmActivity" />
         <activity android:name=".ui.normal_user.booking.choose_discount.ChooseDiscountActivity" />
         <activity

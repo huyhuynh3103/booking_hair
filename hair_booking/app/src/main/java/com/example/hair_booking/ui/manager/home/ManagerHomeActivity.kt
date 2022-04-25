@@ -128,7 +128,7 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-
+        mDrawerLayout = binding.drawerLayout
         val toggle = ActionBarDrawerToggle(this,binding.drawerLayout,toolbar,
             R.string.navigation_drawer_open,R.string.navigation_drawer_close)
 

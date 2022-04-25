@@ -96,7 +96,7 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
         binding.salonListRecycleView.layoutManager = GridLayoutManager(this,2)
         salonAdapter = SalonAdapter()
         binding.salonListRecycleView.adapter = salonAdapter
-
+        mDrawerLayout = binding.drawerLayout
         binding.salonListRecycleView.addItemDecoration(
             DividerItemDecoration(
                 applicationContext,
