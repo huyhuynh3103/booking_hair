@@ -67,10 +67,10 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 Toast.makeText(this@ManagerHomeActivity, "Cancelled", Toast.LENGTH_LONG).show()
                 // Start Activity for this
             } else {
-                Toast.makeText(this@ManagerHomeActivity,
-                    "Scanned: " + result.contents,
-                    Toast.LENGTH_LONG).show()
-
+                val appointmentId = result.contents
+                val intent = Intent(this,R.layout.activity_manager_appointment_detail::class.java)
+                intent.putExtra("appointmentId",appointmentId)
+                startActivity(intent)
             }
         }
         setupUI()
