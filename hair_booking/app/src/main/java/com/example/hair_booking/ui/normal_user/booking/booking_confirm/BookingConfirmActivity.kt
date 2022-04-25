@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -59,7 +60,9 @@ class BookingConfirmActivity: AppCompatActivity() {
 
 
         // Enable back button
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
         binding.backToMainScreenBtn.setOnClickListener {
             moveToMainScreen()
         }

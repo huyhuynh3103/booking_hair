@@ -13,6 +13,28 @@
         android:layout_height="match_parent"
         tools:context=".ui.normal_user.booking.choose_discount.ChooseDiscountActivity">
 
+        <include
+            android:id="@+id/include"
+            layout="@layout/app_bar_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/chooseDiscountScreenLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="CHỌN KHUYẾN MÃI"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/include" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/discountListRecyclerView"
             discountListForBookingData="@{viewModel.discountList}"
@@ -22,7 +44,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/chooseDiscountScreenLabel" />
+
+        <TextView
+            android:id="@+id/noDiscountLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="KHÔNG CÓ KHUYẾN MÃI"
+            android:textColor="#757474"
+            android:textSize="20sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/discountListRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chooseDiscountScreenLabel" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
