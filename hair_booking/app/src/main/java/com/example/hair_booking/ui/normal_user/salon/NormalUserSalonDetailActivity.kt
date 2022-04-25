@@ -18,7 +18,7 @@ class NormalUserSalonDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNormalUserSalonDetailBinding
     private val viewModel: NormalUserSalonDetailViewModel by viewModels{NormalUserSalonViewModelFactory(applicationContext)}
-
+    private var id:String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -43,13 +43,14 @@ class NormalUserSalonDetailActivity : AppCompatActivity() {
 
     private fun getSelectedSalonDetail() {
         val intent = intent
-        val id = intent.getStringExtra("id")
+        id = intent.getStringExtra("id")
         binding.viewModel?.getSalonDetail(id!!)
     }
 
     private fun setOnClickListenerForButton() {
         binding.bBooking.setOnClickListener() {
             val intent = Intent(this, BookingActivity::class.java)
+            intent.putExtra("salonId",id)
             startActivity(intent)
         }
 
