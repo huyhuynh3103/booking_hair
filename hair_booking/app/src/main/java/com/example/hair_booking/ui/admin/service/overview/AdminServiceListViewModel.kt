@@ -20,6 +20,9 @@ class AdminServiceListViewModel: ViewModel() {
     private var _serviceToBeEditedId = MutableLiveData<String>()
     val serviceToBeEditedId: LiveData<String> = _serviceToBeEditedId
 
+    private var _serviceToBeDeleteId = MutableLiveData<String>()
+    val serviceToBeDeleteId: LiveData<String> = _serviceToBeDeleteId
+
     // Set add button onclick to be observable
     private val _addNewServiceBtnClicked = MutableLiveData<Boolean>()
     val addNewServiceBtnClicked: LiveData<Boolean> = _addNewServiceBtnClicked
@@ -35,13 +38,17 @@ class AdminServiceListViewModel: ViewModel() {
         _editServiceBtnClicked.value = true
     }
 
+    // Set delete button onclick to be observable
+    private val _deleteServiceBtnClicked = MutableLiveData<Boolean>()
+    val deleteServiceBtnClicked: LiveData<Boolean> = _deleteServiceBtnClicked
+    fun onDeleteServiceBtnClicked(serviceId: String) {
+        _serviceToBeDeleteId.value = serviceId
+        _deleteServiceBtnClicked.value = true
+    }
+
     init {
         viewModelScope.launch {
             getServiceList()
-
-//            val test = dbServices.getAppointmentServices()!!.getRevenueOfNLastDays(7)
-//            val test2 = dbServices.getAppointmentServices()!!.getRevenueOfNLastMonths(6)
-//            val a = 2
         }
     }
 
@@ -49,5 +56,9 @@ class AdminServiceListViewModel: ViewModel() {
 
     private fun getServiceList() {
         dbServices.getServiceServices()!!.getServiceListForAdmin(_serviceList)!!
+    }
+
+    suspend fun deleteService(): Boolean {
+        return dbServices.getServiceServices()!!.deleteService(_serviceToBeDeleteId.value!!)
     }
 }

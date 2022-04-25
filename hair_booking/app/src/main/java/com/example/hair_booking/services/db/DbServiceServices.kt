@@ -20,7 +20,7 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
         var result = MutableLiveData<ArrayList<Service>>()
         var serviceList: ArrayList<Service> = ArrayList()
         if(dbInstance != null) {
-            dbInstance!!.collection("services")
+            dbInstance!!.collection(Constant.collection.services)
                 .get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
@@ -31,8 +31,10 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
                             document.data["price"] as Long,
                             document.data["description"] as String
                         )
-                        // Insert to list
-                        serviceList.add(service)
+                        
+                        // Insert to list if service is not deleted
+                        if(document.data?.get("deleted") == null)
+                            serviceList.add(service)
                     }
 
                     // Call function to return salon list after mapping complete
@@ -99,10 +101,11 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
                                 document.data?.get("title") as String,
                                 document.data?.get("price") as Long,
                                 document.data?.get("description") as String,
-                                document.data?.get("duration") as Long,
+                                document.data?.get("duration") as Long
                             )
-                            // Insert to list
-                            tmpServiceList.add(service)
+                            // Insert to list if service is not deleted
+                            if(document.data?.get("deleted") == null)
+                                tmpServiceList.add(service)
                         }
 
                         // Call function to return appointment list after mapping complete
@@ -150,6 +153,29 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
 
         return ack
     }
+
+    suspend fun deleteService(serviceId: String): Boolean {
+        var ack: Boolean = false
+        // Add "deleted: true" to database
+        try {
+            if(dbInstance != null) {
+                dbInstance!!.collection(Constant.collection.services)
+                    .document(serviceId)
+                    .set(hashMapOf(
+                        "deleted" to true
+                    ), SetOptions.merge())
+                    .await()
+
+                ack = true
+            }
+        }
+        catch (e: Exception) {
+            Log.e("DbAppointmentServices", "Error deleting document", e)
+        }
+
+        return ack
+    }
+
     suspend fun findAll(): ArrayList<Service> {
         var serviceList: ArrayList<Service> = ArrayList()
         try {
