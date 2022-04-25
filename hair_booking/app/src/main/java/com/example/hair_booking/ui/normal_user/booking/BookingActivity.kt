@@ -10,6 +10,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityBookingBinding
@@ -51,6 +52,8 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
         binding.lifecycleOwner = this
 
         // Enable back button
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         observeOnClickEvent()

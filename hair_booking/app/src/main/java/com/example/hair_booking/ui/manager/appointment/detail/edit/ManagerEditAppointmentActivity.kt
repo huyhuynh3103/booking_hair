@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.example.hair_booking.R
@@ -70,6 +71,8 @@ class ManagerEditAppointmentActivity : AppCompatActivity(), DatePickerDialog.OnD
 
 
                 // Enable back button
+                val toolbar: Toolbar = findViewById(R.id.toolbar)
+                setSupportActionBar(toolbar)
                 supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
                 observeOnClickEvent()

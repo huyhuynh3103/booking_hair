@@ -20,6 +20,7 @@ class ManagerDetailAdminActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+
         val managerId = intent.getStringExtra("managerId")
         getSelectedNormalUserProfile(managerId!!)
         setOnClickListenerForButton(managerId)
