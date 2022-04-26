@@ -44,7 +44,6 @@ import com.journeyapps.barcodescanner.ScanContract
 
 import androidx.activity.result.ActivityResultLauncher
 import com.journeyapps.barcodescanner.ScanIntentResult
-import kotlinx.coroutines.async
 
 
 class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -68,10 +67,10 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 Toast.makeText(this@ManagerHomeActivity, "Cancelled", Toast.LENGTH_LONG).show()
                 // Start Activity for this
             } else {
-                Toast.makeText(this@ManagerHomeActivity,
-                    "Scanned: " + result.contents,
-                    Toast.LENGTH_LONG).show()
-
+                val appointmentId = result.contents
+                val intent = Intent(this,R.layout.activity_manager_appointment_detail::class.java)
+                intent.putExtra("appointmentId",appointmentId)
+                startActivity(intent)
             }
         }
         setupUI()
@@ -82,7 +81,6 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun setUserProfile() {
         val userProfile = AuthRepository.getCurrentUser()
-        //managerHomeViewModel.getCurrentUserInfo()
 //        bindindHeaderNavigationBinding.nameTextView.setText(userProfile!!.displayName.toString())
 //        bindindHeaderNavigationBinding.gmailTextView.setText(userProfile.email.toString())
     }
@@ -130,7 +128,7 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-
+        mDrawerLayout = binding.drawerLayout
         val toggle = ActionBarDrawerToggle(this,binding.drawerLayout,toolbar,
             R.string.navigation_drawer_open,R.string.navigation_drawer_close)
 
@@ -246,12 +244,10 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     {
         var map : Map<String, Int>? = emptyMap()
         val entries: ArrayList<BarEntry> = ArrayList()
-        var salonId = ""
+
         if (type == 0) {
             GlobalScope.launch {
-                salonId = managerHomeViewModel.getCurrentUserInfo()
-
-                map = managerHomeViewModel.getAmountOfServicesBooked(salonId)
+                map = managerHomeViewModel.getAmountOfServicesBooked()
 
                 serviceList = getServiceList(map)
                 //now draw bar chart with dynamic data
@@ -261,7 +257,6 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                     val amount = serviceList[i]
                     entries.add(BarEntry(i.toFloat(), amount.amount.toFloat()))
                 }
-
 
 
                 val barDataSet = BarDataSet(entries, "Statistics")
@@ -281,8 +276,7 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         else if (type == 1)
         {
             GlobalScope.launch {
-                salonId = managerHomeViewModel.getCurrentUserInfo()
-                map = managerHomeViewModel.getAmountOfShiftsBooked(salonId)
+                map = managerHomeViewModel.getAmountOfShiftsBooked()
                 shiftList = getShiftList(map)
                 //now draw bar chart with dynamic data
 
@@ -312,8 +306,8 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         else if (type == 2)
         {
             GlobalScope.launch {
-                salonId = managerHomeViewModel.getCurrentUserInfo()
-                pairDayList = managerHomeViewModel.getRevenueOfNLastDays(salonId)!!
+                pairDayList = managerHomeViewModel.getRevenueOfNLastDays()!!
+                //statisticsList = getShiftList(map)
                 //now draw bar chart with dynamic data
 
                 //you can replace this data object with  your custom object
@@ -339,8 +333,7 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         else if (type == 3)
         {
             GlobalScope.launch {
-                salonId = managerHomeViewModel.getCurrentUserInfo()
-                pairMonthList = managerHomeViewModel.getRevenueOfNLastMonths(salonId)!!
+                pairMonthList = managerHomeViewModel.getRevenueOfNLastMonths()!!
                 //statisticsList = getShiftList(map)
                 //now draw bar chart with dynamic data
 

@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <variable
             name="viewModel"
@@ -13,19 +14,41 @@
         android:layout_height="match_parent"
         tools:context=".ui.manager.appointment.overview.ManagerAppointmentListActivity">
 
+        <include
+            android:id="@+id/include"
+            layout="@layout/app_bar_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/managerAppointmentListLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="DANH SÁCH LỊCH ĐẶT"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/include" />
+
         <AutoCompleteTextView
             android:id="@+id/appointmentListSearchBar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
             android:drawableLeft="@drawable/ic_baseline_search_24"
             android:drawablePadding="10dp"
             android:hint="@string/search_bar_hint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/managerAppointmentListLabel" />
 
         <Spinner
             android:id="@+id/appointmentListFilter"
@@ -61,6 +84,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/appointmentListFilter"
             app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/noAppointmentLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HIỆN KHÔNG CÓ LỊCH ĐẶT NÀO CẢ"
+            android:textColor="#757474"
+            android:textSize="20sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/appointmentListRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/managerAppointmentListLabel" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

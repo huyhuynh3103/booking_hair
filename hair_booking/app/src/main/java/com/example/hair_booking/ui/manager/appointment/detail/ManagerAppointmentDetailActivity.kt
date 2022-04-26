@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
@@ -26,7 +27,6 @@ import kotlinx.coroutines.launch
 class ManagerAppointmentDetailActivity: AppCompatActivity() {
 
     private val REQUEST_CODE_EDIT_APPOINTMENT: Int = 1111
-    private val REQUEST_CODE_CHECKOUT_CONFIRM: Int = 2222
 
     private lateinit var binding: ActivityManagerAppointmentDetailBinding
     private val appointmentSaved: MutableLiveData<HashMap<String, *>?> = MutableLiveData()
@@ -64,6 +64,11 @@ class ManagerAppointmentDetailActivity: AppCompatActivity() {
 
         // Tell binding to observe the life cycle of this activity
         binding.lifecycleOwner = this
+
+        // Enable back button
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         observeOnClickEvent()
 
@@ -209,8 +214,8 @@ class ManagerAppointmentDetailActivity: AppCompatActivity() {
     }
 
     // Back to main screen when click back button
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        finish()
-        return true
+    override fun onBackPressed() {
+        super.onBackPressed()
+        parent.recreate()
     }
 }

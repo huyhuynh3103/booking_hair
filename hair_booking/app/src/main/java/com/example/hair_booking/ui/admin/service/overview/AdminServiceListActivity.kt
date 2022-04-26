@@ -1,5 +1,6 @@
 package com.example.hair_booking.ui.admin.service.overview
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +11,9 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +23,7 @@ import com.example.hair_booking.databinding.ActivityAdminServiceListBinding
 import com.example.hair_booking.ui.admin.service.add_new_service.AdminAddNewServiceActivity
 import com.example.hair_booking.ui.admin.service.edit_service.AdminEditServiceActivity
 import com.example.hair_booking.ui.normal_user.booking.booking_confirm.BookingConfirmActivity
+import kotlinx.coroutines.launch
 
 class AdminServiceListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAdminServiceListBinding
@@ -29,7 +33,7 @@ class AdminServiceListActivity : AppCompatActivity() {
     private val viewModel: AdminServiceListViewModel by viewModels()
 
     private lateinit var serviceListAdapter: AdminServiceListAdapter
-    @RequiresApi(Build.VERSION_CODES.N)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,11 +50,10 @@ class AdminServiceListActivity : AppCompatActivity() {
 
 
         // Enable back button
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-
-        // Set onclick event on item in appointment list
-        setOnServiceItemClickedEvent()
 
         observeOnClickEvent()
     }
@@ -68,17 +71,8 @@ class AdminServiceListActivity : AppCompatActivity() {
         binding.adminServiceListRecyclerView.addItemDecoration(itemDecoration)
     }
 
-    private fun setOnServiceItemClickedEvent() {
-//        serviceListAdapter.onItemClick = { position: Int ->
-//            val intent = Intent(this, Ad::class.java)
-//
-//            intent.putExtra("appointmentId", viewModel.appointmentList.value?.get(position)?.id)
-//
-//            startActivityForResult(intent, REQUEST_CODE_DETAIL)
-//        }
-    }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun observeOnClickEvent() {
         // Observe add button onclick event
         viewModel.addNewServiceBtnClicked.observe(this, androidx.lifecycle.Observer {
@@ -88,6 +82,11 @@ class AdminServiceListActivity : AppCompatActivity() {
         // Observe edit button onclick event
         viewModel.editServiceBtnClicked.observe(this, androidx.lifecycle.Observer {
             moveToEditServiceScreen()
+        })
+
+        // Observe delete button onclick event
+        viewModel.deleteServiceBtnClicked.observe(this, androidx.lifecycle.Observer {
+            displayDeleteAlertDialog()
         })
     }
 
@@ -102,6 +101,59 @@ class AdminServiceListActivity : AppCompatActivity() {
         intent.putExtra("serviceId", viewModel.serviceToBeEditedId.value!!)
 
         startActivity(intent)
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun displayDeleteAlertDialog() {
+        val builder = AlertDialog.Builder(this)
+        //set title for alert dialog
+        builder.setTitle("Xóa dịch vụ")
+        //set message for alert dialog
+        builder.setMessage("Bạn có thật sự muốn xóa dịch vụ này không ?")
+        builder.setIcon(android.R.drawable.ic_delete)
+
+        //performing positive action
+        builder.setPositiveButton("Có"){dialogInterface, which ->
+            lifecycleScope.launch {
+                val ack = viewModel.deleteService()
+                if(ack) {
+                    runOnUiThread {
+                        displayUpdateSuccessDialog("Xóa dịch vụ thành công")
+                    }
+                }
+            }
+        }
+        //performing negative action
+        builder.setNegativeButton("Không"){dialogInterface, which ->
+            // do nothing
+        }
+        // Create the AlertDialog
+        val alertDialog: AlertDialog = builder.create()
+        // Set other dialog properties
+        alertDialog.setCancelable(false)
+        alertDialog.show()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun displayUpdateSuccessDialog(message: String) {
+        val builder = AlertDialog.Builder(this)
+        //set title for alert dialog
+        builder.setTitle("Thành công")
+        //set message for alert dialog
+        builder.setMessage(message)
+        builder.setIcon(getDrawable(R.drawable.ic_baseline_check_24))
+
+        //performing positive action
+        builder.setPositiveButton("Ok"){dialogInterface, which ->
+//            binding.adminServiceListRecyclerView.adapter?.notifyDataSetChanged()
+        }
+
+        // Create the AlertDialog
+        val alertDialog: AlertDialog = builder.create()
+        // Set other dialog properties
+        alertDialog.setCancelable(false)
+        alertDialog.show()
     }
 
     // Back to main screen when click back button

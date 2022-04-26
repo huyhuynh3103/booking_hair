@@ -9,6 +9,7 @@ import android.widget.RatingBar.OnRatingBarChangeListener
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -38,6 +39,10 @@ class HistoryBookingDetailActivity : AppCompatActivity() {
         binding.isPending = Constant.AppointmentStatus.isPending
         binding.isAbort = Constant.AppointmentStatus.isAbort
 
+        // enable back button
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // generate QR code
         try{
@@ -108,5 +113,10 @@ class HistoryBookingDetailActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        parent.recreate()
     }
 }

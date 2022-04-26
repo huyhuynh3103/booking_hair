@@ -49,6 +49,8 @@ class ManagerAppointmentListActivity : AppCompatActivity() {
 
 
         // Enable back button
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         setupSearchBar()
@@ -181,7 +183,6 @@ class ManagerAppointmentListActivity : AppCompatActivity() {
 
     // Back to main screen when click back button
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Log.d("xk123", "aaa")
         finish()
         return true
     }

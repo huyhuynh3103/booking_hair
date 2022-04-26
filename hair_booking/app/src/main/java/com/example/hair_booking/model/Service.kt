@@ -34,6 +34,7 @@ data class Service(private val _id: String) {
         this._duration = duration
     }
 
+
     constructor(
         id: String,
         title: String,
