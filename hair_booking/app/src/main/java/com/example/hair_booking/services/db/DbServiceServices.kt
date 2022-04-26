@@ -31,7 +31,7 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
                             document.data["price"] as Long,
                             document.data["description"] as String
                         )
-                        
+
                         // Insert to list if service is not deleted
                         if(document.data?.get("deleted") == null)
                             serviceList.add(service)
@@ -128,7 +128,7 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
             }
         }
         catch (e: Exception) {
-            Log.e("DbAppointmentServices", "Error adding document", e)
+            Log.e("DbServiceServices", "Error adding document", e)
         }
 
         return ack
@@ -148,7 +148,7 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
             }
         }
         catch (e: Exception) {
-            Log.e("DbAppointmentServices", "Error updating document", e)
+            Log.e("DbServiceServices", "Error updating document", e)
         }
 
         return ack
@@ -170,7 +170,7 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
             }
         }
         catch (e: Exception) {
-            Log.e("DbAppointmentServices", "Error deleting document", e)
+            Log.e("DbServiceServices", "Error deleting document", e)
         }
 
         return ack
