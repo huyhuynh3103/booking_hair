@@ -244,10 +244,11 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     {
         var map : Map<String, Int>? = emptyMap()
         val entries: ArrayList<BarEntry> = ArrayList()
-
+        var salonId = ""
         if (type == 0) {
             GlobalScope.launch {
-                map = managerHomeViewModel.getAmountOfServicesBooked()
+                salonId = managerHomeViewModel.getCurrentUserInfo()
+                map = managerHomeViewModel.getAmountOfServicesBooked(salonId)
 
                 serviceList = getServiceList(map)
                 //now draw bar chart with dynamic data
@@ -276,7 +277,8 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         else if (type == 1)
         {
             GlobalScope.launch {
-                map = managerHomeViewModel.getAmountOfShiftsBooked()
+                salonId = managerHomeViewModel.getCurrentUserInfo()
+                map = managerHomeViewModel.getAmountOfShiftsBooked(salonId)
                 shiftList = getShiftList(map)
                 //now draw bar chart with dynamic data
 
@@ -306,7 +308,8 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         else if (type == 2)
         {
             GlobalScope.launch {
-                pairDayList = managerHomeViewModel.getRevenueOfNLastDays()!!
+                salonId = managerHomeViewModel.getCurrentUserInfo()
+                pairDayList = managerHomeViewModel.getRevenueOfNLastDays(salonId)!!
                 //statisticsList = getShiftList(map)
                 //now draw bar chart with dynamic data
 
@@ -333,7 +336,8 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         else if (type == 3)
         {
             GlobalScope.launch {
-                pairMonthList = managerHomeViewModel.getRevenueOfNLastMonths()!!
+                salonId = managerHomeViewModel.getCurrentUserInfo()
+                pairMonthList = managerHomeViewModel.getRevenueOfNLastMonths(salonId)!!
                 //statisticsList = getShiftList(map)
                 //now draw bar chart with dynamic data
 
