@@ -23,6 +23,8 @@ import com.example.hair_booking.ui.admin.service.overview.AdminServiceListAdapte
 import com.example.hair_booking.ui.admin.users_list.UsersListAdapter
 import com.example.hair_booking.ui.normal_user.history.overview.HistoryListAdapter
 import com.example.hair_booking.ui.normal_user.home.SalonAdapter
+import com.example.hair_booking.ui.normal_user.wishlist.WishlistRecyclerViewAdapter
+
 @BindingAdapter("data")
 fun bindBookingStylistListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Stylist>?) {
     val adapter = recyclerView.adapter as StylistListAdapter?
@@ -158,4 +160,10 @@ fun setCheckedCheckBox(checkBox: CheckBox?, shift: HashMap<String, *>?) {
     }
 }
 
-
+@BindingAdapter("userWishlist")
+fun bindNormalUserWishlistRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>?) {
+    val adapter = recyclerView.adapter as WishlistRecyclerViewAdapter
+    if (data != null) {
+        adapter?.setData(data)
+    }
+}

@@ -203,6 +203,7 @@ class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) : Databas
                     document.data!!["phoneNumber"] as String,
                     document.data!!["gender"] as String,
                     document.data!!["discountPoint"] as Long,
+                    document.data!!["wishList"] as ArrayList<DocumentReference>,
                     document.data!!["accountId"] as DocumentReference
                 )
             }
