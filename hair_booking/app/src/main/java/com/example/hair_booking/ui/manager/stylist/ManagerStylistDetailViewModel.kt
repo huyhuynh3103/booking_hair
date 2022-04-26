@@ -1,6 +1,5 @@
 package com.example.hair_booking.ui.manager.stylist
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,10 +8,7 @@ import com.example.hair_booking.model.Salon
 import com.example.hair_booking.model.Stylist
 import com.example.hair_booking.services.db.dbServices
 import com.google.firebase.firestore.DocumentReference
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import java.io.FileDescriptor
 
 class ManagerStylistDetailViewModel: ViewModel() {
     private val _stylist: MutableLiveData<Stylist> = MutableLiveData()
@@ -51,6 +47,18 @@ class ManagerStylistDetailViewModel: ViewModel() {
         result = dbServices.getSalonServices()?.getWorkplace(selectedID)
 
         return result
+    }
+
+    suspend fun getShiftRef(id: String): DocumentReference? {
+        return dbServices.getShiftServices()?.getShiftRef(id)
+    }
+
+    suspend fun getStylistRef(id: String): DocumentReference? {
+        return dbServices.getStylistServices()?.getStylistRef(id)
+    }
+
+    suspend fun isBooked(stylistRef: DocumentReference?, shiftRef: DocumentReference?): Boolean {
+        return dbServices.getAppointmentServices()?.countAppointment(stylistRef, shiftRef)!! > 0
     }
 
     suspend fun updateStylist(id: String, stylist: Stylist) {

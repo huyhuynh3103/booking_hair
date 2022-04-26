@@ -17,6 +17,7 @@ import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityBookingConfirmBinding
 import com.example.hair_booking.databinding.ActivityChooseSalonBinding
 import com.example.hair_booking.databinding.ActivityChooseStylistBinding
+import com.example.hair_booking.ui.admin.service.add_new_service.AdminAddNewServiceActivity
 import com.example.hair_booking.ui.normal_user.booking.choose_salon.ChooseSalonViewModel
 import com.example.hair_booking.ui.normal_user.booking.choose_salon.SalonListAdapter
 import com.example.hair_booking.ui.normal_user.booking.choose_stylist.ChooseStylistViewModel
@@ -60,8 +61,14 @@ class BookingConfirmActivity: AppCompatActivity() {
         // Enable back button
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.backToMainScreenBtn.setOnClickListener {
-            finish()
+            moveToMainScreen()
         }
+
+    }
+
+    private fun moveToMainScreen() {
+        val intent = Intent(this, NormalUserHomeActivity::class.java)
+        startActivity(intent)
     }
 
     private fun displayDiscount() {

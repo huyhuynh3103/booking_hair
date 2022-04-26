@@ -20,15 +20,26 @@
         tools:context=".ui.manager.stylist.ManagerStylistDetailActivity">
 
         <TextView
-            android:id="@+id/tv_stylist_name_label"
+            android:id="@+id/tv_stylist_shift_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/stylist_name"
+            android:text="Ca lảm việc"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_stylist_id" />
+            app:layout_constraintTop_toBottomOf="@+id/s_workplace" />
+
+        <TextView
+            android:id="@+id/tv_stylist_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="Tên nhân viên"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/et_stylist_name"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/iv_stylist_avatar"
@@ -39,23 +50,11 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
 
-        <TextView
-            android:id="@+id/tv_stylist_id_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:text="@string/stylist_id"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <EditText
             android:id="@+id/et_stylist_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:gravity="start|top"
@@ -64,22 +63,11 @@
             android:minHeight="48dp"
             android:text='@{task.equals("Edit") ? viewModel.stylist.fullName : ""}'
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_stylist_avatar"
             app:layout_constraintEnd_toStartOf="@+id/iv_stylist_avatar"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_stylist_name_label" />
-
-        <TextView
-            android:id="@+id/tv_stylist_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text='@{task.equals("Edit") ? viewModel.stylist.id : "(Tạo tự động)"}'
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_stylist_id_label" />
+            app:layout_constraintTop_toTopOf="@+id/iv_stylist_avatar" />
 
         <TextView
             android:id="@+id/tv_stylist_description_label"
@@ -105,6 +93,7 @@
             android:inputType="textMultiLine"
             android:minHeight="48dp"
             android:text='@{task.equals("Edit") ? viewModel.stylist.description : ""}'
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_stylist_description_label" />
@@ -125,19 +114,19 @@
 
         <Spinner
             android:id="@+id/s_workplace"
+            list="@{viewModel.salonList}"
+            selected="@{viewModel.stylist.workPlace.id}"
             android:layout_width="0dp"
-            android:layout_height="24dp"
+            android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:textSize="16sp"
             android:entries="@{viewModel.salonList}"
             android:minHeight="48dp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_workplace_label"
-            list="@{viewModel.salonList}"
-            selected="@{viewModel.stylist.workPlace.id}"/>
+            app:layout_constraintTop_toBottomOf="@+id/tv_workplace_label" />
 
         <Button
             android:id="@+id/b_save_stylist_info"
@@ -173,6 +162,45 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <CheckBox
+            android:id="@+id/cb_shift_morning"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Sáng"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_stylist_shift_label"
+            shift='@{viewModel.stylist.shifts.get("morning")}' />
+
+        <CheckBox
+            android:id="@+id/cb_shift_evening"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="Tối"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_stylist_shift_label"
+            shift='@{viewModel.stylist.shifts.get("evening")}' />
+
+        <CheckBox
+            android:id="@+id/cb_shift_afternoon"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Chiều"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/cb_shift_evening"
+            app:layout_constraintStart_toEndOf="@+id/cb_shift_morning"
+            app:layout_constraintTop_toBottomOf="@+id/tv_stylist_shift_label"
+            shift='@{viewModel.stylist.shifts.get("afternoon")}' />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -3,6 +3,7 @@ package com.example.hair_booking.services.db
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.model.Shift
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -47,5 +48,18 @@ class DbShiftServices(private var dbInstance: FirebaseFirestore?) {
             type = result.data?.get("type") as String
         }
         return type
+    }
+    suspend fun getShiftRef(shiftID: String?): DocumentReference? {
+        var shiftRef: DocumentReference? = null
+
+        if (dbInstance != null) {
+            val docSnap = dbInstance!!.collection("shifts")
+                .document(shiftID!!)
+                .get()
+
+            shiftRef = docSnap.await().reference
+        }
+
+        return shiftRef
     }
 }

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="service"
+            type="com.example.hair_booking.model.Service" />
+        <variable
+            name="viewModel"
+            type="com.example.hair_booking.ui.admin.service.overview.AdminServiceListViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/adminServiceListTitleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/ic_baseline_content_cut_24"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:text="Dịch vụ"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/adminServiceListTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:text="@{service.title}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/adminServiceListDurationLabel"
+            app:layout_constraintTop_toTopOf="@+id/adminServiceListTitleLabel" />
+
+        <TextView
+            android:id="@+id/adminServiceListDescriptionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/ic_baseline_sticky_note_2_24"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:text="Mô tả"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/adminServiceListTitleLabel"
+            app:layout_constraintTop_toBottomOf="@+id/adminServiceListTitle" />
+
+
+        <TextView
+            android:id="@+id/adminServiceListDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{service.description}"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="@+id/adminServiceListTitle"
+            app:layout_constraintStart_toStartOf="@+id/adminServiceListTitle"
+            app:layout_constraintTop_toTopOf="@+id/adminServiceListDescriptionLabel" />
+
+        <TextView
+            android:id="@+id/adminServiceListDurationLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/ic_baseline_access_time_24"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:text="Thời gian dự kiến"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/adminServiceListDescriptionLabel"
+            app:layout_constraintTop_toBottomOf="@+id/adminServiceListDescription" />
+
+        <TextView
+            android:id="@+id/adminServiceListDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text='@{service.duration.toString() + " phút"}'
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/adminServiceListDescription"
+            app:layout_constraintStart_toStartOf="@+id/adminServiceListDescription"
+            app:layout_constraintTop_toTopOf="@+id/adminServiceListDurationLabel" />
+
+        <TextView
+            android:id="@+id/adminServiceListTotalPriceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/ic_baseline_attach_money_24"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:text="Đơn giá"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/adminServiceListDurationLabel"
+            app:layout_constraintTop_toBottomOf="@+id/adminServiceListDuration" />
+
+        <TextView
+            android:id="@+id/adminServiceListTotalPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text='@{service.price + " VND"}'
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/adminServiceListDuration"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/adminServiceListDuration"
+            app:layout_constraintTop_toTopOf="@+id/adminServiceListTotalPriceLabel" />
+
+        <Button
+            android:id="@+id/adminEditServiceBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="Chỉnh sửa"
+            android:onClick="@{() -> viewModel.onEditServiceBtnClicked(service.id)}"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="#C8C8C7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/adminServiceListTotalPrice"
+            app:layout_constraintTop_toBottomOf="@+id/adminServiceListTotalPrice" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

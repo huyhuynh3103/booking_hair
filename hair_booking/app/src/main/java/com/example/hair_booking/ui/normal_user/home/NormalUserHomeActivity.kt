@@ -17,6 +17,7 @@ import com.example.hair_booking.databinding.ActivityNormalUserHomeBinding
 import com.example.hair_booking.databinding.LayoutHeaderNavigationBinding
 import com.example.hair_booking.services.auth.AuthRepository
 import com.example.hair_booking.ui.normal_user.booking.BookingActivity
+import com.example.hair_booking.ui.normal_user.history.overview.HistoryBooking
 import com.example.hair_booking.ui.normal_user.profile.NormalUserProfileActivity
 import com.example.hair_booking.ui.normal_user.salon.NormalUserSalonDetailActivity
 import com.google.android.material.navigation.NavigationView
@@ -64,6 +65,7 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
 
             }
             R.id.nav_history->{
+                startActivity(Intent(this,HistoryBooking::class.java))
 
             }
             R.id.nav_membership->{

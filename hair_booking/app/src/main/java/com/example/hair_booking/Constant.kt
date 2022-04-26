@@ -14,29 +14,39 @@ object Constant {
     }
 
     object AppointmentStatus {
-        val accept: String = "Chấp nhận"
-        val deny: String = "Từ chối"
+        val isPending: String = "Chưa thanh toán"
+        val isCheckout: String = "Đã thanh toán"
+        val isAbort: String = "Đã hủy"
     }
     const val notFoundImg = "notfoundimg"
     object messages{
-        const val required:String = "Required"
-        const val invalidEmail:String = "Invalid Email"
-        const val loginFailedByEmail:String = "The email does not exist or has been disabled. Try Again"
-        const val loginFailedByPassword:String = "The wrong password. Try Again"
-        const val signUpFailedByWeekPassword:String = "Week password! Try Again"
-        const val signUpFailedByMalformedEmail:String = "Malformed email! Try Again"
-        const val signUpFailedByExistsEmail:String = "Exists email! Try Again"
-        const val signUpSuccess:String = "Sign Up Successfully."
-        const val notMatch:String = "Not match!"
-        const val errorFromSever:String = "Something went wrong. Try later."
-        const val bannedAccount: String = "This account has been banned by admin. Contact us for any question."
+        const val required:String = "Bắt buộc"
+        const val invalidEmail:String = "Email không hợp lệ"
+        const val loginFailedByEmail:String = "Email wrong"
+        const val loginFailedByPassword:String = "Password wrong"
+        const val loginFailed:String = "Email hoặc mật khẩu không đúng!"
+        const val signUpFailedByWeekPassword:String = "Mật khẩu yếu. Thử lại."
+        const val signUpFailedByMalformedEmail:String = "Email xấu! Không thể đăng kí."
+        const val signUpFailedByExistsEmail:String = "Email tồn tại. Thử lại"
+        const val signUpSuccess:String = "Đăng kí thành công!"
+        const val notMatch:String = "Không trùng khớp."
+        const val errorFromSever:String = "Đã có lỗi xảy ra! Thử lại sau."
+        const val bannedAccount: String = "Tài khoản này đã bị khóa."
         const val length_password_condition_msg = "Must contains at least 8 characters."
         var passwordValidationMsg: ((String) -> String) = { condition ->
             "Must contains at least one $condition character."
         }
     }
+    object rating{
+        const val great:String = "Vô cùng hài lòng"
+        const val good: String = "Tốt"
+        const val normal: String = "Bình thường"
+        const val bad: String = "Khá tệ"
+        const val veryBad:String = "Rất tệ."
+    }
     object roles{
         const val userRole:String = "user"
         const val managerRole:String = "manager"
+        const val adminRole:String = "admin"
     }
 }

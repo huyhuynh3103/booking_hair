@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <import type="android.graphics.Color"/>
+        <variable
+            name="isPending"
+            type="String" />
+        <variable
+            name="isCheckOut"
+            type="String" />
+        <variable
+            name="isAbort"
+            type="String" />
+        <variable
+            name="viewModel"
+            type="com.example.hair_booking.ui.normal_user.history.detail.HistoryBookingDetailViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".ui.normal_user.booking.booking_confirm.BookingConfirmActivity">
+
+            <TextView
+                android:id="@+id/historyDetailLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/appointmentDetailLabel"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/historyAppointmentInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/booking_confirm_screen_appointment_label"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/historyQRcodeLabel"
+                app:layout_constraintTop_toBottomOf="@+id/ratingContent" />
+
+            <TextView
+                android:id="@+id/historyBookingDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawablePadding="10dp"
+                android:text="@{viewModel.appointmentTime}"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_baseline_calendar_today_24"
+                app:layout_constraintStart_toStartOf="@+id/historyAppointmentInfo"
+                app:layout_constraintTop_toBottomOf="@+id/historySubId"
+                tools:text="@string/mock_booking_time" />
+
+
+            <TextView
+                android:id="@+id/historySubId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawablePadding="10dp"
+                android:text="@{viewModel.appointmentSubId}"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/ic_sub_identity"
+                app:layout_constraintStart_toStartOf="@+id/historyAppointmentInfo"
+                app:layout_constraintTop_toBottomOf="@+id/historyAppointmentInfo"
+                tools:text="#3ed3f" />
+
+            <TextView
+                android:id="@+id/historyService"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawablePadding="10dp"
+
+                tools:text = "Combo cắt gội - 45p"
+                android:text="@{viewModel.appointmentService}"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/historyBookingDate"
+                app:layout_constraintTop_toBottomOf="@+id/historyBookingDate"
+                app:drawableStartCompat="@drawable/ic_baseline_content_paste_24" />
+
+            <TextView
+                android:id="@+id/historyNote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawablePadding="10dp"
+                android:textAlignment="viewStart"
+                android:textColor="#000000"
+                android:text="@{viewModel.appointmentNote}"
+                android:textSize="16sp"
+                android:visibility="visible"
+                app:drawableStartCompat="@drawable/ic_baseline_sticky_note_2_24"
+                app:layout_constraintEnd_toEndOf="@+id/qrInstruction"
+                app:layout_constraintStart_toStartOf="@+id/historyService"
+                app:layout_constraintTop_toBottomOf="@+id/historyService"
+                tools:text="Không có" />
+
+            <TextView
+                android:id="@+id/historyStylist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawablePadding="10dp"
+                tools:text="Huỳnh Bá Huy"
+                android:text="@{viewModel.appointmentStylist}"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/historyNote"
+                app:layout_constraintTop_toBottomOf="@+id/historyNote"
+                app:drawableStartCompat="@drawable/ic_baseline_content_cut_24" />
+
+            <TextView
+                android:id="@+id/historyDiscount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawablePadding="10dp"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:text="@{viewModel.appointmentDiscount}"
+                android:visibility="visible"
+                app:drawableStartCompat="@drawable/ic_baseline_local_offer_24"
+                app:layout_constraintStart_toStartOf="@+id/historyStylist"
+                app:layout_constraintTop_toBottomOf="@+id/historyStylist"
+                tools:text="Giảm 25% cho combo cắt gội" />
+
+            <TextView
+                android:id="@+id/historyQRcodeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:textAlignment="viewStart"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/historyDetailLabel"
+                android:text="MÃ QR CHO LỊCH ĐẶT"/>
+
+            <TextView
+                android:id="@+id/historyRatingLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/ratingLabel"
+                android:textAlignment="viewStart"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="@{viewModel.appointmentStatus.toString().equals(isCheckOut)?View.VISIBLE:View.GONE}"
+                app:layout_constraintStart_toStartOf="@+id/historyQRcodeLabel"
+                app:layout_constraintTop_toBottomOf="@+id/qrInstruction" />
+
+            <View
+                android:id="@+id/historyDivider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/historyDiscount"
+                app:layout_constraintTop_toBottomOf="@+id/historyDiscount" />
+
+            <TextView
+                android:id="@+id/historySalonInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/booking_confirm_screen_salon_label"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/historyDivider"
+                app:layout_constraintTop_toBottomOf="@+id/historyDivider" />
+
+            <TextView
+                android:id="@+id/historySalonName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                tools:text="@string/mock_data_address"
+                android:text="@{viewModel.salonName}"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/historyDivider"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/historySalonInfo"
+                app:layout_constraintTop_toBottomOf="@+id/historySalonInfo"
+                app:drawableStartCompat="@drawable/ic_home" />
+
+            <TextView
+                android:id="@+id/historySalonAddress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                tools:text="@string/mock_address_data"
+                android:text="@{viewModel.salonAddress}"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/historyDivider"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/historySalonName"
+                app:layout_constraintTop_toBottomOf="@+id/historySalonName"
+                app:drawableStartCompat="@drawable/ic_baseline_location_on_24" />
+
+            <TextView
+                android:id="@+id/historySalonPhoneNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                tools:text = "0988920221"
+                android:text="@{viewModel.salonPhoneNumber}"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/historyDivider"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/historySalonAddress"
+                app:layout_constraintTop_toBottomOf="@+id/historySalonAddress"
+                app:drawableStartCompat="@drawable/ic_phone" />
+
+            <View
+                android:id="@+id/historyDivider_2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintEnd_toEndOf="@+id/historyDivider"
+                app:layout_constraintStart_toStartOf="@+id/historySalonPhoneNumber"
+                app:layout_constraintTop_toBottomOf="@+id/historySalonPhoneNumber" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/historyServicePriceWrapper"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/historyDivider_2"
+                app:layout_constraintStart_toStartOf="@+id/historyDivider_2"
+                app:layout_constraintTop_toBottomOf="@+id/historyDivider_2">
+
+                <TextView
+                    android:id="@+id/servicePriceLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/price_services"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/historyServicePriceWrapper"
+                    app:layout_constraintTop_toTopOf="@+id/historyServicePriceWrapper" />
+
+                <TextView
+                    android:id="@+id/historyServicePrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    tools:text="255.5"
+                    android:text="@{viewModel.priceService}"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/servicePriceLabel"
+                    app:layout_constraintEnd_toStartOf="@+id/historyServiceUnitLabel"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/servicePriceLabel"
+                    app:layout_constraintTop_toTopOf="@+id/servicePriceLabel"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/historyServiceUnitLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/booking_confirm_screen_unit_label"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/historyServicePrice"
+                    app:layout_constraintEnd_toEndOf="@+id/historyServicePriceWrapper"
+                    app:layout_constraintTop_toTopOf="@+id/historyServicePrice"
+                    app:layout_constraintVertical_bias="1.0" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/historyDiscountPriceWrapper"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/historyServicePriceWrapper"
+                app:layout_constraintStart_toStartOf="@+id/historyServicePriceWrapper"
+                app:layout_constraintTop_toBottomOf="@+id/historyServicePriceWrapper">
+
+                <TextView
+                    android:id="@+id/historyDiscountPriceLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ĐÃ GIẢM"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/historyDiscountPriceWrapper"
+                    app:layout_constraintTop_toTopOf="@+id/historyDiscountPriceWrapper" />
+
+                <TextView
+                    android:id="@+id/historyDiscountPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    tools:text="15"
+                    android:text="@{viewModel.priceDiscount}"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/historyDiscountPriceLabel"
+                    app:layout_constraintEnd_toStartOf="@+id/historyDiscountUnitLabel"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/historyDiscountPriceLabel"
+                    app:layout_constraintTop_toTopOf="@+id/historyDiscountPriceLabel"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/historyDiscountUnitLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/booking_confirm_screen_unit_label"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/historyDiscountPriceWrapper"
+                    app:layout_constraintEnd_toEndOf="@+id/historyDiscountPriceWrapper"
+                    app:layout_constraintTop_toTopOf="@+id/historyDiscountPriceWrapper"
+                    app:layout_constraintVertical_bias="1.0" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/historyTotalPriceWrapper"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/historyDiscountPriceWrapper"
+                app:layout_constraintStart_toStartOf="@+id/historyDiscountPriceWrapper"
+                app:layout_constraintTop_toBottomOf="@+id/historyDiscountPriceWrapper">
+
+                <TextView
+                    android:id="@+id/historyPriceLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/booking_confirm_screen_price_label"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/historyTotalPriceWrapper"
+                    app:layout_constraintTop_toTopOf="@+id/historyTotalPriceWrapper" />
+
+                <TextView
+                    android:id="@+id/historyConfirmPriceLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="#000000"
+                    android:text="@{viewModel.totalPrice}"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/historyPriceLabel"
+                    app:layout_constraintEnd_toStartOf="@+id/historyConfirmUnit"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/historyPriceLabel"
+                    app:layout_constraintTop_toTopOf="@+id/historyPriceLabel"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/historyConfirmUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/booking_confirm_screen_unit_label"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/historyConfirmPriceLabel"
+                    app:layout_constraintEnd_toEndOf="@+id/historyTotalPriceWrapper"
+                    app:layout_constraintTop_toTopOf="@+id/historyConfirmPriceLabel"
+                    app:layout_constraintVertical_bias="1.0" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/historyStatusWrapper"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/historyTotalPriceWrapper"
+                app:layout_constraintStart_toStartOf="@+id/historyTotalPriceWrapper"
+                app:layout_constraintTop_toBottomOf="@+id/historyTotalPriceWrapper">
+
+                <TextView
+                    android:id="@+id/historyStatusLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TRẠNG THÁI"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/historyStatusWrapper"
+                    app:layout_constraintTop_toTopOf="@+id/historyStatusWrapper" />
+
+                <TextView
+                    android:id="@+id/historyAppointmentStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Chưa hoàn thành"
+                    android:text="@{viewModel.appointmentStatus}"
+                    android:textColor="@{viewModel.appointmentStatus.toString().equals(isAbort)?Color.parseColor(`#FF5252`):(viewModel.appointmentStatus.toString().equals(isCheckOut)?Color.parseColor(`#B2FF59`):Color.parseColor(`#000000`))}"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <Button
+                android:id="@+id/historyCancelAppointmentBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:padding="0dp"
+                android:text="Hủy lịch"
+                android:visibility="@{viewModel.appointmentStatus.equals(isPending)?View.VISIBLE:View.GONE}"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:backgroundTint="#E34040"
+                app:layout_constraintEnd_toEndOf="@+id/historyContactBtn"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/historyContactBtn"
+                app:layout_constraintTop_toBottomOf="@+id/historyContactBtn"
+                app:rippleColor="#633838" />
+
+            <Button
+                android:id="@+id/historyContactBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                tools:text="0989223313"
+                android:text="@{viewModel.salonPhoneNumber}"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:backgroundTint="#4CAF50"
+                app:icon="@drawable/ic_contact"
+                app:iconGravity="textStart"
+                app:iconTintMode="src_in"
+                app:layout_constraintEnd_toEndOf="@+id/historyStatusWrapper"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/historyStatusWrapper"
+                app:layout_constraintTop_toBottomOf="@+id/historyStatusWrapper" />
+
+            <ImageView
+                android:id="@+id/QRCodeForAppointment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/historyQRcodeLabel"
+                app:srcCompat="@drawable/qrcode" />
+
+            <TextView
+                android:id="@+id/qrInstruction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:text="@string/qr_instruction"
+                android:textAlignment="viewStart"
+                android:textColor="#E3CF1A"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/historyQRcodeLabel"
+                app:layout_constraintTop_toBottomOf="@+id/QRCodeForAppointment"
+                app:drawableStartCompat="@drawable/ic_warning" />
+
+            <ProgressBar
+                android:id="@+id/progressBarHistoryDetail"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="invisible"/>
+
+            <RatingBar
+                android:id="@+id/historyRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:rating="@{viewModel.rating}"
+                android:isIndicator="@{viewModel.ratingIndicator}"
+                android:visibility="@{viewModel.appointmentStatus.toString().equals(isCheckOut)?View.VISIBLE:View.GONE}"
+                app:layout_constraintStart_toStartOf="@+id/historyRatingLabel"
+                app:layout_constraintTop_toBottomOf="@+id/historyRatingLabel" />
+
+            <TextView
+                android:id="@+id/ratingContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="@{viewModel.appointmentStatus.toString().equals(isCheckOut)?View.VISIBLE:View.GONE}"
+                android:text="@{viewModel.ratingContent}"
+                app:layout_constraintStart_toStartOf="@+id/historyRatingBar"
+                app:layout_constraintTop_toBottomOf="@+id/historyRatingBar" />
+
+            <Button
+                android:id="@+id/sendRatingBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_button"
+                android:text="@string/send"
+                android:visibility="@{viewModel.isVisibleSendRating==true?View.VISIBLE:View.GONE}"
+                app:backgroundTint="@color/theme_primary"
+                app:layout_constraintBottom_toBottomOf="@+id/historyRatingBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/historyRatingBar"
+                app:layout_constraintTop_toTopOf="@+id/historyRatingBar" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</layout>

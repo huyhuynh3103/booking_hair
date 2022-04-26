@@ -2,6 +2,7 @@ package com.example.hair_booking.services.db
 
 import android.util.Log
 import com.example.hair_booking.Constant
+import com.example.hair_booking.model.Appointment
 import com.example.hair_booking.model.Discount
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -46,6 +47,32 @@ class DbDiscountServices(private var dbInstance: FirebaseFirestore?): DatabaseAb
         return discountList
     }
 
+    suspend fun getDiscountsById(discountId: String): Discount? {
+
+        var discount: Discount? = null
+
+        if (dbInstance != null) {
+            val document = dbInstance!!.collection(Constant.collection.discounts)
+                .document(discountId)
+                .get()
+                .await()
+
+            discount = Discount(
+                document.id,
+                document.data?.get("title") as String,
+                document.data?.get("requiredPoint") as Long,
+                document.data?.get("description") as String,
+                document.data?.get("dateApplied") as String,
+                document.data?.get("dateExpired") as String,
+                document.data?.get("percent") as Double,
+                document.data?.get("serviceApplied") as DocumentReference
+            )
+
+        }
+
+        return discount
+    }
+
     override suspend fun findAll(): ArrayList<Discount> {
 
         var discountList: ArrayList<Discount> = ArrayList()
@@ -74,6 +101,20 @@ class DbDiscountServices(private var dbInstance: FirebaseFirestore?): DatabaseAb
         }
 
         return discountList
+    }
+
+    suspend fun getDiscountById(id:String):Discount?{
+        var result: Discount? = null
+        val queryResult = dbInstance!!.collection(Constant.collection.discounts).document(id).get().await()
+        val data = queryResult.data
+        if(data!=null){
+            result = Discount(
+                id,
+                data["title"] as String,
+                data["percent"] as Double
+            )
+        }
+        return result
     }
 
     override suspend fun find(query: Any?): Any? {

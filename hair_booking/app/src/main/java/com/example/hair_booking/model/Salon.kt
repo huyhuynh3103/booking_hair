@@ -11,9 +11,10 @@ data class Salon(private val _id: String) {
     private var _name: String? = null
     private var _avatar: String? = null
     private var _description: String? = null
-    private var _rate: Long? = null
+    private var _rate: Double? = null
     private var _openHour: String? = null
     private var _closeHour: String? = null
+    private var _phoneNumber: String? = null
 
 
     // "*" data type is used to deal with map in map in firestore
@@ -27,13 +28,13 @@ data class Salon(private val _id: String) {
     val name: String? get() = _name
     val avatar: String? get() = _avatar
     val description: String? get() = _description
-    val rate: Long? get() = _rate
+    val rate: Double? get() = _rate
     val openHour: String? get() = _openHour
     val closeHour: String? get() = _closeHour
     val address: HashMap<String, String>? get() = _address
     val appointments: ArrayList<DocumentReference>?  get() = _appointments
     val stylists: ArrayList<HashMap<String, *>>? get() = _stylists
-
+    val phoneNumber: String? get() = _phoneNumber
 
     // Full parameter constructor
     constructor(
@@ -41,7 +42,33 @@ data class Salon(private val _id: String) {
         name: String,
         avatar: String,
         description: String,
-        rate: Long,
+        rate: Double,
+        openHour: String,
+        closeHour: String,
+        address: HashMap<String, String>,
+        appointments: ArrayList<DocumentReference>,
+        stylists: ArrayList<HashMap<String, *>>,
+        phoneNumber: String
+    ): this(id) {
+        this._name = name
+        this._avatar = avatar
+        this._description = description
+        this._rate = rate
+        this._openHour = openHour
+        this._closeHour = closeHour
+        this._address = address
+        this._appointments = appointments
+        this._stylists = stylists
+        this._phoneNumber = phoneNumber
+    }
+
+
+    constructor(
+        id: String,
+        name: String,
+        avatar: String,
+        description: String,
+        rate: Double,
         openHour: String,
         closeHour: String,
         address: HashMap<String, String>,
@@ -75,7 +102,7 @@ data class Salon(private val _id: String) {
         name: String,
         avatar: String,
         description: String,
-        rate: Long,
+        rate: Double,
         openHour: String,
         closeHour: String,
         address: HashMap<String, String>
@@ -99,6 +126,15 @@ data class Salon(private val _id: String) {
         this._name = name
         this._avatar = avatar
         this._description = description
+        this._address = address
+    }
+
+    constructor(
+        id:String,
+        name:String,
+        address: HashMap<String, String>,
+    ):this(id){
+        this._name= name
         this._address = address
     }
 

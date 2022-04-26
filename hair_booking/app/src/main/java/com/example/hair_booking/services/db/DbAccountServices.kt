@@ -1,19 +1,15 @@
 package com.example.hair_booking.services.db
 
-import android.text.BoringLayout
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
 import com.example.hair_booking.model.Account
-import com.example.hair_booking.model.Salon
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
-import kotlin.coroutines.suspendCoroutine
 
 class DbAccountServices(private var dbInstance: FirebaseFirestore?):DatabaseAbstract<HashMap<String,String>>() {
     override suspend fun find(query: HashMap<String,String>): ArrayList<Account> {
@@ -250,6 +246,50 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?):DatabaseAbst
 
     }
 
+    suspend fun getUserAccountByEmail(accountEmail: String): Account? {
+        var account: Account? = null
+
+        if (dbInstance != null) {
+            val result = dbInstance!!.collection(Constant.collection.accounts)
+                .whereEqualTo("email", accountEmail)
+                .get()
+                .await()
+
+            for (document in result.documents) {
+                // Mapping firestore object to kotlin
+                account = Account(
+                    document.id,
+                    document.data!!["email"] as String,
+                    document.data!!["role"] as String,
+                    document.data!!["banned"] as Boolean
+                )
+            }
+        }
+        return account
+    }
+
+    suspend fun getManagerAccountByEmail(accountEmail: String): Account? {
+        var account: Account? = null
+
+        if (dbInstance != null) {
+            val result = dbInstance!!.collection(Constant.collection.accounts)
+                .whereEqualTo("email", accountEmail)
+                .get()
+                .await()
+
+            for (document in result.documents) {
+                // Mapping firestore object to kotlin
+                account = Account(
+                    document.id,
+                    document.data!!["email"] as String,
+                    document.data!!["role"] as String,
+                    document.data!!["banned"] as Boolean,
+                    document.data!!["hairSalon"] as DocumentReference
+                )
+            }
+        }
+        return account
+    }
     suspend fun updateManager(selectedID: String, managerId: String) {
 
         val dbSalonServices = dbServices.getSalonServices()!!
@@ -270,8 +310,27 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?):DatabaseAbst
         }
     }
 
-    override suspend fun findById(id: Any?): Any? {
-        TODO("Not yet implemented")
+    override suspend fun findById(id: Any?): Account? {
+        var account: Account? = null
+
+        try {
+            val docSnap = dbInstance!!.collection("accounts")
+                .document(id!!.toString())
+                .get()
+                .await()
+
+            account = Account(
+                docSnap.id,
+                docSnap.data!!["email"] as String,
+                docSnap.data!!["role"] as String,
+                docSnap.data!!["banned"] as Boolean,
+                docSnap.data!!["hairSalon"] as DocumentReference
+            )
+        } catch (exception: Exception) {
+            Log.d("StylistServicesLog", "Get stylist detail fail with ", exception)
+        }
+
+        return account
     }
 
     override suspend fun updateOne(id: Any?, updateDoc: Any?): Any? {

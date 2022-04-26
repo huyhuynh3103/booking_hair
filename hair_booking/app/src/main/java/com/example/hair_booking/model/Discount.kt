@@ -47,4 +47,11 @@ data class Discount(private val _id: String) {
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
+    constructor(id: String,
+                title: String,
+                percent: Double
+    ) : this(id) {
+        this._title = title
+        this._percent = percent
+    }
 }

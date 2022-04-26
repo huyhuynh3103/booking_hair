@@ -28,7 +28,39 @@ class LoginViewModel: ViewModel() {
         _isVisibleUsrMsg.value = false
         _isVisiblePwdMsg.value = false
     }
-
+    fun validateEmail(email:String):Boolean{
+        val res:Boolean
+        when {
+            email.isEmpty() -> {
+                _isVisibleUsrMsg.value = true
+                _usrMsg.value = Constant.messages.required
+                res = false
+            }
+            !EmailValidator.isEmailValid(email) -> {
+                _isVisibleUsrMsg.value = true
+                _usrMsg.value = Constant.messages.invalidEmail
+                res =false
+            }
+            else -> {
+                _isVisiblePwdMsg.value = false
+                _usrMsg.value = ""
+                res = true
+            }
+        }
+        return res
+    }
+    fun validatePwd(password:String):Boolean{
+        if (password.isEmpty()){
+            _isVisiblePwdMsg.value = true
+            _pwdMsg.value = Constant.messages.required
+            return false
+        }
+        else{
+            _isVisiblePwdMsg.value = false
+            _pwdMsg.value = ""
+            return true
+        }
+    }
     val emailTextWatcher: TextWatcher
         get() = object :TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -41,20 +73,7 @@ class LoginViewModel: ViewModel() {
 
             override fun afterTextChanged(emailEditable: Editable?) {
                 val email = emailEditable.toString()
-                when {
-                    email.isEmpty() -> {
-                        _isVisibleUsrMsg.value = true
-                        _usrMsg.value = Constant.messages.required
-                    }
-                    !EmailValidator.isEmailValid(email) -> {
-                        _isVisibleUsrMsg.value = true
-                        _usrMsg.value = Constant.messages.invalidEmail
-                    }
-                    else -> {
-                        _isVisiblePwdMsg.value = false
-                        _usrMsg.value = ""
-                    }
-                }
+                validateEmail(email)
             }
 
         }
@@ -70,14 +89,7 @@ class LoginViewModel: ViewModel() {
 
             override fun afterTextChanged(passwordEditable: Editable?) {
                 val password = passwordEditable.toString()
-                if (password.isEmpty()){
-                    _isVisiblePwdMsg.value = true
-                    _pwdMsg.value = Constant.messages.required
-                }
-                else{
-                    _isVisiblePwdMsg.value = false
-                    _pwdMsg.value = ""
-                }
+                validatePwd(password)
             }
 
         }

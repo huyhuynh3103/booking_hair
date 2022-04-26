@@ -4,6 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
+            name="rate"
+            type="Float" />
+        <variable
             name="salon"
             type="com.example.hair_booking.model.Salon" />
     </data>
@@ -31,7 +34,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:isIndicator="true"
-            android:rating="@{salon.rate}"
+            android:rating="@{rate}"
             android:numStars="5"
             android:stepSize="0.1"
             tools:ignore="SpeakableTextPresentCheck" />

@@ -46,6 +46,7 @@
     <string name="booking_confirm_screen_salon_label">THÔNG TIN SALON</string>
     <string name="booking_confirm_screen_price_label">TỔNG GIÁ</string>
     <string name="booking_confirm_screen_unit_label">VND</string>
+    <string name="booking_confirm_screen_note_for_user">Nếu bạn muốn điều chỉnh thông tin lịch đặt, vui lòng gọi vào số điện thoại của Salon ở trên</string>
     <string name="booking_confirm_screen_button">TRỞ VỀ MÀN HÌNH CHÍNH</string>
 
     // Manager appointment list screen
@@ -82,6 +83,20 @@
     <string name="confirm_password">Nhập lại mật khẩu</string>
     <string name="phone_number">Số điện thoại</string>
     <string name="sign_out">Đăng xuất</string>
+    <string name="mock_booking_time">19:30 - 23/04/2022</string>
+    <string name="bookingTimeLabel">Thời gian diễn ra</string>
+    <string name="addressSalonLabel">Địa chỉ chi nhánh</string>
+    <string name="mock_address_data">342/11 Khuông việt, phường Phú Trung, Quận Tân Phú, Tp Hồ Chí Minh</string>
+    <string name="nameSalonLabel">Tên chi nhánh</string>
+    <string name="mock_data_address">Chi Nhánh quận Tân Phú</string>
+    <string name="totalPriceLabel">Tổng giá</string>
+    <string name="mockDataPrice">322.122 USD</string>
+    <string name="cancelBookingLabel">Hủy Lịch</string>
+    <string name="mock_data_status_appointment">Chưa diễn ra</string>
+    <string name="status_appointment_history_label">Trạng thái</string>
+    <string name="appointmentDetailLabel">CHI TIẾT LỊCH ĐẶT</string>
+    <string name="price_services">GIÁ DỊCH VỤ</string>
+    <string name="qr_instruction">Quét mã khi để thanh toán sau khi hớt tóc xong.</string>
     <string name="stylist">Thợ làm tóc</string>
     <string name="nav_appointment_manager">Lịch được đặt</string>
     <string name="stylist_name">Tên nhân viên</string>
@@ -92,6 +107,9 @@
     <string name="delete_btn">Xóa nhân viên</string>
     <string name="add_stylist_btn">Thêm mới nhân viên</string>
     <string name="search">Tìm kiếm ...</string>
+    <string name="ratingLabel">ĐÁNH GIÁ TRẢI NGHIỆM</string>
+    <string name="send_your_rating_pls">Gửi đánh giá của bạn đến chúng tôi</string>
+    <string name="send">Gửi</string>
 
 
 </resources>

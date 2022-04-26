@@ -1,6 +1,5 @@
 package com.example.hair_booking.model
 
-import java.time.Duration
 
 // Primary constructor only contains 1 parameter because these following reason:
 // - Secondary constructor in kotlin MUST call primary first,
@@ -47,4 +46,15 @@ data class Service(private val _id: String) {
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
+    // Full parameter constructor
+    constructor(
+        id: String,
+        title: String,
+        price: Long,
+        duration: Long
+    ): this(id) {
+        this._title = title
+        this._price = price
+        this._duration = duration
+    }
 }

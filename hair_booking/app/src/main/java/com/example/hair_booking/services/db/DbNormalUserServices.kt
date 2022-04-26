@@ -134,14 +134,12 @@ class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) : Databas
         var discountPoint: Long = 0
 
         if (dbInstance != null) {
-            val result = dbInstance!!.collection(Constant.collection.normalUsers)
-                .whereEqualTo("id", userId)
+            val document = dbInstance!!.collection(Constant.collection.normalUsers)
+                .document(userId)
                 .get()
                 .await()
 
-            for(document in result.documents) {
-                discountPoint = document.data?.get("discountPoint") as Long
-            }
+            discountPoint = document.data?.get("discountPoint") as Long
 
         }
         return discountPoint
@@ -185,6 +183,32 @@ class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) : Databas
                 Log.d("DbNormalUserServices", "Error updating document", e)
             }
 
+    }
+
+    suspend fun getUserByAccountId(accountId: String): NormalUser? {
+        var user: NormalUser? = null
+
+        if (dbInstance != null) {
+            val accountRef = dbInstance!!.collection(Constant.collection.accounts).document(accountId)
+            val result = dbInstance!!.collection(Constant.collection.normalUsers)
+                .whereEqualTo("accountId", accountRef)
+                .get()
+                .await()
+
+            for (document in result.documents) {
+                // Mapping firestore object to kotlin
+                user = NormalUser(
+                    document.id,
+                    document.data!!["fullName"] as String,
+                    document.data!!["phoneNumber"] as String,
+                    document.data!!["gender"] as String,
+                    document.data!!["discountPoint"] as Long,
+                    document.data!!["accountId"] as DocumentReference
+                )
+            }
+        }
+
+        return user
     }
 
     override suspend fun findById(id: Any?): Any? {

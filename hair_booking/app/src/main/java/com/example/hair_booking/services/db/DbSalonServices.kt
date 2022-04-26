@@ -58,13 +58,19 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
                         if (document.id == id) {
+                            var rate:Double
+                            if(document.data["rate"] is Long){
+                                rate = Double.fromBits(document.data["rate"] as Long)
+                            }else{
+                                rate = document.data["rate"] as Double
+                            }
                             // Mapping firestore object to kotlin model
                             var salon: Salon = Salon(
                                 document.id,
                                 document.data["name"] as String,
                                 document.data["salonAvatar"] as String,
                                 document.data["description"] as String,
-                                document.data["rate"] as Long,
+                                rate,
                                 document.data["openHour"] as String,
                                 document.data["closeHour"] as String,
                                 document.data["address"] as HashMap<String, String>
@@ -80,6 +86,32 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
         }
 
         return result
+    }
+    suspend fun setSalonRatingById(id:String,rating:Float){
+        if (dbInstance != null) {
+            val docQuery = dbInstance!!.collection(Constant.collection.hairSalons)
+                .document(id)
+                .get()
+                .await()
+            val data = docQuery.data
+            val numRates = data?.get("numRates") as Long?
+            var rate:Double
+            if(data?.get("rate") is Long){
+                rate = Double.fromBits(data?.get("rate") as Long)
+            }else{
+                rate = data?.get("rate") as Double
+            }
+            val newRating = ((rate!!*numRates!!)+rating)/(numRates+1)
+            val newNumRates = numRates + 1
+            val updatedField = hashMapOf<String,Any>(
+                "rate" to newRating,
+                "numRates" to newNumRates
+            )
+            dbInstance!!.collection(Constant.collection.hairSalons)
+                .document(id)
+                .update(updatedField)
+                .await()
+        }
     }
 
     override suspend fun updateOne(id: Any?, updateDoc: Any?): Any? {
@@ -148,12 +180,18 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
                     for (document in documents) {
                         if (document.id == id) {
                             // Mapping firestore object to kotlin model
+                            var rate:Double
+                            if(document.data["rate"] is Long){
+                                rate = Double.fromBits(document.data["rate"] as Long)
+                            }else{
+                                rate = document.data["rate"] as Double
+                            }
                             var salon: Salon = Salon(
                                 document.id,
                                 document.data["name"] as String,
                                 document.data["salonAvatar"] as String,
                                 document.data["description"] as String,
-                                document.data["rate"] as Long,
+                                rate,
                                 document.data["openHour"] as String,
                                 document.data["closeHour"] as String,
                                 document.data["address"] as HashMap<String, String>
@@ -180,18 +218,24 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
                 .document(salonId)
                 .get()
                 .await()
-
+            var rate:Double
+            if(result.data?.get("rate") is Long){
+                rate = Double.fromBits(result.data?.get("rate") as Long)
+            }else{
+                rate = result.data?.get("rate") as Double
+            }
             salon = Salon(
                 result.id,
                 result.data?.get("name") as String,
                 result.data?.get("salonAvatar") as String,
                 result.data?.get("description") as String,
-                result.data?.get("rate") as Long,
+                rate,
                 result.data?.get("openHour") as String,
                 result.data?.get("closeHour") as String,
                 result.data?.get("address") as HashMap<String, String>,
                 result.data?.get("appointments") as ArrayList<DocumentReference>,
                 result.data?.get("stylists") as ArrayList<HashMap<String, *>>,
+                result.data?.get("phoneNumber") as String
             )
         }
 

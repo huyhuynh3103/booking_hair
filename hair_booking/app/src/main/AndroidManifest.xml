@@ -7,73 +7,87 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hair_booking">
-        <activity android:name=".ui.normal_user.booking.booking_confirm.BookingConfirmActivity"></activity>
-        <activity android:name=".ui.manager.appointment.AppointmentListActivity"
-            android:exported="true">
-
-        </activity>
+        <activity
+            android:name=".ui.admin.home.AdminHomeActivity"
+            android:exported="true" />
+        <activity android:name=".ui.normal_user.booking.booking_confirm.BookingConfirmActivity" />
         <activity android:name=".ui.normal_user.booking.choose_discount.ChooseDiscountActivity" />
         <activity
             android:name=".ui.authentication.SignUpActivity"
             android:exported="true" />
-        <activity
-            android:name=".ui.authentication.BeginningActivity"
-            android:exported="true"/>
-
         <activity
             android:name=".ui.admin.managers_list.ManagerDetailAdminActivity"
             android:exported="false" />
         <activity
             android:name=".ui.admin.managers_list.ManagersListActivity"
             android:exported="true" />
+        <activity
+            android:name=".ui.normal_user.history.detail.HistoryBookingDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.normal_user.history.overview.HistoryBooking"
+            android:exported="true" />
+        <activity android:name=".ui.admin.service.edit_service.AdminEditServiceActivity" />
+        <activity android:name=".ui.admin.service.add_new_service.AdminAddNewServiceActivity" />
+        <activity
+            android:name=".ui.admin.service.overview.AdminServiceListActivity"
+            android:exported="true" />
+        <activity android:name=".ui.manager.appointment.detail.edit.ManagerEditAppointmentActivity" />
+        <activity
+            android:name=".ui.manager.appointment.overview.ManagerAppointmentListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.authentication.BeginningActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.admin.users_list.UserDetailAdminActivity"
             android:exported="false"
-            android:parentActivityName=".ui.admin.users_list.UsersListActivity"/>
+            android:parentActivityName=".ui.admin.users_list.UsersListActivity" />
         <activity
             android:name=".ui.admin.users_list.UsersListActivity"
             android:exported="true" />
-
         <activity
             android:name=".ui.normal_user.home.NormalUserHomeActivity"
             android:exported="true"
-            android:label="@string/app_name"></activity>
-
+            android:label="@string/app_name" />
         <activity
-            android:name=".ui.manager.appointment.ManagerAppointmentDetailActivity"
+            android:name=".ui.manager.appointment.detail.ManagerAppointmentDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.manager.stylist.ManagerStylistListActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.normal_user.booking.choose_salon.ChooseSalonActivity"
             android:exported="false"
-            android:label="@string/choose_salon_screen_title"></activity>
+            android:label="@string/choose_salon_screen_title" />
         <activity
             android:name=".ui.normal_user.booking.choose_stylist.ChooseStylistActivity"
             android:exported="false"
-            android:label="@string/choose_stylist_screen_title"></activity>
+            android:label="@string/choose_stylist_screen_title" />
         <activity
             android:name=".ui.normal_user.booking.choose_service.ChooseServiceActivity"
             android:exported="false"
-            android:label="@string/choose_salon_screen_title"></activity>
+            android:label="@string/choose_salon_screen_title" />
         <activity
             android:name=".ui.normal_user.booking.BookingActivity"
             android:exported="true"
-            android:label="@string/booking_screen_title">
-        </activity>
+            android:label="@string/booking_screen_title" />
         <activity
             android:name=".ui.manager.stylist.ManagerStylistDetailActivity"
             android:exported="true"
-            android:label="Manager Stylist">
-        </activity>
+            android:label="Manager Stylist" />
         <activity
             android:name=".ui.normal_user.salon.NormalUserSalonDetailActivity"
             android:exported="true"
@@ -83,20 +97,18 @@
             android:exported="false" />
         <activity
             android:name=".ui.normal_user.profile.NormalUserProfileActivity"
+            android:exported="true" />
+        <activity android:name=".ui.manager.home.ManagerHomeActivity" />
+        <activity android:name=".ui.authentication.LogInActivity" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
-        </activity>
-        <activity android:name=".ui.manager.home.ManagerHomeActivity"
-            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.authentication.LogInActivity" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true" />
 
         <meta-data
             android:name="preloaded_fonts"

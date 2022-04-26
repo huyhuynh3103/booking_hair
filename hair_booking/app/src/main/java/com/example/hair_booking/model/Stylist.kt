@@ -30,7 +30,7 @@ data class Stylist(private val _id: String) {
         fullName: String,
         avatar: String,
         description: String,
-        shifts: HashMap<String, HashMap<String, *>>?,
+        shifts: HashMap<String, HashMap<String, *>>,
         workPlace: DocumentReference,
         deleted: Boolean
     ): this(id) {
@@ -54,12 +54,20 @@ data class Stylist(private val _id: String) {
         this._description = description
     }
 
-
     constructor(stylist: Stylist) : this(stylist._id) {
         this._fullName = stylist._fullName
         this._avatar = stylist._avatar
         this._description = stylist._description
         this._shifts = stylist._shifts
         this._workPlace = stylist._workPlace
+    }
+    constructor(
+        id: String,
+        fullName: String,
+        description: String
+    ): this(id) {
+        this._fullName = fullName
+        this._avatar = avatar
+        this._description = description
     }
 }

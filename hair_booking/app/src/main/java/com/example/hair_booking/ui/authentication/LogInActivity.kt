@@ -3,15 +3,18 @@ package com.example.hair_booking.ui.authentication
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.viewModelScope
 import com.example.hair_booking.Constant
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityLogInBinding
 import com.example.hair_booking.services.auth.AuthRepository
 import com.example.hair_booking.services.db.dbServices
+import com.example.hair_booking.ui.admin.home.AdminHomeActivity
 import com.example.hair_booking.ui.manager.home.ManagerHomeActivity
 import com.example.hair_booking.ui.normal_user.home.NormalUserHomeActivity
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -58,29 +61,36 @@ class LogInActivity : AppCompatActivity() {
             Log.d("huy-login", "login button clicked")
             val email = binding.emailTV.text.toString()
             val password = binding.passwordTV.text.toString()
-
-                GlobalScope.launch {
+            val isValidateEmail = viewModel.validateEmail(email)
+            val isValidatePassword = viewModel.validatePwd(password)
+            if(isValidateEmail&&isValidatePassword){
+                viewModel.viewModelScope.launch {
                     try {
+                        binding.progressBarLogin.visibility = View.VISIBLE
                         AuthRepository.login(email, password)
                         navigateToLandingPage(email)
+                        binding.progressBarLogin.visibility = View.INVISIBLE
                     } catch (e: FirebaseAuthInvalidUserException) {
+                        binding.progressBarLogin.visibility = View.INVISIBLE
+                        Log.d("Login Failed",Constant.messages.loginFailedByEmail)
                         runOnUiThread{
                             Toast.makeText(applicationContext,
-                                Constant.messages.loginFailedByEmail,
+                                Constant.messages.loginFailed,
                                 Toast.LENGTH_LONG).show()
                         }
                     } catch (e: FirebaseAuthInvalidCredentialsException) {
+                        binding.progressBarLogin.visibility = View.INVISIBLE
+                        Log.d("Login Failed",Constant.messages.loginFailedByPassword)
                         runOnUiThread {
                             Toast.makeText(applicationContext,
-                                Constant.messages.loginFailedByPassword,
+                                Constant.messages.loginFailed,
                                 Toast.LENGTH_LONG).show()
                         }
                     }
 
 
                 }
-
-
+            }
         }
     }
     private suspend fun navigateToLandingPage(email:String) = coroutineScope{
@@ -98,6 +108,11 @@ class LogInActivity : AppCompatActivity() {
                 else if(accountResult[0].role == Constant.roles.managerRole) {
                     val intent =
                         Intent(applicationContext, ManagerHomeActivity::class.java)
+                    startActivity(intent)
+                }
+                else if(accountResult[0].role == Constant.roles.adminRole){
+                    val intent =
+                        Intent(applicationContext,AdminHomeActivity::class.java)
                     startActivity(intent)
                 }
                 else{

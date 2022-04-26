@@ -23,10 +23,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityManagerHomeBinding
 import com.example.hair_booking.model.Statistics
-import com.example.hair_booking.services.auth.AuthRepository
-import com.example.hair_booking.ui.manager.appointment.AppointmentListActivity
-import com.example.hair_booking.ui.manager.profile.ManagerProfileActivity
-import com.example.hair_booking.ui.manager.stylist.ManagerStylistListActivity
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -34,38 +30,59 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
-import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import com.example.hair_booking.services.auth.AuthRepository
+import com.example.hair_booking.ui.manager.appointment.overview.ManagerAppointmentListActivity
+import com.example.hair_booking.ui.manager.profile.ManagerProfileActivity
+import com.example.hair_booking.ui.manager.stylist.ManagerStylistListActivity
+import com.google.android.material.navigation.NavigationView
+import com.journeyapps.barcodescanner.ScanOptions
+import android.widget.Toast
+
+import com.journeyapps.barcodescanner.ScanContract
+
+import androidx.activity.result.ActivityResultLauncher
+import com.journeyapps.barcodescanner.ScanIntentResult
+import kotlinx.coroutines.async
 
 
 class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+    private var mDrawerLayout: DrawerLayout? = null
+    private val managerHomeViewModel: ManagerHomeViewModel by viewModels()
+    private lateinit var binding: ActivityManagerHomeBinding
+    private lateinit var barcodeLauncher: ActivityResultLauncher<ScanOptions>
     private var serviceList = ArrayList<Statistics>()
     private var shiftList = ArrayList<Statistics>()
     private var pairDayList = ArrayList<Pair<String, Long>>()
     private var pairMonthList = ArrayList<Pair<Pair<Int, Int>, Long>>()
     private var typeChart = 0
-
-    private var mDrawerLayout: DrawerLayout? = null
-    private val managerHomeViewModel: ManagerHomeViewModel by viewModels()
-    private lateinit var binding: ActivityManagerHomeBinding
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_manager_home)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_manager_home)
         binding.lifecycleOwner = this@ManagerHomeActivity
+        barcodeLauncher = registerForActivityResult(ScanContract()
+        ) { result: ScanIntentResult ->
+            if (result.contents == null) {
+                Toast.makeText(this@ManagerHomeActivity, "Cancelled", Toast.LENGTH_LONG).show()
+                // Start Activity for this
+            } else {
+                Toast.makeText(this@ManagerHomeActivity,
+                    "Scanned: " + result.contents,
+                    Toast.LENGTH_LONG).show()
+
+            }
+        }
         setupUI()
         setUserProfile()
-        //barChart = findViewById<View>(R.id.chart) as BarChart
-
         initBarChart()
         setupFilterSpinner()
-
-
     }
 
     private fun setUserProfile() {
         val userProfile = AuthRepository.getCurrentUser()
+        //managerHomeViewModel.getCurrentUserInfo()
 //        bindindHeaderNavigationBinding.nameTextView.setText(userProfile!!.displayName.toString())
 //        bindindHeaderNavigationBinding.gmailTextView.setText(userProfile.email.toString())
     }
@@ -77,8 +94,17 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             R.id.nav_home_manager->{
 
             }
+            R.id.nav_scan_qr->{
+                val options = ScanOptions()
+                options.setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+                options.setPrompt("Quét QR Code")
+                options.setCameraId(0) // Use a specific camera of the device
+                options.setBeepEnabled(false)
+                options.setBarcodeImageEnabled(true)
+                barcodeLauncher.launch(options)
+            }
             R.id.nav_schedule_manager->{
-                startActivity(Intent(this, AppointmentListActivity::class.java))
+                startActivity(Intent(this, ManagerAppointmentListActivity::class.java))
 
             }
             R.id.nav_stylist_list->{
@@ -220,10 +246,12 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     {
         var map : Map<String, Int>? = emptyMap()
         val entries: ArrayList<BarEntry> = ArrayList()
-
+        var salonId = ""
         if (type == 0) {
             GlobalScope.launch {
-                map = managerHomeViewModel.getAmountOfServicesBooked()
+                salonId = managerHomeViewModel.getCurrentUserInfo()
+
+                map = managerHomeViewModel.getAmountOfServicesBooked(salonId)
 
                 serviceList = getServiceList(map)
                 //now draw bar chart with dynamic data
@@ -233,6 +261,7 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                     val amount = serviceList[i]
                     entries.add(BarEntry(i.toFloat(), amount.amount.toFloat()))
                 }
+
 
 
                 val barDataSet = BarDataSet(entries, "Statistics")
@@ -252,7 +281,8 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         else if (type == 1)
         {
             GlobalScope.launch {
-                map = managerHomeViewModel.getAmountOfShiftsBooked()
+                salonId = managerHomeViewModel.getCurrentUserInfo()
+                map = managerHomeViewModel.getAmountOfShiftsBooked(salonId)
                 shiftList = getShiftList(map)
                 //now draw bar chart with dynamic data
 
@@ -282,8 +312,8 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         else if (type == 2)
         {
             GlobalScope.launch {
-                pairDayList = managerHomeViewModel.getRevenueOfNLastDays()!!
-                //statisticsList = getShiftList(map)
+                salonId = managerHomeViewModel.getCurrentUserInfo()
+                pairDayList = managerHomeViewModel.getRevenueOfNLastDays(salonId)!!
                 //now draw bar chart with dynamic data
 
                 //you can replace this data object with  your custom object
@@ -309,7 +339,8 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         else if (type == 3)
         {
             GlobalScope.launch {
-                pairMonthList = managerHomeViewModel.getRevenueOfNLastMonths()!!
+                salonId = managerHomeViewModel.getCurrentUserInfo()
+                pairMonthList = managerHomeViewModel.getRevenueOfNLastMonths(salonId)!!
                 //statisticsList = getShiftList(map)
                 //now draw bar chart with dynamic data
 
