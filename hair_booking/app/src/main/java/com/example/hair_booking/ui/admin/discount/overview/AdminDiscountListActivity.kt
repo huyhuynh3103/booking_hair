@@ -18,6 +18,7 @@ import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityAdminDiscountListBinding
 import com.example.hair_booking.ui.admin.discount.add_new_discount.AdminAddNewDiscountActivity
 import com.example.hair_booking.ui.admin.discount.add_new_discount.AdminAddNewDiscountViewModel
+import com.example.hair_booking.ui.admin.discount.edit_discount.AdminEditDiscountActivity
 
 class AdminDiscountListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAdminDiscountListBinding
@@ -90,11 +91,11 @@ class AdminDiscountListActivity : AppCompatActivity() {
     }
 
     private fun moveToEditDiscountScreen() {
-//        val intent = Intent(this, AdminEditServiceActivity::class.java)
-//
-//        intent.putExtra("serviceId", viewModel.serviceToBeEditedId.value!!)
-//
-//        startActivity(intent)
+        val intent = Intent(this, AdminEditDiscountActivity::class.java)
+
+        intent.putExtra("discountId", viewModel.discountToBeEditedId.value)
+
+        startActivity(intent)
     }
 
 

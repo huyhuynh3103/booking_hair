@@ -386,6 +386,7 @@ class BookingViewModel: ViewModel() {
             shiftId.value!!,
             discountId,
             discount.value!!,
+            discountPercent.value!!,
             note,
             totalPrice.value!!
         )

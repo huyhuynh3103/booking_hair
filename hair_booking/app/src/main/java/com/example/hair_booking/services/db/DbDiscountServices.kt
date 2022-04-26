@@ -179,11 +179,16 @@ class DbDiscountServices(private var dbInstance: FirebaseFirestore?): DatabaseAb
     suspend fun updateDiscount(discountId: String, discount: HashMap<String, *>): Boolean {
         var ack: Boolean = false
         // Save service to database
+
+        var tmp = HashMap(discount)
+
+        tmp["serviceApplied"] = dbInstance!!.collection(Constant.collection.services).document(tmp["serviceApplied"] as String)
+
         try {
             if(dbInstance != null && discount != null) {
                 dbInstance!!.collection(Constant.collection.discounts)
                     .document(discountId)
-                    .set(discount, SetOptions.merge())
+                    .set(tmp, SetOptions.merge())
                     .await()
 
                 ack = true
