@@ -8,6 +8,7 @@
             name="viewModel"
             type="com.example.hair_booking.ui.authentication.LoginViewModel" />
     </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,8 +17,8 @@
 
         <ImageView
             android:id="@+id/loginImgView"
-            android:layout_width="300dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
             android:layout_marginTop="24dp"
             app:srcCompat="@drawable/login_img" />
@@ -93,6 +94,7 @@
 
         <EditText
             android:id="@+id/passwordTV"
+            android:autofillHints="password"
             android:layout_width="match_parent"
             android:layout_height="51dp"
             android:layout_marginStart="44dp"
@@ -143,6 +145,59 @@
             android:gravity="center"
             android:text="@string/login"
             app:backgroundTint="@color/theme_primary" />
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="32dp"
+            android:background="?android:attr/listDivider" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginEnd="32dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/fbBtn"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:foregroundGravity="clip_horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/oAuthLogin"
+                app:layout_constraintTop_toBottomOf="@+id/oAuthLogin"
+                app:layout_constraintVertical_bias="0.0"
+                android:src="@drawable/facebook"
+                app:civ_border_width="0.7dp"
+                app:civ_border_color="#FF000000"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/googleBtn"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintBottom_toBottomOf="@+id/fbBtn"
+                app:layout_constraintEnd_toEndOf="@+id/oAuthLogin"
+                app:layout_constraintTop_toTopOf="@+id/fbBtn"
+                android:src="@drawable/google"
+                app:civ_border_width="0.7dp"
+                app:civ_border_color="#FF000000"/>
+
+            <TextView
+                android:id="@+id/oAuthLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Đăng nhập bằng cách khác"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </LinearLayout>
 </layout>
