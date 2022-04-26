@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,7 @@ import com.example.hair_booking.databinding.ActivityAdminDiscountListBinding
 import com.example.hair_booking.ui.admin.discount.add_new_discount.AdminAddNewDiscountActivity
 import com.example.hair_booking.ui.admin.discount.add_new_discount.AdminAddNewDiscountViewModel
 import com.example.hair_booking.ui.admin.discount.edit_discount.AdminEditDiscountActivity
+import kotlinx.coroutines.launch
 
 class AdminDiscountListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAdminDiscountListBinding
@@ -101,33 +103,33 @@ class AdminDiscountListActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun displayDeleteAlertDialog() {
-//        val builder = AlertDialog.Builder(this)
-//        //set title for alert dialog
-//        builder.setTitle("Xóa dịch vụ")
-//        //set message for alert dialog
-//        builder.setMessage("Bạn có thật sự muốn xóa dịch vụ này không ?")
-//        builder.setIcon(android.R.drawable.ic_delete)
-//
-//        //performing positive action
-//        builder.setPositiveButton("Có"){dialogInterface, which ->
-//            lifecycleScope.launch {
-//                val ack = viewModel.deleteService()
-//                if(ack) {
-//                    runOnUiThread {
-//                        displayUpdateSuccessDialog("Xóa dịch vụ thành công")
-//                    }
-//                }
-//            }
-//        }
-//        //performing negative action
-//        builder.setNegativeButton("Không"){dialogInterface, which ->
-//            // do nothing
-//        }
-//        // Create the AlertDialog
-//        val alertDialog: AlertDialog = builder.create()
-//        // Set other dialog properties
-//        alertDialog.setCancelable(false)
-//        alertDialog.show()
+        val builder = AlertDialog.Builder(this)
+        //set title for alert dialog
+        builder.setTitle("Xóa khuyến mãi")
+        //set message for alert dialog
+        builder.setMessage("Bạn có thật sự muốn xóa khuyến mãi này không ?")
+        builder.setIcon(android.R.drawable.ic_delete)
+
+        //performing positive action
+        builder.setPositiveButton("Có"){dialogInterface, which ->
+            lifecycleScope.launch {
+                val ack = viewModel.deleteDiscount()
+                if(ack) {
+                    runOnUiThread {
+                        displayUpdateSuccessDialog("Xóa khuyến mãi thành công")
+                    }
+                }
+            }
+        }
+        //performing negative action
+        builder.setNegativeButton("Không"){dialogInterface, which ->
+            // do nothing
+        }
+        // Create the AlertDialog
+        val alertDialog: AlertDialog = builder.create()
+        // Set other dialog properties
+        alertDialog.setCancelable(false)
+        alertDialog.show()
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)

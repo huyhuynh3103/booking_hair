@@ -38,7 +38,10 @@ class DbDiscountServices(private var dbInstance: FirebaseFirestore?): DatabaseAb
                     document.data?.get("serviceApplied") as DocumentReference
                 )
 
-                discountList.add(discount)
+                // Insert to list if service is not deleted
+                if(document.data?.get("deleted") == null)
+                    discountList.add(discount)
+
             }
 
         }
