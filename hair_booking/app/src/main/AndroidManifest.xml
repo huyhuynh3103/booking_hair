@@ -15,7 +15,9 @@
         android:theme="@style/Theme.Hair_booking">
         <activity
             android:name=".ui.normal_user.wishlist.NormalUserWishlistActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".ui.normal_user.home.NormalUserHomeActivity"
+            android:label="Danh sách yêu thích" />
         <activity
             android:name=".ui.admin.home.AdminHomeActivity"
             android:exported="true" />
@@ -88,7 +90,9 @@
             android:parentActivityName=".ui.manager.appointment.overview.ManagerAppointmentListActivity" />
         <activity
             android:name=".ui.manager.stylist.ManagerStylistListActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".ui.manager.home.ManagerHomeActivity"
+            android:label="Danh sách thợ làm tóc" />
         <activity
             android:name=".ui.normal_user.booking.choose_salon.ChooseSalonActivity"
             android:exported="false"
@@ -108,7 +112,8 @@
         <activity
             android:name=".ui.manager.stylist.ManagerStylistDetailActivity"
             android:exported="true"
-            android:label="Manager Stylist" />
+            android:parentActivityName=".ui.manager.stylist.ManagerStylistListActivity"
+            android:label="Chi tiết thợ làm tóc" />
         <activity
             android:name=".ui.normal_user.salon.NormalUserSalonDetailActivity"
             android:exported="true"

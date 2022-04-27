@@ -19,6 +19,15 @@
         android:layout_height="match_parent"
         tools:context=".ui.manager.stylist.ManagerStylistDetailActivity">
 
+        <include
+            android:id="@+id/include"
+            layout="@layout/app_bar_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tv_stylist_shift_label"
             android:layout_width="wrap_content"
@@ -45,9 +54,10 @@
             android:id="@+id/iv_stylist_avatar"
             android:layout_width="154dp"
             android:layout_height="231dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include"
             tools:srcCompat="@tools:sample/avatars" />
 
         <EditText
@@ -74,11 +84,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:text="@string/description"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_stylist_avatar" />
+            app:layout_constraintBottom_toBottomOf="@+id/iv_stylist_avatar"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/tv_stylist_description"
@@ -134,7 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/save_btn"
             android:textAllCaps="false"
             android:textSize="20sp"
@@ -151,7 +160,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
             android:minHeight="50dp"
             android:text="@string/delete_btn"
             android:textAllCaps="false"

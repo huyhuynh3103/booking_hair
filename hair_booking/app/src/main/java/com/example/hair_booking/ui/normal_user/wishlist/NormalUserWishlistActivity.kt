@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -47,6 +48,11 @@ class NormalUserWishlistActivity : AppCompatActivity() {
         binding.rvUserWishlist.addItemDecoration(itemDecoration)
 
         setOnClickListenerForItem()
+
+        // enable back button
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Get account ID
         auth = AuthRepository.getCurrentUser()
