@@ -114,7 +114,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:text='@{viewModel.salon.address["streetNumber"] + " " + viewModel.salon.address["streetName"] + ", " + viewModel.salon.address["ward"] + ", " + viewModel.salon.address["distinct"] + ", " + viewModel.salon.address["city"]}'
+                android:text='@{viewModel.salon.address["streetNumber"] + " " + viewModel.salon.address["streetName"] + ", " + viewModel.salon.address["ward"] + ", " + viewModel.salon.address["district"] + ", " + viewModel.salon.address["city"]}'
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -150,6 +150,7 @@
                 android:layout_width="205dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:lines="2"
                 android:text="Booking"
                 android:textAllCaps="false"
                 android:textSize="20sp"
@@ -162,7 +163,7 @@
                 android:layout_width="205dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Add to Wishlist"
+                android:lines="2"
                 android:textAllCaps="false"
                 android:textSize="20sp"
                 app:backgroundTint="#ED009688"

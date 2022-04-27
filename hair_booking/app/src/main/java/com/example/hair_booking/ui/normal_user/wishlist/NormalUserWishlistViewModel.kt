@@ -11,13 +11,19 @@ import com.example.hair_booking.model.Stylist
 import com.example.hair_booking.services.db.dbServices
 
 class NormalUserWishlistViewModel: ViewModel() {
+    private val _account: MutableLiveData<Account> = MutableLiveData()
     private val _user: MutableLiveData<NormalUser> = MutableLiveData()
     private val _wishlist: MutableLiveData<ArrayList<Salon>> = MutableLiveData<ArrayList<Salon>>()
+    val account: LiveData<Account> = _account
     val user: LiveData<NormalUser> = _user
     val wishlist: LiveData<ArrayList<Salon>> = _wishlist
 
-    suspend fun getUserDetail(id: String) {
-        _user.value = dbServices.getNormalUserServices()?.getUserByAccountId(id)
+    suspend fun getUserAccount(email: String) {
+        _account.value = dbServices.getAccountServices()?.getUserAccountByEmail(email)
+    }
+
+    suspend fun getUserDetail() {
+        _user.value = dbServices.getNormalUserServices()?.getUserByAccountId(account.value?.id!!)
     }
 
     suspend fun getWishlist() {

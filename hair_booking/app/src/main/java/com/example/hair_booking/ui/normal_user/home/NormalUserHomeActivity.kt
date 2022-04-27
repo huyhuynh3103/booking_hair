@@ -20,6 +20,7 @@ import com.example.hair_booking.ui.normal_user.booking.BookingActivity
 import com.example.hair_booking.ui.normal_user.history.overview.HistoryBooking
 import com.example.hair_booking.ui.normal_user.profile.NormalUserProfileActivity
 import com.example.hair_booking.ui.normal_user.salon.NormalUserSalonDetailActivity
+import com.example.hair_booking.ui.normal_user.wishlist.NormalUserWishlistActivity
 import com.google.android.material.navigation.NavigationView
 
 class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
@@ -38,7 +39,7 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
         //setupObserver()
         salonAdapter.onItemClick = { salon ->
             val intent = Intent(this,NormalUserSalonDetailActivity::class.java)
-            intent.putExtra("id",salon.id)
+            intent.putExtra("SalonID", salon.id)
             startActivity(intent)
         }
 
@@ -62,7 +63,7 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
 
             }
             R.id.nav_wish_list->{
-
+                startActivity(Intent(this, NormalUserWishlistActivity::class.java))
             }
             R.id.nav_history->{
                 startActivity(Intent(this,HistoryBooking::class.java))

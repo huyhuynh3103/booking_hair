@@ -15,13 +15,7 @@
         android:theme="@style/Theme.Hair_booking">
         <activity
             android:name=".ui.normal_user.wishlist.NormalUserWishlistActivity"
-            android:exported="true" >
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
-
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".ui.admin.home.AdminHomeActivity"
             android:exported="true" />
@@ -70,11 +64,11 @@
         <activity
             android:name=".ui.authentication.BeginningActivity"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.admin.users_list.UserDetailAdminActivity"
