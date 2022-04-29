@@ -111,11 +111,20 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
 
         binding.bDeleteStylist.setOnClickListener() {
             lifecycleScope.launch {
-                binding.viewModel!!.deleteStylist(id)
+                // Check booked appointment
+                if (binding.viewModel!!.isBooked(binding.viewModel!!.getStylistRef(id))) {
+                    Toast.makeText(applicationContext,
+                        "Xóa không thể thực hiện do nhân viên đã có lịch chờ xử lý", Toast.LENGTH_LONG)
+                        .show()
+                }
+                // Allow to delete
+                else {
+                    binding.viewModel!!.deleteStylist(id)
 
-                val replyIntent = Intent()
-                setResult(Activity.RESULT_OK, replyIntent)
-                finish()
+                    val replyIntent = Intent()
+                    setResult(Activity.RESULT_OK, replyIntent)
+                    finish()
+                }
             }
         }
     }
@@ -136,7 +145,7 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
         val isWorking = binding.viewModel!!.stylist.value?.shifts?.get(shift)?.get("isWorking")
 
         if (!checkBox.isChecked && isWorking == true) {
-            Log.i("isConflict", "Check is $shift booked")
+            Log.i("isConflict", "Check if $shift shift is booked")
             if (binding.viewModel!!.isBooked(binding.viewModel!!.getStylistRef(id), shiftRef)) return true
         }
 
