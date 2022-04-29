@@ -37,7 +37,7 @@
             android:text="Ca lảm việc"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/s_workplace" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_stylist_description" />
 
         <TextView
             android:id="@+id/tv_stylist_name_label"
@@ -116,15 +116,17 @@
             android:layout_marginEnd="16dp"
             android:text="@string/current_working_place"
             android:textSize="16sp"
+            android:visibility='@{task.equals("Edit") ? View.VISIBLE : View.GONE}'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_stylist_description" />
+            app:layout_constraintTop_toBottomOf="@+id/cb_shift_afternoon" />
 
         <Spinner
             android:id="@+id/s_workplace"
             list="@{viewModel.salonList}"
             selected="@{viewModel.stylist.workPlace.id}"
+            default="@{viewModel.account.hairSalon.id}"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
@@ -133,6 +135,7 @@
             android:entries="@{viewModel.salonList}"
             android:minHeight="48dp"
             android:textSize="16sp"
+            android:visibility='@{task.equals("Edit") ? View.VISIBLE : View.GONE}'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_workplace_label" />

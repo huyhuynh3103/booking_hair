@@ -120,7 +120,26 @@ fun bindManagerListRecyclerView(recyclerView: RecyclerView, dataAccount: ArrayLi
     }
 
 }
-
+@BindingAdapter("list", "selected", "default")
+fun setSelectedItem(spinner: Spinner, list: ArrayList<Salon>?, selected: String?, default: String?) {
+    if (list != null && selected != null) {
+        for (i in list?.indices!!) {
+            if (list[i].id == selected) {
+                spinner.setSelection(i)
+            }
+        }
+    }
+    else if (list != null && selected == null){
+        for (i in list?.indices!!) {
+            if (list[i].id == default) {
+                spinner.setSelection(i)
+            }
+        }
+    }
+    else {
+        Log.i("AdapterBindingError", "Set selected fail")
+    }
+}
 
 @BindingAdapter("list", "selected")
 fun setSelectedItem(spinner: Spinner, list: ArrayList<Salon>?, selected: String?) {

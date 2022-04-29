@@ -20,6 +20,8 @@ import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityManagerStylistDetailBinding
 import com.example.hair_booking.model.Salon
 import com.example.hair_booking.model.Stylist
+import com.example.hair_booking.services.auth.AuthRepository
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -30,8 +32,9 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityManagerStylistDetailBinding
     private val viewModel: ManagerStylistDetailViewModel by viewModels()
 
-    private lateinit var id: String
     private lateinit var adapter: ArrayAdapter<Salon>
+    private lateinit var id: String
+    private var auth: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,14 +57,18 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
         binding.task = intent.getStringExtra("Task")
         id = intent.getStringExtra("StylistID").toString()
 
-        if (binding.task == "Edit") {
-            lifecycleScope.launch {
+        // Get account ID
+        auth = AuthRepository.getCurrentUser()
+
+        lifecycleScope.launch {
+            binding.viewModel?.getManagerAccount(auth?.email!!)
+
+            if (binding.task == "Edit") {
                 // get selected ID from previous activity
                 binding.viewModel?.getStylistDetail(id)
             }
         }
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         finish()
@@ -99,6 +106,8 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
                 }
                 // Add stylist
                 else {
+
+
                     val stylist = getDataFromUI()
                     binding.viewModel!!.addStylist(stylist)
 
