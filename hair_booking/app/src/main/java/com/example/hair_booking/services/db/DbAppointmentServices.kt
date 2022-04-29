@@ -938,6 +938,25 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         return  revenueOfNLastMonths.reversed() as ArrayList<Pair<Pair<Int, Int>, Long>>
     }
 
+    suspend fun countAppointment(stylist: DocumentReference?): Int {
+        var count = 0;
+
+        try {
+            val docSnap = dbInstance!!.collection(Constant.collection.appointments)
+                .whereEqualTo("stylist.id", stylist)
+                .whereEqualTo("status", "Chưa thanh toán")
+                .get()
+                .await()
+
+            count = docSnap.documents.size
+            Log.i("isConflict", count.toString())
+        }
+        catch (exception: Exception) {
+            Log.e("DbAppointmentServices: ", exception.toString())
+        }
+        return count
+    }
+
     suspend fun countAppointment(stylist: DocumentReference?, shift: DocumentReference?): Int {
         var count = 0;
 

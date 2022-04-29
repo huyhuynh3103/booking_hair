@@ -57,6 +57,10 @@ class ManagerStylistDetailViewModel: ViewModel() {
         return dbServices.getStylistServices()?.getStylistRef(id)
     }
 
+    suspend fun isBooked(stylistRef: DocumentReference?): Boolean {
+        return dbServices.getAppointmentServices()?.countAppointment(stylistRef)!! > 0
+    }
+
     suspend fun isBooked(stylistRef: DocumentReference?, shiftRef: DocumentReference?): Boolean {
         return dbServices.getAppointmentServices()?.countAppointment(stylistRef, shiftRef)!! > 0
     }
