@@ -3,12 +3,21 @@ package com.example.hair_booking.ui.normal_user.profile
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.example.hair_booking.R
 import androidx.activity.viewModels
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.hair_booking.databinding.ActivityNormalUserProfileBinding
+import com.example.hair_booking.services.auth.AuthRepository
+import com.example.hair_booking.ui.normal_user.booking.BookingActivity
+import com.example.hair_booking.ui.normal_user.history.overview.HistoryBooking
+import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -24,6 +33,11 @@ class NormalUserProfileActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_normal_user_profile)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        // Enable back button
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         GlobalScope.launch {
             getSelectedNormalUserProfile()
