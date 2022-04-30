@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Hair Booking</string>
-
-
+    // OAuth 2.0 client ID
+    <string name="web_api_key">868463371432-gpt3cl85sedjn393hcmb0j8r56bmsps1.apps.googleusercontent.com</string>
     // Booking screen
     <string name="booking_screen_title">Đặt lịch cắt tóc</string>
 
