@@ -1,7 +1,6 @@
 package com.example.hair_booking.ui.authentication
 
 import android.content.Intent
-import android.content.IntentSender
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +19,7 @@ import com.example.hair_booking.services.db.dbServices
 import com.example.hair_booking.ui.admin.home.AdminHomeActivity
 import com.example.hair_booking.ui.manager.home.ManagerHomeActivity
 import com.example.hair_booking.ui.normal_user.home.NormalUserHomeActivity
+import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -184,12 +184,11 @@ class LogInActivity : AppCompatActivity() {
 
         when (requestCode) {
             RC_SIGN_IN -> {
-                try {
-                    val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-                    val account = task.getResult(ApiException::class.java)
-                    val idToken = account.id
+                val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data!!)
+                if(result!=null && result.isSuccess){
+                    val idToken = result.signInAccount?.idToken
                     when {
-                        idToken != null -> {
+                        idToken!=null -> {
                             // Got an ID token from Google. Use it to authenticate
                             // with Firebase.
                             Log.d("google-login", "Got ID token.")
@@ -230,22 +229,10 @@ class LogInActivity : AppCompatActivity() {
                             Log.d("google-login", "No ID token!")
                         }
                     }
-                } catch (e: ApiException) {
-                    when (e.statusCode) {
-                        CommonStatusCodes.CANCELED -> {
-                            Log.d("google-login", "One-tap dialog was closed.")
-                            // Don't re-prompt the user.
-                            showOneTapUI = false
-                        }
-                        CommonStatusCodes.NETWORK_ERROR -> {
-                            Log.d("google-login", "One-tap encountered a network error.")
-                            // Try again or just ignore.
-                        }
-                        else -> {
-                            Log.d("google-login", "Couldn't get credential from result." +
-                                    " (${e.localizedMessage})")
-                        }
-                    }
+                }
+                else{
+                    // Google SignIn Fail
+                    Log.d("google-login", "Sign in Fail")
                 }
             }
         }
