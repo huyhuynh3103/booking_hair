@@ -16,6 +16,7 @@ import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityNormalUserHomeBinding
 import com.example.hair_booking.databinding.LayoutHeaderNavigationBinding
 import com.example.hair_booking.services.auth.AuthRepository
+import com.example.hair_booking.ui.authentication.LogInActivity
 import com.example.hair_booking.ui.normal_user.booking.BookingActivity
 import com.example.hair_booking.ui.normal_user.history.overview.HistoryBooking
 import com.example.hair_booking.ui.normal_user.profile.NormalUserProfileActivity
@@ -80,7 +81,9 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
             }
             R.id.nav_sign_out->{
                 AuthRepository.signOut()
-                finish()
+                val intent = Intent(this, LogInActivity::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
             }
         }
 

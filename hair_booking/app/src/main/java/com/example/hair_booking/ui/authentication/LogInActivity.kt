@@ -145,16 +145,19 @@ class LogInActivity : AppCompatActivity() {
                 if (accountResult[0].role == Constant.roles.userRole) {
                     val intent = Intent(applicationContext,
                         NormalUserHomeActivity::class.java)
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)
                 }
                 else if(accountResult[0].role == Constant.roles.managerRole) {
                     val intent =
                         Intent(applicationContext, ManagerHomeActivity::class.java)
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)
                 }
                 else if(accountResult[0].role == Constant.roles.adminRole){
                     val intent =
                         Intent(applicationContext,AdminHomeActivity::class.java)
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)
                 }
                 else{

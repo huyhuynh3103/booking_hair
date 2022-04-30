@@ -43,6 +43,7 @@ import android.widget.Toast
 import com.journeyapps.barcodescanner.ScanContract
 
 import androidx.activity.result.ActivityResultLauncher
+import com.example.hair_booking.ui.authentication.LogInActivity
 import com.journeyapps.barcodescanner.ScanIntentResult
 
 
@@ -116,7 +117,9 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             }
             R.id.nav_sign_out_manager->{
                 AuthRepository.signOut()
-                finish()
+                val intent = Intent(this, LogInActivity::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
             }
         }
 
