@@ -55,10 +55,29 @@ class AdminHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         binding.lifecycleOwner = this@AdminHomeActivity
         binding.viewModel = adminHomeViewModel
         setupUI()
+        setUserProfile()
         initBarChart()
         //salonList =
         setupFilterSpinner()
 
+
+    }
+    private fun setUserProfile() {
+        val userProfile = AuthRepository.getCurrentUser()
+        if(userProfile?.displayName!=null){
+            binding.navigationViewAdmin.getHeaderView(0).findViewById<TextView>(R.id.nameTextView).text =
+                userProfile.displayName.toString()
+        }
+        else{
+            binding.navigationViewAdmin.getHeaderView(0).findViewById<TextView>(R.id.nameTextView).visibility = View.GONE
+        }
+        if(userProfile?.email!=null){
+            binding.navigationViewAdmin.getHeaderView(0).findViewById<TextView>(R.id.gmailTextView).text =
+                userProfile.email.toString()
+        }
+        else{
+            binding.navigationViewAdmin.getHeaderView(0).findViewById<TextView>(R.id.gmailTextView).visibility = View.GONE
+        }
 
     }
 

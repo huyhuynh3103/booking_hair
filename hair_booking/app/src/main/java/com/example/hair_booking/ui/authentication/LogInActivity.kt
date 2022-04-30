@@ -23,7 +23,6 @@ import com.example.hair_booking.ui.normal_user.home.NormalUserHomeActivity
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -32,29 +31,25 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import kotlinx.coroutines.*
 
 class LogInActivity : AppCompatActivity() {
-    companion object {
-        private const val RC_SIGN_IN = 9001
-    }
     private lateinit var oneTapClient: SignInClient
     private lateinit var binding: ActivityLogInBinding
-    private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var signInRequest: BeginSignInRequest
     private val viewModel: LoginViewModel by viewModels()
     private val REQ_ONE_TAP = 2
     override fun onStart() {
         super.onStart()
-//        if(AuthRepository.isSignIn()){
-//            val currentUser =AuthRepository.getCurrentUser()
-//            val email = currentUser?.email
-//            if(email != null){
-//                runBlocking {
-//                    navigateToLandingPage(email)
-//                }
-//            }
-//            else{
-//                Toast.makeText(applicationContext,Constant.messages.errorFromSever,Toast.LENGTH_LONG).show()
-//            }
-//        }
+        if(AuthRepository.isSignIn()){
+            val currentUser = AuthRepository.getCurrentUser()
+            val email = currentUser?.email
+            if(email != null){
+                viewModel.viewModelScope.launch {
+                    navigateToLandingPage(email)
+                }
+            }
+            else{
+                Toast.makeText(applicationContext,Constant.messages.errorFromSever,Toast.LENGTH_LONG).show()
+            }
+        }
     }
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {

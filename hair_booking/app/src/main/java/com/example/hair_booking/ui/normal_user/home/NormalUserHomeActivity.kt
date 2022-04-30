@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
@@ -14,7 +16,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityNormalUserHomeBinding
-import com.example.hair_booking.databinding.LayoutHeaderNavigationBinding
 import com.example.hair_booking.services.auth.AuthRepository
 import com.example.hair_booking.ui.authentication.LogInActivity
 import com.example.hair_booking.ui.normal_user.booking.BookingActivity
@@ -47,9 +48,22 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
     }
 
     private fun setUserProfile() {
+
         val userProfile = AuthRepository.getCurrentUser()
-//        bindindHeaderNavigationBinding.nameTextView.setText(userProfile!!.displayName.toString())
-//        bindindHeaderNavigationBinding.gmailTextView.setText(userProfile.email.toString())
+        if(userProfile?.displayName!=null){
+            binding.navigationView.getHeaderView(0).findViewById<TextView>(R.id.nameTextView).text =
+                userProfile.displayName.toString()
+        }
+        else{
+            binding.navigationView.getHeaderView(0).findViewById<TextView>(R.id.nameTextView).visibility = View.GONE
+        }
+        if(userProfile?.email!=null){
+            binding.navigationView.getHeaderView(0).findViewById<TextView>(R.id.gmailTextView).text =
+                userProfile.email.toString()
+        }
+        else{
+            binding.navigationView.getHeaderView(0).findViewById<TextView>(R.id.gmailTextView).visibility = View.GONE
+        }
     }
 
     @Override
@@ -89,12 +103,6 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
 
         mDrawerLayout?.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    private fun setupObserver(){
-        salonViewModel.hairSalon.observeForever{
-            salonAdapter.setData(it)
-        }
     }
     private fun setupUI() {
         binding.salonListRecycleView.layoutManager = GridLayoutManager(this,2)

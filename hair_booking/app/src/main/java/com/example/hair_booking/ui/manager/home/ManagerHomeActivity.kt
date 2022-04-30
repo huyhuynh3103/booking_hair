@@ -82,8 +82,20 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun setUserProfile() {
         val userProfile = AuthRepository.getCurrentUser()
-//        bindindHeaderNavigationBinding.nameTextView.setText(userProfile!!.displayName.toString())
-//        bindindHeaderNavigationBinding.gmailTextView.setText(userProfile.email.toString())
+        if(userProfile?.displayName!=null){
+            binding.navigationViewManager.getHeaderView(0).findViewById<TextView>(R.id.nameTextView).text =
+                userProfile.displayName.toString()
+        }
+        else{
+            binding.navigationViewManager.getHeaderView(0).findViewById<TextView>(R.id.nameTextView).visibility = View.GONE
+        }
+        if(userProfile?.email!=null){
+            binding.navigationViewManager.getHeaderView(0).findViewById<TextView>(R.id.gmailTextView).text =
+                userProfile.email.toString()
+        }
+        else{
+            binding.navigationViewManager.getHeaderView(0).findViewById<TextView>(R.id.gmailTextView).visibility = View.GONE
+        }
     }
 
     @Override
