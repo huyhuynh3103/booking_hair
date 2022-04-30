@@ -1,6 +1,7 @@
 package com.example.hair_booking.ui.authentication
 
 import android.content.Intent
+import android.content.IntentSender
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -19,10 +20,10 @@ import com.example.hair_booking.services.db.dbServices
 import com.example.hair_booking.ui.admin.home.AdminHomeActivity
 import com.example.hair_booking.ui.manager.home.ManagerHomeActivity
 import com.example.hair_booking.ui.normal_user.home.NormalUserHomeActivity
-import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -34,10 +35,12 @@ class LogInActivity : AppCompatActivity() {
     companion object {
         private const val RC_SIGN_IN = 9001
     }
+    private lateinit var oneTapClient: SignInClient
     private lateinit var binding: ActivityLogInBinding
     private lateinit var googleSignInClient: GoogleSignInClient
-    private var showOneTapUI = true
+    private lateinit var signInRequest: BeginSignInRequest
     private val viewModel: LoginViewModel by viewModels()
+    private val REQ_ONE_TAP = 2
     override fun onStart() {
         super.onStart()
 //        if(AuthRepository.isSignIn()){
@@ -62,15 +65,17 @@ class LogInActivity : AppCompatActivity() {
         binding.passwordTV.setAutofillHints(View.AUTOFILL_HINT_PASSWORD)
         handleSignUpBtn()
         handleLoginBtn()
-
-        // [START config_signin]
-        // Configure Google Sign In
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.web_api_key))
-            .requestEmail()
+        oneTapClient = Identity.getSignInClient(this)
+        signInRequest = BeginSignInRequest.builder()
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    // Your server's client ID, not your Android client ID.
+                    .setServerClientId(getString(R.string.web_api_key))
+                    // Only show accounts previously used to sign in.
+                    .setFilterByAuthorizedAccounts(false)
+                    .build())
             .build()
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
         // [END config_signin]
 
 
@@ -88,8 +93,21 @@ class LogInActivity : AppCompatActivity() {
 
         binding.googleBtn.setOnClickListener {
             Log.d("google-login","google clicked")
-            val signInIntent = googleSignInClient.signInIntent
-            startActivityForResult(signInIntent, RC_SIGN_IN)
+            oneTapClient.beginSignIn(signInRequest)
+                .addOnSuccessListener(this) { result ->
+                    try {
+                        startIntentSenderForResult(
+                            result.pendingIntent.intentSender, REQ_ONE_TAP,
+                            null, 0, 0, 0, null)
+                    } catch (e: IntentSender.SendIntentException) {
+                        Log.e("google-login", "Couldn't start One Tap UI: ${e.localizedMessage}")
+                    }
+                }
+                .addOnFailureListener(this) { e ->
+                    // No saved credentials found. Launch the One Tap sign-up flow, or
+                    // do nothing and continue presenting the signed-out UI.
+                    Log.d("google-login", e.localizedMessage)
+                }
         }
     }
     private fun handleFacebookLogin(){
@@ -186,12 +204,12 @@ class LogInActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-            RC_SIGN_IN -> {
-                val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data!!)
-                if(result!=null && result.isSuccess){
-                    val idToken = result.signInAccount?.idToken
+            REQ_ONE_TAP -> {
+                try {
+                    val credential = oneTapClient.getSignInCredentialFromIntent(data)
+                    val idToken = credential.googleIdToken
                     when {
-                        idToken!=null -> {
+                        idToken != null -> {
                             // Got an ID token from Google. Use it to authenticate
                             // with Firebase.
                             Log.d("google-login", "Got ID token.")
@@ -225,17 +243,27 @@ class LogInActivity : AppCompatActivity() {
                                 }
 
                             }
-
                         }
                         else -> {
                             // Shouldn't happen.
                             Log.d("google-login", "No ID token!")
                         }
                     }
-                }
-                else{
-                    // Google SignIn Fail
-                    Log.d("google-login", "Sign in Fail")
+                } catch (e: ApiException) {
+                    when (e.statusCode) {
+                        CommonStatusCodes.CANCELED -> {
+                            Log.d("google-login", "One-tap dialog was closed.")
+                            // Don't re-prompt the user.
+                        }
+                        CommonStatusCodes.NETWORK_ERROR -> {
+                            Log.d("google-login", "One-tap encountered a network error.")
+                            // Try again or just ignore.
+                        }
+                        else -> {
+                            Log.d("google-login", "Couldn't get credential from result." +
+                                    " (${e.localizedMessage})")
+                        }
+                    }
                 }
             }
         }
