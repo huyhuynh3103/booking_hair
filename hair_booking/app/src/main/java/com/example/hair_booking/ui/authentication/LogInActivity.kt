@@ -34,6 +34,11 @@ import com.facebook.login.LoginResult
 import com.facebook.FacebookCallback
 import java.util.*
 
+import com.facebook.login.LoginManager
+
+
+
+
 
 class LogInActivity : AppCompatActivity() {
     private lateinit var oneTapClient: SignInClient
@@ -66,8 +71,7 @@ class LogInActivity : AppCompatActivity() {
         binding.passwordTV.setAutofillHints(View.AUTOFILL_HINT_PASSWORD)
         // Initialize Facebook Login button
         callbackManager = CallbackManager.Factory.create()
-        binding.fbBtn.setReadPermissions("email", "public_profile");
-        binding.fbBtn.registerCallback(callbackManager,
+        LoginManager.getInstance().registerCallback(callbackManager,
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(loginResult: LoginResult) {
                     Log.d("facebook-login", "facebook:onSuccess:$loginResult")
@@ -159,7 +163,10 @@ class LogInActivity : AppCompatActivity() {
         }
     }
     private fun handleFacebookLogin(){
-
+        binding.fbBtn.setOnClickListener {
+            Log.d("facebook-login","facebook clicked")
+            LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile"));
+        }
     }
     private fun handleLoginBtn() {
         binding.loginButton.setOnClickListener {

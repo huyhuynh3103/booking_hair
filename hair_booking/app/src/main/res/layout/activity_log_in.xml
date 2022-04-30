@@ -160,47 +160,42 @@
             android:layout_marginStart="44dp"
             android:layout_marginEnd="32dp">
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/fbBtn"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:foregroundGravity="clip_horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/oAuthLogin"
+                app:layout_constraintTop_toBottomOf="@+id/oAuthLogin"
+                app:layout_constraintVertical_bias="0.0"
+                android:src="@drawable/facebook"
+                app:civ_border_width="0.7dp"
+                app:civ_border_color="#FF000000"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/googleBtn"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintBottom_toBottomOf="@+id/fbBtn"
+                app:layout_constraintEnd_toEndOf="@+id/oAuthLogin"
+                app:layout_constraintTop_toTopOf="@+id/fbBtn"
+                android:src="@drawable/google"
+                app:civ_border_width="0.7dp"
+                app:civ_border_color="#FF000000"/>
+
             <TextView
                 android:id="@+id/oAuthLogin"
-                android:layout_width="194dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Đăng nhập bằng cách khác"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/fbBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:minHeight="48dp"
-                app:layout_constraintEnd_toEndOf="@+id/oAuthLogin"
-                app:layout_constraintStart_toStartOf="@+id/oAuthLogin"
-                app:layout_constraintTop_toBottomOf="@+id/googleBtn" />
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/googleBtn"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginTop="8dp"
-                android:src="@drawable/google"
-                app:civ_border_color="#FF000000"
-                app:civ_border_width="0.7dp"
-                app:layout_constraintEnd_toEndOf="@+id/oAuthLogin"
-                app:layout_constraintTop_toBottomOf="@+id/oAuthLogin" />
-
-            <TextView
-                android:id="@+id/googleBtnLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:text="Continue with google"
-                app:layout_constraintBottom_toBottomOf="@+id/googleBtn"
-                app:layout_constraintEnd_toStartOf="@+id/googleBtn"
-                app:layout_constraintStart_toStartOf="@+id/oAuthLogin"
-                app:layout_constraintTop_toTopOf="@+id/googleBtn" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

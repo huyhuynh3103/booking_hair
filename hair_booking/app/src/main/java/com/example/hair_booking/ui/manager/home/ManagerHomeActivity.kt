@@ -44,6 +44,7 @@ import com.journeyapps.barcodescanner.ScanContract
 
 import androidx.activity.result.ActivityResultLauncher
 import com.example.hair_booking.ui.authentication.LogInActivity
+import com.example.hair_booking.ui.manager.appointment.detail.ManagerAppointmentDetailActivity
 import com.journeyapps.barcodescanner.ScanIntentResult
 
 
@@ -69,7 +70,7 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 // Start Activity for this
             } else {
                 val appointmentId = result.contents
-                val intent = Intent(this,R.layout.activity_manager_appointment_detail::class.java)
+                val intent = Intent(this,ManagerAppointmentDetailActivity::class.java)
                 intent.putExtra("appointmentId",appointmentId)
                 startActivity(intent)
             }
