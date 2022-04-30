@@ -40,7 +40,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_stylist_description" />
 
         <TextView
-            android:id="@+id/tv_stylist_name_label"
+            android:id="@+id/tv_stylist_shift_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

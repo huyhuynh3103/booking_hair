@@ -101,4 +101,26 @@ class NormalUserSalonDetailViewModel(private val context: Context): ViewModel() 
             dbServices.getNormalUserServices()?.removeFromWishlist(userID, getSalonRef(salonID)!!)
         }
     }
+    fun getSalonAvatarResource(context:Context):Int{
+        // get context
+        //remove extension part of avatar
+        var avatar = _salon.value?.avatar
+        if(avatar!=null){
+            val haveExtension = avatar.contains(".")
+            if(haveExtension){
+                val indexDot = avatar.indexOf(".")
+                avatar = avatar.filterIndexed { index, c -> index < indexDot   }
+            }
+        }
+        else{
+            avatar = Constant.notFoundImg
+        }
+        // get id of drawable
+        var id = context.resources.getIdentifier(avatar,"drawable",context.packageName)
+        Log.d("huy-test-avatar-id",id.toString())
+        if(id==0){
+            id = context.resources.getIdentifier(Constant.notFoundImg,"drawable",context.packageName)
+        }
+        return id
+    }
 }

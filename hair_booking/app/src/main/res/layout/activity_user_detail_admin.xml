@@ -15,7 +15,10 @@
         android:orientation="vertical"
         tools:context=".ui.admin.users_list.UserDetailAdminActivity">
 
-
+        <include
+            layout="@layout/app_bar_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -25,7 +28,7 @@
             <ImageView
                 android:id="@+id/coverCustomer"
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
+                android:layout_height="140dp"
                 android:paddingBottom="10dp"
                 android:scaleType="centerCrop" />
 
@@ -35,7 +38,7 @@
                 android:layout_height="120dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/ic_account" />
 
         </RelativeLayout>

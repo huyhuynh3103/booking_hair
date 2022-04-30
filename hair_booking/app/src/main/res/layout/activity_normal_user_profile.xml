@@ -16,8 +16,10 @@
         android:orientation="vertical"
         tools:context=".ui.normal_user.profile.NormalUserProfileActivity">
 
-
-
+        <include
+            layout="@layout/app_bar_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,7 +28,7 @@
             <ImageView
                 android:id="@+id/coverCustomer"
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
+                android:layout_height="140dp"
                 android:scaleType="centerCrop" />
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -35,7 +37,7 @@
                 android:layout_height="120dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/ic_account" />
 
         </RelativeLayout>

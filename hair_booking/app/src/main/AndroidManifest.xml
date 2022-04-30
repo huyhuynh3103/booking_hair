@@ -21,7 +21,50 @@
             android:label="Chỉnh sửa khuyến mãi"/>
         <activity android:name=".ui.admin.discount.overview.AdminDiscountListActivity"
             android:exported="true"
-            android:label="Danh sách khuyến mãi">
+            android:label="Danh sách khuyến mãi"/>
+        <activity
+            android:name=".ui.admin.home.AdminHomeActivity"
+            android:exported="true" />
+        <activity android:name=".ui.normal_user.booking.booking_confirm.BookingConfirmActivity"
+            android:label="Đặt lịch thành công"/>
+        <activity android:name=".ui.normal_user.booking.choose_discount.ChooseDiscountActivity"
+            android:label="Chọn khuyến mãi"/>
+        <activity
+            android:name=".ui.authentication.SignUpActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.admin.managers_list.ManagerDetailAdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.managers_list.ManagersListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.normal_user.history.detail.HistoryBookingDetailActivity"
+            android:exported="true"
+            android:label="Chi tiết lịch sử"
+            android:parentActivityName=".ui.normal_user.history.overview.HistoryBooking"/>
+        <activity
+            android:name=".ui.normal_user.history.overview.HistoryBooking"
+            android:exported="true"
+            android:label="Lịch Đã Đặt"
+            android:parentActivityName=".ui.normal_user.home.NormalUserHomeActivity"/>
+        <activity android:name=".ui.admin.service.edit_service.AdminEditServiceActivity"
+            android:label="Chỉnh sửa dịch vụ"/>
+        <activity android:name=".ui.admin.service.add_new_service.AdminAddNewServiceActivity"
+            android:label="Thêm mới dịch vụ"/>
+        <activity
+            android:name=".ui.admin.service.overview.AdminServiceListActivity"
+            android:exported="true"
+            android:label="Danh sách dịch vụ"/>
+        <activity android:name=".ui.manager.appointment.detail.edit.ManagerEditAppointmentActivity"
+            android:label="Chỉnh sửa lịch đặt"/>
+        <activity
+            android:name=".ui.manager.appointment.overview.ManagerAppointmentListActivity"
+            android:exported="true"
+            android:label="Danh sách lịch đặt"/>
+        <activity
+            android:name=".ui.authentication.BeginningActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -143,7 +186,7 @@
         <activity android:name=".ui.authentication.LogInActivity" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="true"/>
 
         <meta-data
             android:name="preloaded_fonts"

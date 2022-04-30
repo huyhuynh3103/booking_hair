@@ -93,7 +93,7 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
             salonAdapter.setData(it)
         }
     }
-    private fun setupUI(){
+    private fun setupUI() {
         binding.salonListRecycleView.layoutManager = GridLayoutManager(this,2)
         salonAdapter = SalonAdapter()
         binding.salonListRecycleView.adapter = salonAdapter

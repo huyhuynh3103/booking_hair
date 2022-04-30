@@ -31,7 +31,6 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
                             document.data["price"] as Long,
                             document.data["description"] as String
                         )
-
                         // Insert to list if service is not deleted
                         if(document.data?.get("deleted") == null)
                             serviceList.add(service)
