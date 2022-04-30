@@ -39,16 +39,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_stylist_description" />
 
-        <TextView
-            android:id="@+id/tv_stylist_shift_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="Tên nhân viên"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/et_stylist_name"
-            app:layout_constraintStart_toStartOf="parent" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_stylist_shift_label"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            android:text="Tên nhân viên"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/et_stylist_name"-->
+<!--            app:layout_constraintStart_toStartOf="parent" />-->
 
         <ImageView
             android:id="@+id/iv_stylist_avatar"

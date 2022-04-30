@@ -136,7 +136,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 .whereEqualTo("accountId",accountDocRef)
                 .get()
                 .await()
-
+            if(userQuerySnapshot.documents.isNotEmpty()){
             val appointmentRefList = userQuerySnapshot.documents[0].data!!["appointments"] as ArrayList<DocumentReference>
             for( appointmentRef in appointmentRefList){
                 val document = appointmentRef.get().await()
@@ -165,6 +165,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                     appointmentList.add(appointment)
                 }
 
+
+            }
             }
 
 

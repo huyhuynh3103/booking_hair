@@ -25,7 +25,6 @@ class NormalUserSalonDetailActivity : AppCompatActivity() {
     private val viewModel: NormalUserSalonDetailViewModel by viewModels {NormalUserSalonViewModelFactory(applicationContext)}
     private var auth: FirebaseUser? = null
     private var id: String? = null
-l
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -69,6 +68,7 @@ l
         binding.viewModel!!.getUserAccount(auth?.email!!)
         binding.viewModel!!.getUserDetail()
         binding.viewModel!!.getWishlist()
+    }
     private fun getSelectedSalonDetail() {
         val intent = intent
         id = intent.getStringExtra("id")
