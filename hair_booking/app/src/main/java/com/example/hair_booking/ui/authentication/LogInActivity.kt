@@ -1,5 +1,4 @@
 package com.example.hair_booking.ui.authentication
-
 import android.content.Intent
 import android.content.IntentSender
 import android.os.Build
@@ -20,6 +19,7 @@ import com.example.hair_booking.services.db.dbServices
 import com.example.hair_booking.ui.admin.home.AdminHomeActivity
 import com.example.hair_booking.ui.manager.home.ManagerHomeActivity
 import com.example.hair_booking.ui.normal_user.home.NormalUserHomeActivity
+import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -29,6 +29,11 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import kotlinx.coroutines.*
+import com.facebook.FacebookException
+import com.facebook.login.LoginResult
+import com.facebook.FacebookCallback
+import java.util.*
+
 
 class LogInActivity : AppCompatActivity() {
     private lateinit var oneTapClient: SignInClient
@@ -36,6 +41,7 @@ class LogInActivity : AppCompatActivity() {
     private lateinit var signInRequest: BeginSignInRequest
     private val viewModel: LoginViewModel by viewModels()
     private val REQ_ONE_TAP = 2
+    private lateinit var callbackManager: CallbackManager
     override fun onStart() {
         super.onStart()
         if(AuthRepository.isSignIn()){
@@ -58,6 +64,53 @@ class LogInActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this@LogInActivity
         binding.passwordTV.setAutofillHints(View.AUTOFILL_HINT_PASSWORD)
+        // Initialize Facebook Login button
+        callbackManager = CallbackManager.Factory.create()
+        binding.fbBtn.setReadPermissions("email", "public_profile");
+        binding.fbBtn.registerCallback(callbackManager,
+            object : FacebookCallback<LoginResult> {
+                override fun onSuccess(loginResult: LoginResult) {
+                    Log.d("facebook-login", "facebook:onSuccess:$loginResult")
+                    viewModel.viewModelScope.launch{
+                        try{
+                            binding.progressBarLogin.visibility = View.VISIBLE
+                            AuthRepository.loginByFacebook(loginResult.accessToken)
+                            val email = AuthRepository.getCurrentUser()?.email
+                            if(email!=null){
+                                navigateToLandingPage(email)
+                            }
+                            binding.progressBarLogin.visibility = View.INVISIBLE
+                            Log.d("facebook-login", "signInWithCredential:success")
+                        }catch (e:FirebaseAuthInvalidUserException){
+                            runOnUiThread{
+                                Toast.makeText(applicationContext,
+                                    Constant.messages.loginCredentialInvalid,
+                                    Toast.LENGTH_LONG).show()
+                            }
+                        }catch (e:FirebaseAuthInvalidCredentialsException){
+                            runOnUiThread{
+                                Toast.makeText(applicationContext,
+                                    Constant.messages.loginCredentialsExpired,
+                                    Toast.LENGTH_LONG).show()
+                            }
+                        }catch (e: FirebaseAuthUserCollisionException){
+                            runOnUiThread{
+                                Toast.makeText(applicationContext,Constant.messages.loginCredentialsCollision,
+                                    Toast.LENGTH_LONG).show()
+                            }
+                        }
+
+                    }
+                }
+
+                override fun onCancel() {
+                    Log.d("facebook-login", "facebook:onCancel")
+                }
+
+                override fun onError(error: FacebookException) {
+                    Log.d("facebook-login", "facebook:onError", error)
+                }
+            })
         handleSignUpBtn()
         handleLoginBtn()
         oneTapClient = Identity.getSignInClient(this)
@@ -106,10 +159,7 @@ class LogInActivity : AppCompatActivity() {
         }
     }
     private fun handleFacebookLogin(){
-        binding.fbBtn.setOnClickListener {
 
-            Log.d("facebook-login","facebook clicked")
-        }
     }
     private fun handleLoginBtn() {
         binding.loginButton.setOnClickListener {
@@ -197,7 +247,8 @@ class LogInActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        // Pass the activity result back to the Facebook SDK
+        callbackManager.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             REQ_ONE_TAP -> {
                 try {

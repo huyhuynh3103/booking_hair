@@ -4,10 +4,8 @@ import android.util.Log
 import com.example.hair_booking.Constant
 import com.example.hair_booking.firebase.Auth
 import com.example.hair_booking.services.db.dbServices
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
+import com.facebook.AccessToken
+import com.google.firebase.auth.*
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -37,6 +35,46 @@ object AuthRepository {
         }
 
         return  result
+    }
+    suspend fun loginByFacebook(token: AccessToken):AuthResult = coroutineScope {
+        Log.d("facebook-login", "handleFacebookAccessToken:$token")
+
+        val credential = FacebookAuthProvider.getCredential(token.token)
+        val result = auth.signInWithCredential(credential).await()
+        val user = result.user
+        if(user!=null){
+            val query = hashMapOf(
+                "email" to user.email!!
+            )
+            val res = async {
+                dbServices.getAccountServices()!!.find(query)
+            }.await()
+            if(res.isEmpty()){
+                val newAccount = hashMapOf(
+                    "email" to user.email!!,
+                    "role" to Constant.roles.userRole,
+                    "banned" to false
+                )
+
+                val accountDocRef =
+                    withContext(Dispatchers.Default) {
+                        dbServices.getAccountServices()!!.save(newAccount)
+                    }
+                val newUser = hashMapOf(
+                    "fullName" to user.displayName,
+                    "gender" to "",
+                    "accountId" to accountDocRef,
+                    "phoneNumber" to "",
+                    "discountPoint" to 0,
+                    "appointment" to arrayListOf<DocumentReference>(),
+                    "wishList" to arrayListOf<DocumentReference>()
+                )
+                // save new user
+                dbServices.getNormalUserServices()!!.save(newUser)
+            }
+        }
+
+        result
     }
     suspend fun loginByGoogle(idToken: String):AuthResult = coroutineScope{
         val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
