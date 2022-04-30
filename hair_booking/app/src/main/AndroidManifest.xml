@@ -13,6 +13,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hair_booking">
+        <activity android:name=".ui.admin.discount.add_new_discount.AdminAddNewDiscountActivity"
+            android:label="Thêm mới khuyến mãi">
+
+        </activity>
+        <activity android:name=".ui.admin.discount.edit_discount.AdminEditDiscountActivity"
+            android:label="Chỉnh sửa khuyến mãi"/>
+        <activity android:name=".ui.admin.discount.overview.AdminDiscountListActivity"
+            android:exported="true"
+            android:label="Danh sách khuyến mãi">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.normal_user.wishlist.NormalUserWishlistActivity"
             android:exported="false"

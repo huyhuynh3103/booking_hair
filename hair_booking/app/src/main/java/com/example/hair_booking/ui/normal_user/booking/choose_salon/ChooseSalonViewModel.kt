@@ -10,6 +10,12 @@ class ChooseSalonViewModel: ViewModel() {
     private var _salonList = MutableLiveData<ArrayList<Salon>>()
     val salonList: LiveData<ArrayList<Salon>> = _salonList
 
+//    private var _salonCityList = MutableLiveData<ArrayList<String>>()
+//    val salonCityList: LiveData<ArrayList<String>> = _salonCityList
+//
+//    private var _salonDistrictList = MutableLiveData<ArrayList<String>>()
+//    val salonDistrictList: LiveData<ArrayList<String>> = _salonDistrictList
+
     init {
         getSalonList()
     }
@@ -20,6 +26,16 @@ class ChooseSalonViewModel: ViewModel() {
         dbServices.getSalonServices()?.getSalonListForBooking()
             ?.observeForever{ salonList ->
                 _salonList.value = salonList
+
+//                var tmpCityList: ArrayList<String> = ArrayList()
+//                var tmpDistrictList: ArrayList<String> = ArrayList()
+//                salonList.forEach {
+//                    tmpCityList.add(it.address?.get("city")!!)
+//                    tmpDistrictList.add(it.address?.get("district")!!)
+//                }
+//
+//                _salonCityList.value = tmpCityList
+//                _salonDistrictList.value = tmpDistrictList
             }
     }
 }

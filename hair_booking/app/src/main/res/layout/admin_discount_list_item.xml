@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="discount"
+            type="com.example.hair_booking.model.Discount" />
+
+        <variable
+            name="viewModel"
+            type="com.example.hair_booking.ui.admin.discount.overview.AdminDiscountListViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/discountItemWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp">
+
+
+        <TextView
+            android:id="@+id/discountTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="50dp"
+            android:text="@{discount.title}"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/requiredPointLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/discountDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@{discount.description}"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="@+id/discountTitle"
+            app:layout_constraintStart_toStartOf="@+id/discountTitle"
+            app:layout_constraintTop_toBottomOf="@+id/discountTitle" />
+
+        <TextView
+            android:id="@+id/dateApplied"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@{discount.dateApplied}"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/discountDescription"
+            app:layout_constraintTop_toBottomOf="@+id/discountDescription" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="-"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/dateApplied"
+            app:layout_constraintStart_toEndOf="@+id/dateApplied"
+            app:layout_constraintTop_toTopOf="@+id/dateApplied" />
+
+        <TextView
+            android:id="@+id/dateExpired"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@{discount.dateExpired}"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/textView6"
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintTop_toTopOf="@+id/textView6" />
+
+        <TextView
+            android:id="@+id/requiredPointLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="Số điểm cần có"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/discountTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/discountTitle" />
+
+        <TextView
+            android:id="@+id/requiredPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@{discount.requiredPoint.toString()}"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/requiredPointLabel"
+            app:layout_constraintStart_toStartOf="@+id/requiredPointLabel"
+            app:layout_constraintTop_toBottomOf="@+id/requiredPointLabel" />
+
+        <Button
+            android:id="@+id/adminEditDiscountBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.onEditDiscountBtnClicked(discount.id)}"
+            android:text="Chỉnh sửa"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:backgroundTint="#C8C8C7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/requiredPointLabel"
+            app:layout_constraintTop_toBottomOf="@+id/dateExpired" />
+
+        <Button
+            android:id="@+id/adminDeleteDiscountBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:onClick="@{() -> viewModel.onDeleteDiscountBtnClicked(discount.id)}"
+            android:text="Xóa"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:backgroundTint="#E34438"
+            app:layout_constraintBottom_toBottomOf="@+id/adminEditDiscountBtn"
+            app:layout_constraintEnd_toStartOf="@+id/adminEditDiscountBtn"
+            app:layout_constraintTop_toTopOf="@+id/adminEditDiscountBtn" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

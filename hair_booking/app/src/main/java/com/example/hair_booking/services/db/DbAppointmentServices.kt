@@ -265,6 +265,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         shiftId: String,
         discountId: String,
         discountTitle: String,
+        discountPercent: Float,
         note: String,
         totalPrice: Long
     ): HashMap<String, *> {
@@ -342,7 +343,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 "bookingShift" to shiftDocRef,
                 "discountApplied" to hashMapOf(
                     "id" to discountDocRef,
-                    "title" to discountTitle
+                    "title" to discountTitle,
+                    "percent" to discountPercent.toString()
                 ),
                 "notes" to note,
                 "totalPrice" to totalPrice,
@@ -511,6 +513,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         shiftId: String,
         discountId: String,
         discountTitle: String,
+        discountPercent: Float,
         note: String,
         totalPrice: Long
     ): HashMap<String, *> {
@@ -584,7 +587,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 "bookingShift" to shiftDocRef,
                 "discountApplied" to hashMapOf(
                     "id" to discountDocRef,
-                    "title" to discountTitle
+                    "title" to discountTitle,
+                    "percent" to discountPercent.toString()
                 ),
                 "notes" to note,
                 "totalPrice" to totalPrice

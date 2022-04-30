@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.hair_booking.ui.admin.discount.add_new_discount.AdminAddNewDiscountViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="100dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".ui.admin.discount.add_new_discount.AdminAddNewDiscountActivity">
+
+                <include
+                    android:id="@+id/include"
+                    layout="@layout/app_bar_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/adminAddNewDiscountScreenLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="THÊM MỚI KHUYẾN MÃI"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/include" />
+
+                <TextView
+                    android:id="@+id/adminAddDiscountTitleLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="40dp"
+                    android:text="Nhập tên khuyến mãi"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/adminAddNewDiscountScreenLabel" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/adminAddDiscountTitleTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/adminAddDiscountTitleLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/adminAddDiscountTitleLabel">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/adminAddDiscountTitleEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_local_offer_24"
+                        android:drawablePadding="10dp"
+                        android:hint="Nhập tên khuyến mãi..."
+                        android:text="@{viewModel.discountTitle}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/adminAddDiscountDescriptionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="40dp"
+                    android:text="Nhập mô tả"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/adminAddDiscountTitleTextInputLayout" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/adminAddDiscountDescriptionTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/adminAddDiscountDescriptionLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/adminAddDiscountDescriptionLabel">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/adminAddDiscountDescriptionEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_description_24"
+                        android:drawablePadding="10dp"
+                        android:hint="Nhập mô tả cho khuyến mãi..."
+                        android:text="@{viewModel.discountDescription}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/adminAddDiscountRequiredPointLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="40dp"
+                    android:text="Nhập mức điểm áp dụng"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/adminAddDiscountDescriptionTextInputLayout" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/adminAddDiscountRequiredPointTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/adminAddDiscountRequiredPointLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/adminAddDiscountRequiredPointLabel">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/adminAddDiscountRequiredPointEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_info_24"
+                        android:drawablePadding="10dp"
+                        android:hint="Nhập mức điểm áp dụng khuyến mãi..."
+                        android:inputType="numberDecimal"
+                        android:digits="0123456789"
+                        android:text="@{viewModel.discountRequiredPoint.toString()}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/adminAddDiscountPercentLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="40dp"
+                    android:text="Nhập phần trăm khuyến mãi"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/adminAddDiscountRequiredPointTextInputLayout" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/adminAddDiscountPercentTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/adminAddDiscountPercentLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/adminAddDiscountPercentLabel">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/adminAddDiscountPercentEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_trending_down_24"
+                        android:drawablePadding="10dp"
+                        android:hint="VD: Nhập 0.05 cho 5% khuyến mãi..."
+                        android:inputType="numberDecimal"
+                        android:text="@{viewModel.discountPercent.toString()}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/adminAddDiscountDateAppliedLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="40dp"
+                    android:text="Chọn ngày áp dụng"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/adminAddDiscountPercentTextInputLayout" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/adminAddDiscountDateAppliedTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/adminAddDiscountDateAppliedLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/adminAddDiscountDateAppliedLabel">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/adminAddDiscountDateAppliedEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+                        android:drawablePadding="10dp"
+                        android:focusable="false"
+                        android:hint="Chọn ngày áp dụng..."
+                        android:text="@{viewModel.discountDateApplied}"
+                        android:onClick="@{() -> viewModel.onDateAppliedEditTextClicked()}"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/adminAddDiscountDateExpiredLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="40dp"
+                    android:text="Chọn ngày hết hạn"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/adminAddDiscountDateAppliedTextInputLayout" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/adminAddDiscountDateExpiredTextInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/adminAddDiscountDateExpiredLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/adminAddDiscountDateExpiredLabel">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/adminAddDiscountDateExpiredEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+                        android:drawablePadding="10dp"
+                        android:focusable="false"
+                        android:hint="Chọn ngày hết hạn..."
+                        android:text="@{viewModel.discountDateExpired}"
+                        android:onClick="@{() -> viewModel.onDateExpiredEditTextClicked()}"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/adminAddDiscountServiceAppliedLable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="40dp"
+                    android:text="Chọn dịch vụ áp dụng"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/adminAddDiscountDateExpiredTextInputLayout" />
+
+                <Spinner
+                    android:id="@+id/servicePickerSpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="50dp"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/adminAddDiscountDateExpiredTextInputLayout"
+                    app:layout_constraintStart_toStartOf="@+id/adminAddDiscountServiceAppliedLable"
+                    app:layout_constraintTop_toBottomOf="@+id/adminAddDiscountServiceAppliedLable" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/adminAddNewDiscountConfirmBtnWrapper"
+            android:layout_width="0dp"
+            android:layout_height="68dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/adminAddNewDiscountConfirmBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:onClick="@{() -> viewModel.onConfirmBtnClicked()}"
+                android:text="@string/confirm_booking_btn"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:backgroundTint="#C8C8C7"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

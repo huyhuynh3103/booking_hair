@@ -1,6 +1,7 @@
 package com.example.hair_booking.ui.normal_user.booking.choose_salon
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.databinding.BookingSalonItemBinding
@@ -10,6 +11,9 @@ class SalonListAdapter: RecyclerView.Adapter<SalonListAdapter.ViewHolder>() {
 
 
     var onItemClick: ((position: Int) -> Unit)? = null
+//    private var salonToBeHiddenIndexWhenFilterCity: ArrayList<Int>? = null
+//
+//    private var salonToBeHiddenIndexWhenFilterDistrict: ArrayList<Int>? = null
 
     private var salonList: ArrayList<Salon> = ArrayList()
     fun setData(salonList: ArrayList<Salon>) {
@@ -19,6 +23,18 @@ class SalonListAdapter: RecyclerView.Adapter<SalonListAdapter.ViewHolder>() {
         // => need notify data set changed to tell the UI that the data is ready
         notifyDataSetChanged()
     }
+
+//    fun setSalonToBeHiddenIndexWhenFilterCity(salonToBeHiddenIndexWhenFilterCity: ArrayList<Int>?) {
+//        this.salonToBeHiddenIndexWhenFilterCity = salonToBeHiddenIndexWhenFilterCity
+//
+//        notifyDataSetChanged()
+//    }
+//
+//    fun setSalonToBeHiddenIndexWhenFilterDistrict(salonToBeHiddenIndexWhenFilterDistrict: ArrayList<Int>?) {
+//        this.salonToBeHiddenIndexWhenFilterDistrict = salonToBeHiddenIndexWhenFilterDistrict
+//
+//        notifyDataSetChanged()
+//    }
 
     inner class ViewHolder(var bookingSalonItemBinding: BookingSalonItemBinding): RecyclerView.ViewHolder(bookingSalonItemBinding.root) {
 
@@ -51,6 +67,29 @@ class SalonListAdapter: RecyclerView.Adapter<SalonListAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val salon: Salon = salonList[position]
         holder.bookingSalonItemBinding.salon = salon
+
+//        // Show salon
+//        holder.itemView.visibility = View.VISIBLE
+//        holder.itemView.layoutParams = RecyclerView.LayoutParams(
+//            ViewGroup.LayoutParams.MATCH_PARENT,
+//            ViewGroup.LayoutParams.WRAP_CONTENT
+//        )
+//
+//        if(salonToBeHiddenIndexWhenFilterCity != null){
+//            if(salonToBeHiddenIndexWhenFilterCity!!.contains(position)) {
+//                // Hide salon
+//                holder.itemView.visibility = View.GONE
+//                holder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
+//            }
+//        }
+//
+//        if(salonToBeHiddenIndexWhenFilterDistrict != null){
+//            if(salonToBeHiddenIndexWhenFilterDistrict!!.contains(position)) {
+//                // Hide salon
+//                holder.itemView.visibility = View.GONE
+//                holder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
+//            }
+//        }
     }
 
     override fun getItemCount(): Int {
