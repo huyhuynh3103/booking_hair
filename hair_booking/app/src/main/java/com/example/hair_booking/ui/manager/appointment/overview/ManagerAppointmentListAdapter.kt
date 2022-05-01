@@ -18,7 +18,8 @@ class ManagerAppointmentListAdapter: RecyclerView.Adapter<ManagerAppointmentList
 
     private var appointmentList: LiveData<ArrayList<Appointment>>? = null
     private var appointmentToBeHiddenIndexWhenSearch: ArrayList<Int>? = null
-    private var appointmentToBeHiddenIndexWhenFilter: ArrayList<Int>? = null
+    private var appointmentToBeHiddenIndexWhenFilterStatus: ArrayList<Int>? = null
+    private var appointmentToBeHiddenIndexWhenFilterStylist: ArrayList<Int>? = null
 
     fun setData(appointmentList: LiveData<ArrayList<Appointment>>) {
         this.appointmentList = appointmentList
@@ -31,14 +32,41 @@ class ManagerAppointmentListAdapter: RecyclerView.Adapter<ManagerAppointmentList
     fun setAppointmentToBeHiddenIndexWhenSearch(appointmentToBeHiddenIndex: ArrayList<Int>?) {
         this.appointmentToBeHiddenIndexWhenSearch = appointmentToBeHiddenIndex
 
-        Log.d("text1231", "notify")
         notifyDataSetChanged()
     }
 
-    fun setAppointmentToBeHiddenIndexWhenFilter(appointmentToBeHiddenIndex: ArrayList<Int>?) {
-        this.appointmentToBeHiddenIndexWhenFilter = appointmentToBeHiddenIndex
+    fun setAppointmentToBeHiddenIndexWhenFilterStatus(appointmentToBeHiddenIndex: ArrayList<Int>?) {
+        this.appointmentToBeHiddenIndexWhenFilterStatus = appointmentToBeHiddenIndex
 
         notifyDataSetChanged()
+    }
+
+    fun setAppointmentToBeHiddenIndexWhenFilterStylist(appointmentToBeHiddenIndex: ArrayList<Int>?) {
+        this.appointmentToBeHiddenIndexWhenFilterStylist = appointmentToBeHiddenIndex
+
+        notifyDataSetChanged()
+    }
+
+     fun allAppointmentsAreHidden(): Boolean {
+         if(appointmentList != null && appointmentList!!.value != null) {
+             var appointmentToBeHiddenIndex: ArrayList<Int> = ArrayList()
+             if(appointmentToBeHiddenIndexWhenSearch != null) {
+                 appointmentToBeHiddenIndex.addAll(appointmentToBeHiddenIndexWhenSearch!!)
+             }
+
+             if(appointmentToBeHiddenIndexWhenFilterStatus != null) {
+                 appointmentToBeHiddenIndex.addAll(appointmentToBeHiddenIndexWhenFilterStatus!!)
+             }
+
+             if(appointmentToBeHiddenIndexWhenFilterStylist != null) {
+                 appointmentToBeHiddenIndex.addAll(appointmentToBeHiddenIndexWhenFilterStylist!!)
+             }
+
+             if(appointmentToBeHiddenIndex.isNotEmpty())
+                 appointmentToBeHiddenIndex = appointmentToBeHiddenIndex.distinct() as ArrayList<Int>
+             return appointmentToBeHiddenIndex.size == appointmentList!!.value!!.size
+         }
+         return false
     }
 
     inner class ViewHolder(var appointmentListItemBinding: ManagerAppointmentListItemBinding): RecyclerView.ViewHolder(appointmentListItemBinding.root) {
@@ -89,8 +117,16 @@ class ManagerAppointmentListAdapter: RecyclerView.Adapter<ManagerAppointmentList
             }
         }
 
-        if(appointmentToBeHiddenIndexWhenFilter != null) {
-            if(appointmentToBeHiddenIndexWhenFilter!!.contains(position)) {
+        if(appointmentToBeHiddenIndexWhenFilterStatus != null) {
+            if(appointmentToBeHiddenIndexWhenFilterStatus!!.contains(position)) {
+                // Hide appointment
+                holder.itemView.visibility = View.GONE
+                holder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
+            }
+        }
+
+        if(appointmentToBeHiddenIndexWhenFilterStylist != null) {
+            if(appointmentToBeHiddenIndexWhenFilterStylist!!.contains(position)) {
                 // Hide appointment
                 holder.itemView.visibility = View.GONE
                 holder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)

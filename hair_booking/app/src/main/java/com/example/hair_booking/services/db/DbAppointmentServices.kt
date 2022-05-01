@@ -23,9 +23,11 @@ import kotlin.collections.HashMap
 class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): DatabaseAbstract<Any?>() {
 
     fun getAppointmentListForManager(salonId: String, appointmentList: MutableLiveData<ArrayList<Appointment>>,
-                                     appointmentSubIds: MutableLiveData<ArrayList<String>>) {
+                                     appointmentSubIds: MutableLiveData<ArrayList<String>>,
+                                     appointmentStylistsName: MutableLiveData<ArrayList<String>>) {
         var tmpAppointmentList: ArrayList<Appointment> = ArrayList()
         var tmpAppointmentSubIds: ArrayList<String> = ArrayList()
+        var tmpAppointmentStylistsName: ArrayList<String> = ArrayList()
         if(dbInstance != null) {
             val salonDocRef = dbInstance!!
                 .collection(Constant.collection.hairSalons)
@@ -64,6 +66,9 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                         // Insert to list
                         tmpAppointmentList.add(appointment)
                         tmpAppointmentSubIds.add(document.data?.get("subId") as String)
+
+                        val stylist = document.data?.get("stylist") as HashMap<String, *>
+                        tmpAppointmentStylistsName.add(stylist["fullName"] as String)
                     }
 
                     val sdf: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
@@ -71,6 +76,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                     // Call function to return appointment list after mapping complete
                     appointmentList.postValue(tmpAppointmentList)
                     appointmentSubIds.postValue(tmpAppointmentSubIds)
+                    appointmentStylistsName.postValue(tmpAppointmentStylistsName.distinct() as ArrayList<String>?)
                 }
             }
         }

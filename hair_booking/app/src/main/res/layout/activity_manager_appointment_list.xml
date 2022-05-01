@@ -51,39 +51,45 @@
             app:layout_constraintTop_toBottomOf="@id/managerAppointmentListLabel" />
 
         <Spinner
-            android:id="@+id/appointmentListFilter"
+            android:id="@+id/appointmentListStylistFilter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="@+id/appointmentListSearchBar"
+            app:layout_constraintStart_toEndOf="@+id/textView3"
             app:layout_constraintTop_toBottomOf="@+id/appointmentListSearchBar" />
+
+        <Spinner
+            android:id="@+id/appointmentListStatusFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/appointmentListStylistFilter" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/appointmentListRecyclerView"
             managerAppointmentList="@{viewModel.appointmentList}"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appointmentListFilter" />
+            app:layout_constraintTop_toBottomOf="@+id/appointmentListStatusFilter" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:text="Lọc:"
+            android:text="Trạng thái:"
             android:textColor="#000000"
-            android:textSize="20sp"
+            android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/appointmentListFilter"
-            app:layout_constraintEnd_toStartOf="@+id/appointmentListFilter"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/appointmentListFilter"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintBottom_toBottomOf="@+id/appointmentListStatusFilter"
+            app:layout_constraintStart_toStartOf="@+id/textView3"
+            app:layout_constraintTop_toTopOf="@+id/appointmentListStatusFilter" />
 
         <TextView
             android:id="@+id/noAppointmentLabel"
@@ -97,6 +103,31 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/managerAppointmentListLabel" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stylist:"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/appointmentListStylistFilter"
+            app:layout_constraintStart_toStartOf="@+id/appointmentListSearchBar"
+            app:layout_constraintTop_toTopOf="@+id/appointmentListStylistFilter" />
+
+        <TextView
+            android:id="@+id/recyclerViewIsEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="Không có lịch đặt phù hợp với những gì bạn tìm kiếm"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appointmentListStatusFilter" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
