@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group_admin_management"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home_admin"
+            android:icon="@drawable/ic_home"
+            android:title="@string/nav_home"/>
+        <item
+            android:id="@+id/nav_branch_admin"
+            android:icon="@drawable/ic_branch"
+            android:title="@string/nav_branch" />
+        <item
+            android:id="@+id/nav_service_admin"
+            android:icon="@drawable/ic_baseline_content_paste_24"
+            android:title="@string/nav_service" />
+        <item
+            android:id="@+id/nav_discount_admin"
+            android:icon="@drawable/ic_baseline_local_offer_24"
+            android:title="@string/nav_discount" />
+    </group>
+    <item android:title="@string/nav_account">
+        <menu>
+            <item
+                android:id="@+id/nav_account_user_admin"
+                android:icon="@drawable/ic_account_user"
+                android:title="Khách hàng" />
+            <item
+                android:id="@+id/nav_account_manager_admin"
+                android:icon="@drawable/ic_account_manager"
+                android:title="Người quản lý" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/nav_sign_out_admin"
+        android:title="@string/sign_out"/>
+</menu>

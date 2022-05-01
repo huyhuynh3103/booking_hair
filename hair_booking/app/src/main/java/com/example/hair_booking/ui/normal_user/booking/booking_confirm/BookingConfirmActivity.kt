@@ -71,6 +71,7 @@ class BookingConfirmActivity: AppCompatActivity() {
 
     private fun moveToMainScreen() {
         val intent = Intent(this, NormalUserHomeActivity::class.java)
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
     }
 

@@ -110,6 +110,9 @@
     <string name="ratingLabel">ĐÁNH GIÁ TRẢI NGHIỆM</string>
     <string name="send_your_rating_pls">Gửi đánh giá của bạn đến chúng tôi</string>
     <string name="send">Gửi</string>
+    <string name="nav_branch">Chi nhánh</string>
+    <string name="nav_service">Dịch vụ</string>
+    <string name="nav_discount">Khuyến mãi</string>
 
 
 </resources>
