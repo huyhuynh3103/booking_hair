@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">Hair Booking</string>
+    // OAuth 2.0 client ID
+    <string name="web_api_key">868463371432-gpt3cl85sedjn393hcmb0j8r56bmsps1.apps.googleusercontent.com</string>
+    //facebook
+    <string name="facebook_app_id">1038246873768575</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">a41bc40559e870f7491fa32fd973141f</string>
 
 
     // Booking screen

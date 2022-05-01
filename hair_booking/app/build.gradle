@@ -75,7 +75,7 @@ dependencies {
 
     // Also declare the dependency for the Google Play services library and specify its version
     implementation 'com.google.android.gms:play-services-auth:20.1.0'
-
+    implementation 'com.facebook.android:facebook-android-sdk:latest.release'
     //-----------END FIREBASE DEPENDENCIES------------
 
     // DATE TIME PICKER DEPENDENCY
@@ -100,4 +100,7 @@ dependencies {
 
     // CHART DEPENDENCY
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // ROUNDED IMAGE DEPENDENCY
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }

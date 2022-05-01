@@ -43,6 +43,8 @@ import android.widget.Toast
 import com.journeyapps.barcodescanner.ScanContract
 
 import androidx.activity.result.ActivityResultLauncher
+import com.example.hair_booking.ui.authentication.LogInActivity
+import com.example.hair_booking.ui.manager.appointment.detail.ManagerAppointmentDetailActivity
 import com.journeyapps.barcodescanner.ScanIntentResult
 
 
@@ -68,7 +70,7 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 // Start Activity for this
             } else {
                 val appointmentId = result.contents
-                val intent = Intent(this,R.layout.activity_manager_appointment_detail::class.java)
+                val intent = Intent(this,ManagerAppointmentDetailActivity::class.java)
                 intent.putExtra("appointmentId",appointmentId)
                 startActivity(intent)
             }
@@ -81,8 +83,20 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun setUserProfile() {
         val userProfile = AuthRepository.getCurrentUser()
-//        bindindHeaderNavigationBinding.nameTextView.setText(userProfile!!.displayName.toString())
-//        bindindHeaderNavigationBinding.gmailTextView.setText(userProfile.email.toString())
+        if(userProfile?.displayName!=null){
+            binding.navigationViewManager.getHeaderView(0).findViewById<TextView>(R.id.nameTextView).text =
+                userProfile.displayName.toString()
+        }
+        else{
+            binding.navigationViewManager.getHeaderView(0).findViewById<TextView>(R.id.nameTextView).visibility = View.GONE
+        }
+        if(userProfile?.email!=null){
+            binding.navigationViewManager.getHeaderView(0).findViewById<TextView>(R.id.gmailTextView).text =
+                userProfile.email.toString()
+        }
+        else{
+            binding.navigationViewManager.getHeaderView(0).findViewById<TextView>(R.id.gmailTextView).visibility = View.GONE
+        }
     }
 
     @Override
@@ -116,7 +130,9 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             }
             R.id.nav_sign_out_manager->{
                 AuthRepository.signOut()
-                finish()
+                val intent = Intent(this, LogInActivity::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
             }
         }
 

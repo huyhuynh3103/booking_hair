@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.model.*
 import com.example.hair_booking.ui.manager.appointment.overview.ManagerAppointmentListAdapter
 import androidx.lifecycle.MutableLiveData
+import com.example.hair_booking.ui.admin.discount.overview.AdminDiscountListActivity
+import com.example.hair_booking.ui.admin.discount.overview.AdminDiscountListAdapter
 import com.example.hair_booking.ui.normal_user.booking.choose_discount.DiscountListAdapter
 import com.example.hair_booking.ui.normal_user.booking.choose_salon.SalonListAdapter
 import com.example.hair_booking.ui.normal_user.booking.choose_service.ServiceListAdapter
@@ -23,6 +25,8 @@ import com.example.hair_booking.ui.admin.service.overview.AdminServiceListAdapte
 import com.example.hair_booking.ui.admin.users_list.UsersListAdapter
 import com.example.hair_booking.ui.normal_user.history.overview.HistoryListAdapter
 import com.example.hair_booking.ui.normal_user.home.SalonAdapter
+import com.example.hair_booking.ui.normal_user.wishlist.WishlistRecyclerViewAdapter
+
 @BindingAdapter("data")
 fun bindBookingStylistListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Stylist>?) {
     val adapter = recyclerView.adapter as StylistListAdapter?
@@ -118,7 +122,26 @@ fun bindManagerListRecyclerView(recyclerView: RecyclerView, dataAccount: ArrayLi
     }
 
 }
-
+@BindingAdapter("list", "selected", "default")
+fun setSelectedItem(spinner: Spinner, list: ArrayList<Salon>?, selected: String?, default: String?) {
+    if (list != null && selected != null) {
+        for (i in list?.indices!!) {
+            if (list[i].id == selected) {
+                spinner.setSelection(i)
+            }
+        }
+    }
+    else if (list != null && selected == null){
+        for (i in list?.indices!!) {
+            if (list[i].id == default) {
+                spinner.setSelection(i)
+            }
+        }
+    }
+    else {
+        Log.i("AdapterBindingError", "Set selected fail")
+    }
+}
 
 @BindingAdapter("list", "selected")
 fun setSelectedItem(spinner: Spinner, list: ArrayList<Salon>?, selected: String?) {
@@ -151,6 +174,15 @@ fun bindAdminServiceListRecyclerView(recyclerView: RecyclerView, data: LiveData<
         adapter?.setData(data)
     }
 }
+
+@BindingAdapter("adminDiscountList")
+fun bindAdminDiscountListRecyclerView(recyclerView: RecyclerView, data: LiveData<ArrayList<Discount>>) {
+    val adapter = recyclerView.adapter as AdminDiscountListAdapter
+    if (data != null) {
+        adapter?.setData(data)
+    }
+}
+
 @BindingAdapter("shift")
 fun setCheckedCheckBox(checkBox: CheckBox?, shift: HashMap<String, *>?) {
     if (shift != null) {
@@ -158,4 +190,10 @@ fun setCheckedCheckBox(checkBox: CheckBox?, shift: HashMap<String, *>?) {
     }
 }
 
-
+@BindingAdapter("userWishlist")
+fun bindNormalUserWishlistRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>?) {
+    val adapter = recyclerView.adapter as WishlistRecyclerViewAdapter
+    if (data != null) {
+        adapter?.setData(data)
+    }
+}

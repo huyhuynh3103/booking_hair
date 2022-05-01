@@ -39,8 +39,6 @@ class DbAccountServices(private var dbInstance: FirebaseFirestore?):DatabaseAbst
         return arrayUsers
     }
 
-
-
     override suspend fun save(data: Any?) : DocumentReference? {
         var task:DocumentReference? = null
         try {

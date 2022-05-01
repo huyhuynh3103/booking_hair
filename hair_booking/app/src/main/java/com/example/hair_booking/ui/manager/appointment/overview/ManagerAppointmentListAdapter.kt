@@ -74,7 +74,6 @@ class ManagerAppointmentListAdapter: RecyclerView.Adapter<ManagerAppointmentList
         appointment?.prepareBookingTimeForDisplay()
         holder.appointmentListItemBinding.appointment = appointment
 
-        Log.d("text1231", position.toString())
         // Show appointment
         holder.itemView.visibility = View.VISIBLE
         holder.itemView.layoutParams = RecyclerView.LayoutParams(

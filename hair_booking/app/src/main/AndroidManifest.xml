@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.hair_booking">
-
+    <queries>
+        <package android:name="com.facebook.katana" />
+    </queries>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
 
     <application
         android:allowBackup="true"
@@ -13,6 +17,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hair_booking">
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.admin.discount.add_new_discount.AdminAddNewDiscountActivity"
+            android:label="Thêm mới khuyến mãi">
+
+        </activity>
+        <activity android:name=".ui.admin.discount.edit_discount.AdminEditDiscountActivity"
+            android:label="Chỉnh sửa khuyến mãi"/>
+        <activity android:name=".ui.admin.discount.overview.AdminDiscountListActivity"
+            android:exported="true"
+            android:label="Danh sách khuyến mãi"/>
         <activity
             android:name=".ui.admin.home.AdminHomeActivity"
             android:exported="true" />
@@ -63,6 +95,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.normal_user.wishlist.NormalUserWishlistActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.normal_user.home.NormalUserHomeActivity"
+            android:label="Danh sách yêu thích" />
+        <activity
             android:name=".ui.admin.users_list.UserDetailAdminActivity"
             android:exported="false"
             android:parentActivityName=".ui.admin.users_list.UsersListActivity" />
@@ -77,10 +114,12 @@
             android:name=".ui.manager.appointment.detail.ManagerAppointmentDetailActivity"
             android:exported="false"
             android:label="Chi tiết lịch đặt"
-            android:parentActivityName=".ui.manager.appointment.overview.ManagerAppointmentListActivity"/>
+            android:parentActivityName=".ui.manager.appointment.overview.ManagerAppointmentListActivity" />
         <activity
             android:name=".ui.manager.stylist.ManagerStylistListActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".ui.manager.home.ManagerHomeActivity"
+            android:label="Danh sách thợ làm tóc" />
         <activity
             android:name=".ui.normal_user.booking.choose_salon.ChooseSalonActivity"
             android:exported="false"
@@ -100,7 +139,8 @@
         <activity
             android:name=".ui.manager.stylist.ManagerStylistDetailActivity"
             android:exported="true"
-            android:label="Manager Stylist" />
+            android:parentActivityName=".ui.manager.stylist.ManagerStylistListActivity"
+            android:label="Chi tiết thợ làm tóc" />
         <activity
             android:name=".ui.normal_user.salon.NormalUserSalonDetailActivity"
             android:exported="true"

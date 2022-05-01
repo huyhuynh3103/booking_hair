@@ -259,7 +259,6 @@ class BookingViewModel: ViewModel() {
                 if(isToday()) {
                     if(TimeServices.isLargerThan(TimeServices.toBigDecimal(currentTime), shift.endHour!!.toBigDecimal())) {
                         shiftToBeDisabled.add(result.indexOf(shift))
-                        Log.d("xk", result.indexOf(shift).toString() + "1231")
                     }
                 }
 
@@ -387,6 +386,7 @@ class BookingViewModel: ViewModel() {
             shiftId.value!!,
             discountId,
             discount.value!!,
+            discountPercent.value!!,
             note,
             totalPrice.value!!
         )

@@ -1,6 +1,7 @@
 package com.example.hair_booking.ui.admin.home
 
 import android.content.ContentValues
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -23,6 +24,12 @@ import com.example.hair_booking.databinding.ActivityAdminHomeBinding
 import com.example.hair_booking.model.Salon
 import com.example.hair_booking.model.Statistics
 import com.example.hair_booking.services.auth.AuthRepository
+import com.example.hair_booking.ui.admin.discount.overview.AdminDiscountListActivity
+import com.example.hair_booking.ui.admin.managers_list.ManagersListActivity
+import com.example.hair_booking.ui.admin.service.add_new_service.AdminAddNewServiceActivity
+import com.example.hair_booking.ui.admin.service.overview.AdminServiceListActivity
+import com.example.hair_booking.ui.admin.users_list.UsersListActivity
+import com.example.hair_booking.ui.authentication.LogInActivity
 import com.example.hair_booking.ui.manager.home.ManagerHomeViewModel
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
@@ -48,10 +55,29 @@ class AdminHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         binding.lifecycleOwner = this@AdminHomeActivity
         binding.viewModel = adminHomeViewModel
         setupUI()
+        setUserProfile()
         initBarChart()
         //salonList =
         setupFilterSpinner()
 
+
+    }
+    private fun setUserProfile() {
+        val userProfile = AuthRepository.getCurrentUser()
+        if(userProfile?.displayName!=null){
+            binding.navigationViewAdmin.getHeaderView(0).findViewById<TextView>(R.id.nameTextView).text =
+                userProfile.displayName.toString()
+        }
+        else{
+            binding.navigationViewAdmin.getHeaderView(0).findViewById<TextView>(R.id.nameTextView).visibility = View.GONE
+        }
+        if(userProfile?.email!=null){
+            binding.navigationViewAdmin.getHeaderView(0).findViewById<TextView>(R.id.gmailTextView).text =
+                userProfile.email.toString()
+        }
+        else{
+            binding.navigationViewAdmin.getHeaderView(0).findViewById<TextView>(R.id.gmailTextView).visibility = View.GONE
+        }
 
     }
 
@@ -65,20 +91,26 @@ class AdminHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
             }
             R.id.nav_service_admin->{
-
+                val intent = Intent(this,AdminServiceListActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_discount_admin->{
-
+                val intent = Intent(this,AdminDiscountListActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_account_manager_admin->{
-
+                val intent = Intent(this,ManagersListActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_account_user_admin->{
-
+                val intent = Intent(this, UsersListActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_sign_out_admin->{
                 AuthRepository.signOut()
-                finish()
+                val intent = Intent(this, LogInActivity::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
             }
         }
         binding.drawerLayoutAdmin.closeDrawer(GravityCompat.START)
