@@ -37,46 +37,45 @@
             app:layout_constraintTop_toBottomOf="@id/include" />
 
 
-        <TextView
-            android:id="@+id/salonCityFilterLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:text="Thành phố:"
-            android:textColor="#000000"
-            app:layout_constraintBottom_toBottomOf="@+id/salonCityFilter"
-            app:layout_constraintEnd_toStartOf="@+id/salonCityFilter"
-            app:layout_constraintTop_toTopOf="@+id/salonCityFilter" />
+<!--        <TextView-->
+<!--            android:id="@+id/salonCityFilterLabel"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="5dp"-->
+<!--            android:text="Thành phố:"-->
+<!--            android:textColor="#000000"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/salonCityFilter"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/salonCityFilter"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/salonCityFilter" />-->
 
-        <Spinner
-            android:id="@+id/salonCityFilter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/districtFilterLabel"
-            app:layout_constraintEnd_toStartOf="@+id/districtFilterLabel"
-            app:layout_constraintTop_toTopOf="@+id/districtFilterLabel" />
+<!--        <Spinner-->
+<!--            android:id="@+id/salonCityFilter"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/districtFilterLabel"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/districtFilterLabel"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/districtFilterLabel" />-->
 
-        <TextView
-            android:id="@+id/districtFilterLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:text="Quận:"
-            android:textColor="#000000"
-            app:layout_constraintBottom_toBottomOf="@+id/salonDistrictFilter"
-            app:layout_constraintEnd_toStartOf="@+id/salonDistrictFilter"
-            app:layout_constraintTop_toTopOf="@+id/salonDistrictFilter" />
+<!--        <TextView-->
+<!--            android:id="@+id/districtFilterLabel"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="5dp"-->
+<!--            android:text="Quận:"-->
+<!--            android:textColor="#000000"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/salonDistrictFilter"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/salonDistrictFilter"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/salonDistrictFilter" />-->
 
-        <Spinner
-            android:id="@+id/salonDistrictFilter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chooseSalonScreenLabel" />
-
+<!--        <Spinner-->
+<!--            android:id="@+id/salonDistrictFilter"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/chooseSalonScreenLabel" />-->
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -84,11 +83,11 @@
             bookingSalonData="@{viewModel.salonList}"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/salonDistrictFilter" />
+            app:layout_constraintTop_toBottomOf="@+id/chooseSalonScreenLabel" />
 
 
 

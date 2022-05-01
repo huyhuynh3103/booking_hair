@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
@@ -72,6 +73,32 @@ class ChooseDiscountActivity : AppCompatActivity() {
         // Set onclick event on item in discount list
         setOnDiscountItemClickedEvent()
 
+        observeEmptyRecyclerView()
+
+    }
+
+    private fun showRecyclerViewEmptyHint() {
+        if(binding.noDiscountLabel.visibility == View.GONE) {
+            binding.noDiscountLabel.visibility = View.VISIBLE
+        }
+
+    }
+
+    private fun hideRecyclerViewEmptyHint() {
+        if(binding.noDiscountLabel.visibility == View.VISIBLE) {
+            binding.noDiscountLabel.visibility = View.GONE
+        }
+    }
+
+    private fun observeEmptyRecyclerView() {
+        viewModel.discountList.observe(this, {
+            if(it.isEmpty()) {
+                showRecyclerViewEmptyHint()
+            }
+            else {
+                hideRecyclerViewEmptyHint()
+            }
+        })
     }
 
     private fun setOnDiscountItemClickedEvent() {
