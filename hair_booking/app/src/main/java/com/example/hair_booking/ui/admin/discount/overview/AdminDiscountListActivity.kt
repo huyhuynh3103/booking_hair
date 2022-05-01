@@ -153,9 +153,15 @@ class AdminDiscountListActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
+//    // Back to main screen when click back button
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        finish()
+//        return true
+//    }
+
     // Back to main screen when click back button
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        finish()
-        return true
+    override fun onBackPressed() {
+        super.onBackPressed()
+        parent.recreate()
     }
 }

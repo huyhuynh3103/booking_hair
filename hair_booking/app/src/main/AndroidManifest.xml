@@ -44,7 +44,8 @@
             android:label="Chỉnh sửa khuyến mãi"/>
         <activity android:name=".ui.admin.discount.overview.AdminDiscountListActivity"
             android:exported="true"
-            android:label="Danh sách khuyến mãi"/>
+            android:label="Danh sách khuyến mãi"
+            android:parentActivityName=".ui.admin.home.AdminHomeActivity"/>
         <activity
             android:name=".ui.admin.home.AdminHomeActivity"
             android:exported="true" />
@@ -78,13 +79,15 @@
         <activity
             android:name=".ui.admin.service.overview.AdminServiceListActivity"
             android:exported="true"
-            android:label="Danh sách dịch vụ"/>
+            android:label="Danh sách dịch vụ"
+            android:parentActivityName=".ui.admin.home.AdminHomeActivity"/>
         <activity android:name=".ui.manager.appointment.detail.edit.ManagerEditAppointmentActivity"
             android:label="Chỉnh sửa lịch đặt"/>
         <activity
             android:name=".ui.manager.appointment.overview.ManagerAppointmentListActivity"
             android:exported="true"
-            android:label="Danh sách lịch đặt"/>
+            android:label="Danh sách lịch đặt"
+            android:parentActivityName=".ui.manager.home.ManagerHomeActivity"/>
         <activity
             android:name=".ui.authentication.BeginningActivity"
             android:exported="true">

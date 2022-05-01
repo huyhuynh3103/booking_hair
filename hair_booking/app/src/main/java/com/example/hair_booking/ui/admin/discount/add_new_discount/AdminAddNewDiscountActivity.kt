@@ -84,6 +84,8 @@ class AdminAddNewDiscountActivity : AppCompatActivity() {
                     tmpRequiredPoint = tmpRequiredPoint.substring(1)
                 }
             }
+            else
+                tmpRequiredPoint = requiredPoint
 
             var tmpPercent = ""
             if(percent.length > 1) {
@@ -92,6 +94,8 @@ class AdminAddNewDiscountActivity : AppCompatActivity() {
                     tmpPercent = tmpPercent.substring(1)
                 }
             }
+            else
+                tmpPercent = percent
 
             val inputs = hashMapOf(
                 "title" to title,
@@ -105,20 +109,29 @@ class AdminAddNewDiscountActivity : AppCompatActivity() {
             if(viewModel.checkEmptyFieldsExist(inputs))
                 displayEmptyFieldsWarning()
             else {
-                GlobalScope.launch {
-                    val ack = viewModel.saveDiscount(inputs)
-                    if(!ack) {
-                        runOnUiThread {
-                            displayAddNewDiscountFailed()
+                if((tmpPercent.toFloat() <= 0F || tmpPercent.toFloat() > 1F)) {
+                    displayInvalidPercentWarning()
+                }
+                else if(tmpRequiredPoint.toLong() <= 0) {
+                    displayInvalidRequiredPointWarning()
+                }
+                else {
+                    GlobalScope.launch {
+                        val ack = viewModel.saveDiscount(inputs)
+                        if(!ack) {
+                            runOnUiThread {
+                                displayAddNewDiscountFailed()
+                            }
                         }
-                    }
-                    else {
-                        runOnUiThread {
-                            displayAddSuccessDialog("Thêm mới khuyến mãi thành công")
-                        }
+                        else {
+                            runOnUiThread {
+                                displayAddSuccessDialog("Thêm mới khuyến mãi thành công")
+                            }
 
+                        }
                     }
                 }
+
             }
         })
     }
@@ -140,6 +153,30 @@ class AdminAddNewDiscountActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Cảnh báo")
         builder.setMessage("Vui lòng điền đầy đủ các trường!!!")
+
+        builder.setPositiveButton("Ok") { dialog, which ->
+            // Do nothing
+        }
+        builder.show()
+    }
+
+    private fun displayInvalidRequiredPointWarning() {
+        // Show warning dialog
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Cảnh báo")
+        builder.setMessage("Số điểm phải lớn hơn 0 !!!")
+
+        builder.setPositiveButton("Ok") { dialog, which ->
+            // Do nothing
+        }
+        builder.show()
+    }
+
+    private fun displayInvalidPercentWarning() {
+        // Show warning dialog
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Cảnh báo")
+        builder.setMessage("Phần trăm khuyến mãi phải lớn hơn 0 và nhỏ hơn hoặc bằng 1!!!")
 
         builder.setPositiveButton("Ok") { dialog, which ->
             // Do nothing
