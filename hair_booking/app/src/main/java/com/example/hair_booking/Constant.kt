@@ -52,4 +52,8 @@ object Constant {
         const val managerRole:String = "manager"
         const val adminRole:String = "admin"
     }
+
+    object ImagePath {
+        const val stylist: String = "booking-hair/images/stylists/"
+    }
 }

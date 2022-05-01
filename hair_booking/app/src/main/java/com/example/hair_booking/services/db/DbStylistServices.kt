@@ -115,13 +115,15 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
 
     suspend fun updateOne(id: Any?, updateDoc: Stylist?) {
         if (dbInstance != null) {
+            Log.d("cloudinary", updateDoc?.avatar.toString())
             val docSnap = dbInstance!!.collection("stylists")
                 .document(id!!.toString())
                 .update(
                     "fullName", updateDoc?.fullName,
                     "description", updateDoc?.description,
                     "workPlace", updateDoc?.workPlace,
-                    "shifts", updateDoc?.shifts
+                    "shifts", updateDoc?.shifts,
+                    "avatar", updateDoc?.avatar
                 )
                 .await()
         }
