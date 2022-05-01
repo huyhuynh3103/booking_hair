@@ -3,6 +3,7 @@ package com.example.hair_booking.services.db
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
+import com.example.hair_booking.model.Appointment
 import com.example.hair_booking.model.Discount
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore

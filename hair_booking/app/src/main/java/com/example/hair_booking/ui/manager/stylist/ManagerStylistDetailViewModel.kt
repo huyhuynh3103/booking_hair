@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.hair_booking.model.Account
+import com.example.hair_booking.model.NormalUser
 import com.example.hair_booking.model.Salon
 import com.example.hair_booking.model.Stylist
 import com.example.hair_booking.services.db.dbServices
@@ -13,9 +15,11 @@ import kotlinx.coroutines.launch
 class ManagerStylistDetailViewModel: ViewModel() {
     private val _stylist: MutableLiveData<Stylist> = MutableLiveData()
     private val _salonList: MutableLiveData<ArrayList<Salon>> = MutableLiveData()
+    private val _account: MutableLiveData<Account> = MutableLiveData()
 
     val stylist: LiveData<Stylist> = _stylist
     val salonList: LiveData<ArrayList<Salon>> = _salonList
+    val account: LiveData<Account> = _account
 
     init {
         viewModelScope.launch {
@@ -31,6 +35,10 @@ class ManagerStylistDetailViewModel: ViewModel() {
 
     suspend fun getStylistDetail(id: String) {
         _stylist.value = dbServices.getStylistServices()?.findById(id)
+    }
+
+    suspend fun getManagerAccount(email: String) {
+        _account.value = dbServices.getAccountServices()?.getManagerAccountByEmail(email)
     }
 
     suspend fun getSelectedWorkplace(position: Int): DocumentReference? {
@@ -55,6 +63,10 @@ class ManagerStylistDetailViewModel: ViewModel() {
 
     suspend fun getStylistRef(id: String): DocumentReference? {
         return dbServices.getStylistServices()?.getStylistRef(id)
+    }
+
+    suspend fun isBooked(stylistRef: DocumentReference?): Boolean {
+        return dbServices.getAppointmentServices()?.countAppointment(stylistRef)!! > 0
     }
 
     suspend fun isBooked(stylistRef: DocumentReference?, shiftRef: DocumentReference?): Boolean {

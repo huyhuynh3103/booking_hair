@@ -3,6 +3,7 @@ package com.example.hair_booking.services.db
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
+import com.example.hair_booking.model.Account
 import com.example.hair_booking.model.Salon
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
@@ -154,6 +155,27 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
                 }
         }
         return result
+    }
+
+    suspend fun getSalonListForStatistics(): ArrayList<Salon> {
+        var salonList: ArrayList<Salon> = ArrayList()
+        if (dbInstance != null) {
+            val result = dbInstance!!.collection("hairSalons")
+                .get()
+                .await()
+            for (document in result.documents) {
+                // Mapping firestore object to kotlin model
+                var salon: Salon = Salon(
+                    document.id,
+                    document.data?.get("name") as String,
+                    document.data!!["address"] as HashMap<String, String>
+                )
+                // Insert to list
+                salonList.add(salon)
+            }
+
+        }
+        return salonList
     }
 
     suspend fun getWorkplace(id: String?): DocumentReference? {

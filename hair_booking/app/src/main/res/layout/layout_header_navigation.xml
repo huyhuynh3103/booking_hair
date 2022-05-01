@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <data>
-        <variable
-            name="AuthRepository"
-            type="com.example.hair_booking.services.auth.AuthRepository" />
-    </data>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="200dp"
         android:orientation="vertical"
         android:padding="20dp"
         android:gravity="bottom"
@@ -26,16 +20,14 @@
             android:layout_marginTop="8dp"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:text="@{AuthRepository.currentUser.displayName.toString()}"/>
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/gmailTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="@{AuthRepository.currentUser.email.toString()}"
+            android:layout_marginTop="4dp"
             android:textSize="14sp" />
 
     </LinearLayout>
-</layout>

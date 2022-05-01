@@ -36,7 +36,7 @@
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_choose_stylist.xml" value="0.16621376811594202" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_history_booking.xml" value="0.264" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_history_booking_detail.xml" value="0.25600961538461536" />
-        <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_log_in.xml" value="0.20350877192982456" />
+        <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_log_in.xml" value="0.264" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_login.xml" value="0.176" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/layout/activity_manager_appointment_detail.xml" value="0.176" />
@@ -74,6 +74,7 @@
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/menu/menu_navigation_manager.xml" value="0.1" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/menu/menu_navigation_user.xml" value="0.264" />
         <entry key="..\:/Git repository/booking_hair/hair_booking/app/src/main/res/xml/network_security_config.xml" value="0.1125" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout-v21/activity_manager_stylist_list.xml" value="0.20416666666666666" />
         <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_choose_salon.xml" value="0.20416666666666666" />
         <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_choose_service.xml" value="0.1" />
         <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_choose_stylist.xml" value="0.20416666666666666" />
@@ -85,11 +86,17 @@
         <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_manager_stylist_list.xml" value="0.20416666666666666" />
         <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_managers_list.xml" value="0.1911231884057971" />
         <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_normal_user_home.xml" value="0.17074275362318841" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_normal_user_salon_detail.xml" value="0.20416666666666666" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_normal_user_wishlist.xml" value="0.1911231884057971" />
         <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_user_detail_admin.xml" value="0.1911231884057971" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_user_wishlist.xml" value="0.1911231884057971" />
         <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/activity_users_list.xml" value="0.1911231884057971" />
         <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/booking_stylist_item.xml" value="0.17074275362318841" />
         <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/item_manager_list.xml" value="0.1911231884057971" />
         <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/item_manager_stylist.xml" value="0.25" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/item_normal_user_wishlist.xml" value="0.1911231884057971" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/item_user_list.xml" value="0.1911231884057971" />
+        <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/item_user_wishlist.xml" value="0.33" />
         <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/manager_appointment_list_item.xml" value="0.20416666666666666" />
         <entry key="..\:/Study/University/3rdYear/2ndSemester/MobileApp/Project/booking_hair/hair_booking/app/src/main/res/layout/salon_item_user.xml" value="0.17074275362318841" />
       </map>

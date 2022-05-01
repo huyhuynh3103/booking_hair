@@ -25,6 +25,8 @@ import com.example.hair_booking.ui.admin.service.overview.AdminServiceListAdapte
 import com.example.hair_booking.ui.admin.users_list.UsersListAdapter
 import com.example.hair_booking.ui.normal_user.history.overview.HistoryListAdapter
 import com.example.hair_booking.ui.normal_user.home.SalonAdapter
+import com.example.hair_booking.ui.normal_user.wishlist.WishlistRecyclerViewAdapter
+
 @BindingAdapter("data")
 fun bindBookingStylistListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Stylist>?) {
     val adapter = recyclerView.adapter as StylistListAdapter?
@@ -120,7 +122,26 @@ fun bindManagerListRecyclerView(recyclerView: RecyclerView, dataAccount: ArrayLi
     }
 
 }
-
+@BindingAdapter("list", "selected", "default")
+fun setSelectedItem(spinner: Spinner, list: ArrayList<Salon>?, selected: String?, default: String?) {
+    if (list != null && selected != null) {
+        for (i in list?.indices!!) {
+            if (list[i].id == selected) {
+                spinner.setSelection(i)
+            }
+        }
+    }
+    else if (list != null && selected == null){
+        for (i in list?.indices!!) {
+            if (list[i].id == default) {
+                spinner.setSelection(i)
+            }
+        }
+    }
+    else {
+        Log.i("AdapterBindingError", "Set selected fail")
+    }
+}
 
 @BindingAdapter("list", "selected")
 fun setSelectedItem(spinner: Spinner, list: ArrayList<Salon>?, selected: String?) {
@@ -169,4 +190,10 @@ fun setCheckedCheckBox(checkBox: CheckBox?, shift: HashMap<String, *>?) {
     }
 }
 
-
+@BindingAdapter("userWishlist")
+fun bindNormalUserWishlistRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>?) {
+    val adapter = recyclerView.adapter as WishlistRecyclerViewAdapter
+    if (data != null) {
+        adapter?.setData(data)
+    }
+}

@@ -13,7 +13,7 @@ data class NormalUser(private val _id: String) {
     private var _gender: String? = null
     private var _discountPoint: Long? = null
     private var _appointments: ArrayList<HashMap<String, *>>?  = null
-    private var _wishList: ArrayList<HashMap<String, *>>? = null
+    private var _wishList: ArrayList<DocumentReference>? = null
     private var _accountId: DocumentReference? = null
     private var _username: String? = null
     private var _banned: Boolean? = null
@@ -26,7 +26,7 @@ data class NormalUser(private val _id: String) {
     val gender: String? get() = _gender
     val discountPoint: Long? get() = _discountPoint
     val appointments: ArrayList<HashMap<String, *>>? get() = _appointments
-    val wishList: ArrayList<HashMap<String, *>>? get() = _wishList
+    val wishList: ArrayList<DocumentReference>? get() = _wishList
     val accountId: DocumentReference? get() = _accountId
     val username: String? = _username
     val banned: Boolean? = _banned
@@ -39,7 +39,7 @@ data class NormalUser(private val _id: String) {
         gender: String,
         discountPoint: Long,
         appointments: ArrayList<HashMap<String, *>>,
-        wishList: ArrayList<HashMap<String, *>>,
+        wishList: ArrayList<DocumentReference>,
         accountId: DocumentReference
     ): this(id) {
         this._fullName = fullName
@@ -52,6 +52,24 @@ data class NormalUser(private val _id: String) {
     }
 
     // DEFINE YOUR CUSTOM SECONDARY CONSTRUCTORS BELOW
+    // Constructor for User Wishlist
+    constructor(
+        id: String,
+        fullName: String,
+        phoneNumber: String,
+        gender: String,
+        discountPoint: Long,
+        wishList: ArrayList<DocumentReference>,
+        accountId: DocumentReference
+    ): this(id) {
+        this._fullName = fullName
+        this._phoneNumber = phoneNumber
+        this._gender = gender
+        this._discountPoint = discountPoint
+        this._wishList = wishList
+        this._accountId = accountId
+    }
+
     // constructor for normal user detail screen
     constructor(
         id: String,

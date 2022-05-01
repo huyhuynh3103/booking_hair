@@ -9,8 +9,10 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
@@ -18,6 +20,8 @@ import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityManagerStylistDetailBinding
 import com.example.hair_booking.model.Salon
 import com.example.hair_booking.model.Stylist
+import com.example.hair_booking.services.auth.AuthRepository
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -29,6 +33,8 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
     private val viewModel: ManagerStylistDetailViewModel by viewModels()
 
     private lateinit var adapter: ArrayAdapter<Salon>
+    private lateinit var id: String
+    private var auth: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,19 +48,27 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
 
         setOnClickListenerForButton()
 
-        // Support Menu Action
+        // enable back button
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Load data
         binding.task = intent.getStringExtra("Task")
-        if (binding.task == "Edit") {
-            lifecycleScope.launch {
+        id = intent.getStringExtra("StylistID").toString()
+
+        // Get account ID
+        auth = AuthRepository.getCurrentUser()
+
+        lifecycleScope.launch {
+            binding.viewModel?.getManagerAccount(auth?.email!!)
+
+            if (binding.task == "Edit") {
                 // get selected ID from previous activity
-                binding.viewModel?.getStylistDetail(intent.getStringExtra("StylistID").toString())
+                binding.viewModel?.getStylistDetail(id)
             }
         }
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         finish()
@@ -63,18 +77,24 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
 
     private fun setOnClickListenerForButton() {
         binding.bSaveStylistInfo.setOnClickListener() {
-            val id = intent.getStringExtra("StylistID").toString()
-
             lifecycleScope.launch {
                 // Edit stylist
                 if (binding.task == "Edit") {
-                    if (isConflict(binding.cbShiftMorning, "morning", binding.viewModel!!.getShiftRef("Hl0aRPOhZaI02vqMRUdr"))
-                        || isConflict(binding.cbShiftAfternoon, "afternoon", binding.viewModel!!.getShiftRef("KaZ0Gj0MzYvkZkpHAs8Q"))
-                        || isConflict(binding.cbShiftEvening, "evening", binding.viewModel!!.getShiftRef("cRAgvOR26BYKSRaHbG0g"))) {
+                    // Check workplace conflict
+                    if (isWorkplaceConflict()) {
+                        Toast.makeText(applicationContext,
+                            "Thay đổi nơi làm việc không thể thực hiện do nhân viên đã có lịch chờ xử lý", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                    // Check shifts conflict
+                    else if (isShiftConflict(binding.cbShiftMorning, "morning", binding.viewModel!!.getShiftRef("Hl0aRPOhZaI02vqMRUdr"))
+                            || isShiftConflict(binding.cbShiftAfternoon, "afternoon", binding.viewModel!!.getShiftRef("KaZ0Gj0MzYvkZkpHAs8Q"))
+                            || isShiftConflict(binding.cbShiftEvening, "evening", binding.viewModel!!.getShiftRef("cRAgvOR26BYKSRaHbG0g"))) {
                         Toast.makeText(applicationContext,
                             "Thay đổi ca làm việc không thể thực hiện do nhân viên đã có lịch chờ xử lý", Toast.LENGTH_LONG)
                             .show()
                     }
+                    // Allow to edit
                     else {
                         val stylist = getDataFromUI()
                         binding.viewModel!!.updateStylist(id, stylist)
@@ -86,6 +106,8 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
                 }
                 // Add stylist
                 else {
+
+
                     val stylist = getDataFromUI()
                     binding.viewModel!!.addStylist(stylist)
 
@@ -97,34 +119,42 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
         }
 
         binding.bDeleteStylist.setOnClickListener() {
-            val id = intent.getStringExtra("StylistID").toString()
-
             lifecycleScope.launch {
-                binding.viewModel!!.deleteStylist(id)
+                // Check booked appointment
+                if (binding.viewModel!!.isBooked(binding.viewModel!!.getStylistRef(id))) {
+                    Toast.makeText(applicationContext,
+                        "Xóa không thể thực hiện do nhân viên đã có lịch chờ xử lý", Toast.LENGTH_LONG)
+                        .show()
+                }
+                // Allow to delete
+                else {
+                    binding.viewModel!!.deleteStylist(id)
 
-                val replyIntent = Intent()
-                setResult(Activity.RESULT_OK, replyIntent)
-                finish()
+                    val replyIntent = Intent()
+                    setResult(Activity.RESULT_OK, replyIntent)
+                    finish()
+                }
             }
         }
     }
 
-//    private fun isShiftChange(): Boolean {
-//        val morningShift = binding.viewModel.stylist.value?.shifts?.get("morning")?.get("isWorking")
-//        val afternoonShift = binding.viewModel.stylist.value?.shifts?.get("afternoon")?.get("isWorking")
-//        val eveningShift = binding.viewModel.stylist.value?.shifts?.get("evening")?.get("isWorking")
-//
-//        return !(binding.cbShiftMorning.isChecked == morningShift
-//                && binding.cbShiftAfternoon.isChecked == afternoonShift
-//                && binding.cbShiftEvening.isChecked == eveningShift)
-//    }
+    private suspend fun isWorkplaceConflict(): Boolean {
+        val current = binding.viewModel!!.stylist.value?.workPlace?.id
+        val selected = binding.viewModel!!.getSelectedWorkplace(binding.sWorkplace.selectedItemPosition)?.id
 
-    private suspend fun isConflict(checkBox: CheckBox, shift: String, shiftRef: DocumentReference?): Boolean {
-        val id = intent.getStringExtra("StylistID").toString()
+        if (current != selected) {
+            Log.i("isConflict", "Check workplace")
+            if (binding.viewModel!!.isBooked(binding.viewModel!!.getStylistRef(id))) return true
+        }
+
+        return false
+    }
+
+    private suspend fun isShiftConflict(checkBox: CheckBox, shift: String, shiftRef: DocumentReference?): Boolean {
         val isWorking = binding.viewModel!!.stylist.value?.shifts?.get(shift)?.get("isWorking")
 
         if (!checkBox.isChecked && isWorking == true) {
-            Log.i("isConflict", "Check is $shift booked")
+            Log.i("isConflict", "Check if $shift shift is booked")
             if (binding.viewModel!!.isBooked(binding.viewModel!!.getStylistRef(id), shiftRef)) return true
         }
 
@@ -132,7 +162,6 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
     }
 
     private suspend fun getDataFromUI(): Stylist {
-        val id = intent.getStringExtra("StylistID").toString()
         val name = binding.etStylistName.text.toString()
         val avatar = ""
         val description = binding.tvStylistDescription.text.toString()

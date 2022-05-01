@@ -142,40 +142,41 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                 .whereEqualTo("accountId",accountDocRef)
                 .get()
                 .await()
+            if(userQuerySnapshot.documents.isNotEmpty()) {
+                val appointmentRefList =
+                    userQuerySnapshot.documents[0].data!!["appointments"] as ArrayList<DocumentReference>?
+                if (appointmentRefList != null) {
+                    for (appointmentRef in appointmentRefList) {
+                        val document = appointmentRef.get().await()
 
-            val appointmentRefList = userQuerySnapshot.documents[0].data!!["appointments"] as ArrayList<DocumentReference>
-            for( appointmentRef in appointmentRefList){
-                val document = appointmentRef.get().await()
-
-                val data = document.data
-                if(data!=null){
-                    if(statusAppointment!=null){
-                        if(data["status"] !=statusAppointment){
-                            continue
+                        val data = document.data
+                        if (data != null) {
+                            if (statusAppointment != null) {
+                                if (data["status"] != statusAppointment) {
+                                    continue
+                                }
+                            }
+                            var rate: Double
+                            if (data["rate"] is Long) {
+                                rate = Double.fromBits(data["rate"] as Long)
+                            } else {
+                                rate = data["rate"] as Double
+                            }
+                            val appointment = Appointment(document.id,
+                                data["subId"] as String,
+                                data["bookingDate"] as String,
+                                data["bookingTime"] as String,
+                                data["status"] as String,
+                                data["hairSalon"] as HashMap<String, *>,
+                                data["totalPrice"] as Long,
+                                rate)
+                            appointmentList.add(appointment)
                         }
+
+
                     }
-                    var rate:Double
-                    if(data["rate"]  is Long){
-                        rate = Double.fromBits(data["rate"] as Long)
-                    }else{
-                        rate = data["rate"] as Double
-                    }
-                    val appointment = Appointment(document.id,
-                        data["subId"] as String,
-                        data["bookingDate"] as String,
-                        data["bookingTime"] as String,
-                        data["status"] as String,
-                        data["hairSalon"] as HashMap<String, *>,
-                        data["totalPrice"] as Long,
-                        rate)
-                    appointmentList.add(appointment)
                 }
-
             }
-
-
-
-
         }
         return appointmentList
     }
@@ -946,6 +947,25 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
         }
 
         return  revenueOfNLastMonths.reversed() as ArrayList<Pair<Pair<Int, Int>, Long>>
+    }
+
+    suspend fun countAppointment(stylist: DocumentReference?): Int {
+        var count = 0;
+
+        try {
+            val docSnap = dbInstance!!.collection(Constant.collection.appointments)
+                .whereEqualTo("stylist.id", stylist)
+                .whereEqualTo("status", "Chưa thanh toán")
+                .get()
+                .await()
+
+            count = docSnap.documents.size
+            Log.i("isConflict", count.toString())
+        }
+        catch (exception: Exception) {
+            Log.e("DbAppointmentServices: ", exception.toString())
+        }
+        return count
     }
 
     suspend fun countAppointment(stylist: DocumentReference?, shift: DocumentReference?): Int {

@@ -185,6 +185,40 @@ class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) : Databas
 
     }
 
+    fun addToWishlist(userID: String, salon: DocumentReference) {
+        val normalUserRef = dbInstance!!
+            .collection(Constant.collection.normalUsers)
+            .document(userID)
+
+        normalUserRef
+            .update(
+                "wishList", FieldValue.arrayUnion(salon)
+            )
+            .addOnSuccessListener {
+                Log.d("DbNormalUserServices", "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e ->
+                Log.d("DbNormalUserServices", "Error updating document", e)
+            }
+    }
+
+    fun removeFromWishlist(userID: String, salon: DocumentReference) {
+        val normalUserRef = dbInstance!!
+            .collection(Constant.collection.normalUsers)
+            .document(userID)
+
+        normalUserRef
+            .update(
+                "wishList", FieldValue.arrayRemove(salon)
+            )
+            .addOnSuccessListener {
+                Log.d("DbNormalUserServices", "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e ->
+                Log.d("DbNormalUserServices", "Error updating document", e)
+            }
+    }
+
     suspend fun getUserByAccountId(accountId: String): NormalUser? {
         var user: NormalUser? = null
 
@@ -203,6 +237,7 @@ class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) : Databas
                     document.data!!["phoneNumber"] as String,
                     document.data!!["gender"] as String,
                     document.data!!["discountPoint"] as Long,
+                    document.data!!["wishList"] as ArrayList<DocumentReference>,
                     document.data!!["accountId"] as DocumentReference
                 )
             }

@@ -3,6 +3,7 @@ package com.example.hair_booking.ui.admin.managers_list
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityManagerDetailAdminBinding
@@ -19,6 +20,11 @@ class ManagerDetailAdminActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_manager_detail_admin)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        // Enable back button
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
         val managerId = intent.getStringExtra("managerId")
