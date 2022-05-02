@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hair_booking.model.Account
 import com.example.hair_booking.model.NormalUser
+import com.example.hair_booking.services.auth.AuthRepository
 import com.example.hair_booking.services.db.dbServices
 import kotlinx.coroutines.launch
 
@@ -15,13 +16,31 @@ class NormalUserProfileViewModel: ViewModel() {
     private val _account: MutableLiveData<Account> = MutableLiveData()
     val account: LiveData<Account> = _account
 
+    //init {
+        //viewModelScope.launch {
+            //getCurrentUserInfo()
+        //}
+    //}
+
     suspend fun getNormalUserDetail(id: String){
-        _normalUser.postValue(dbServices.getNormalUserServices()?.getUserById(id))
+        val currentUserEmail: String? = AuthRepository.getCurrentUser()!!.email
+        if(currentUserEmail != null) {
+            val currentUser =
+                dbServices.getAccountServices()!!.getUserAccountByEmail(currentUserEmail)
+            if (currentUser != null) {
+                val currentNormalUser =
+                    dbServices.getNormalUserServices()!!.getUserByAccountId(currentUser.id)
+                _normalUser.postValue(currentNormalUser)
+            }
+        }
+        //_normalUser.postValue(dbServices.getNormalUserServices()?.getUserById(id))
     }
 
     fun getUserAccountDetail(id: String){
         viewModelScope.launch {
-            _account.value = dbServices.getNormalUserServices()?.getNormalUserAccountDetail(id)
+            val currentUserEmail: String? = AuthRepository.getCurrentUser()!!.email
+            _account.value = dbServices.getAccountServices()!!.getUserAccountByEmail(currentUserEmail!!)
+            //_account.value = dbServices.getNormalUserServices()?.getNormalUserAccountDetail(id)
         }
     }
 
