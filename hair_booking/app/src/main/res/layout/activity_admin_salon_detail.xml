@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="task"
+            type="String" />
+
+        <variable
+            name="viewModel"
+            type="com.example.hair_booking.ui.admin.salon.AdminSalonDetailViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.admin.salon.AdminSalonDetailActivity">
+
+            <TextView
+                android:id="@+id/tv_salon_address_street"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Đường"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/et_salon_address_street"
+                app:layout_constraintTop_toBottomOf="@+id/et_salon_name" />
+
+            <EditText
+                android:id="@+id/et_salon_address_street"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:text='@{viewModel.salon.address.get("streetName")}'
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_salon_address_street" />
+
+            <EditText
+                android:id="@+id/et_salon_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:ems="10"
+                android:inputType="textMultiLine|text"
+                android:minHeight="48dp"
+                android:text="@{viewModel.salon.description}"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_salon_description_label" />
+
+            <EditText
+                android:id="@+id/et_salon_phone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:text="@{viewModel.salon.phoneNumber}"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_salon_phone" />
+
+            <TextView
+                android:id="@+id/tv_salon_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Số điện thoại"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_salon_open_hour" />
+
+            <EditText
+                android:id="@+id/et_salon_close_hour"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:ems="10"
+                android:hint="hh.mm"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:text="@{viewModel.salon.closeHour}"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_salon_close_hour" />
+
+            <TextView
+                android:id="@+id/tv_salon_close_hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Giờ đóng cửa"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/et_salon_close_hour"
+                app:layout_constraintTop_toBottomOf="@+id/et_salon_address_ward" />
+
+            <EditText
+                android:id="@+id/et_salon_open_hour"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="hh.mm"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:text="@{viewModel.salon.openHour}"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_salon_open_hour" />
+
+            <EditText
+                android:id="@+id/et_salon_address_city"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:text='@{viewModel.salon.address.get("city")}'
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_salon_address_city" />
+
+            <TextView
+                android:id="@+id/tv_salon_address_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Thành phố"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/et_salon_address_city"
+                app:layout_constraintTop_toBottomOf="@+id/et_salon_address_number" />
+
+            <EditText
+                android:id="@+id/et_salon_address_district"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:text='@{viewModel.salon.address.get("district")}'
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/et_salon_address_city"
+                app:layout_constraintStart_toEndOf="@+id/et_salon_address_ward"
+                app:layout_constraintTop_toBottomOf="@+id/tv_salon_address_district" />
+
+            <TextView
+                android:id="@+id/tv_salon_address_district"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Quận"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/et_salon_address_district"
+                app:layout_constraintTop_toBottomOf="@+id/et_salon_address_number" />
+
+            <EditText
+                android:id="@+id/et_salon_address_ward"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:text='@{viewModel.salon.address.get("ward")}'
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_salon_address_ward" />
+
+            <TextView
+                android:id="@+id/tv_salon_address_ward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Phường"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_salon_address_number" />
+
+            <EditText
+                android:id="@+id/et_salon_address_number"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:text='@{viewModel.salon.address.get("streetNumber")}'
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_salon_address_number" />
+
+            <include
+                android:id="@+id/include"
+                layout="@layout/app_bar_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_salon_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Đánh giá"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_salon_description" />
+
+
+            <TextView
+                android:id="@+id/tv_salon_open_hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Giờ mở cửa"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_salon_address_ward" />
+
+            <ImageView
+                android:id="@+id/iv_salon_avatar"
+                android:layout_width="wrap_content"
+                android:layout_height="231dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/include"
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+            <TextView
+                android:id="@+id/tv_salon_name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="Tên cửa hàng"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_salon_avatar" />
+
+
+            <TextView
+                android:id="@+id/tv_salon_address_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Số"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_salon_name" />
+
+
+            <TextView
+                android:id="@+id/tv_salon_description_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Mô tả Salon"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_salon_phone" />
+
+            <RatingBar
+                android:id="@+id/rb_salon_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:rating="@{viewModel.rate}"
+                android:stepSize="0.1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_salon_rate"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <Button
+                android:id="@+id/b_save_salon_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/save_btn"
+                android:textAllCaps="false"
+                android:textSize="20sp"
+                android:visibility="visible"
+                app:backgroundTint="#E1FF5722"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/b_delete_salon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:minHeight="50dp"
+                android:text="Xóa cửa hàng"
+                android:textAllCaps="false"
+                android:textSize="20sp"
+                android:visibility='@{task.equals("Edit") ? View.VISIBLE : View.INVISIBLE}'
+                app:backgroundTint="#F43636"
+                app:layout_constraintBottom_toTopOf="@+id/b_save_salon_info"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rb_salon_rating" />
+
+            <EditText
+                android:id="@+id/et_salon_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:text="@{viewModel.salon.name}"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_salon_name_label" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

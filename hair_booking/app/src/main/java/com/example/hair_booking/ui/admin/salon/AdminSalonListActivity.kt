@@ -74,26 +74,26 @@ class AdminSalonListActivity : AppCompatActivity() {
 
     private fun setOnClickListenerForItem() {
         adapter.onItemClick = {
-//            // Create an intent to send data
-//            val intent = Intent(this, AdminSalonDetailActivity::class.java)
-//
-//            // send chosen service id and name back to previous activity
-//            intent.putExtra("Task", "Edit")
-//            intent.putExtra("SalonID", it.id)
-//
-//            startActivityForResult(intent, REQUEST_CODE_UPDATE_DATA)
+            // Create an intent to send data
+            val intent = Intent(this, AdminSalonDetailActivity::class.java)
+
+            // send chosen service id and name back to previous activity
+            intent.putExtra("Task", "Edit")
+            intent.putExtra("SalonID", it.id)
+
+            startActivityForResult(intent, REQUEST_CODE_UPDATE_DATA)
         }
     }
 
     private fun setOnClickListenerForButton() {
-//        binding.btAddSalon.setOnClickListener {
-//            val intent = Intent(this, AdminSalonDetailActivity::class.java)
-//
-//            // send chosen service id and name back to previous activity
-//            intent.putExtra("Task", "Add")
-//
-//            startActivityForResult(intent, REQUEST_CODE_UPDATE_DATA)
-//        }
+        binding.btAddSalon.setOnClickListener {
+            val intent = Intent(this, AdminSalonDetailActivity::class.java)
+
+            // send chosen service id and name back to previous activity
+            intent.putExtra("Task", "Add")
+
+            startActivityForResult(intent, REQUEST_CODE_UPDATE_DATA)
+        }
     }
 
     private fun setTextChangeListener() {

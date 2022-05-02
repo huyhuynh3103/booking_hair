@@ -101,6 +101,7 @@ class NormalUserSalonDetailViewModel(private val context: Context): ViewModel() 
             dbServices.getNormalUserServices()?.removeFromWishlist(userID, getSalonRef(salonID)!!)
         }
     }
+
     fun getSalonAvatarResource(context:Context):Int{
         // get context
         //remove extension part of avatar

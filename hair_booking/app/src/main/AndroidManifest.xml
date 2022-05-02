@@ -22,6 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Hair_booking">
         <activity
+            android:name=".ui.admin.salon.AdminSalonDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.admin.salon.AdminSalonListActivity"
             android:exported="false"
             android:label="Danh sách cửa hàng"
@@ -52,7 +55,7 @@
         </activity>
         <activity
             android:name=".ui.admin.discount.add_new_discount.AdminAddNewDiscountActivity"
-            android:label="Thêm mới khuyến mãi"></activity>
+            android:label="Thêm mới khuyến mãi" />
         <activity
             android:name=".ui.admin.discount.edit_discount.AdminEditDiscountActivity"
             android:label="Chỉnh sửa khuyến mãi" />

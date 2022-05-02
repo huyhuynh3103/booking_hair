@@ -106,8 +106,6 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
                 }
                 // Add stylist
                 else {
-
-
                     val stylist = getDataFromUI()
                     binding.viewModel!!.addStylist(stylist)
 
