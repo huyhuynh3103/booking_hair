@@ -27,6 +27,7 @@ import com.google.android.material.navigation.NavigationView
 
 class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
 
+    val REQUEST_CODE = 1111
     private var mDrawerLayout: DrawerLayout? = null
     private val salonViewModel: SalonViewModel by viewModels()
     private lateinit var binding: ActivityNormalUserHomeBinding
