@@ -3,6 +3,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.hair_booking.ui.manager.profile.ManagerProfileViewModel" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,6 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:text="@{viewModel.account.email}"
                     android:textColor="@color/black"
                     android:padding="5dp"
                     android:maxLines="1"
@@ -83,6 +89,8 @@
 
                 <TextView
                     android:id="@+id/etWorkPlaceManager"
+                    list="@{viewModel.salonList}"
+                    salon="@{viewModel.account.hairSalon.id}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"

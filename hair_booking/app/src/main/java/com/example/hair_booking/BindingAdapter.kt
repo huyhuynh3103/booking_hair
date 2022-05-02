@@ -160,6 +160,23 @@ fun setSelectedItem(spinner: Spinner, list: ArrayList<Salon>?, selected: String?
     }
 }
 
+@BindingAdapter("list", "salon")
+fun setWorkPlace(textview: TextView, list: ArrayList<Salon>?, salon: String?) {
+    if (list != null && salon != null) {
+        for (i in list?.indices!!) {
+            if (list[i].id == salon) {
+                textview.text = list[i].toString()
+            }
+        }
+    }
+    else if (list != null && salon == null){
+        textview.text = list[0].toString()
+    }
+    else {
+        Log.i("AdapterBindingError", "Set selected fail")
+    }
+}
+
 @BindingAdapter("historyList")
 fun bindHistoryListRecycleView(recyclerView: RecyclerView,data:ArrayList<Appointment>?){
     val adapter = recyclerView.adapter as HistoryListAdapter
