@@ -1,6 +1,7 @@
 package com.example.hair_booking.ui.manager.stylist
 
 import android.app.Activity
+import android.media.Image
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
@@ -35,7 +36,13 @@ class ManagerStylistDetailViewModel: ViewModel() {
     val account: LiveData<Account> = _account
     val avatar: LiveData<Uri> = _avatar
 
+    private val _isVisibleProgressBar = MutableLiveData<Boolean>()
+    val isVisibleProgressBar:LiveData<Boolean> = _isVisibleProgressBar
+
     init {
+        // Re-init avatar uri to null, which means the user hasn't change the avatar yet
+        _avatar.value = null
+        _isVisibleProgressBar.value = false // hide progress bar
         viewModelScope.launch {
             getSalonList()
         }
@@ -52,7 +59,8 @@ class ManagerStylistDetailViewModel: ViewModel() {
         _stylist.value = stylist
 
         // Load image from cloudinary url to image view
-        Picasso.with(context).load(stylist!!.avatar).into(imageView)
+        if(!stylist!!.avatar.isNullOrEmpty())
+            Picasso.with(context).load(stylist!!.avatar).into(imageView)
     }
 
     suspend fun getManagerAccount(email: String) {
@@ -91,47 +99,8 @@ class ManagerStylistDetailViewModel: ViewModel() {
         return dbServices.getAppointmentServices()?.countAppointment(stylistRef, shiftRef)!! > 0
     }
 
-    suspend fun updateStylist(context: Activity, id: String, stylist: Stylist) {
-        //File to upload to cloudinary
-        try {
-            val url = MediaManager.get()
-                .upload(_avatar.value)
-                .option("folder", Constant.ImagePath.stylist)
-                .option("public_id", id) // use stylist id as public id
-                .callback(object : UploadCallback {
-                    override fun onStart(requestId: String?) {
-                        Log.d("cloudinary", "onStart")
-                    }
-
-
-                    override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
-                        Log.d("cloudinary", "onProgress")
-                    }
-
-                    override fun onSuccess(requestId: String, resultData: Map<*, *>?) {
-                        stylist.setAvatar(resultData?.get("secure_url") as String)
-
-                        GlobalScope.launch {
-                            dbServices.getStylistServices()?.updateOne(id, stylist)
-                        }
-
-
-                    }
-
-                    override fun onError(requestId: String?, error: ErrorInfo) {
-                        Log.d("cloudinary", "onError")
-                    }
-
-                    override fun onReschedule(requestId: String?, error: ErrorInfo) {
-                        Log.d("cloudinary", "onReschdule")
-                    }
-                }).startNow(context)
-
-
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
+    suspend fun updateStylist(id: String, stylist: Stylist) {
+        dbServices.getStylistServices()?.updateOne(id, stylist)
     }
 
     suspend fun addStylist(stylist: Stylist) {
@@ -151,5 +120,15 @@ class ManagerStylistDetailViewModel: ViewModel() {
 
     fun setAvatarUri(uri: Uri) {
         _avatar.value = uri
+
+    }
+
+    fun toggleProgressBar() {
+        if(_isVisibleProgressBar.value != null) {
+            if(_isVisibleProgressBar.value == true)
+                _isVisibleProgressBar.value = false
+            else
+                _isVisibleProgressBar.value = true
+        }
     }
 }

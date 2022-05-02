@@ -1,5 +1,6 @@
 package com.example.hair_booking.ui.manager.stylist
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +11,13 @@ import com.example.hair_booking.R
 import com.example.hair_booking.databinding.BookingStylistItemBinding
 import com.example.hair_booking.databinding.ItemManagerStylistBinding
 import com.example.hair_booking.model.Stylist
+import com.squareup.picasso.Picasso
 
 class StylistRecycleViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var stylistList: ArrayList<Stylist> = ArrayList()
     var onItemClick: ((Stylist) -> Unit)? = null
 
-    inner class ViewHolder(var binding: ItemManagerStylistBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(var binding: ItemManagerStylistBinding, var context: Activity): RecyclerView.ViewHolder(binding.root) {
 
         init {
             // Set on item click listener
@@ -36,7 +38,7 @@ class StylistRecycleViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()
 
         // Return a new holder instance with the binding of the custom layout as parameter
         // The binding of the custom layout as parameter will be used to binding view from xml layout
-        return ViewHolder(binding)
+        return ViewHolder(binding, context as Activity)
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
@@ -44,8 +46,12 @@ class StylistRecycleViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()
 
         // Get the data model based on position
         val stylist: Stylist = stylistList[position]
-
         holder.binding.stylist = stylist
+        val stylistImageView = holder.itemView.findViewById<ImageView>(R.id.iv_stylist_avatar_item)
+
+        // Load image from cloudinary url to image view
+        if(!stylist!!.avatar.isNullOrEmpty())
+            Picasso.with(holder.context).load(stylist!!.avatar).into(stylistImageView)
     }
 
     override fun getItemCount(): Int {

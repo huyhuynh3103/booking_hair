@@ -1,10 +1,14 @@
 package com.example.hair_booking.ui.normal_user.booking.choose_stylist
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hair_booking.R
 import com.example.hair_booking.databinding.BookingStylistItemBinding
 import com.example.hair_booking.model.Stylist
+import com.squareup.picasso.Picasso
 
 class StylistListAdapter: RecyclerView.Adapter<StylistListAdapter.ViewHolder>() {
 
@@ -20,7 +24,7 @@ class StylistListAdapter: RecyclerView.Adapter<StylistListAdapter.ViewHolder>() 
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(var bookingStylistItemBinding: BookingStylistItemBinding): RecyclerView.ViewHolder(bookingStylistItemBinding.root) {
+    inner class ViewHolder(var bookingStylistItemBinding: BookingStylistItemBinding, var context: Activity): RecyclerView.ViewHolder(bookingStylistItemBinding.root) {
 
         init {
             // Set on item click listener
@@ -44,13 +48,19 @@ class StylistListAdapter: RecyclerView.Adapter<StylistListAdapter.ViewHolder>() 
 
         // Return a new holder instance with the binding of the custom layout as parameter
         // The binding of the custom layout as parameter will be used to binding view from xml layout
-        return ViewHolder(bookingStylistItemBinding)
+        return ViewHolder(bookingStylistItemBinding, context as Activity)
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val stylist: Stylist = stylistList[position]
         holder.bookingStylistItemBinding.stylist = stylist
+
+        val stylistImageView = holder.itemView.findViewById<ImageView>(R.id.stylistAvatar)
+
+        // Load image from cloudinary url to image view
+        if(!stylist!!.avatar.isNullOrEmpty())
+            Picasso.with(holder.context).load(stylist!!.avatar).into(stylistImageView)
     }
 
     override fun getItemCount(): Int {

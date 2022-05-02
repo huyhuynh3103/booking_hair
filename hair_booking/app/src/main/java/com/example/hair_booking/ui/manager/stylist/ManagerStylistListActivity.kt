@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityManagerStylistListBinding
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class ManagerStylistListActivity : AppCompatActivity() {
@@ -71,7 +72,11 @@ class ManagerStylistListActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             val salonID = binding.viewModel!!.manager.value?.hairSalon
-            binding.viewModel!!.getUpdatedStylistList(salonID)
+            async {
+                binding.viewModel!!.getUpdatedStylistList(salonID)
+            }.await()
+
+            adapter.notifyDataSetChanged()
         }
     }
 
