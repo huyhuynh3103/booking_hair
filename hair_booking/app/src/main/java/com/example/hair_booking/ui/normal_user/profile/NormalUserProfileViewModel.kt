@@ -22,7 +22,7 @@ class NormalUserProfileViewModel: ViewModel() {
         //}
     //}
 
-    suspend fun getNormalUserDetail(id: String){
+    suspend fun getNormalUserDetail(){
         val currentUserEmail: String? = AuthRepository.getCurrentUser()!!.email
         if(currentUserEmail != null) {
             val currentUser =
@@ -36,7 +36,7 @@ class NormalUserProfileViewModel: ViewModel() {
         //_normalUser.postValue(dbServices.getNormalUserServices()?.getUserById(id))
     }
 
-    fun getUserAccountDetail(id: String){
+    fun getUserAccountDetail(){
         viewModelScope.launch {
             val currentUserEmail: String? = AuthRepository.getCurrentUser()!!.email
             _account.value = dbServices.getAccountServices()!!.getUserAccountByEmail(currentUserEmail!!)

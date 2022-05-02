@@ -50,8 +50,8 @@ class NormalUserProfileActivity : AppCompatActivity() {
 
     private suspend fun getSelectedNormalUserProfile() {
 
-        binding.viewModel?.getUserAccountDetail("U4mhGl554MTgKbUgMVhA")
-        binding.viewModel?.getNormalUserDetail("U4mhGl554MTgKbUgMVhA")
+        binding.viewModel?.getUserAccountDetail()
+        binding.viewModel?.getNormalUserDetail()
     }
 
     private fun setOnClickListenerForButton() {
