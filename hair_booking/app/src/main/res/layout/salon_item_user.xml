@@ -10,7 +10,20 @@
             name="salon"
             type="com.example.hair_booking.model.Salon" />
     </data>
-
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_gravity="center"
+        card_view:cardElevation= "10dp"
+        card_view:cardMaxElevation="12dp"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardPreventCornerOverlap="true"
+        card_view:contentPadding="10dp"
+        android:layout_margin="5dp"
+        card_view:cardUseCompatPadding="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="20dp">
     <LinearLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
@@ -20,9 +33,9 @@
         <ImageView
             android:id="@+id/salonItemImg"
             android:layout_gravity="center"
+            android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             app:srcCompat="@drawable/img_2" />
 
         <RatingBar
@@ -70,4 +83,5 @@
             android:text="222/3, Phường 2 Phố Hàng Vọng, Đống Đa, Hà Nội " />
 
     </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

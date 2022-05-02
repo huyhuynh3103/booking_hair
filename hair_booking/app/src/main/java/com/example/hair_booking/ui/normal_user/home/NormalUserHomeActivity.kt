@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityNormalUserHomeBinding
 import com.example.hair_booking.services.auth.AuthRepository
@@ -105,16 +106,16 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
         return true
     }
     private fun setupUI() {
-        binding.salonListRecycleView.layoutManager = GridLayoutManager(this,2)
+        binding.salonListRecycleView.layoutManager = LinearLayoutManager(this)
         salonAdapter = SalonAdapter()
         binding.salonListRecycleView.adapter = salonAdapter
         mDrawerLayout = binding.drawerLayout
-        binding.salonListRecycleView.addItemDecoration(
-            DividerItemDecoration(
-                applicationContext,
-                DividerItemDecoration.HORIZONTAL
-            )
-        )
+//        val dividerItemDecoration = DividerItemDecoration(applicationContext, DividerItemDecoration.VERTICAL)
+//        binding.salonListRecycleView.addItemDecoration(
+//            dividerItemDecoration
+//        )
+
+
 
         val toolbar:Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
