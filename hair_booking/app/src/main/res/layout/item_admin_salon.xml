@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="rating"
+            type="Float" />
+        <variable
+            name="salon"
+            type="com.example.hair_booking.model.Salon" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".ui.manager.stylist.ManagerStylistListActivity">
+
+        <ImageView
+            android:id="@+id/iv_salon_avatar_item"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <TextView
+            android:id="@+id/tv_salon_name_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@{salon.name}"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/iv_salon_avatar_item"
+            app:layout_constraintTop_toTopOf="@+id/iv_salon_avatar_item" />
+
+        <TextView
+            android:id="@+id/tv_salon_address_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:lines="2"
+            android:text='@{salon.address["streetNumber"] + " " + salon.address["streetName"] + ",\n" + salon.address["ward"] + ", " + salon.address["district"] + ", " + salon.address["city"]}'
+            app:layout_constraintBottom_toBottomOf="@+id/iv_salon_avatar_item"
+            app:layout_constraintStart_toEndOf="@+id/iv_salon_avatar_item"
+            app:layout_constraintTop_toTopOf="@+id/iv_salon_avatar_item" />
+
+        <RatingBar
+            android:id="@+id/rb_salon_rating_item"
+            style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:rating="@{rating}"
+            android:stepSize="0.1"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_salon_avatar_item"
+            app:layout_constraintStart_toEndOf="@+id/iv_salon_avatar_item" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

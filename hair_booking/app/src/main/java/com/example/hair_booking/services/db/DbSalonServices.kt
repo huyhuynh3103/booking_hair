@@ -9,6 +9,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 
 class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbstract<Any?>() {
 
@@ -48,6 +49,44 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
                 }
         }
         return result
+    }
+
+    suspend fun FindAll(): ArrayList<Salon> {
+        var salonList: ArrayList<Salon> = ArrayList()
+
+        try {
+            val docSnap = dbInstance!!.collection("hairSalons")
+                .get()
+                .await()
+
+            for (document in docSnap.documents) {
+                var rate: Double = if (document.data?.get("rate") is Long) {
+                    Double.fromBits(document.data?.get("rate") as Long)
+                } else {
+                    document.data?.get("rate") as Double
+                }
+
+                // Mapping firestore object to kotlin model
+                var salon = Salon(
+                    document.id,
+                    document.data?.get("name") as String,
+                    document.data?.get("salonAvatar") as String,
+                    document.data?.get("description") as String,
+                    rate,
+                    document.data?.get("openHour") as String,
+                    document.data?.get("closeHour") as String,
+                    document.data?.get("address") as HashMap<String, String>
+                )
+
+                // Insert to list
+                salonList.add(salon)
+            }
+        } catch (exception: Exception) {
+            Log.d("StylistServicesLog", "Get stylist detail fail with ", exception)
+        }
+
+        // Call function to return salon list after mapping complete
+        return salonList
     }
 
     override suspend fun findById(id: Any?): MutableLiveData<Salon> {

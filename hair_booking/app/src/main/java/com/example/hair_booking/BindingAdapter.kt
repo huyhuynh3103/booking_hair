@@ -21,6 +21,7 @@ import com.example.hair_booking.ui.normal_user.booking.choose_service.ServiceLis
 import com.example.hair_booking.ui.normal_user.booking.choose_stylist.StylistListAdapter
 import com.example.hair_booking.ui.manager.stylist.StylistRecycleViewAdapter
 import com.example.hair_booking.ui.admin.managers_list.ManagersListAdapter
+import com.example.hair_booking.ui.admin.salon.SalonRecyclerViewAdapter
 import com.example.hair_booking.ui.admin.service.overview.AdminServiceListAdapter
 import com.example.hair_booking.ui.admin.users_list.UsersListAdapter
 import com.example.hair_booking.ui.normal_user.history.overview.HistoryListAdapter
@@ -101,6 +102,14 @@ fun bindSalonListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>
 @BindingAdapter("managerStylistList")
 fun bindManagerStylistListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Stylist>?) {
     val adapter = recyclerView.adapter as StylistRecycleViewAdapter
+    if (data != null) {
+        adapter?.setData(data)
+    }
+}
+
+@BindingAdapter("adminSalonList")
+fun bindAdminSalonListRecyclerView(recyclerView: RecyclerView, data: ArrayList<Salon>?) {
+    val adapter = recyclerView.adapter as SalonRecyclerViewAdapter
     if (data != null) {
         adapter?.setData(data)
     }
