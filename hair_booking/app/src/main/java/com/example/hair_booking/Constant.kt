@@ -55,5 +55,6 @@ object Constant {
 
     object ImagePath {
         const val stylist: String = "booking-hair/images/stylists/"
+        const val salon: String = "booking-hair/images/salons/"
     }
 }

@@ -266,14 +266,12 @@
 
             <ImageView
                 android:id="@+id/iv_salon_avatar"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="231dp"
                 android:layout_marginTop="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/include"
-                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                app:layout_constraintTop_toBottomOf="@+id/include" />
 
             <TextView
                 android:id="@+id/tv_salon_name_label"
@@ -380,6 +378,30 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_salon_name_label" />
 
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/changeSalonAvatarBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="-20dp"
+                android:clickable="true"
+                android:onClick="@{() -> viewModel.onChangeAvatarBtnClicked()}"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_salon_avatar"
+                app:layout_constraintEnd_toEndOf="@+id/iv_salon_avatar"
+                app:srcCompat="@drawable/ic_baseline_edit_24"
+                tools:ignore="VectorDrawableCompat" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="@{viewModel.isVisibleProgressBar? View.VISIBLE: View.INVISIBLE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

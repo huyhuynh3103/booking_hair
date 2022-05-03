@@ -169,4 +169,8 @@ data class Salon(private val _id: String) {
     override fun toString(): String {
         return _name!!
     }
+
+    fun setAvatar(avatar: String) {
+        _avatar = avatar
+    }
 }

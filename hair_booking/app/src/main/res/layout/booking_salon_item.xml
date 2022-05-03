@@ -15,8 +15,8 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/salonAvatarWrapper"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="90dp"
+            android:layout_height="0dp"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
@@ -25,7 +25,6 @@
             android:innerRadius="0dp"
             android:shape="rectangle"
             android:thicknessRatio="1.9"
-            app:cardBackgroundColor="#5C5353"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -34,9 +33,7 @@
                 android:id="@+id/salonAvatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                app:srcCompat="@drawable/googleg_standard_color_18"></ImageView>
+                android:src="@drawable/default_salon" />
         </androidx.cardview.widget.CardView>
 
 
@@ -44,9 +41,7 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toBottomOf="@+id/salonAvatarWrapper"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/salonAvatarWrapper"

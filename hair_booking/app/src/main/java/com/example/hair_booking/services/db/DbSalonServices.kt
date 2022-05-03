@@ -199,17 +199,33 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
 
     suspend fun updateOne(id: Any?, updateDoc: Salon?) {
         if (dbInstance != null) {
-            val docSnap = dbInstance!!.collection("hairSalons")
-                .document(id!!.toString())
-                .update(
-                    "name", updateDoc?.name,
-                    "description", updateDoc?.description,
-                    "openHour", updateDoc?.openHour,
-                    "closeHour", updateDoc?.closeHour,
-                    "address", updateDoc?.address,
-                    "phoneNumber", updateDoc?.phoneNumber
-                )
-                .await()
+            if(!updateDoc?.avatar.isNullOrEmpty()) {
+                val docSnap = dbInstance!!.collection("hairSalons")
+                    .document(id!!.toString())
+                    .update(
+                        "name", updateDoc?.name,
+                        "description", updateDoc?.description,
+                        "openHour", updateDoc?.openHour,
+                        "closeHour", updateDoc?.closeHour,
+                        "address", updateDoc?.address,
+                        "phoneNumber", updateDoc?.phoneNumber,
+                        "salonAvatar", updateDoc?.avatar
+                    )
+                    .await()
+            }
+            else {
+                val docSnap = dbInstance!!.collection("hairSalons")
+                    .document(id!!.toString())
+                    .update(
+                        "name", updateDoc?.name,
+                        "description", updateDoc?.description,
+                        "openHour", updateDoc?.openHour,
+                        "closeHour", updateDoc?.closeHour,
+                        "address", updateDoc?.address,
+                        "phoneNumber", updateDoc?.phoneNumber
+                    )
+                    .await()
+            }
         }
     }
 

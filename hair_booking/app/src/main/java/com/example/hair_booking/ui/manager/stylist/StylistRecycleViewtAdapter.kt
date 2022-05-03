@@ -47,8 +47,8 @@ class StylistRecycleViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()
         // Get the data model based on position
         val stylist: Stylist = stylistList[position]
         holder.binding.stylist = stylist
-        val stylistImageView = holder.itemView.findViewById<ImageView>(R.id.iv_stylist_avatar_item)
 
+        val stylistImageView = holder.itemView.findViewById<ImageView>(R.id.iv_stylist_avatar_item)
         // Load image from cloudinary url to image view
         if(!stylist!!.avatar.isNullOrEmpty())
             Picasso.with(holder.context).load(stylist!!.avatar).into(stylistImageView)

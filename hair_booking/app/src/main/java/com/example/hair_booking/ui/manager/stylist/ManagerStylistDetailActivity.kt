@@ -43,7 +43,6 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
     private lateinit var id: String
     private var auth: FirebaseUser? = null
 
-    private val PHOTO_PICKER_REQUEST_CODE = 1111
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -165,121 +164,6 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun editStylist(stylist: Stylist) {
-        try {
-            if(viewModel.avatar.value != null) {
-                viewModel.toggleProgressBar() // show progress bar
-
-                //File to upload to cloudinary
-                MediaManager.get()
-                    .upload(viewModel.avatar.value)
-                    .option("folder", Constant.ImagePath.stylist)
-                    .option("public_id", id) // use stylist id as public id
-                    .callback(object : UploadCallback {
-                        override fun onStart(requestId: String?) {
-                            Log.d("cloudinary", "onStart")
-                        }
-                        override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
-                            Log.d("cloudinary", "onProgress")
-                        }
-                        override fun onSuccess(requestId: String, resultData: Map<*, *>?) {
-                            Log.d("cloudinary", "onSuccess")
-                            stylist.setAvatar(resultData?.get("secure_url") as String)
-
-                            lifecycleScope.launch {
-                                async {
-                                    binding.viewModel!!.updateStylist(id, stylist)
-                                }.await()
-                                viewModel.toggleProgressBar() // hide progress bar
-                                val replyIntent = Intent()
-                                setResult(Activity.RESULT_OK, replyIntent)
-                                finish()
-                            }
-                        }
-                        override fun onError(requestId: String?, error: ErrorInfo) {
-                            Log.d("cloudinary", "onError")
-                        }
-                        override fun onReschedule(requestId: String?, error: ErrorInfo) {
-                            Log.d("cloudinary", "onReschdule")
-                        }
-                    }).startNow(this@ManagerStylistDetailActivity)
-            }
-            else {
-                // Update without changing avatar
-                lifecycleScope.launch {
-                    async {
-                        viewModel.toggleProgressBar() // show progress bar
-                        binding.viewModel!!.updateStylist(id, stylist)
-                    }.await()
-                    viewModel.toggleProgressBar() // hide progress bar
-                    val replyIntent = Intent()
-                    setResult(Activity.RESULT_OK, replyIntent)
-                    finish()
-                }
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun displayAvatarRequiredWarning() {
-        // Show warning dialog
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Cảnh báo")
-        builder.setMessage("Vui lòng chọn avatar!!")
-
-        builder.setPositiveButton("Ok") { dialog, which ->
-            // Do nothing
-        }
-        builder.show()
-    }
-
-    private fun addStylist(stylist: Stylist) {
-        try {
-            if(viewModel.avatar.value != null) {
-                viewModel.toggleProgressBar() // show progress bar
-
-                //File to upload to cloudinary
-                MediaManager.get()
-                    .upload(viewModel.avatar.value)
-                    .option("folder", Constant.ImagePath.stylist)
-                    .option("public_id", id) // use stylist id as public id
-                    .callback(object : UploadCallback {
-                        override fun onStart(requestId: String?) {
-                            Log.d("cloudinary", "onStart")
-                        }
-                        override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
-                            Log.d("cloudinary", "onProgress")
-                        }
-                        override fun onSuccess(requestId: String, resultData: Map<*, *>?) {
-                            Log.d("cloudinary", "onSuccess")
-                            stylist.setAvatar(resultData?.get("secure_url") as String)
-
-                            lifecycleScope.launch {
-                                async {
-                                    binding.viewModel!!.addStylist(stylist)
-                                }.await()
-                                viewModel.toggleProgressBar() // hide progress bar
-                                val replyIntent = Intent()
-                                setResult(Activity.RESULT_OK, replyIntent)
-                                finish()
-                            }
-                        }
-                        override fun onError(requestId: String?, error: ErrorInfo) {
-                            Log.d("cloudinary", "onError")
-                        }
-                        override fun onReschedule(requestId: String?, error: ErrorInfo) {
-                            Log.d("cloudinary", "onReschdule")
-                        }
-                    }).startNow(this@ManagerStylistDetailActivity)
-            }
-            else
-                displayAvatarRequiredWarning()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
-
     private suspend fun isWorkplaceConflict(): Boolean {
         val current = binding.viewModel!!.stylist.value?.workPlace?.id
         val selected = binding.viewModel!!.getSelectedWorkplace(binding.sWorkplace.selectedItemPosition)?.id
@@ -378,4 +262,120 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
             viewModel.setAvatarUri(data.data!!)
         }
     }
+
+    private fun editStylist(stylist: Stylist) {
+        try {
+            if(viewModel.avatar.value != null) {
+                viewModel.toggleProgressBar() // show progress bar
+
+                //File to upload to cloudinary
+                MediaManager.get()
+                    .upload(viewModel.avatar.value)
+                    .option("folder", Constant.ImagePath.stylist)
+                    .option("public_id", id) // use stylist id as public id
+                    .callback(object : UploadCallback {
+                        override fun onStart(requestId: String?) {
+                            Log.d("cloudinary", "onStart")
+                        }
+                        override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
+                            Log.d("cloudinary", "onProgress")
+                        }
+                        override fun onSuccess(requestId: String, resultData: Map<*, *>?) {
+                            Log.d("cloudinary", "onSuccess")
+                            stylist.setAvatar(resultData?.get("secure_url") as String)
+
+                            lifecycleScope.launch {
+                                async {
+                                    binding.viewModel!!.updateStylist(id, stylist)
+                                }.await()
+                                viewModel.toggleProgressBar() // hide progress bar
+                                val replyIntent = Intent()
+                                setResult(Activity.RESULT_OK, replyIntent)
+                                finish()
+                            }
+                        }
+                        override fun onError(requestId: String?, error: ErrorInfo) {
+                            Log.d("cloudinary", "onError")
+                        }
+                        override fun onReschedule(requestId: String?, error: ErrorInfo) {
+                            Log.d("cloudinary", "onReschedule")
+                        }
+                    }).startNow(this)
+            }
+            else {
+                viewModel.toggleProgressBar() // show progress bar
+                // Update without changing avatar
+                lifecycleScope.launch {
+                    async {
+                        binding.viewModel!!.updateStylist(id, stylist)
+                    }.await()
+                    viewModel.toggleProgressBar() // hide progress bar
+                    val replyIntent = Intent()
+                    setResult(Activity.RESULT_OK, replyIntent)
+                    finish()
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun displayAvatarRequiredWarning() {
+        // Show warning dialog
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Cảnh báo")
+        builder.setMessage("Vui lòng chọn avatar!!")
+
+        builder.setPositiveButton("Ok") { dialog, which ->
+            // Do nothing
+        }
+        builder.show()
+    }
+
+    private fun addStylist(stylist: Stylist) {
+        try {
+            if(viewModel.avatar.value != null) {
+                viewModel.toggleProgressBar() // show progress bar
+
+                //File to upload to cloudinary
+                MediaManager.get()
+                    .upload(viewModel.avatar.value)
+                    .option("folder", Constant.ImagePath.stylist)
+                    .option("public_id", id) // use stylist id as public id
+                    .callback(object : UploadCallback {
+                        override fun onStart(requestId: String?) {
+                            Log.d("cloudinary", "onStart")
+                        }
+                        override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
+                            Log.d("cloudinary", "onProgress")
+                        }
+                        override fun onSuccess(requestId: String, resultData: Map<*, *>?) {
+                            Log.d("cloudinary", "onSuccess")
+                            stylist.setAvatar(resultData?.get("secure_url") as String)
+
+                            lifecycleScope.launch {
+                                async {
+                                    binding.viewModel!!.addStylist(stylist)
+                                }.await()
+                                viewModel.toggleProgressBar() // hide progress bar
+                                val replyIntent = Intent()
+                                setResult(Activity.RESULT_OK, replyIntent)
+                                finish()
+                            }
+                        }
+                        override fun onError(requestId: String?, error: ErrorInfo) {
+                            Log.d("cloudinary", "onError")
+                        }
+                        override fun onReschedule(requestId: String?, error: ErrorInfo) {
+                            Log.d("cloudinary", "onReschedule")
+                        }
+                    }).startNow(this)
+            }
+            else
+                displayAvatarRequiredWarning()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
 }

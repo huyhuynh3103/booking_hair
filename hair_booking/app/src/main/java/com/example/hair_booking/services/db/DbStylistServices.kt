@@ -139,7 +139,6 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
                     .await()
             }
         }
-        Log.d("cloudinary", "updated")
     }
 
     override suspend fun delete(id: Any?) {
