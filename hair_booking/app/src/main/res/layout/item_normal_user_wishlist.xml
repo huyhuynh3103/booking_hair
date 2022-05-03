@@ -22,9 +22,10 @@
             android:id="@+id/iv_salon_avatar_item"
             android:layout_width="128dp"
             android:layout_height="128dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/default_salon"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/tv_salon_name_item"

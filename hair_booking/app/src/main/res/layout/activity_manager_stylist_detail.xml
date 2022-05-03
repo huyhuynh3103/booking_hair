@@ -57,7 +57,9 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include" />
+            app:layout_constraintTop_toBottomOf="@+id/include"
+            android:src="@drawable/default_avatar"
+            android:scaleType="fitXY"/>
 
         <EditText
             android:id="@+id/et_stylist_name"

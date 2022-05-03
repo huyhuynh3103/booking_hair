@@ -20,8 +20,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ptvkhue"
-            tools:srcCompat="@tools:sample/avatars[0]" />
+            android:src="@drawable/default_avatar"
+            android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/tv_stylist_name_item"

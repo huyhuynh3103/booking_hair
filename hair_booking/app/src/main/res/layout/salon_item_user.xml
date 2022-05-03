@@ -36,7 +36,7 @@
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            app:srcCompat="@drawable/img_2" />
+            android:src="@drawable/default_salon"/>
 
         <RatingBar
             android:id="@+id/ratingSalonItemBar"
