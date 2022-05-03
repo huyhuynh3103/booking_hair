@@ -13,7 +13,6 @@
 
     <application
         android:allowBackup="true"
-        android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -162,10 +161,14 @@
             android:label="Thông tin cửa hàng" />
         <activity
             android:name=".ui.manager.profile.ManagerProfileActivity"
-            android:exported="false" />
+            android:exported="true"
+            android:label="Thông tin cá nhân"
+            android:parentActivityName=".ui.manager.home.ManagerHomeActivity"/>
         <activity
             android:name=".ui.normal_user.profile.NormalUserProfileActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:label="Thông tin cá nhân"
+            android:parentActivityName=".ui.normal_user.home.NormalUserHomeActivity"/>
         <activity android:name=".ui.manager.home.ManagerHomeActivity" />
         <activity android:name=".ui.authentication.LogInActivity" />
         <activity

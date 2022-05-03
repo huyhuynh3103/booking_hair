@@ -52,8 +52,8 @@ class BookingConfirmViewModel(private val appointmentSaved: MutableLiveData<Hash
         var bookingTime: String = appointmentSaved.value?.get("bookingTime") as String
         bookingTime = bookingTime.replace('.', 'h')
         _bookingDateTime.postValue("$bookingTime Ngày $bookingDate")
-        if(appointmentSaved.value?.get("discountApplied") != null)
-            _discountTitle.postValue(appointmentSaved.value?.get("discountApplied") as String?)
+        if((appointmentSaved.value?.get("discountApplied")  as HashMap<String, *>?) != null)
+            _discountTitle.postValue((appointmentSaved.value?.get("discountApplied") as HashMap<String, *>)["title"] as String)
         else
             _discountTitle.postValue("Không có khuyến mãi")
         if((appointmentSaved.value?.get("notes") as String?).isNullOrEmpty())

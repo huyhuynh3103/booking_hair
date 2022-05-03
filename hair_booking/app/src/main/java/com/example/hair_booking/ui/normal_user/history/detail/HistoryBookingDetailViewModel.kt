@@ -69,10 +69,10 @@ class HistoryBookingDetailViewModel(private val id: MutableLiveData<String>): Vi
         _isVisibleSendRating.value = false
         _rating.value = Float.fromBits(0)
         _ratingContent.value = "Gửi đánh giá của bạn đến chúng tôi"
-        _appointmentDiscount.value = "Không có"
+        _appointmentDiscount.value = "Không có khuyến mãi"
         _priceDiscount.value = "0"
         _appointmentStylist.value = "Không có"
-        _appointmentNote.value = "Không có"
+        _appointmentNote.value = "Không có ghi chú"
         viewModelScope.launch {
             prepareData()
         }
@@ -135,7 +135,7 @@ class HistoryBookingDetailViewModel(private val id: MutableLiveData<String>): Vi
 
             _appointmentSubId.value = appointment.appointmentSubId
             _appointmentTime.value = appointment.bookingTime +" - "+appointment.bookingDate
-            if(appointment.note!=null){
+            if(!appointment.note.isNullOrEmpty()){
                 _appointmentNote.value = appointment.note
             }
             _appointmentStatus.value = appointment.status
@@ -172,7 +172,9 @@ class HistoryBookingDetailViewModel(private val id: MutableLiveData<String>): Vi
             val idDiscount = discountRef?.id
             if(idDiscount!=null){
                 val discount = dbServices.getDiscountServices()?.getDiscountById(idDiscount)
-                _appointmentDiscount.value = discount?.title.toString()
+                if(!discount?.title.isNullOrEmpty()){
+                    _appointmentDiscount.value = discount?.title.toString()
+                }
                 discount?.percent?.let {
                     _priceDiscount.value = (it * totalPrice!!).toString()
                 }
