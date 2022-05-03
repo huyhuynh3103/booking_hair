@@ -4,9 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -14,20 +12,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityAdminAddNewServiceBinding
-import com.example.hair_booking.databinding.ActivityBookingBinding
-import com.example.hair_booking.services.booking.BookingServices
 import com.example.hair_booking.ui.admin.service.overview.AdminServiceListActivity
-import com.example.hair_booking.ui.normal_user.booking.BookingViewModel
-import com.example.hair_booking.ui.normal_user.booking.booking_confirm.BookingConfirmActivity
-import com.example.hair_booking.ui.normal_user.booking.choose_discount.ChooseDiscountActivity
-import com.example.hair_booking.ui.normal_user.booking.choose_salon.ChooseSalonActivity
-import com.example.hair_booking.ui.normal_user.booking.choose_service.ChooseServiceActivity
-import com.example.hair_booking.ui.normal_user.booking.choose_stylist.ChooseStylistActivity
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.HashMap
 
 
 class AdminAddNewServiceActivity : AppCompatActivity() {
@@ -70,25 +58,80 @@ class AdminAddNewServiceActivity : AppCompatActivity() {
             val description = binding.adminAddServiceDescriptionEditText.text.toString()
             val duration = binding.adminAddServiceDurationEditText.text.toString()
             val price = binding.adminAddServicePriceEditText.text.toString()
-            if(viewModel.checkEmptyFieldsExist(title, description, duration, price))
-                displayEmptyFieldsWarning()
-            else {
-                GlobalScope.launch {
-                    val ack = viewModel.saveService(title, description, duration, price)
-                    if(!ack) {
-                        runOnUiThread {
-                            displayAddNewServiceFailed()
-                        }
-                    }
-                    else {
-                        runOnUiThread {
-                            displayAddSuccessDialog("Thêm mới dịch vụ thành công")
-                        }
 
-                    }
+
+            var tmpDuration = ""
+            if(duration.length > 1) {
+                tmpDuration = duration
+                while(tmpDuration[0] == '0') {
+                    tmpDuration = tmpDuration.substring(1)
                 }
             }
+            else
+                tmpDuration = duration
+
+            var tmpPrice = ""
+            if(price.length > 1) {
+                tmpPrice = price
+                while(tmpPrice[0] == '0') {
+                    tmpPrice = tmpPrice.substring(1)
+                }
+            }
+            else
+                tmpPrice = price
+
+            if(viewModel.checkEmptyFieldsExist(title, description, tmpDuration, tmpPrice))
+                displayEmptyFieldsWarning()
+            else {
+                if(tmpDuration.toLong() <= 0) {
+                    displayInvalidDurationWarning()
+                }
+                else if(tmpPrice.toLong() <= 0) {
+                    displayInvalidPriceWarning()
+                }
+                else {
+                    GlobalScope.launch {
+                        val ack = viewModel.saveService(title, description, tmpDuration, tmpPrice)
+                        if(!ack) {
+                            runOnUiThread {
+                                displayAddNewServiceFailed()
+                            }
+                        }
+                        else {
+                            runOnUiThread {
+                                displayAddSuccessDialog("Thêm mới dịch vụ thành công")
+                            }
+
+                        }
+                    }
+                }
+
+            }
         })
+    }
+
+    private fun displayInvalidDurationWarning() {
+        // Show warning dialog
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Cảnh báo")
+        builder.setMessage("Thời gian dự kiến phải lớn hơn 0 !!!")
+
+        builder.setPositiveButton("Ok") { dialog, which ->
+            // Do nothing
+        }
+        builder.show()
+    }
+
+    private fun displayInvalidPriceWarning() {
+        // Show warning dialog
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Cảnh báo")
+        builder.setMessage("Giá dịch vụ phải lớn hơn 0 !!!")
+
+        builder.setPositiveButton("Ok") { dialog, which ->
+            // Do nothing
+        }
+        builder.show()
     }
 
     private fun moveToServiceListScreen() {

@@ -26,6 +26,7 @@ import com.example.hair_booking.model.Statistics
 import com.example.hair_booking.services.auth.AuthRepository
 import com.example.hair_booking.ui.admin.discount.overview.AdminDiscountListActivity
 import com.example.hair_booking.ui.admin.managers_list.ManagersListActivity
+import com.example.hair_booking.ui.admin.salon.AdminSalonListActivity
 import com.example.hair_booking.ui.admin.service.add_new_service.AdminAddNewServiceActivity
 import com.example.hair_booking.ui.admin.service.overview.AdminServiceListActivity
 import com.example.hair_booking.ui.admin.users_list.UsersListActivity
@@ -88,7 +89,8 @@ class AdminHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
             }
             R.id.nav_branch_admin->{
-
+                val intent = Intent(this, AdminSalonListActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_service_admin->{
                 val intent = Intent(this,AdminServiceListActivity::class.java)

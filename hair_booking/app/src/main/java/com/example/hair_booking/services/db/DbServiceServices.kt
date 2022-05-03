@@ -191,8 +191,9 @@ class DbServiceServices(private var dbInstance: FirebaseFirestore?) {
                     document.data?.get("price") as Long,
                     document.data?.get("description") as String
                 )
-                // Insert to list
-                serviceList.add(service)
+                // Insert to list if service is not deleted
+                if(document.data?.get("deleted") == null)
+                    serviceList.add(service)
             }
         }
         catch (exception: Exception) {

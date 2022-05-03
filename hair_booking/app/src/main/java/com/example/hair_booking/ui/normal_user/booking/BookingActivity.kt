@@ -48,6 +48,13 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
         // Assign view model to binding
         binding.viewModel = viewModel
 
+        val salonId: String = intent.getStringExtra("salonId").orEmpty()
+        val salonLocation: String = intent.getStringExtra("salonLocation").orEmpty()
+
+        // Call viewmodel to set chosen salon
+        if(salonId.isNotEmpty() && salonLocation.isNotEmpty())
+            binding.viewModel!!.setChosenSalon(salonId, salonLocation)
+
         // Tell binding to observe the life cycle of this activity
         binding.lifecycleOwner = this
 
@@ -181,6 +188,18 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
                 // Call viewmodel to set chosen salon
                 if(salonId.isNotEmpty() && salonLocation.isNotEmpty())
                     binding.viewModel!!.setChosenSalon(salonId, salonLocation)
+
+//                hideDateTimePickerWrapper()
+//                hideTimePicker()
+//                hideTimePicker()
+//                hideChooseStylist()
+//                hideTotalPrice()
+
+                val intent = Intent(this, BookingActivity::class.java)
+                intent.putExtra("salonId", salonId)
+                intent.putExtra("salonLocation", salonLocation)
+                startActivity(intent)
+                finish()
             }
 
             REQUEST_CODE_CHOOSE_SERVICE -> {
@@ -233,6 +252,11 @@ class BookingActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
     private fun displayDateTimePickerWrapper() {
         if(binding.datePickerWrapper.visibility == View.GONE)
             binding.datePickerWrapper.visibility = View.VISIBLE
+    }
+
+    private fun hideDateTimePickerWrapper() {
+        if(binding.datePickerWrapper.visibility == View.VISIBLE)
+            binding.datePickerWrapper.visibility = View.GONE
     }
 
     private fun displayShiftPicker() {

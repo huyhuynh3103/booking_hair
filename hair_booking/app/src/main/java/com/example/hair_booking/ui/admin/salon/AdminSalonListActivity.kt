@@ -1,4 +1,4 @@
-package com.example.hair_booking.ui.manager.stylist
+package com.example.hair_booking.ui.admin.salon
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -14,15 +14,18 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.R
+import com.example.hair_booking.databinding.ActivityAdminSalonListBinding
 import com.example.hair_booking.databinding.ActivityManagerStylistListBinding
-import kotlinx.coroutines.async
+import com.example.hair_booking.ui.manager.stylist.ManagerStylistDetailActivity
+import com.example.hair_booking.ui.manager.stylist.ManagerStylistListViewModel
+import com.example.hair_booking.ui.manager.stylist.StylistRecycleViewAdapter
 import kotlinx.coroutines.launch
 
-class ManagerStylistListActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityManagerStylistListBinding
-    private val viewModel: ManagerStylistListViewModel by viewModels()
+class AdminSalonListActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityAdminSalonListBinding
+    private val viewModel: AdminSalonListViewModel by viewModels()
 
-    private lateinit var adapter: StylistRecycleViewAdapter
+    private lateinit var adapter: SalonRecyclerViewAdapter
     private lateinit var itemDecoration: RecyclerView.ItemDecoration
 
     private val REQUEST_CODE_UPDATE_DATA: Int = 1111
@@ -30,16 +33,16 @@ class ManagerStylistListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_manager_stylist_list)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_admin_salon_list)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        adapter = StylistRecycleViewAdapter()
+        adapter = SalonRecyclerViewAdapter()
         itemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
 
-        binding.rvStylistList.adapter = adapter
-        binding.rvStylistList.layoutManager = LinearLayoutManager(this)
-        binding.rvStylistList.addItemDecoration(itemDecoration)
+        binding.rvSalonList.adapter = adapter
+        binding.rvSalonList.layoutManager = LinearLayoutManager(this)
+        binding.rvSalonList.addItemDecoration(itemDecoration)
 
         // Set Action listener
         setOnClickListenerForItem()
@@ -51,14 +54,8 @@ class ManagerStylistListActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // Get manager ID
-        val managerID = "eOPpMKdBw9iQL1CDIg28"
-
         lifecycleScope.launch {
-            binding.viewModel!!.getManagerDetail(managerID)
-
-            val salonID = binding.viewModel!!.manager.value?.hairSalon
-            binding.viewModel!!.getStylistList(salonID)
+            binding.viewModel!!.getSalonList()
         }
     }
 
@@ -71,31 +68,26 @@ class ManagerStylistListActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         lifecycleScope.launch {
-            val salonID = binding.viewModel!!.manager.value?.hairSalon
-            async {
-                binding.viewModel!!.getUpdatedStylistList(salonID)
-            }.await()
-
-            adapter.notifyDataSetChanged()
+            binding.viewModel!!.getSalonList()
         }
     }
 
     private fun setOnClickListenerForItem() {
         adapter.onItemClick = {
             // Create an intent to send data
-            val intent = Intent(this, ManagerStylistDetailActivity::class.java)
+            val intent = Intent(this, AdminSalonDetailActivity::class.java)
 
             // send chosen service id and name back to previous activity
             intent.putExtra("Task", "Edit")
-            intent.putExtra("StylistID", it.id)
+            intent.putExtra("SalonID", it.id)
 
             startActivityForResult(intent, REQUEST_CODE_UPDATE_DATA)
         }
     }
 
     private fun setOnClickListenerForButton() {
-        binding.btAddStylist.setOnClickListener {
-            val intent = Intent(this, ManagerStylistDetailActivity::class.java)
+        binding.btAddSalon.setOnClickListener {
+            val intent = Intent(this, AdminSalonDetailActivity::class.java)
 
             // send chosen service id and name back to previous activity
             intent.putExtra("Task", "Add")
@@ -105,7 +97,7 @@ class ManagerStylistListActivity : AppCompatActivity() {
     }
 
     private fun setTextChangeListener() {
-        binding.actvSearchStylistName!!.addTextChangedListener(object : TextWatcher {
+        binding.actvSearchSalonName!!.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }

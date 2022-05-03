@@ -150,7 +150,8 @@
                         android:drawableLeft="@drawable/ic_baseline_access_time_24"
                         android:drawablePadding="10dp"
                         android:hint="Nhập thời gian dự kiến cho dịch vụ (phút)..."
-                        android:inputType="numberSigned"
+                        android:inputType="numberDecimal"
+                        android:digits="0123456789"
                         android:text="@{viewModel.serviceDuration.toString()}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -184,7 +185,8 @@
                         android:drawableLeft="@drawable/ic_baseline_attach_money_24"
                         android:drawablePadding="10dp"
                         android:hint="Nhập đơn giá cho dịch vụ..."
-                        android:inputType="numberSigned"
+                        android:inputType="numberDecimal"
+                        android:digits="0123456789"
                         android:text="@{viewModel.servicePrice.toString()}" />
                 </com.google.android.material.textfield.TextInputLayout>
 

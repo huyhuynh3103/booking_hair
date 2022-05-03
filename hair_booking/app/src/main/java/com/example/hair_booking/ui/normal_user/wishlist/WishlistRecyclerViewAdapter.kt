@@ -58,5 +58,4 @@ class WishlistRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
         // => need notify data set changed to tell the UI that the data is ready
         notifyDataSetChanged()
     }
-
 }

@@ -1,9 +1,11 @@
 package com.example.hair_booking.ui.manager.stylist
 
 import android.app.Activity
-import android.content.Context
+import android.app.AlertDialog
+import android.content.ContentResolver
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.res.Resources
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -12,21 +14,26 @@ import android.widget.CheckBox
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
+import com.cloudinary.android.MediaManager
+import com.cloudinary.android.callback.ErrorInfo
+import com.cloudinary.android.callback.UploadCallback
+import com.example.hair_booking.Constant
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityManagerStylistDetailBinding
 import com.example.hair_booking.model.Salon
 import com.example.hair_booking.model.Stylist
 import com.example.hair_booking.services.auth.AuthRepository
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import java.io.IOException
+
 
 class ManagerStylistDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityManagerStylistDetailBinding
@@ -36,8 +43,23 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
     private lateinit var id: String
     private var auth: FirebaseUser? = null
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        try {
+            val config: HashMap<String, String> = hashMapOf(
+                "cloud_name" to "dq4xoyzib",
+                "api_key" to "326314381516441",
+                "api_secret" to "8L4vO2T2GblSt9wsP__wMjewYBg"
+            )
+            MediaManager.init(this, config)
+        }
+        catch (e: Exception) {
+            Log.d("cloudinary", e.toString())
+        }
+
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_manager_stylist_detail)
         binding.viewModel = viewModel
@@ -65,9 +87,23 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
 
             if (binding.task == "Edit") {
                 // get selected ID from previous activity
-                binding.viewModel?.getStylistDetail(id)
+                binding.viewModel?.getStylistDetail(this@ManagerStylistDetailActivity, binding.ivStylistAvatar, id)
+            }
+            else {
+                // Set default avatar in case adding stylist
+                val resId = R.drawable.default_avatar
+                val defaultAvatarUri = Uri.Builder()
+                    .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                    .authority(resources.getResourcePackageName(resId))
+                    .appendPath(resources.getResourceTypeName(resId))
+                    .appendPath(resources.getResourceEntryName(resId))
+                    .build()
+                binding.ivStylistAvatar.setImageURI(defaultAvatarUri)
+                viewModel.setAvatarUri(defaultAvatarUri)
             }
         }
+
+        observeChangeAvatarBtnOnClickEvent()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -96,24 +132,14 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
                     }
                     // Allow to edit
                     else {
-                        val stylist = getDataFromUI()
-                        binding.viewModel!!.updateStylist(id, stylist)
-
-                        val replyIntent = Intent()
-                        setResult(Activity.RESULT_OK, replyIntent)
-                        finish()
+                        var stylist = getDataFromUI()
+                        editStylist(stylist)
                     }
                 }
                 // Add stylist
                 else {
-
-
                     val stylist = getDataFromUI()
-                    binding.viewModel!!.addStylist(stylist)
-
-                    val replyIntent = Intent()
-                    setResult(Activity.RESULT_OK, replyIntent)
-                    finish()
+                    addStylist(stylist)
                 }
             }
         }
@@ -164,6 +190,7 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
     private suspend fun getDataFromUI(): Stylist {
         val name = binding.etStylistName.text.toString()
         val avatar = ""
+
         val description = binding.tvStylistDescription.text.toString()
 
         var shift: HashMap<String, HashMap<String, *>>
@@ -209,4 +236,146 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
         // Data from UI
         return Stylist(id, name, avatar, description, shift, workplace!!, false)
     }
+
+    private fun observeChangeAvatarBtnOnClickEvent() {
+        viewModel.changeAvatarBtnClicked.observe(this, androidx.lifecycle.Observer {
+//            val intent = Intent(Intent.ACTION_GET_CONTENT);
+//            intent.type = "image/*";
+//            startActivityForResult(intent, PHOTO_PICKER_REQUEST_CODE);
+            ImagePicker.with(this)
+                .crop()	    			//Crop image(Optional), Check Customization for more option
+                .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .start()
+        })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (data == null) {
+                //Display an error
+                return;
+            }
+
+            binding.ivStylistAvatar.setImageURI(data.data)
+            viewModel.setAvatarUri(data.data!!)
+        }
+    }
+
+    private fun editStylist(stylist: Stylist) {
+        try {
+            if(viewModel.avatar.value != null) {
+                viewModel.toggleProgressBar() // show progress bar
+
+                //File to upload to cloudinary
+                MediaManager.get()
+                    .upload(viewModel.avatar.value)
+                    .option("folder", Constant.ImagePath.stylist)
+                    .option("public_id", id) // use stylist id as public id
+                    .callback(object : UploadCallback {
+                        override fun onStart(requestId: String?) {
+                            Log.d("cloudinary", "onStart")
+                        }
+                        override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
+                            Log.d("cloudinary", "onProgress")
+                        }
+                        override fun onSuccess(requestId: String, resultData: Map<*, *>?) {
+                            Log.d("cloudinary", "onSuccess")
+                            stylist.setAvatar(resultData?.get("secure_url") as String)
+
+                            lifecycleScope.launch {
+                                async {
+                                    binding.viewModel!!.updateStylist(id, stylist)
+                                }.await()
+                                viewModel.toggleProgressBar() // hide progress bar
+                                val replyIntent = Intent()
+                                setResult(Activity.RESULT_OK, replyIntent)
+                                finish()
+                            }
+                        }
+                        override fun onError(requestId: String?, error: ErrorInfo) {
+                            Log.d("cloudinary", "onError")
+                        }
+                        override fun onReschedule(requestId: String?, error: ErrorInfo) {
+                            Log.d("cloudinary", "onReschedule")
+                        }
+                    }).startNow(this)
+            }
+            else {
+                viewModel.toggleProgressBar() // show progress bar
+                // Update without changing avatar
+                lifecycleScope.launch {
+                    async {
+                        binding.viewModel!!.updateStylist(id, stylist)
+                    }.await()
+                    viewModel.toggleProgressBar() // hide progress bar
+                    val replyIntent = Intent()
+                    setResult(Activity.RESULT_OK, replyIntent)
+                    finish()
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun displayAvatarRequiredWarning() {
+        // Show warning dialog
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Cảnh báo")
+        builder.setMessage("Vui lòng chọn avatar!!")
+
+        builder.setPositiveButton("Ok") { dialog, which ->
+            // Do nothing
+        }
+        builder.show()
+    }
+
+    private fun addStylist(stylist: Stylist) {
+        try {
+            if(viewModel.avatar.value != null) {
+                viewModel.toggleProgressBar() // show progress bar
+
+                //File to upload to cloudinary
+                MediaManager.get()
+                    .upload(viewModel.avatar.value)
+                    .option("folder", Constant.ImagePath.stylist)
+                    .option("public_id", id) // use stylist id as public id
+                    .callback(object : UploadCallback {
+                        override fun onStart(requestId: String?) {
+                            Log.d("cloudinary", "onStart")
+                        }
+                        override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
+                            Log.d("cloudinary", "onProgress")
+                        }
+                        override fun onSuccess(requestId: String, resultData: Map<*, *>?) {
+                            Log.d("cloudinary", "onSuccess")
+                            stylist.setAvatar(resultData?.get("secure_url") as String)
+
+                            lifecycleScope.launch {
+                                async {
+                                    binding.viewModel!!.addStylist(stylist)
+                                }.await()
+                                viewModel.toggleProgressBar() // hide progress bar
+                                val replyIntent = Intent()
+                                setResult(Activity.RESULT_OK, replyIntent)
+                                finish()
+                            }
+                        }
+                        override fun onError(requestId: String?, error: ErrorInfo) {
+                            Log.d("cloudinary", "onError")
+                        }
+                        override fun onReschedule(requestId: String?, error: ErrorInfo) {
+                            Log.d("cloudinary", "onReschedule")
+                        }
+                    }).startNow(this)
+            }
+            else
+                displayAvatarRequiredWarning()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
 }

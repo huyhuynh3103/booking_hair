@@ -71,25 +71,79 @@ class AdminEditServiceActivity : AppCompatActivity() {
             val description = binding.adminEditServiceDescriptionEditText.text.toString()
             val duration = binding.adminEditServiceDurationEditText.text.toString()
             val price = binding.adminEditServicePriceEditText.text.toString()
-            if(viewModel.checkEmptyFieldsExist(title, description, duration, price))
-                displayEmptyFieldsWarning()
-            else {
-                GlobalScope.launch {
-                    val ack = viewModel.updateService(title, description, duration, price)
-                    if(!ack) {
-                        runOnUiThread {
-                            displayEditServiceFailed()
-                        }
-                    }
-                    else {
-                        runOnUiThread {
-                            displayAddSuccessDialog("Chỉnh sửa dịch vụ thành công")
-                        }
 
-                    }
+            var tmpDuration = ""
+            if(duration.length > 1) {
+                tmpDuration = duration
+                while(tmpDuration[0] == '0') {
+                    tmpDuration = tmpDuration.substring(1)
                 }
             }
+            else
+                tmpDuration = duration
+
+            var tmpPrice = ""
+            if(price.length > 1) {
+                tmpPrice = price
+                while(tmpPrice[0] == '0') {
+                    tmpPrice = tmpPrice.substring(1)
+                }
+            }
+            else
+                tmpPrice = price
+
+            if(viewModel.checkEmptyFieldsExist(title, description, tmpDuration, tmpPrice))
+                displayEmptyFieldsWarning()
+            else {
+                if(tmpDuration.toLong() <= 0) {
+                    displayInvalidDurationWarning()
+                }
+                else if(tmpPrice.toLong() <= 0) {
+                    displayInvalidPriceWarning()
+                }
+                else {
+                    GlobalScope.launch {
+                        val ack = viewModel.updateService(title, description, tmpDuration, tmpPrice)
+                        if(!ack) {
+                            runOnUiThread {
+                                displayEditServiceFailed()
+                            }
+                        }
+                        else {
+                            runOnUiThread {
+                                displayAddSuccessDialog("Chỉnh sửa dịch vụ thành công")
+                            }
+
+                        }
+                    }
+                }
+
+            }
         })
+    }
+
+    private fun displayInvalidDurationWarning() {
+        // Show warning dialog
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Cảnh báo")
+        builder.setMessage("Thời gian dự kiến phải lớn hơn 0 !!!")
+
+        builder.setPositiveButton("Ok") { dialog, which ->
+            // Do nothing
+        }
+        builder.show()
+    }
+
+    private fun displayInvalidPriceWarning() {
+        // Show warning dialog
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Cảnh báo")
+        builder.setMessage("Giá dịch vụ phải lớn hơn 0 !!!")
+
+        builder.setPositiveButton("Ok") { dialog, which ->
+            // Do nothing
+        }
+        builder.show()
     }
 
     private fun moveToServiceListScreen() {

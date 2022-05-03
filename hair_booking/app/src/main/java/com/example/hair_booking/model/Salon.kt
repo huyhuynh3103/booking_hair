@@ -22,6 +22,8 @@ data class Salon(private val _id: String) {
     private var _appointments: ArrayList<DocumentReference>?  = null
     private var _stylists: ArrayList<HashMap<String, *>>? = null
 
+    private var _deleted: Boolean? = null
+
 
     // GETTERS
     val id: String get() = _id
@@ -35,6 +37,7 @@ data class Salon(private val _id: String) {
     val appointments: ArrayList<DocumentReference>?  get() = _appointments
     val stylists: ArrayList<HashMap<String, *>>? get() = _stylists
     val phoneNumber: String? get() = _phoneNumber
+    val deleted: Boolean? get() = _deleted
 
     // Full parameter constructor
     constructor(
@@ -48,7 +51,8 @@ data class Salon(private val _id: String) {
         address: HashMap<String, String>,
         appointments: ArrayList<DocumentReference>,
         stylists: ArrayList<HashMap<String, *>>,
-        phoneNumber: String
+        phoneNumber: String,
+        deleted: Boolean
     ): this(id) {
         this._name = name
         this._avatar = avatar
@@ -60,6 +64,7 @@ data class Salon(private val _id: String) {
         this._appointments = appointments
         this._stylists = stylists
         this._phoneNumber = phoneNumber
+        this._deleted = deleted
     }
 
 
@@ -105,7 +110,7 @@ data class Salon(private val _id: String) {
         rate: Double,
         openHour: String,
         closeHour: String,
-        address: HashMap<String, String>
+        address: HashMap<String, String>,
     ): this(id) {
         this._name = name
         this._avatar = avatar
@@ -114,6 +119,29 @@ data class Salon(private val _id: String) {
         this._openHour = openHour
         this._closeHour = closeHour
         this._address = address
+    }
+
+    constructor(
+        id: String,
+        name: String,
+        avatar: String,
+        description: String,
+        rate: Double,
+        openHour: String,
+        closeHour: String,
+        address: HashMap<String, String>,
+        phone: String,
+        deleted: Boolean
+    ): this(id) {
+        this._name = name
+        this._avatar = avatar
+        this._description = description
+        this._rate = rate
+        this._openHour = openHour
+        this._closeHour = closeHour
+        this._address = address
+        this._phoneNumber = phone
+        this._deleted = deleted
     }
 
     constructor(
@@ -140,5 +168,9 @@ data class Salon(private val _id: String) {
 
     override fun toString(): String {
         return _name!!
+    }
+
+    fun setAvatar(avatar: String) {
+        _avatar = avatar
     }
 }

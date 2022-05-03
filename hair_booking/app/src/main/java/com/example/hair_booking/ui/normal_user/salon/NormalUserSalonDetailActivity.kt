@@ -79,7 +79,7 @@ class NormalUserSalonDetailActivity : AppCompatActivity() {
         binding.bBooking.setOnClickListener() {
             val intent = Intent(this, BookingActivity::class.java)
             intent.putExtra("salonId", id)
-            intent.putExtra("salonAddress", viewModel.salon.value?.address)
+            intent.putExtra("salonLocation", viewModel.salon.value?.addressToString())
             startActivity(intent)
         }
 

@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
@@ -38,13 +40,23 @@
 
         <activity android:name=".ui.admin.discount.add_new_discount.AdminAddNewDiscountActivity"
             android:label="Thêm mới khuyến mãi">
-
         </activity>
         <activity android:name=".ui.admin.discount.edit_discount.AdminEditDiscountActivity"
             android:label="Chỉnh sửa khuyến mãi"/>
         <activity android:name=".ui.admin.discount.overview.AdminDiscountListActivity"
             android:exported="true"
-            android:label="Danh sách khuyến mãi"/>
+            android:label="Danh sách khuyến mãi"
+            android:parentActivityName=".ui.admin.home.AdminHomeActivity"/>
+        <activity
+            android:name=".ui.admin.salon.AdminSalonDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.salon.AdminSalonListActivity"
+            android:exported="false"
+            android:label="Danh sách cửa hàng"
+            android:parentActivityName=".ui.admin.home.AdminHomeActivity" />
+
+
         <activity
             android:name=".ui.admin.home.AdminHomeActivity"
             android:exported="true" />
@@ -78,13 +90,15 @@
         <activity
             android:name=".ui.admin.service.overview.AdminServiceListActivity"
             android:exported="true"
-            android:label="Danh sách dịch vụ"/>
+            android:label="Danh sách dịch vụ"
+            android:parentActivityName=".ui.admin.home.AdminHomeActivity"/>
         <activity android:name=".ui.manager.appointment.detail.edit.ManagerEditAppointmentActivity"
             android:label="Chỉnh sửa lịch đặt"/>
         <activity
             android:name=".ui.manager.appointment.overview.ManagerAppointmentListActivity"
             android:exported="true"
-            android:label="Danh sách lịch đặt"/>
+            android:label="Danh sách lịch đặt"
+            android:parentActivityName=".ui.manager.home.ManagerHomeActivity"/>
         <activity
             android:name=".ui.authentication.BeginningActivity"
             android:exported="true">

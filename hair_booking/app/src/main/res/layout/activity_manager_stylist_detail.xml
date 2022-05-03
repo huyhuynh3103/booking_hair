@@ -57,8 +57,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:layout_constraintTop_toBottomOf="@+id/include" />
 
         <EditText
             android:id="@+id/et_stylist_name"
@@ -213,5 +212,28 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_stylist_shift_label"
             shift='@{viewModel.stylist.shifts.get("afternoon")}' />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/changAvatarBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"
+            android:onClick="@{() -> viewModel.onChangeAvatarBtnClicked()}"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_stylist_avatar"
+            app:layout_constraintEnd_toEndOf="@+id/iv_stylist_avatar"
+            app:srcCompat="@drawable/ic_baseline_edit_24"
+            tools:ignore="VectorDrawableCompat" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="@{viewModel.isVisibleProgressBar? View.VISIBLE: View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

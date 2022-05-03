@@ -1,27 +1,48 @@
 package com.example.hair_booking.ui.manager.stylist
 
+import android.app.Activity
+import android.media.Image
+import android.net.Uri
+import android.util.Log
+import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cloudinary.android.MediaManager
+import com.cloudinary.android.callback.ErrorInfo
+import com.cloudinary.android.callback.UploadCallback
+import com.example.hair_booking.Constant
 import com.example.hair_booking.model.Account
 import com.example.hair_booking.model.NormalUser
 import com.example.hair_booking.model.Salon
 import com.example.hair_booking.model.Stylist
 import com.example.hair_booking.services.db.dbServices
 import com.google.firebase.firestore.DocumentReference
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class ManagerStylistDetailViewModel: ViewModel() {
     private val _stylist: MutableLiveData<Stylist> = MutableLiveData()
     private val _salonList: MutableLiveData<ArrayList<Salon>> = MutableLiveData()
     private val _account: MutableLiveData<Account> = MutableLiveData()
+    private val _avatar: MutableLiveData<Uri> = MutableLiveData()
 
     val stylist: LiveData<Stylist> = _stylist
     val salonList: LiveData<ArrayList<Salon>> = _salonList
     val account: LiveData<Account> = _account
+    val avatar: LiveData<Uri> = _avatar
+
+    private val _isVisibleProgressBar = MutableLiveData<Boolean>()
+    val isVisibleProgressBar:LiveData<Boolean> = _isVisibleProgressBar
 
     init {
+        // Re-init avatar uri to null, which means the user hasn't change the avatar yet
+        _avatar.value = null
+        _isVisibleProgressBar.value = false // hide progress bar
         viewModelScope.launch {
             getSalonList()
         }
@@ -33,8 +54,13 @@ class ManagerStylistDetailViewModel: ViewModel() {
         }
     }
 
-    suspend fun getStylistDetail(id: String) {
-        _stylist.value = dbServices.getStylistServices()?.findById(id)
+    suspend fun getStylistDetail(context: Activity, imageView: ImageView, id: String) {
+        val stylist = dbServices.getStylistServices()?.findById(id)
+        _stylist.value = stylist
+
+        // Load image from cloudinary url to image view
+        if(!stylist!!.avatar.isNullOrEmpty())
+            Picasso.with(context).load(stylist!!.avatar).into(imageView)
     }
 
     suspend fun getManagerAccount(email: String) {
@@ -83,5 +109,26 @@ class ManagerStylistDetailViewModel: ViewModel() {
 
     suspend fun deleteStylist(id: String) {
         dbServices.getStylistServices()?.delete(id)
+    }
+
+    // Set change avatar button onclick to be observable
+    private val _changeAvatarBtnClicked = MutableLiveData<Boolean>()
+    val changeAvatarBtnClicked: LiveData<Boolean> = _changeAvatarBtnClicked
+    fun onChangeAvatarBtnClicked() {
+        _changeAvatarBtnClicked.value = true
+    }
+
+    fun setAvatarUri(uri: Uri) {
+        _avatar.value = uri
+
+    }
+
+    fun toggleProgressBar() {
+        if(_isVisibleProgressBar.value != null) {
+            if(_isVisibleProgressBar.value == true)
+                _isVisibleProgressBar.value = false
+            else
+                _isVisibleProgressBar.value = true
+        }
     }
 }

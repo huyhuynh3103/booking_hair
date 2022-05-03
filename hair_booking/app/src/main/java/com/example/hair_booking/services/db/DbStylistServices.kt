@@ -115,15 +115,29 @@ class DbStylistServices(private var dbInstance: FirebaseFirestore?) : DatabaseAb
 
     suspend fun updateOne(id: Any?, updateDoc: Stylist?) {
         if (dbInstance != null) {
-            val docSnap = dbInstance!!.collection("stylists")
-                .document(id!!.toString())
-                .update(
-                    "fullName", updateDoc?.fullName,
-                    "description", updateDoc?.description,
-                    "workPlace", updateDoc?.workPlace,
-                    "shifts", updateDoc?.shifts
-                )
-                .await()
+            if(!updateDoc?.avatar.isNullOrEmpty()) {
+                val docSnap = dbInstance!!.collection("stylists")
+                    .document(id!!.toString())
+                    .update(
+                        "fullName", updateDoc?.fullName,
+                        "description", updateDoc?.description,
+                        "workPlace", updateDoc?.workPlace,
+                        "shifts", updateDoc?.shifts,
+                        "avatar", updateDoc?.avatar
+                    )
+                    .await()
+            }
+            else {
+                val docSnap = dbInstance!!.collection("stylists")
+                    .document(id!!.toString())
+                    .update(
+                        "fullName", updateDoc?.fullName,
+                        "description", updateDoc?.description,
+                        "workPlace", updateDoc?.workPlace,
+                        "shifts", updateDoc?.shifts
+                    )
+                    .await()
+            }
         }
     }
 
