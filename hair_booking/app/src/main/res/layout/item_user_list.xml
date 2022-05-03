@@ -28,7 +28,7 @@
             android:innerRadius="0dp"
             android:shape="rectangle"
             android:thicknessRatio="1.9"
-            app:cardBackgroundColor="#5C5353"
+            app:cardBackgroundColor="#D5D5D5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -37,7 +37,6 @@
                 android:layout_width="match_parent"
                 android:id="@+id/avatarAccount"
                 android:layout_height="match_parent"
-                android:background="#EDFF5722"
                 android:src="@drawable/ic_account"
                 android:layout_gravity="center"/>
         </androidx.cardview.widget.CardView>
@@ -56,10 +55,10 @@
             app:layout_constraintTop_toTopOf="@+id/userAvatarWrapper">
 
             <TextView
-                android:id="@+id/userUsername"
+                android:id="@+id/userFullname"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{user.accountId.id}"
+                android:text="@{user.fullName}"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -69,21 +68,9 @@
                 />
 
             <TextView
-                android:id="@+id/userFullname"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@{user.fullName}"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/userUsername"
-                app:layout_constraintStart_toStartOf="@+id/userUsername"
-                app:layout_constraintTop_toBottomOf="@+id/userUsername" />
-
-            <TextView
                 android:id="@+id/userPhone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-
                 android:text="@{user.phoneNumber}"
                 android:textColor="#000000"
                 android:textSize="16sp"

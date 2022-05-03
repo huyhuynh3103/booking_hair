@@ -18,7 +18,7 @@ class UserDetailAdminViewModel: ViewModel() {
     val account: LiveData<Account> = _account
 
     suspend fun getUserDetail(id: String){
-        _user.value = dbServices.getNormalUserServices()?.getUserById(id)
+        _user.postValue(dbServices.getNormalUserServices()?.getUserById(id))
 
     }
     fun getUserAccountDetail(id: String){

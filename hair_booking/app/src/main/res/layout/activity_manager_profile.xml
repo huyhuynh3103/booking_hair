@@ -3,6 +3,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.hair_booking.ui.manager.profile.ManagerProfileViewModel" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,8 +40,6 @@
 
         </RelativeLayout>
 
-
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -52,7 +55,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Tên đăng nhập"
+                    android:text="Email"
                     android:textSize="18sp"
                     android:textColor="@color/black"
                     android:layout_marginLeft="20dp"
@@ -60,10 +63,11 @@
                     android:gravity="left"/>
 
                 <TextView
-                    android:id="@+id/etUsernameManager"
+                    android:id="@+id/etEmailManager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:text="@{viewModel.account.email}"
                     android:textColor="@color/black"
                     android:padding="5dp"
                     android:maxLines="1"
@@ -75,7 +79,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Nơi làm việc*"
+                    android:text="Nơi làm việc"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:layout_marginLeft="20dp"
@@ -83,8 +87,10 @@
                     android:layout_marginBottom="5dp"
                     android:gravity="left"/>
 
-                <EditText
-                    android:id="@+id/etNameManager"
+                <TextView
+                    android:id="@+id/etWorkPlaceManager"
+                    list="@{viewModel.salonList}"
+                    salon="@{viewModel.account.hairSalon.id}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -107,7 +113,7 @@
                     android:gravity="left"/>
 
                 <TextView
-                    android:id="@+id/etSDTManager"
+                    android:id="@+id/etRoleManager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -117,19 +123,8 @@
                     android:maxLength="50"
                     android:text="Quản lý chi nhánh"
                     android:textSize="20sp"
-                    android:layout_marginLeft="20dp"/>
-
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnCapNhatCustomer"
-                    android:text="Cập nhật"
-                    app:backgroundTint="#EDFF5722"
-                    android:gravity="center"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_gravity="center"/>
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="10dp"/>
 
             </LinearLayout>
         </ScrollView>

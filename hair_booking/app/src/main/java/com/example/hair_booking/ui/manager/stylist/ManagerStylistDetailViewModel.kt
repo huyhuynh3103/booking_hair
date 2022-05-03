@@ -67,6 +67,10 @@ class ManagerStylistDetailViewModel: ViewModel() {
         _account.value = dbServices.getAccountServices()?.getManagerAccountByEmail(email)
     }
 
+    suspend fun getManagerAccount(email: String) {
+        _account.value = dbServices.getAccountServices()?.getManagerAccountByEmail(email)
+    }
+
     suspend fun getSelectedWorkplace(position: Int): DocumentReference? {
         var result: DocumentReference?
         var selectedID: String? = null

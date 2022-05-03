@@ -3,6 +3,7 @@ package com.example.hair_booking.ui.normal_user.profile
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -38,6 +39,8 @@ class NormalUserProfileActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //val userId = intent.getStringExtra("userId")
+
 
         GlobalScope.launch {
             getSelectedNormalUserProfile()
@@ -46,8 +49,9 @@ class NormalUserProfileActivity : AppCompatActivity() {
     }
 
     private suspend fun getSelectedNormalUserProfile() {
-        binding.viewModel?.getNormalUserDetail("U4mhGl554MTgKbUgMVhA")
-        binding.viewModel?.getUserAccountDetail("U4mhGl554MTgKbUgMVhA")
+
+        binding.viewModel?.getUserAccountDetail()
+        binding.viewModel?.getNormalUserDetail()
     }
 
     private fun setOnClickListenerForButton() {

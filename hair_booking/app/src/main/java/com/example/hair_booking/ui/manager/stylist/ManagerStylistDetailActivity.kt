@@ -138,6 +138,8 @@ class ManagerStylistDetailActivity : AppCompatActivity() {
                 }
                 // Add stylist
                 else {
+
+
                     val stylist = getDataFromUI()
                     addStylist(stylist)
                 }

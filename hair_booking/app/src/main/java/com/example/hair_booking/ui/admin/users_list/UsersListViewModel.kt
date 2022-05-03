@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 
 class UsersListViewModel: ViewModel() {
     private var _userList = MutableLiveData<ArrayList<NormalUser>>()
-    private val _accountList: MutableLiveData<ArrayList<Account>> = MutableLiveData()
 
     val userList: LiveData<ArrayList<NormalUser>> = _userList
 
@@ -31,12 +30,6 @@ class UsersListViewModel: ViewModel() {
             ?.observeForever{ userList ->
                 _userList.value = userList
             }
-    }
-
-    suspend fun getAccountList() {
-        dbServices.getAccountServices()?.getAccountListForManagement()?.observeForever { accountList ->
-            _accountList.value = accountList
-        }
     }
 
 }
