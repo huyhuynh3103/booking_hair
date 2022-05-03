@@ -58,10 +58,10 @@ class NormalUserSalonDetailActivity : AppCompatActivity() {
 
             getData()
             if (binding.viewModel!!.isInWishlist(id!!)) {
-                binding.bWishlist.text = "Remove from Wishlist"
+                binding.bWishlist.text = "Xóa khỏi danh sách yêu thích"
             }
             else {
-                binding.bWishlist.text = "Add to Wishlist"
+                binding.bWishlist.text = "Thêm vào danh sách yêu thích"
             }
         }
     }
@@ -104,14 +104,14 @@ class NormalUserSalonDetailActivity : AppCompatActivity() {
 
                 if (!binding.viewModel!!.isInWishlist(id!!)) {
                     dbServices.getNormalUserServices()?.addToWishlist(user!!, salon!!)
-                    binding.bWishlist.text = "Remove from Wishlist"
+                    binding.bWishlist.text = "Xóa khỏi danh sách yêu thích"
                 }
                 else {
                     dbServices.getNormalUserServices()?.removeFromWishlist(user!!, salon!!)
-                    binding.bWishlist.text = "Add to Wishlist"
+                    binding.bWishlist.text = "Thêm vào danh sách yêu thích"
                 }
 
-                Toast.makeText(applicationContext, "Your wishlist has been updated!", Toast.LENGTH_LONG)
+                Toast.makeText(applicationContext, "Danh sách yêu thích đã được cập nhật!", Toast.LENGTH_LONG)
                     .show()
 
                 // Update wishlist
