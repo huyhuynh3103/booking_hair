@@ -234,6 +234,7 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
         var salonList: ArrayList<Salon> = ArrayList()
         if (dbInstance != null) {
             dbInstance!!.collection("hairSalons")
+                .whereEqualTo("deleted", false)
                 .get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
@@ -263,6 +264,7 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
         var salonList: ArrayList<Salon> = ArrayList()
         if (dbInstance != null) {
             val result = dbInstance!!.collection("hairSalons")
+                .whereEqualTo("deleted", false)
                 .get()
                 .await()
             for (document in result.documents) {

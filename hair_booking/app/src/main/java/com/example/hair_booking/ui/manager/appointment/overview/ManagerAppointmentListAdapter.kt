@@ -63,7 +63,7 @@ class ManagerAppointmentListAdapter: RecyclerView.Adapter<ManagerAppointmentList
              }
 
              if(appointmentToBeHiddenIndex.isNotEmpty())
-                 appointmentToBeHiddenIndex = appointmentToBeHiddenIndex.distinct() as ArrayList<Int>
+                 appointmentToBeHiddenIndex = ArrayList(appointmentToBeHiddenIndex.distinct())
              return appointmentToBeHiddenIndex.size == appointmentList!!.value!!.size
          }
          return false

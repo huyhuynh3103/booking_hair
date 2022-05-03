@@ -76,7 +76,8 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
                     // Call function to return appointment list after mapping complete
                     appointmentList.postValue(tmpAppointmentList)
                     appointmentSubIds.postValue(tmpAppointmentSubIds)
-                    appointmentStylistsName.postValue(tmpAppointmentStylistsName.distinct() as ArrayList<String>?)
+                    val tmpAppointmentStylistNameDistinct = tmpAppointmentStylistsName.distinct()
+                    appointmentStylistsName.postValue(ArrayList(tmpAppointmentStylistNameDistinct))
                 }
             }
         }
@@ -219,6 +220,7 @@ class DbAppointmentServices(private var dbInstance: FirebaseFirestore?): Databas
     }
 
     suspend fun findAllWithHairSalon(salonId: String): ArrayList<Appointment> {
+        Log.d("huy-cho", "hello: $salonId")
         var appointmentList: ArrayList<Appointment> = ArrayList()
         if(dbInstance != null) {
             val salonDocRef = dbInstance!!

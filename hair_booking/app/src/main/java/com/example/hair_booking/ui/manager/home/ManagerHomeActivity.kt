@@ -332,6 +332,7 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 //you can replace this data object with  your custom object
                 for (i in pairDayList.indices) {
                     val (day, amount) = pairDayList[i]
+
                     entries.add(BarEntry(i.toFloat(), amount.toFloat()))
                 }
 

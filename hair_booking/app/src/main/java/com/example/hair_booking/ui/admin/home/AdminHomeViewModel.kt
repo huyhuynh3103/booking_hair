@@ -36,9 +36,7 @@ class AdminHomeViewModel: ViewModel() {
     }
 
     private suspend fun getSalonListSpinner() {
-        dbServices.getSalonServices()?.findAll()?.observeForever {
-            _salonList.value = it
-        }
+        _salonList.value = dbServices.getSalonServices()?.FindAll()
     }
 
 }

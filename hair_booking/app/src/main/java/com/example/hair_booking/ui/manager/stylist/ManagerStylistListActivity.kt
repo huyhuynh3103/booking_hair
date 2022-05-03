@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
@@ -24,6 +25,8 @@ class ManagerStylistListActivity : AppCompatActivity() {
 
     private lateinit var adapter: StylistRecycleViewAdapter
     private lateinit var itemDecoration: RecyclerView.ItemDecoration
+
+    private lateinit var managerID: String
 
     private val REQUEST_CODE_UPDATE_DATA: Int = 1111
 
@@ -51,10 +54,10 @@ class ManagerStylistListActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // Get manager ID
-        val managerID = "eOPpMKdBw9iQL1CDIg28"
 
         lifecycleScope.launch {
+            managerID = binding.viewModel!!.getCurrentUserInfo()
+            Log.d("huy-stylist-list", "hello $managerID")
             binding.viewModel!!.getManagerDetail(managerID)
 
             val salonID = binding.viewModel!!.manager.value?.hairSalon
@@ -72,6 +75,7 @@ class ManagerStylistListActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             val salonID = binding.viewModel!!.manager.value?.hairSalon
+            //binding.viewModel!!.getUpdatedStylistList(salonID)
             async {
                 binding.viewModel!!.getUpdatedStylistList(salonID)
             }.await()

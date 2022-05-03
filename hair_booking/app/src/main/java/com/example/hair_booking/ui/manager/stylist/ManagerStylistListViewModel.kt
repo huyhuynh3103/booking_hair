@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hair_booking.model.Account
 import com.example.hair_booking.model.Stylist
+import com.example.hair_booking.services.auth.AuthRepository
 import com.example.hair_booking.services.db.dbServices
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.coroutines.launch
@@ -26,5 +27,15 @@ class ManagerStylistListViewModel: ViewModel() {
 
     suspend fun getUpdatedStylistList(salon: DocumentReference?) {
         _stylistList.value = dbServices.getStylistServices()?.findAll(salon)
+    }
+    suspend fun getCurrentUserInfo() : String {
+        val currentUserEmail: String? = AuthRepository.getCurrentUser()!!.email
+        if(currentUserEmail != null) {
+            val currentUser = dbServices.getAccountServices()!!.getManagerAccountByEmail(currentUserEmail)
+            if(currentUser != null) {
+                return currentUser.id
+            }
+        }
+        return ""
     }
 }
