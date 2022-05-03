@@ -1,5 +1,6 @@
 package com.example.hair_booking.ui.normal_user.wishlist
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,12 +9,13 @@ import com.example.hair_booking.databinding.ItemNormalUserWishlistBinding
 import com.example.hair_booking.model.Salon
 import com.example.hair_booking.model.Stylist
 import com.example.hair_booking.ui.manager.stylist.StylistRecycleViewAdapter
+import com.squareup.picasso.Picasso
 
 class WishlistRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var wishlist: ArrayList<Salon> = ArrayList()
     var onItemClick: ((Salon) -> Unit)? = null
 
-    inner class ViewHolder(var binding: ItemNormalUserWishlistBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(var binding: ItemNormalUserWishlistBinding, var context: Activity): RecyclerView.ViewHolder(binding.root) {
 
         init {
             // Set on item click listener
@@ -34,7 +36,7 @@ class WishlistRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         // Return a new holder instance with the binding of the custom layout as parameter
         // The binding of the custom layout as parameter will be used to binding view from xml layout
-        return ViewHolder(binding)
+        return ViewHolder(binding, context as Activity)
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
@@ -45,6 +47,14 @@ class WishlistRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         holder.binding.salon = salon
         holder.binding.rating = salon.rate!!.toFloat()
+
+        val salonImageView = holder.binding.ivSalonAvatarItem
+
+        // Load image from cloudinary url to image view
+        if(!salon.avatar.isNullOrEmpty())
+            Picasso.with(holder.context)
+                .load(salon!!.avatar)
+                .into(salonImageView)
     }
 
     override fun getItemCount(): Int {
