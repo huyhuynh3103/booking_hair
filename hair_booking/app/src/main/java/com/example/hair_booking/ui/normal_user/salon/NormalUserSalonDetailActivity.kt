@@ -4,7 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.squareup.picasso.Picasso
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
@@ -18,6 +20,7 @@ import com.example.hair_booking.services.auth.AuthRepository
 import com.example.hair_booking.services.db.dbServices
 import com.example.hair_booking.ui.normal_user.booking.BookingActivity
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class NormalUserSalonDetailActivity : AppCompatActivity() {
@@ -42,13 +45,18 @@ class NormalUserSalonDetailActivity : AppCompatActivity() {
         // Get salon detail
         val intent = intent
         id = intent.getStringExtra("SalonID")
-        binding.viewModel?.getSalonDetail(id!!)
+
+
 
         auth = AuthRepository.getCurrentUser()
 
         lifecycleScope.launch {
-            getData()
+            async {
+                binding.viewModel?.getSalonDetail(id!!)
+            }.await()
+            loadSalonAvatar()
 
+            getData()
             if (binding.viewModel!!.isInWishlist(id!!)) {
                 binding.bWishlist.text = "Remove from Wishlist"
             }
@@ -56,6 +64,16 @@ class NormalUserSalonDetailActivity : AppCompatActivity() {
                 binding.bWishlist.text = "Add to Wishlist"
             }
         }
+    }
+
+    private fun loadSalonAvatar() {
+        val salonImageView = binding.ivSalonAvatar
+
+        // Load image from cloudinary url to image view
+        if(!viewModel.salon.value!!.avatar.isNullOrEmpty())
+            Picasso.with(this)
+                .load(viewModel.salon.value!!.avatar)
+                .into(salonImageView)
     }
 
     // back to previous screen when click back button
@@ -69,11 +87,7 @@ class NormalUserSalonDetailActivity : AppCompatActivity() {
         binding.viewModel!!.getUserDetail()
         binding.viewModel!!.getWishlist()
     }
-    private fun getSelectedSalonDetail() {
-        val intent = intent
-        id = intent.getStringExtra("id")
-        binding.viewModel?.getSalonDetail(id!!)
-    }
+
 
     private fun setOnClickListenerForButton() {
         binding.bBooking.setOnClickListener() {

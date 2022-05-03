@@ -23,14 +23,6 @@ class SalonViewModel: ViewModel() {
     }
     
     private suspend fun fetchSalon(){
-        dbServices.hairSalonServices.findAll().observeForever{
-            salons ->
-            salons.forEach { salon ->
-                Log.d("huy-test-fetch",salon.name.toString())
-                Log.d("huy-test-fetch",salon.avatar.toString())
-                Log.d("huy-test-fetch",salon.rate.toString())
-            }
-            _hairSalon.value = salons
-        }
+        _hairSalon.value = dbServices.getSalonServices()?.FindAll()
     }
 }

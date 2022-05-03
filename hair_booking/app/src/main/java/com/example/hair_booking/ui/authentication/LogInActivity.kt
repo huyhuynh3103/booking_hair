@@ -47,21 +47,21 @@ class LogInActivity : AppCompatActivity() {
     private val viewModel: LoginViewModel by viewModels()
     private val REQ_ONE_TAP = 2
     private lateinit var callbackManager: CallbackManager
-    override fun onStart() {
-        super.onStart()
-        if(AuthRepository.isSignIn()){
-            val currentUser = AuthRepository.getCurrentUser()
-            val email = currentUser?.email
-            if(email != null){
-                viewModel.viewModelScope.launch {
-                    navigateToLandingPage(email)
-                }
-            }
-            else{
-                Toast.makeText(applicationContext,Constant.messages.errorFromSever,Toast.LENGTH_LONG).show()
-            }
-        }
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        if(AuthRepository.isSignIn()){
+//            val currentUser = AuthRepository.getCurrentUser()
+//            val email = currentUser?.email
+//            if(email != null){
+//                viewModel.viewModelScope.launch {
+//                    navigateToLandingPage(email)
+//                }
+//            }
+//            else{
+//                Toast.makeText(applicationContext,Constant.messages.errorFromSever,Toast.LENGTH_LONG).show()
+//            }
+//        }
+//    }
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

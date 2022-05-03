@@ -2,15 +2,19 @@ package com.example.hair_booking.ui.normal_user.salon
 
 import android.content.Context
 import android.util.Log
+import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.hair_booking.Constant
+import com.example.hair_booking.R
 import com.example.hair_booking.model.Account
 import com.example.hair_booking.model.NormalUser
 import com.example.hair_booking.model.Salon
 import com.example.hair_booking.services.db.dbServices
 import com.google.firebase.firestore.DocumentReference
+import kotlinx.coroutines.launch
 
 class NormalUserSalonDetailViewModel(private val context: Context): ViewModel() {
     private val _salon: MutableLiveData<Salon> = MutableLiveData()
@@ -27,12 +31,16 @@ class NormalUserSalonDetailViewModel(private val context: Context): ViewModel() 
     val user: LiveData<NormalUser> = _user
     val wishlist: LiveData<ArrayList<Salon>> = _wishlist
 
-    fun getSalonDetail(id: String) {
-        dbServices.getSalonServices()?.getSalonDetail(id)?.observeForever {
-            _salon.value = it
-            _rate.value = it.rate!!.toFloat()
-            _idAvatar.value = getSalonAvatarResource(context)
-        }
+    suspend fun getSalonDetail(id: String) {
+        val salon = dbServices.getSalonServices()?.getSalonById(id)
+        _salon.value = salon
+        _rate.value = salon!!.rate!!.toFloat()
+//        dbServices.getSalonServices()?.getSalonDetail(id)?.observeForever {
+//            _salon.value = it
+//            _rate.value = it.rate!!.toFloat()
+////            _idAvatar.value = getSalonAvatarResource(context)
+//
+//        }
     }
 
 //    private fun getSalonAvatarResource(context:Context): Int {
