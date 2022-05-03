@@ -9,6 +9,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 
 class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbstract<Any?>() {
 
@@ -48,6 +49,45 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
                 }
         }
         return result
+    }
+
+    suspend fun FindAll(): ArrayList<Salon> {
+        var salonList: ArrayList<Salon> = ArrayList()
+
+        try {
+            val docSnap = dbInstance!!.collection("hairSalons")
+                .whereEqualTo("deleted", false)
+                .get()
+                .await()
+
+            for (document in docSnap.documents) {
+                var rate: Double = if (document.data?.get("rate") is Long) {
+                    Double.fromBits(document.data?.get("rate") as Long)
+                } else {
+                    document.data?.get("rate") as Double
+                }
+
+                // Mapping firestore object to kotlin model
+                var salon = Salon(
+                    document.id,
+                    document.data?.get("name") as String,
+                    document.data?.get("salonAvatar") as String,
+                    document.data?.get("description") as String,
+                    rate,
+                    document.data?.get("openHour") as String,
+                    document.data?.get("closeHour") as String,
+                    document.data?.get("address") as HashMap<String, String>
+                )
+
+                // Insert to list
+                salonList.add(salon)
+            }
+        } catch (exception: Exception) {
+            Log.d("StylistServicesLog", "Get stylist detail fail with ", exception)
+        }
+
+        // Call function to return salon list after mapping complete
+        return salonList
     }
 
     override suspend fun findById(id: Any?): MutableLiveData<Salon> {
@@ -115,16 +155,62 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
         }
     }
 
-    override suspend fun updateOne(id: Any?, updateDoc: Any?): Any? {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun delete(id: Any?): Any? {
-        TODO("Not yet implemented")
+    override suspend fun delete(id: Any?) {
+        if (dbInstance != null) {
+            val docSnap = dbInstance!!.collection("hairSalons")
+                .document(id!!.toString())
+                .update(
+                    "deleted", true
+                )
+                .await()
+        }
     }
 
     override suspend fun add(data: Any?): Any? {
         TODO("Not yet implemented")
+    }
+
+    suspend fun add(data: Salon) {
+        val docToSave = hashMapOf(
+            "name" to data.name,
+            "salonAvatar" to data.avatar,
+            "description" to data.description,
+            "numRates" to 0,
+            "rate" to data.rate,
+            "openHour" to data.openHour,
+            "closeHour" to data.closeHour,
+            "address" to data.address,
+            "phoneNumber" to data.phoneNumber,
+            "appointments" to ArrayList<DocumentReference>(),
+            "stylists" to ArrayList<DocumentReference>(),
+            "deleted" to data.deleted
+        )
+
+        if (dbInstance != null && docToSave != null) {
+            val docSnap = dbInstance!!.collection("hairSalons")
+                .add(docToSave)
+                .await()
+        }
+    }
+
+    override suspend fun updateOne(id: Any?, updateDoc: Any?): Any? {
+        TODO("Not yet implemented")
+    }
+
+    suspend fun updateOne(id: Any?, updateDoc: Salon?) {
+        if (dbInstance != null) {
+            val docSnap = dbInstance!!.collection("hairSalons")
+                .document(id!!.toString())
+                .update(
+                    "name", updateDoc?.name,
+                    "description", updateDoc?.description,
+                    "openHour", updateDoc?.openHour,
+                    "closeHour", updateDoc?.closeHour,
+                    "address", updateDoc?.address,
+                    "phoneNumber", updateDoc?.phoneNumber
+                )
+                .await()
+        }
     }
 
     fun getSalonListForBooking(): MutableLiveData<ArrayList<Salon>> {
@@ -202,12 +288,14 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
                     for (document in documents) {
                         if (document.id == id) {
                             // Mapping firestore object to kotlin model
-                            var rate:Double
-                            if(document.data["rate"] is Long){
+                            var rate: Double
+                            if (document.data["rate"] is Long) {
                                 rate = Double.fromBits(document.data["rate"] as Long)
-                            }else{
+                            }
+                            else {
                                 rate = document.data["rate"] as Double
                             }
+
                             var salon: Salon = Salon(
                                 document.id,
                                 document.data["name"] as String,
@@ -216,7 +304,9 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
                                 rate,
                                 document.data["openHour"] as String,
                                 document.data["closeHour"] as String,
-                                document.data["address"] as HashMap<String, String>
+                                document.data["address"] as HashMap<String, String>,
+                                document.data["phoneNumber"] as String,
+                                document.data["deleted"] as Boolean,
                             )
 
                             result.value = salon
@@ -257,7 +347,8 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
                 result.data?.get("address") as HashMap<String, String>,
                 result.data?.get("appointments") as ArrayList<DocumentReference>,
                 result.data?.get("stylists") as ArrayList<HashMap<String, *>>,
-                result.data?.get("phoneNumber") as String
+                result.data?.get("phoneNumber") as String,
+                result.data?.get("deleted") as Boolean,
             )
         }
 

@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity

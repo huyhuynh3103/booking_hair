@@ -40,7 +40,6 @@
 
         <activity android:name=".ui.admin.discount.add_new_discount.AdminAddNewDiscountActivity"
             android:label="Thêm mới khuyến mãi">
-
         </activity>
         <activity android:name=".ui.admin.discount.edit_discount.AdminEditDiscountActivity"
             android:label="Chỉnh sửa khuyến mãi"/>
@@ -48,6 +47,16 @@
             android:exported="true"
             android:label="Danh sách khuyến mãi"
             android:parentActivityName=".ui.admin.home.AdminHomeActivity"/>
+        <activity
+            android:name=".ui.admin.salon.AdminSalonDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.salon.AdminSalonListActivity"
+            android:exported="false"
+            android:label="Danh sách cửa hàng"
+            android:parentActivityName=".ui.admin.home.AdminHomeActivity" />
+
+
         <activity
             android:name=".ui.admin.home.AdminHomeActivity"
             android:exported="true" />
