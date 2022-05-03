@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
@@ -94,13 +95,46 @@ class AdminSalonDetailActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 // Edit stylist
                 if (binding.task == "Edit") {
-                    val salon = getDataFromUI()
-                    editSalon(salon)
+                
+                    // Check number validation
+                    if (!isValid(binding.etSalonOpenHour.text.toString()) || !isValid(binding.etSalonCloseHour.text.toString())) {
+                        Toast.makeText(applicationContext,
+                            "Giờ mở cửa hoặc giờ đóng cửa không hợp lệ", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                    // Check logic validation
+                    else if (binding.etSalonOpenHour.text.toString().toFloat()
+                            .compareTo(binding.etSalonCloseHour.text.toString().toFloat()) >= 0) {
+                        Toast.makeText(applicationContext,
+                            "Giờ mở cửa không thể lớn hơn hoặc bằng giờ đóng cửa", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                    // Allow to edit
+                    else {
+                        val salon = getDataFromUI()
+                        editSalon(salon)
+                    }
                 }
                 // Add stylist
                 else {
-                    val salon = getDataFromUI()
-                    addSalon(salon)
+                    // Check number validation
+                    if (!isValid(binding.etSalonOpenHour.text.toString()) || !isValid(binding.etSalonCloseHour.text.toString())) {
+                        Toast.makeText(applicationContext,
+                            "Giờ mở cửa hoặc giờ đóng cửa không hợp lệ", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                    // Check logic validation
+                    else if (binding.etSalonOpenHour.text.toString().toFloat()
+                            .compareTo(binding.etSalonCloseHour.text.toString().toFloat()) >= 0) {
+                        Toast.makeText(applicationContext,
+                            "Giờ mở cửa không thể lớn hơn hoặc bằng giờ đóng cửa", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                    // Allow to add
+                    else {
+                        val salon = getDataFromUI()
+                        addSalon(salon)
+                    }
                 }
             }
         }
@@ -114,6 +148,10 @@ class AdminSalonDetailActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    private fun isValid(string: String): Boolean {
+        return string.toFloatOrNull() != null && string.toFloat().compareTo(0.0) >= 0 && string.toFloat().compareTo(23.60) < 0
     }
 
     private fun getDataFromUI(): Salon {
@@ -130,15 +168,21 @@ class AdminSalonDetailActivity : AppCompatActivity() {
         val street = binding.etSalonAddressStreet.text.toString()
         val ward = binding.etSalonAddressWard.text.toString()
         val district = binding.etSalonAddressDistrict.text.toString()
-        val city  = binding.etSalonAddressCity.text.toString()
+        val city = binding.etSalonAddressCity.text.toString()
 
-        address = hashMapOf("streetNumber" to number, "streetName" to street, "ward" to ward, "district" to district, "city" to city)
+        address = hashMapOf(
+            "streetNumber" to number,
+            "streetName" to street,
+            "ward" to ward,
+            "district" to district,
+            "city" to city
+        )
 
         // Data from UI
-        if (binding.task == "Edit") {
-            return Salon(id!!, name, avatar, description, rate!!, openHour, closeHour, address, phone, false)
+        return if (binding.task == "Edit") {
+            Salon(id!!, name, avatar, description, rate!!, openHour, closeHour, address, phone, false)
         }
-        else return Salon(id!!, name, avatar, description, 0.0, openHour, closeHour, address, phone, false)
+        else Salon(id!!, name, avatar, description, 0.0, openHour, closeHour, address, phone, false)
     }
 
     private fun editSalon(salon: Salon) {
