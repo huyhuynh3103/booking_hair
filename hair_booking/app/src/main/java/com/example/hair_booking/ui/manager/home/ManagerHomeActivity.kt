@@ -43,9 +43,12 @@ import android.widget.Toast
 import com.journeyapps.barcodescanner.ScanContract
 
 import androidx.activity.result.ActivityResultLauncher
+import androidx.lifecycle.lifecycleScope
+import com.example.hair_booking.services.db.dbServices
 import com.example.hair_booking.ui.authentication.LogInActivity
 import com.example.hair_booking.ui.manager.appointment.detail.ManagerAppointmentDetailActivity
 import com.journeyapps.barcodescanner.ScanIntentResult
+import kotlinx.coroutines.async
 
 
 class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -69,10 +72,28 @@ class ManagerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 Toast.makeText(this@ManagerHomeActivity, "Cancelled", Toast.LENGTH_LONG).show()
                 // Start Activity for this
             } else {
-                val appointmentId = result.contents
-                val intent = Intent(this,ManagerAppointmentDetailActivity::class.java)
-                intent.putExtra("appointmentId",appointmentId)
-                startActivity(intent)
+                lifecycleScope.launch {
+                    val appointmentId = result.contents
+                    val salonId = managerHomeViewModel.getCurrentUserInfo()
+                    // check appointment is belong to this salon
+                    val result = async {
+                        val isExist = dbServices.getSalonServices()!!.checkAppointmentId(appointmentId,salonId)
+                        isExist
+                    }
+
+                    if(result.await()){
+                        runOnUiThread{
+                            val intent = Intent(this@ManagerHomeActivity,ManagerAppointmentDetailActivity::class.java)
+                            intent.putExtra("appointmentId",appointmentId)
+                            startActivity(intent)
+                        }
+                    }
+                    else{
+                        runOnUiThread{
+                            Toast.makeText(this@ManagerHomeActivity,"Lịch hẹn không thuộc salon này.", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
             }
         }
         setupUI()

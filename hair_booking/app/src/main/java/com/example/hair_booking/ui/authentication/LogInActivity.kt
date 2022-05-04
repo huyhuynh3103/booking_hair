@@ -171,7 +171,7 @@ class LogInActivity : AppCompatActivity() {
     private fun handleLoginBtn() {
         binding.loginButton.setOnClickListener {
             Log.d("huy-login", "login button clicked")
-            val email = binding.emailTV.text.toString()
+            val email = binding.emailTV.text.toString().lowercase(Locale.getDefault())
             val password = binding.passwordTV.text.toString()
             val isValidateEmail = viewModel.validateEmail(email)
             val isValidatePassword = viewModel.validatePwd(password)

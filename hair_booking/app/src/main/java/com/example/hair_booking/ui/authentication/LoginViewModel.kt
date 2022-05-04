@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.hair_booking.Constant
 import com.example.hair_booking.utils.EmailValidator
+import java.util.*
 
 class LoginViewModel: ViewModel() {
 
@@ -72,7 +73,7 @@ class LoginViewModel: ViewModel() {
             }
 
             override fun afterTextChanged(emailEditable: Editable?) {
-                val email = emailEditable.toString()
+                val email = emailEditable.toString().lowercase(Locale.getDefault())
                 validateEmail(email)
             }
 
