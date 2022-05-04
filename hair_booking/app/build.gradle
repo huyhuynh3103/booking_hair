@@ -70,7 +70,7 @@ dependencies {
     // Dependencies for Cloud Firestore
     implementation 'com.google.firebase:firebase-firestore-ktx'
 
-////    // Dependencies for Firebase authentication
+////    // Dependencies for Firebase authentication 
 //    implementation 'com.google.firebase:firebase-auth'
 
 

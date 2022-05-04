@@ -389,19 +389,20 @@ class DbSalonServices(private var dbInstance: FirebaseFirestore?) : DatabaseAbst
             }
 
     }
-    fun checkAppointmentId(appointmentId:String, salonId: String):Boolean{
+    suspend fun checkAppointmentId(appointmentId:String, salonId: String):Boolean{
         var isExist = false
         if(dbInstance!=null){
-            val hairSalonRef = dbInstance!!.collection(Constant.collection.hairSalons).document(salonId)
-            hairSalonRef.get().addOnSuccessListener { document ->
-                val data = document.data
-                if(data!=null){
-                    val appointments = data["appointments"] as ArrayList<DocumentReference>
-                    appointments.forEach { documentReference ->
-                        isExist = documentReference.id == appointmentId
+            val hairSalon = dbInstance!!.collection(Constant.collection.hairSalons).document(salonId).get().await()
+            val data = hairSalon.data
+            if(data!=null){
+                val appointments = data["appointments"] as ArrayList<DocumentReference>
+                appointments.forEach { documentReference ->
+                    if( documentReference.id == appointmentId){
+                        isExist = true
                     }
                 }
             }
+
         }
         return isExist
     }
