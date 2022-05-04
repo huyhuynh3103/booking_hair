@@ -35,33 +35,23 @@ import com.facebook.FacebookCallback
 import java.util.*
 
 import com.facebook.login.LoginManager
-
-
-
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
 
 class LogInActivity : AppCompatActivity() {
+    companion object {
+        private const val RC_SIGN_IN = 9001
+        private const val REQ_ONE_TAP = 2
+    }
     private lateinit var oneTapClient: SignInClient
     private lateinit var binding: ActivityLogInBinding
     private lateinit var signInRequest: BeginSignInRequest
     private val viewModel: LoginViewModel by viewModels()
-    private val REQ_ONE_TAP = 2
+
     private lateinit var callbackManager: CallbackManager
-//    override fun onStart() {
-//        super.onStart()
-//        if(AuthRepository.isSignIn()){
-//            val currentUser = AuthRepository.getCurrentUser()
-//            val email = currentUser?.email
-//            if(email != null){
-//                viewModel.viewModelScope.launch {
-//                    navigateToLandingPage(email)
-//                }
-//            }
-//            else{
-//                Toast.makeText(applicationContext,Constant.messages.errorFromSever,Toast.LENGTH_LONG).show()
-//            }
-//        }
-//    }
+    private lateinit var googleSignInClient: GoogleSignInClient
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -129,7 +119,15 @@ class LogInActivity : AppCompatActivity() {
                     .build())
             .build()
         // [END config_signin]
+        // [START config_signin]
+        // Configure Google Sign In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.web_api_key))
+            .requestEmail()
+            .build()
 
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        // [END config_signin]
 
         handleGoogleLogin()
         handleFacebookLogin()
@@ -158,7 +156,9 @@ class LogInActivity : AppCompatActivity() {
                 .addOnFailureListener(this) { e ->
                     // No saved credentials found. Launch the One Tap sign-up flow, or
                     // do nothing and continue presenting the signed-out UI.
-                    Log.d("google-login", e.localizedMessage)
+                    Toast.makeText(this,"No google account found",Toast.LENGTH_LONG).show()
+                    val signInIntent = googleSignInClient.signInIntent
+                    startActivityForResult(signInIntent, RC_SIGN_IN)
                 }
         }
     }
@@ -257,51 +257,12 @@ class LogInActivity : AppCompatActivity() {
         // Pass the activity result back to the Facebook SDK
         callbackManager.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            REQ_ONE_TAP -> {
+            RC_SIGN_IN -> {
                 try {
-                    val credential = oneTapClient.getSignInCredentialFromIntent(data)
-                    val idToken = credential.googleIdToken
-                    when {
-                        idToken != null -> {
-                            // Got an ID token from Google. Use it to authenticate
-                            // with Firebase.
-                            Log.d("google-login", "Got ID token.")
-                            viewModel.viewModelScope.launch{
-                                try{
-                                    binding.progressBarLogin.visibility = View.VISIBLE
-                                    AuthRepository.loginByGoogle(idToken)
-                                    val email = AuthRepository.getCurrentUser()?.email
-                                    if(email!=null){
-                                        navigateToLandingPage(email)
-                                    }
-                                    binding.progressBarLogin.visibility = View.INVISIBLE
-                                    Log.d("google-login", "signInWithCredential:success")
-                                }catch (e:FirebaseAuthInvalidUserException){
-                                    runOnUiThread{
-                                        Toast.makeText(applicationContext,
-                                            Constant.messages.loginCredentialInvalid,
-                                            Toast.LENGTH_LONG).show()
-                                    }
-                                }catch (e:FirebaseAuthInvalidCredentialsException){
-                                    runOnUiThread{
-                                        Toast.makeText(applicationContext,
-                                            Constant.messages.loginCredentialsExpired,
-                                            Toast.LENGTH_LONG).show()
-                                    }
-                                }catch (e: FirebaseAuthUserCollisionException){
-                                    runOnUiThread{
-                                        Toast.makeText(applicationContext,Constant.messages.loginCredentialsCollision,
-                                            Toast.LENGTH_LONG).show()
-                                    }
-                                }
-
-                            }
-                        }
-                        else -> {
-                            // Shouldn't happen.
-                            Log.d("google-login", "No ID token!")
-                        }
-                    }
+                    val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+                    val account = task.getResult(ApiException::class.java)
+                    val idToken = account.id
+                    handleLoginGoogle(idToken)
                 } catch (e: ApiException) {
                     when (e.statusCode) {
                         CommonStatusCodes.CANCELED -> {
@@ -318,6 +279,71 @@ class LogInActivity : AppCompatActivity() {
                         }
                     }
                 }
+            }
+            REQ_ONE_TAP -> {
+                try {
+                    val credential = oneTapClient.getSignInCredentialFromIntent(data)
+                    val idToken = credential.googleIdToken
+                    handleLoginGoogle(idToken)
+                } catch (e: ApiException) {
+                    when (e.statusCode) {
+                        CommonStatusCodes.CANCELED -> {
+                            Log.d("google-login", "One-tap dialog was closed.")
+                            // Don't re-prompt the user.
+                        }
+                        CommonStatusCodes.NETWORK_ERROR -> {
+                            Log.d("google-login", "One-tap encountered a network error.")
+                            // Try again or just ignore.
+                        }
+                        else -> {
+                            Log.d("google-login", "Couldn't get credential from result." +
+                                    " (${e.localizedMessage})")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private fun handleLoginGoogle(idToken:String?){
+        when {
+            idToken != null -> {
+                // Got an ID token from Google. Use it to authenticate
+                // with Firebase.
+                Log.d("google-login", "Got ID token.")
+                viewModel.viewModelScope.launch{
+                    binding.progressBarLogin.visibility = View.VISIBLE
+                    try{
+
+                        AuthRepository.loginByGoogle(idToken)
+                        val email = AuthRepository.getCurrentUser()?.email
+                        if(email!=null){
+                            navigateToLandingPage(email)
+                        }
+                        Log.d("google-login", "signInWithCredential:success")
+                    }catch (e:FirebaseAuthInvalidUserException){
+                        runOnUiThread{
+                            Toast.makeText(applicationContext,
+                                Constant.messages.loginCredentialInvalid,
+                                Toast.LENGTH_LONG).show()
+                        }
+                    }catch (e:FirebaseAuthInvalidCredentialsException){
+                        runOnUiThread{
+                            Toast.makeText(applicationContext,
+                                Constant.messages.loginCredentialsExpired,
+                                Toast.LENGTH_LONG).show()
+                        }
+                    }catch (e: FirebaseAuthUserCollisionException){
+                        runOnUiThread{
+                            Toast.makeText(applicationContext,Constant.messages.loginCredentialsCollision,
+                                Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    binding.progressBarLogin.visibility = View.INVISIBLE
+                }
+            }
+            else -> {
+                // Shouldn't happen.
+                Log.d("google-login", "No ID token!")
             }
         }
     }
