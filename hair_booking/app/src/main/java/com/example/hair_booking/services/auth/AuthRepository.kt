@@ -6,6 +6,7 @@ import com.example.hair_booking.firebase.Auth
 import com.example.hair_booking.services.db.dbServices
 import com.facebook.AccessToken
 import com.google.firebase.auth.*
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.DocumentReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -120,5 +121,13 @@ object AuthRepository {
     }
     fun getCurrentUser():FirebaseUser? {
         return auth.currentUser
+    }
+    suspend fun updateProfile(name:String){
+        val user = auth.currentUser
+        val profileUpdates = userProfileChangeRequest {
+            displayName = name
+        }
+        user!!.updateProfile(profileUpdates)
+            .await()
     }
 }

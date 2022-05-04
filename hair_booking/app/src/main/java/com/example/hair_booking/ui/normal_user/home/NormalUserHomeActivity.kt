@@ -38,7 +38,7 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
         binding.viewModel = salonViewModel
         binding.lifecycleOwner = this@NormalUserHomeActivity
         setupUI()
-        setUserProfile()
+        //setUserProfile()
         //setupObserver()
         salonAdapter.onItemClick = { salon ->
             val intent = Intent(this,NormalUserSalonDetailActivity::class.java)
@@ -48,6 +48,10 @@ class NormalUserHomeActivity : AppCompatActivity(),NavigationView.OnNavigationIt
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        setUserProfile()
+    }
     private fun setUserProfile() {
 
         val userProfile = AuthRepository.getCurrentUser()

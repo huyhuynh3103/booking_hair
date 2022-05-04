@@ -3,7 +3,6 @@ package com.example.hair_booking.ui.admin.users_list
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hair_booking.R
 import com.example.hair_booking.databinding.ActivityUsersListBinding
-import com.google.firebase.firestore.DocumentReference
 
 
 class UsersListActivity : AppCompatActivity() {

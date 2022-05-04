@@ -3,17 +3,12 @@ package com.example.hair_booking.services.db
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.hair_booking.Constant
-import com.example.hair_booking.model.Discount
 import com.example.hair_booking.model.NormalUser
-import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import java.lang.Exception
 import com.example.hair_booking.model.Account
-import com.example.hair_booking.model.Salon
 import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.*
 
@@ -113,20 +108,13 @@ class DbNormalUserServices(private var dbInstance: FirebaseFirestore?) : Databas
         list.value = userList
         return list
     }
-
     suspend fun updateNormalUser(fullname: String, phone: String, gender: String, id: String) {
 
         val normalUserRef = dbInstance!!.collection(Constant.collection.normalUsers).document(id)
 
-        normalUserRef
+        val result = normalUserRef
             .update("fullName", fullname, "phoneNumber", phone, "gender", gender)
-            .addOnSuccessListener {
-                Log.d("DbNormalUserServices", "DocumentSnapshot successfully updated!")
-            }
-            .addOnFailureListener { e ->
-                Log.d("DbNormalUserServices", "Error updating document", e)
-            }
-
+            .await()
     }
 
     suspend fun getUserDiscountPoint(userId: String): Long {
