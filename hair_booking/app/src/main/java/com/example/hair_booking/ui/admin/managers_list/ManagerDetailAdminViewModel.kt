@@ -50,9 +50,7 @@ class ManagerDetailAdminViewModel: ViewModel() {
     }
 
     private suspend fun getSalonList() {
-        dbServices.getSalonServices()?.findAll()?.observeForever {
-            _salonList.value = it
-        }
+        _salonList.value = dbServices.getSalonServices()?.FindAll()
     }
 
     suspend fun updateManager(position: Int, id: String) {

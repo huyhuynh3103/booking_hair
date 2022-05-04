@@ -1,5 +1,6 @@
 package com.example.hair_booking.ui.manager.profile
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,15 +28,21 @@ class ManagerProfileViewModel: ViewModel() {
     fun getUserAccountDetail(){
         viewModelScope.launch {
             val currentUserEmail: String? = AuthRepository.getCurrentUser()!!.email
-            _account.value = dbServices.getAccountServices()!!.getUserAccountByEmail(currentUserEmail!!)
+            if(currentUserEmail != null) {
+                val currentUser = dbServices.getAccountServices()!!.getManagerAccountByEmail(currentUserEmail)
+                if(currentUser != null) {
+                    _account.value = currentUser
+                }
+
+            }
+
+
             //_account.value = dbServices.getNormalUserServices()?.getNormalUserAccountDetail(id)
         }
     }
 
     private suspend fun getSalonList() {
-        dbServices.getSalonServices()?.findAll()?.observeForever {
-            _salonList.value = it
-        }
+        _salonList.value = dbServices.getSalonServices()?.FindAll()
     }
 
 
